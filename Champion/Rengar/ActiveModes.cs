@@ -114,8 +114,7 @@ namespace ElRengarRevamped
                                         }
                                     }
 
-                                    if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Switch.E") && Environment.TickCount - Rengar.LastE >= 500
-                                        && Utils.GameTimeTickCount - LastSwitch >= 350)
+                                    if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Switch.E") && Utils.GameTimeTickCount - LastSwitch >= 350)
                                     {
                                         MenuInit.comboMenu["Combo.Prio"].Cast<ComboBox>().CurrentValue = 2;
                                         LastSwitch = Utils.GameTimeTickCount;
@@ -156,14 +155,6 @@ namespace ElRengarRevamped
                                 }
                             }
                             break;
-                    }
-
-                    if (!RengarR)
-                    {
-                        if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.E.OutOfRange"))
-                        {
-                            CastE(target);
-                        }
                     }
                 }
 
