@@ -356,7 +356,8 @@ namespace ARAMDetFull
 
             foreach (var aly in ally_champions)
             {
-                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < 2000 * 2000 && aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + 450 + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
+                var reach = aly.reach + 500;
+                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < reach * reach && aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + 450 + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
                     balance += ((int)aly.hero.HealthPercent + 20 + 20 - aly.hero.Deaths * 4 + aly.hero.ChampionsKilled * 4);
             }
             var myBal = ((int)myControler.hero.HealthPercent + 20 + 20 - myControler.hero.Deaths * 10 +
@@ -387,7 +388,7 @@ namespace ARAMDetFull
             var distEneNex = ARAMSimulator.toNex.Position.LSDistance(unit.Position);
             var distEneNexDeepest = ARAMSimulator.toNex.Position.LSDistance(ARAMSimulator.deepestAlly.Position);
 
-            return distEneNexDeepest + 1500 < distEneNex;
+            return !ARAMSimulator.deepestAlly.IsDead && distEneNexDeepest + 1500 < distEneNex;
         }
 
         public static ChampControl getByObj(Obj_AI_Base champ)

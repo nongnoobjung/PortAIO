@@ -67,7 +67,6 @@ namespace ARAMDetFull
         private static int _lastAATick;
         private static Obj_AI_Base _lastTarget;
         private static LeagueSharp.Common.Spell _movementPrediction;
-        private static int _lastMovement;
         private static int _delayAttackTill = 0;
         public static bool inDanger = false;
 
@@ -538,7 +537,7 @@ namespace ARAMDetFull
 
         private static void FireAfterAttack(Obj_AI_Base unit, Obj_AI_Base target)
         {
-            _lastMovement = 0;
+            //_lastMovement = 0;
             if (AfterAttack != null)
             {
                 AfterAttack(unit, target);
