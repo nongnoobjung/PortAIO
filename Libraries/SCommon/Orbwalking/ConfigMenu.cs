@@ -11,15 +11,12 @@ namespace SCommon.Orbwalking
         public ConfigMenu()
         {
             m_Menu = MainMenu.AddMenu("Orbwalking", "Orbwalking.Root");
-            m_Menu.Add("Orbwalking.Root.iExtraWindup", new Slider("Extra Windup Time"));
-            m_Menu.Add("Orbwalking.Root.iMovementDelay", new Slider("Movement Delay", 0, 0, 1000));
-            m_Menu.Add("Orbwalking.Root.iHoldPosition", new Slider("Hold Area Radius", 0, 0, 250));
-
+            m_Menu.AddGroupLabel("Hotkeys");
             m_Menu.Add("Orbwalking.Root.blLastHit", new KeyBind("Last Hit", false, KeyBind.BindTypes.HoldActive, 'X'));
             m_Menu.Add("Orbwalking.Root.blHarass", new KeyBind("Harass", false, KeyBind.BindTypes.HoldActive, 'C'));
             m_Menu.Add("Orbwalking.Root.blLaneClear",new KeyBind("Lane Clear", false, KeyBind.BindTypes.HoldActive, 'V'));
             m_Menu.Add("Orbwalking.Root.blCombo", new KeyBind("Combo", false, KeyBind.BindTypes.HoldActive, 32));
-
+            m_Menu.AddSeparator();
             m_Menu.AddGroupLabel("Misc");
             m_Menu.Add("Orbwalking.Misc.blAttackStructures", new CheckBox("Attack Structures"));
             m_Menu.Add("Orbwalking.Misc.blFocusNormalWhileTurret", new CheckBox("Focus mins. not focused by turret"));
@@ -30,15 +27,21 @@ namespace SCommon.Orbwalking
             m_Menu.Add("Orbwalking.Misc.blMagnetMelee", new CheckBox("Magnet Target (Only Melee)"));
             m_Menu.Add("Orbwalking.Misc.iStickRange", new Slider("Stick Range", 390, 0, 600));
             m_Menu.Add("Orbwalking.Misc.blDontMoveInRange", new CheckBox("Dont move if enemy in AA range", false));
+            m_Menu.AddSeparator();
             m_Menu.Add("Orbwalking.Misc.blLegitMode", new CheckBox("Legit Mode", false));
             m_Menu.Add("Orbwalking.Misc.iLegitPercent", new Slider("Make Me Legit %", 20));
-
+            m_Menu.AddSeparator();
             m_Menu.AddGroupLabel("Drawings");
             m_Menu.Add("Orbwalking.Drawings.SelfAACircle", new CheckBox("Self AA Circle"));
             m_Menu.Add("Orbwalking.Drawings.EnemyAACircle", new CheckBox("Enemy AA Circle", false));
             m_Menu.Add("Orbwalking.Drawings.LastHitMinion", new CheckBox("Last Hitable Minion", false));
             m_Menu.Add("Orbwalking.Drawings.HoldZone", new CheckBox("Hold Zone", false));
             m_Menu.Add("Orbwalking.Drawings.iLineWidth", new Slider("Line Width", 2, 1, 6));
+            m_Menu.AddSeparator();
+            m_Menu.AddGroupLabel("Extra Settings");
+            m_Menu.Add("Orbwalking.Root.iExtraWindup", new Slider("Extra Windup Time", 0, 0, 200));
+            m_Menu.Add("Orbwalking.Root.iMovementDelay", new Slider("Movement Delay", 0, 0, 1000));
+            m_Menu.Add("Orbwalking.Root.iHoldPosition", new Slider("Hold Radius", 0, 0, 112));
         }
 
         public bool LegitMode
