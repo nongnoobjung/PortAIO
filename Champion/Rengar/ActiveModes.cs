@@ -30,7 +30,8 @@ namespace ElRengarRevamped
                     return;
                 }
 
-                Orbwalker.ForcedTarget = target;
+                if (TargetSelector.SelectedTarget != null)
+                    Orbwalker.ForcedTarget = target;
 
                 #region RengarR
 
@@ -52,32 +53,16 @@ namespace ElRengarRevamped
                         {
                             if (spells[Spells.E].IsReady() && MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.E"))
                             {
-                                var targetE = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                                if (targetE.LSIsValidTarget())
-                                {
-                                    spells[Spells.E].Cast(targetE);
-                                }
-                                foreach (var target2 in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
-                                {
-                                    spells[Spells.E].Cast(target2);
-                                }
+                                CastE(target);
                             }
                         }
                         else
                         {
                             if (spells[Spells.E].IsReady() && MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.E"))
                             {
-                                if (Player.IsDashing())
+                                if (Player.LSIsDashing())
                                 {
-                                    var targetE = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                                    if (targetE.LSIsValidTarget())
-                                    {
-                                        spells[Spells.E].Cast(targetE);
-                                    }
-                                    foreach (var target2 in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
-                                    {
-                                        spells[Spells.E].Cast(target2);
-                                    }
+                                    CastE(target);
                                 }
                             }
                         }
@@ -103,15 +88,7 @@ namespace ElRengarRevamped
                                 {
                                     if (Orbwalker.CanMove)
                                     {
-                                        var targetE = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                                        if (targetE.LSIsValidTarget())
-                                        {
-                                            spells[Spells.E].Cast(targetE);
-                                        }
-                                        foreach (var target2 in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
-                                        {
-                                            spells[Spells.E].Cast(target2);
-                                        }
+                                        CastE(target);
                                     }
 
                                     if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Switch.E") && Utils.GameTimeTickCount - LastSwitch >= 350)
@@ -125,17 +102,9 @@ namespace ElRengarRevamped
                             {
                                 if (spells[Spells.E].IsReady() && MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.E"))
                                 {
-                                    if (Player.IsDashing())
+                                    if (Player.LSIsDashing())
                                     {
-                                        var targetE = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                                        if (targetE.LSIsValidTarget())
-                                        {
-                                            spells[Spells.E].Cast(targetE);
-                                        }
-                                        foreach (var target2 in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
-                                        {
-                                            spells[Spells.E].Cast(target2);
-                                        }
+                                        CastE(target);
                                     }
                                 }
                             }
@@ -147,7 +116,7 @@ namespace ElRengarRevamped
                             }
                             break;
                         case 2:
-                            if (spells[Spells.Q].IsReady() && MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.Q") && Player.CountEnemiesInRange(Player.AttackRange + Player.BoundingRadius + 100) != 0)
+                            if (spells[Spells.Q].IsReady() && MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.Q") && Player.LSCountEnemiesInRange(Player.AttackRange + Player.BoundingRadius + 100) != 0)
                             {
                                 if (Orbwalker.CanMove)
                                 {
@@ -250,7 +219,7 @@ namespace ElRengarRevamped
                     HeroManager.Enemies.Where(
                         e =>
                         e.LSIsValidTarget() && e.LSDistance(Player) < 450f
-                        || e.LSDistance(Player) < 450f && e.LSIsFacing(Player)).ToList();
+                        || e.LSDistance(Player) < 450f).ToList();
 
                 return new Tuple<int, List<AIHeroClient>>(hits.Count, hits);
             }
@@ -543,7 +512,7 @@ namespace ElRengarRevamped
         /// <returns>true or false</returns>
         public static bool CastItems(Obj_AI_Base target)
         {
-            if (Player.IsDashing() || Player.Spellbook.IsAutoAttacking || RengarR)
+            if (Player.LSIsDashing() || Player.Spellbook.IsAutoAttacking || RengarR)
             {
                 return false;
             }
