@@ -1,6 +1,7 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using static SCommon.Orbwalking.Events;
 
 namespace PortAIO.Utility
 {
@@ -8,17 +9,20 @@ namespace PortAIO.Utility
     {
 
         public static SCommon.Orbwalking.Orbwalker LSOrb;
+        public static bool loaded = false;
 
         public UniversalOrbwalker()
         {
+            loaded = true;
             LSOrb = new SCommon.Orbwalking.Orbwalker();
+            SCommon.TS.TargetSelector.Initialize();
         }
 
         public static bool getLSOrbwalker
         {
             get
             {
-                return Loader.orbwalker;
+                return loaded ? Loader.orbwalker : false;
             }
         }
 
@@ -58,7 +62,7 @@ namespace PortAIO.Utility
             }
         }
 
-        public static void ForcedTarget(AIHeroClient t)
+        public static void ForcedTarget(AttackableUnit t)
         {
             if (getLSOrbwalker)
             {
@@ -103,6 +107,18 @@ namespace PortAIO.Utility
             else
             {
                 return Orbwalker.IsAutoAttacking;
+            }
+        }
+
+        public static AttackableUnit LastTarget()
+        {
+            if (getLSOrbwalker)
+            {
+                return LSOrb.LastTarget;
+            }
+            else
+            {
+                return Orbwalker.LastTarget;
             }
         }
 
