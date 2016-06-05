@@ -625,6 +625,7 @@ namespace xSLx_Orbwalker
             }
 
             return Utils.TickCount + Game.Ping - _lastAATick - GetCurrentWindupTime() >= 1000 / (ObjectManager.Player.GetAttackSpeed() * m_baseAttackSpeed);
+
         }
 
         private static readonly string[] NoCancelChamps = { "Kalista" };

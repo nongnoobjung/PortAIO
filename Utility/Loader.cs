@@ -463,7 +463,7 @@ namespace PortAIO.Utility
             Miscc.Add("pastingSharp", new CheckBox("Enable PastingSharp?", false));
             //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
             Miscc.Add("autoJungle", new CheckBox("Enable Auto Jungle?", false));
-            Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));
+            //Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("Util Dual-Port :");
             Miscc.Add("evadeCB", new ComboBox("Which Evade?", 0, "ezEvade", "Evade#"));

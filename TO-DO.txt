@@ -33,6 +33,7 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - TroopAIO
 - Dicaste's Ashe/Urgot
 - Shen Hand of God
+- [RE-PORT] Nechrito Riven - Some Big Changes Happened and it's all different now
 
 Utility Ports [Only doing after Champions are completed] :
 - DZAwareness [https://github.com/DZ191/LeagueSharp/tree/master/DZAwarenessAIO]
