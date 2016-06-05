@@ -1169,7 +1169,7 @@ namespace AutoJungle
 
         public static bool Debug
         {
-            get { return getCheckBoxItem("debug"); }
+            get { return getKeyBindItem("debug"); }
         }
 
         #endregion
