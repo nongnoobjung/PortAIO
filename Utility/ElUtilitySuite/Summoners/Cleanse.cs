@@ -894,7 +894,7 @@ namespace ElUtilitySuite.Summoners
                 return;
             }
 
-            foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && x.LSIsValidTarget(800f, false)))
+            foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && x.LSIsValidTarget(800f, false) && !x.IsMinion))
             {
                 var ally1 = ally;
                 foreach (var spell in Spells.Where(x => ally1.HasBuff(x.Name)))
@@ -906,10 +906,7 @@ namespace ElUtilitySuite.Summoners
 
                     var buff = ally.GetBuff(spell.Name);
 
-                    if (
-                        !((AIHeroClient)buff.Caster).ChampionName.Equals(
-                            spell.Champion,
-                            StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(spell.Champion))
+                    if (!((AIHeroClient)buff.Caster).ChampionName.Equals(spell.Champion,StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(spell.Champion))
                     {
                         return;
                     }
