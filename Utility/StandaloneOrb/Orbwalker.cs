@@ -154,6 +154,8 @@ namespace xSLx_Orbwalker
 
         private static void OnUpdate(EventArgs args)
         {
+            Orbwalker.DisableAttacking = true;
+            Orbwalker.DisableMovement = true;
             CheckAutoWindUp();
             if (CurrentMode == Mode.None || MenuGUI.IsChatOpen || CustomOrbwalkMode)
                 return;
