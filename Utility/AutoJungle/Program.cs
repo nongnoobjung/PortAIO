@@ -1336,7 +1336,7 @@ namespace AutoJungle
             menu.Add("debug", new KeyBind("Print to console", false, KeyBind.BindTypes.HoldActive, 'T'));
             menu.Add("State", new CheckBox("Show GameState", false));
             menu.AddLabel("Dont press F5 after champ bought warrier/bloodrazor, or it will stop working.");
-            menu.AddLabel("Supported Champs: Yi,WW,Shyvana,Xin Zhao,Jax,Nocturne,Evelynn,Volibear,Tryndamere")
+            menu.AddLabel("Supported Champs: Yi,WW,Shyvana,Xin Zhao,Jax,Nocturne,Evelynn,Volibear,Tryndamere");
         }
 
         #endregion
