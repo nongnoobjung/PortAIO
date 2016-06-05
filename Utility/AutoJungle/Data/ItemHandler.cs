@@ -177,16 +177,15 @@ namespace AutoJungle.Data
             ItemList.Add(new BuyingOrder(8, 1001, "Boots of Speed", 400));
             ItemList.Add(new BuyingOrder(9, 3158, "Ionian Boots of Lucidity", 600));
             ItemList.Add(new BuyingOrder(10, (int) ItemId.Giants_Belt, "Giants Belt", 1000));
-            ItemList.Add(new BuyingOrder(11, 1058, "Needlessly Large Rod", 1250));
-            ItemList.Add(new BuyingOrder(12, 3116, "Rylais Crystal Scepter", 1000));
-            ItemList.Add(new BuyingOrder(13, 1058, "Needlessly Large Rod", 1250));
-            ItemList.Add(new BuyingOrder(14, 3113, "Aether Wisp", 875));
-            ItemList.Add(new BuyingOrder(15, 3285, "Ludens Echo", 1100));
-            ItemList.Add(new BuyingOrder(16, 1026, "Blasting Wand", 850));
-            ItemList.Add(new BuyingOrder(17, 3135, "Void Staf", 1800));
-            ItemList.Add(new BuyingOrder(18, 1058, "Needlessly Large Rod", 1250));
-            ItemList.Add(new BuyingOrder(19, 3089, "Rabadons Deathcap", 2500));
-            ItemList.Add(new BuyingOrder(20, 2139, "Elixir of Sorcery", 500));
+            ItemList.Add(new BuyingOrder(11, 3116, "Rylais Crystal Scepter", 2250));
+            ItemList.Add(new BuyingOrder(12, 1052, "宝典", 435));
+            ItemList.Add(new BuyingOrder(13, 3285, "Ludens Echo", 2765));
+            ItemList.Add(new BuyingOrder(14, 1026, "Blasting Wand", 850));
+            ItemList.Add(new BuyingOrder(15, 3135, "Void Staf", 1800));
+            ItemList.Add(new BuyingOrder(16, 1058, "Needlessly Large Rod", 1250));
+            ItemList.Add(new BuyingOrder(17, 3089, "Rabadons Deathcap", 2500));
+            ItemList.Add(new BuyingOrder(18, 2139, "Elixir of Sorcery", 500));
+            //出装顺序不好，下次再改
         }
 
         private void SetlistVB()
