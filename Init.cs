@@ -56,8 +56,6 @@ namespace PortAIO
 
             Loader.Menu();
 
-            new UniversalOrbwalker();
-
             if (Loader.intro)
             {
                 Intro = new LeagueSharp.Common.Render.Sprite(LoadImg("PortLogo"), new Vector2((Drawing.Width / 2) - 175, (Drawing.Height / 2) - 300));
@@ -208,6 +206,7 @@ namespace PortAIO
 
                 if (Loader.orbwalker)
                 {
+                    //new UniversalOrbwalker();
                     PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();
                 }
 
