@@ -204,10 +204,10 @@ namespace PortAIO
                     AutoJungle.Program.OnGameLoad();
                 }
 
-                if (Loader.orbwalker)
-                {
+                //if (Loader.orbwalker)
+                //{
                     //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();
-                }
+                //}
 
                 /*
                 if (Loader.stream)
