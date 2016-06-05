@@ -562,8 +562,34 @@ namespace xSLx_Orbwalker
 
         public static bool CanAttack()
         {
+            if (MyHero.ChampionName == "Graves")
+            {
+                var attackDelay = 1.0740296828d * 1000 * MyHero.AttackDelay - 716.2381256175d;
+                if (Utils.TickCount + Game.Ping / 2 + 25 >= _lastAATick + attackDelay && Player.HasBuff("GravesBasicAttackAmmo1"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            if (MyHero.ChampionName == "Jhin")
+            {
+                if (Player.HasBuff("JhinPassiveReload"))
+                {
+                    return false;
+                }
+            }
+
+            if (MyHero.IsCastingInterruptableSpell())
+            {
+                return false;
+            }
+
             return Utils.TickCount + Game.Ping - _lastAATick - GetCurrentWindupTime() >= 1000 / (ObjectManager.Player.GetAttackSpeed() * m_baseAttackSpeed);
         }
+
+        private static readonly string[] NoCancelChamps = { "Kalista" };
 
         private static bool HaveCancled()
         {
@@ -574,9 +600,13 @@ namespace xSLx_Orbwalker
 
         public static bool CanMove()
         {
-            if (_lastAATick <= Environment.TickCount)
-                return Environment.TickCount + Game.Ping / 2 >= _lastAATick + MyHero.AttackCastDelay * 1000 + _windup && _movement;
-            return false;
+            var localExtraWindup = 0;
+            if (MyHero.ChampionName == "Rengar" && (Player.HasBuff("rengarqbase") || Player.HasBuff("rengarqemp")))
+            {
+                localExtraWindup = 200;
+            }
+
+            return NoCancelChamps.Contains(MyHero.ChampionName) || (Environment.TickCount + Game.Ping / 2 >= _lastAATick + MyHero.AttackCastDelay * 1000 + 90 + localExtraWindup);
         }
 
         private static float MyProjectileSpeed()
