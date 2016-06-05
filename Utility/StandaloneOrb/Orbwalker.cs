@@ -16,9 +16,47 @@ namespace xSLx_Orbwalker
     public class xSLxOrbwalker
     {
 
-        private static readonly string[] AttackResets = { "dariusnoxiantacticsonh", "fioraflurry", "garenq", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade", "parley", "poppydevastatingblow", "powerfist", "renektonpreexecute", "rengarq", "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble", "vie", "volibearq", "xenzhaocombotarget", "yorickspectral" };
-        private static readonly string[] NoAttacks = { "jarvanivcataclysmattack", "monkeykingdoubleattack", "shyvanadoubleattack", "shyvanadoubleattackdragon", "zyragraspingplantattack", "zyragraspingplantattack2", "zyragraspingplantattackfire", "zyragraspingplantattack2fire" };
-        private static readonly string[] Attacks = { "caitlynheadshotmissile", "frostarrow", "garenslash2", "kennenmegaproc", "lucianpassiveattack", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute", "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "viktorqbuff", "xenzhaothrust2", "xenzhaothrust3" };
+        /// <summary>
+        ///     Spells that reset the attack timer.
+        /// </summary>
+        private static readonly string[] AttackResets =
+        {
+            "dariusnoxiantacticsonh", "fioraflurry", "garenq",
+            "gravesmove", "hecarimrapidslash", "jaxempowertwo", "jaycehypercharge", "leonashieldofdaybreak", "luciane",
+            "monkeykingdoubleattack", "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze", "netherblade",
+            "gangplankqwrapper", "powerfist", "renektonpreexecute", "rengarq",
+            "shyvanadoubleattack", "sivirw", "takedown", "talonnoxiandiplomacy", "trundletrollsmash", "vaynetumble",
+            "vie", "volibearq", "xenzhaocombotarget", "yorickspectral", "reksaiq", "itemtitanichydracleave", "masochism",
+            "illaoiw", "elisespiderw", "fiorae", "meditate", "sejuaninorthernwinds", "asheq"
+        };
+
+
+        /// <summary>
+        ///     Spells that are not attacks even if they have the "attack" word in their name.
+        /// </summary>
+        private static readonly string[] NoAttacks =
+        {
+            "volleyattack", "volleyattackwithsound",
+            "jarvanivcataclysmattack", "monkeykingdoubleattack", "shyvanadoubleattack", "shyvanadoubleattackdragon",
+            "zyragraspingplantattack", "zyragraspingplantattack2", "zyragraspingplantattackfire",
+            "zyragraspingplantattack2fire", "viktorpowertransfer", "sivirwattackbounce", "asheqattacknoonhit",
+            "elisespiderlingbasicattack", "heimertyellowbasicattack", "heimertyellowbasicattack2",
+            "heimertbluebasicattack", "annietibbersbasicattack", "annietibbersbasicattack2",
+            "yorickdecayedghoulbasicattack", "yorickravenousghoulbasicattack", "yorickspectralghoulbasicattack",
+            "malzaharvoidlingbasicattack", "malzaharvoidlingbasicattack2", "malzaharvoidlingbasicattack3",
+            "kindredwolfbasicattack"
+        };
+
+
+        /// <summary>
+        ///     Spells that are attacks even if they dont have the "attack" word in their name.
+        /// </summary>
+        private static readonly string[] Attacks =
+        {
+            "caitlynheadshotmissile", "frostarrow", "garenslash2",
+            "kennenmegaproc", "masteryidoublestrike", "quinnwenhanced", "renektonexecute", "renektonsuperexecute",
+            "rengarnewpassivebuffdash", "trundleq", "xenzhaothrust", "xenzhaothrust2", "xenzhaothrust3", "viktorqbuff", "lucianpassiveshot"
+        };
 
 
         public static Menu Menu;
@@ -339,11 +377,21 @@ namespace xSLx_Orbwalker
 
         private static void OnProcessSpell(Obj_AI_Base unit, GameObjectProcessSpellCastEventArgs spell)
         {
+            var spellName = spell.SData.Name;
+
+            if (unit.IsMe && IsAutoAttackReset(spellName) && spell.SData.SpellCastTime == 0)
+            {
+                ResetAutoAttackTimer();
+            }
+
+            if (!IsAutoAttack(spellName))
+            {
+                return;
+            }
+
             if (IsAutoAttackReset(spell.SData.Name) && unit.IsMe)
                 LeagueSharp.Common.Utility.DelayAction.Add(100, ResetAutoAttackTimer);
 
-            if (!IsAutoAttack(spell.SData.Name))
-                return;
             if (unit.IsMe)
             {
                 _lastAATick = Environment.TickCount - Game.Ping / 2; // need test todo
@@ -353,6 +401,7 @@ namespace xSLx_Orbwalker
                     FireOnTargetSwitch((Obj_AI_Base)spell.Target);
                     _lastTarget = (Obj_AI_Base)spell.Target;
                 }
+
                 if (unit.IsMelee())
                     LeagueSharp.Common.Utility.DelayAction.Add((int)(unit.AttackCastDelay * 1000 + Game.Ping * 0.5) + 50, () => FireAfterAttack(unit, _lastTarget));
 
@@ -524,17 +573,6 @@ namespace xSLx_Orbwalker
                 return tempTarget;
 
             return null;
-        }
-
-        private static bool ShouldWait()
-        {
-            return ObjectManager.Get<Obj_AI_Minion>()
-            .Any(
-            minion =>
-            minion.LSIsValidTarget() && minion.Team != GameObjectTeam.Neutral &&
-            InAutoAttackRange(minion) &&
-            HealthPrediction.LaneClearHealthPrediction(
-            minion, (int)((MyHero.AttackDelay * 1000) * LaneClearWaitTimeMod), FarmDelay()) <= MyHero.LSGetAutoAttackDamage(minion));
         }
 
         public static bool IsAutoAttack(string name)
