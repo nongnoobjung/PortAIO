@@ -398,7 +398,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[52]))
                 {
-                    Miscc.Add("irelia", new ComboBox("Use addon for Irelia : ", 0, "ChallengerSeries", "IreliaGOD", "Irelia II"));
+                    Miscc.Add("irelia", new ComboBox("Use addon for Irelia : ", 0, "ChallengerSeries", "IreliaGOD", "Irelia II", "Irelia Reloaded"));
                 }
                 if (Player.ChampionName.Equals(Champion[53]))
                 {

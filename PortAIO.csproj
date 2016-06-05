@@ -403,6 +403,7 @@
     <Compile Include="Dual-Port\Irelia II\Modes\ModeLane.cs" />
     <Compile Include="Dual-Port\Irelia II\Modes\ModePerma.cs" />
     <Compile Include="Dual-Port\Irelia II\Modes\ModeSettings.cs" />
+    <Compile Include="Dual-Port\Irelia Reloaded\Program.cs" />
     <Compile Include="Dual-Port\IreliaGod\IreliaMenu.cs" />
     <Compile Include="Dual-Port\IreliaGod\Program.cs" />
     <Compile Include="Dual-Port\IreliaGod\Spells.cs" />

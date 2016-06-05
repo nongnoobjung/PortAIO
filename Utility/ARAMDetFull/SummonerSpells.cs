@@ -115,7 +115,7 @@ namespace ARAMDetFull
                 {
                     if (snowed != null)
                     {
-                        if (MapControl.safeGap(snowed.Position.To2D()))
+                        if (MapControl.safeGap(snowed.Position.LSTo2D()))
                             spell.Cast();
                     }
                 }
