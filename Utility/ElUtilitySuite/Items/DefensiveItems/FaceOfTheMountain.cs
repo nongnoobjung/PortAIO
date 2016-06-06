@@ -86,8 +86,7 @@
         {
             try
             {
-                if (!Items.HasItem((int)this.Id) || !Items.CanUseItem((int)this.Id)
-                    || !getCheckBoxItem(this.Menu, "UseFaceCombo"))
+                if (!EloBuddy.SDK.Item.HasItem((int)this.Id) || !EloBuddy.SDK.Item.CanUseItem((int)this.Id) || !getCheckBoxItem(this.Menu, "UseFaceCombo"))
                 {
                     return;
                 }
@@ -110,7 +109,7 @@
                     {
                         if (ally.HealthPercent < getSliderItem(this.Menu, "face-min-health"))
                         {
-                            Items.UseItem((int)this.Id, ally);
+                            EloBuddy.SDK.Item.UseItem((int)this.Id, ally);
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("[ELUTILITYSUITE - FACE OF THE MOUNTAIN] Used for: {0} - health percentage: {1}%", ally.ChampionName, (int)ally.HealthPercent);
                         }

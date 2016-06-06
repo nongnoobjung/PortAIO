@@ -106,7 +106,6 @@ namespace ElUtilitySuite.Items
         /// </summary>
         public virtual void UseItem()
         {
-            //Items.UseItem((int)this.Id);
             EloBuddy.SDK.Item.UseItem((int)this.Id);
         }
 

@@ -84,7 +84,7 @@
         {
             try
             {
-                if (!ItemData.Seraphs_Embrace.GetItem().IsOwned() || !getCheckBoxItem(this.Menu, "UseSeraphsCombo"))
+                if (!ItemData.Seraphs_Embrace.GetItem().IsOwned() || !getCheckBoxItem(this.Menu, "UseSeraphsCombo") || !EloBuddy.SDK.Item.HasItem(this.Id))
                 {
                     return;
                 }
@@ -100,7 +100,7 @@
                 {
                     if (this.Player.HealthPercent < getSliderItem(this.Menu, "seraphs-min-health"))
                     {
-                        Items.UseItem((int)this.Id, this.Player);
+                        EloBuddy.SDK.Item.UseItem((int)this.Id, this.Player);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("[ELUTILITYSUITE - SERAPHS] Used for: {0} - health percentage: {1}%", this.Player.ChampionName, (int)this.Player.HealthPercent);
                     }

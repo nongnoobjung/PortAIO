@@ -80,7 +80,8 @@
                 return;
             }
 
-            Items.UseItem((int)this.Id);
+            if (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id))
+                EloBuddy.SDK.Item.UseItem((int)this.Id);
         }
 
         #endregion

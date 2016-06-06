@@ -83,7 +83,7 @@
         {
             try
             {
-                if (!getCheckBoxItem(this.Menu, "UseLocketCombo") || !Items.HasItem((int)this.Id) || !Items.CanUseItem((int)this.Id))
+                if (!getCheckBoxItem(this.Menu, "UseLocketCombo") || !EloBuddy.SDK.Item.HasItem((int)this.Id) || !EloBuddy.SDK.Item.CanUseItem((int)this.Id))
                 {
                     return;
                 }
@@ -102,7 +102,7 @@
                     {
                         if (ally.HealthPercent < getSliderItem(this.Menu, "locket-min-health"))
                         {
-                            Items.UseItem((int)this.Id, ally);
+                            EloBuddy.SDK.Item.UseItem((int)this.Id, ally);
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("[ELUTILITYSUITE - LOCKET] Used for: {0} - health percentage: {1}%", ally.ChampionName, (int)ally.HealthPercent);
                         }

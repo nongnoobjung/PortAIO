@@ -49,7 +49,7 @@
         {
             return getCheckBoxItem(this.Menu, "Youmuucombo") && this.ComboModeActive
                    && HeroManager.Enemies.Any(
-                       x => x.LSDistance(this.Player) < Orbwalking.GetRealAutoAttackRange(this.Player));
+                       x => x.LSDistance(this.Player) < Orbwalking.GetRealAutoAttackRange(this.Player)) && (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id));
         }
 
         #endregion

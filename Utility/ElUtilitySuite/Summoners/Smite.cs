@@ -748,18 +748,14 @@
 
                 this.SmiteKill();
 
-                Minion =
-                   (Obj_AI_Minion)
-                  MinionManager.GetMinions(this.Player.ServerPosition, 570f, MinionTypes.All, MinionTeam.Neutral)
-                      .FirstOrDefault(
-                          buff => buff.Name.StartsWith(buff.CharData.BaseSkinName)
-                          && SmiteObjects.Contains(buff.CharData.BaseSkinName)
-                          && !buff.Name.Contains("Mini") && !buff.Name.Contains("Spawn"));
+                Minion = (Obj_AI_Minion)EntityManager.MinionsAndMonsters.Monsters.FirstOrDefault(buff => this.Player.IsInRange(buff, 570) && (buff.Name.StartsWith(buff.BaseSkinName) || SmiteObjects.Contains(buff.BaseSkinName)) && !buff.Name.Contains("Mini") && !buff.Name.Contains("Spawn"));
 
                 if (Minion == null)
                 {
                     return;
                 }
+
+                Console.WriteLine(Minion.BaseSkinName);
 
                 if (!getCheckBoxItem(this.Menu, Minion.CharData.BaseSkinName))
                 {

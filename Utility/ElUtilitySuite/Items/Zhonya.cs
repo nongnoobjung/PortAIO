@@ -22,7 +22,7 @@
         /// <summary>
         ///     The zhyonya item
         /// </summary>
-        private static Items.Item zhonyaItem;
+        private static EloBuddy.SDK.Item zhonyaItem;
 
         #endregion
 
@@ -630,7 +630,7 @@
         /// </summary>
         public void Load()
         {
-            zhonyaItem = new Items.Item(Game.MapId == GameMapId.SummonersRift ? 3157 : 3090);
+            zhonyaItem = new EloBuddy.SDK.Item(Game.MapId == GameMapId.SummonersRift ? ItemId.Zhonyas_Hourglass : EloBuddy.ItemId.Wooglets_Witchcap);
             
             Game.OnUpdate += this.OnUpdate;
             GameObject.OnCreate += this.GameObjectOnCreate;
