@@ -477,10 +477,8 @@ namespace Vayne1
 
             if (DrawWStacksBool)
             {
-                var target =
-                    EntityManager.Heroes.Enemies.FirstOrDefault(
-                        enemy => enemy.HasBuff("vaynesilvereddebuff") && enemy.IsValidTarget(2000));
-                if (target.IsValidTarget())
+                var target = EntityManager.Heroes.Enemies.FirstOrDefault(enemy => enemy.HasBuff("vaynesilvereddebuff") && enemy.IsValidTarget(2000));
+                if (target.IsValidTarget() && target.IsHPBarRendered)
                 {
                     var xa = target.HPBarPosition.X + 50;
                     var ya = target.HPBarPosition.Y - 20;
@@ -492,8 +490,7 @@ namespace Vayne1
                         {
                             for (var i = 0; i < 3; i++)
                             {
-                                Drawing.DrawLine(xa + i*20, ya, xa + i*20 + 10, ya, 10,
-                                    stacks <= i ? Color.DarkGray : Color.DeepSkyBlue);
+                                Drawing.DrawLine(xa + i*20, ya, xa + i*20 + 10, ya, 10, stacks <= i ? Color.DarkGray : Color.DeepSkyBlue);
                             }
                         }
                     }
