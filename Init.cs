@@ -1049,8 +1049,8 @@ namespace PortAIO
                     case "nami": // vSupport Series
                         new vSupport_Series.Champions.Nami();
                         break;
-                    case "nasus": // Underrated AIO
-                        new UnderratedAIO.Champions.Nasus();
+                    case "nasus": // ElEasy
+                        ElEasy.Plugins.Nasus.Load();
                         break;
                     case "nidalee":
                         switch (Loader.nidalee)
