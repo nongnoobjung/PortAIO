@@ -143,6 +143,11 @@ namespace PortAIO
                     AntiTrap.Program.Game_OnGameLoad();
                 }
 
+                if (Loader.nabbctivator)
+                {
+                    NabbActivator.Index.OnLoad();
+                }
+
                 if (Loader.sdkPredictioner)
                 {
                     SPredictioner.Program.Init();
