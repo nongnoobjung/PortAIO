@@ -408,6 +408,9 @@ namespace PortAIO
                             case 1:
                                 ExorSDK.AIO.OnLoad();
                                 break;
+                            case 2:
+                                iSivir.Sivir.OnLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;

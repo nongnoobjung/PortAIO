@@ -402,7 +402,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[53]))
                 {
-                    Miscc.Add("sivir", new ComboBox("Use addon for Sivir : ", 0, "OKTW", "ExorAIO SDK"));
+                    Miscc.Add("sivir", new ComboBox("Use addon for Sivir : ", 0, "OKTW", "ExorAIO SDK", "iSivir"));
                 }
                 if (Player.ChampionName.Equals(Champion[54]))
                 {
