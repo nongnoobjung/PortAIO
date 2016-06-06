@@ -460,7 +460,7 @@ namespace PortAIO.Utility
             Miscc.Add("urfSpell", new CheckBox("Enable URF Spam Speller?", false));
             Miscc.AddSeparator();
             Miscc.Add("pastingSharp", new CheckBox("Enable PastingSharp?", false));
-            Miscc.Add("nabbctivator", new CheckBox("Enable NabbActivator?", true));
+            Miscc.Add("nabbctivator", new CheckBox("Enable NabbActivator?", false));
             //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
             Miscc.Add("autoJungle", new CheckBox("Enable Auto Jungle?", false));
             //Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));
