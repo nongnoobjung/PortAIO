@@ -68,7 +68,18 @@ namespace PortAIO
             {
                 if (Loader.useActivator)
                 {
-                    ElUtilitySuite.Entry.OnLoad();
+                    switch (Loader.activatorCB)
+                    {
+                        case 0:
+                            ElUtilitySuite.Entry.OnLoad();
+                            break;
+                        case 1:
+                            NabbActivator.Index.OnLoad();
+                            break;
+                        default:
+                            ElUtilitySuite.Entry.OnLoad();
+                            break;
+                    }
                 }
 
                 if (Loader.useRecall)
@@ -141,11 +152,6 @@ namespace PortAIO
                 if (Loader.traptrack)
                 {
                     AntiTrap.Program.Game_OnGameLoad();
-                }
-
-                if (Loader.nabbctivator)
-                {
-                    NabbActivator.Index.OnLoad();
                 }
 
                 if (Loader.sdkPredictioner)

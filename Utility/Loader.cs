@@ -16,8 +16,6 @@ namespace PortAIO.Utility
 {
     class Loader
     {
-        public static bool orbwalker { get { return Miscc["orbwalker"].Cast<CheckBox>().CurrentValue; } }
-        public static bool VCursor { get { return Miscc["VCursor"].Cast<CheckBox>().CurrentValue; } }
         public static bool limitedShat { get { return Miscc["limitedShat"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoLevel { get { return Miscc["autoLevel"].Cast<CheckBox>().CurrentValue; } }
         public static bool chatLogger { get { return Miscc["chatLogger"].Cast<CheckBox>().CurrentValue; } }
@@ -26,7 +24,6 @@ namespace PortAIO.Utility
         public static bool pastingSharp { get { return Miscc["pastingSharp"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoJungle { get { return Miscc["autoJungle"].Cast<CheckBox>().CurrentValue; } }
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
-        public static bool nabbctivator { get { return Miscc["nabbctivator"].Cast<CheckBox>().CurrentValue; } }
         public static bool sdkPredictioner { get { return Miscc["sdkPredictioner"].Cast<CheckBox>().CurrentValue; } }
         public static bool cheat { get { return Miscc["cheat"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoSharp { get { return Miscc["autoSharp"].Cast<CheckBox>().CurrentValue; } }
@@ -106,6 +103,7 @@ namespace PortAIO.Utility
         public static int cassiopeia { get { return Miscc["cassiopeia"].Cast<ComboBox>().CurrentValue; } }
         public static int evadeCB { get { return Miscc["evadeCB"].Cast<ComboBox>().CurrentValue; } }
         public static int aramCB { get { return Miscc["aramCB"].Cast<ComboBox>().CurrentValue; } }
+        public static int activatorCB { get { return Miscc["activatorCB"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -184,7 +182,7 @@ namespace PortAIO.Utility
             Miscc = MainMenu.AddMenu("PortAIO Misc", "berbsicmisc");
             Miscc.Add("intro", new CheckBox("Load Intro?", true));
             Miscc.AddSeparator();
-            Miscc.AddGroupLabel("Champion Changes");
+            Miscc.AddGroupLabel("Champion Dual Port : ");
             if (Champion.Contains(ObjectManager.Player.ChampionName))
             {
                 if (Player.ChampionName.Equals(Champion[0]))
@@ -429,12 +427,17 @@ namespace PortAIO.Utility
                 Miscc.AddLabel("This champion is not supported for these feature.");
             }
             Miscc.AddSeparator();
+            Miscc.AddGroupLabel("Util Dual-Port :");
+            Miscc.Add("evadeCB", new ComboBox("Which Evade?", 0, "ezEvade", "Evade#"));
+            Miscc.Add("aramCB", new ComboBox("Which Aram Auto Play?", 0, "AutoSharp", "AramDETFull"));
+            Miscc.Add("activatorCB", new ComboBox("Which Activator?", 0, "ElUtilitySuite", "NabbActivator"));
+            Miscc.AddSeparator();
             Miscc.AddGroupLabel("Util Changes");
             Miscc.AddLabel("Please F5 after making any changes below >>");
             Miscc.Add("champ", new CheckBox("Champ only mode? (No utils will load)", false));
             Miscc.Add("util", new CheckBox("Util only mode? (No champs will load)", false));
             Miscc.AddSeparator();
-            Miscc.Add("activator", new CheckBox("Enable ElUtilitySuite?"));
+            Miscc.Add("activator", new CheckBox("Enable Activator?"));
             Miscc.Add("tracker", new CheckBox("Enable NabbTracker?"));
             Miscc.Add("recall", new CheckBox("Enable Recall Tracker?"));
             Miscc.Add("skin", new CheckBox("Enable Skin Hack?"));
@@ -460,16 +463,13 @@ namespace PortAIO.Utility
             Miscc.Add("urfSpell", new CheckBox("Enable URF Spam Speller?", false));
             Miscc.AddSeparator();
             Miscc.Add("pastingSharp", new CheckBox("Enable PastingSharp?", false));
-            Miscc.Add("nabbctivator", new CheckBox("Enable NabbActivator?", false));
-            //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
             Miscc.Add("autoJungle", new CheckBox("Enable Auto Jungle?", false));
-            //Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));
-            Miscc.AddSeparator();
-            Miscc.AddGroupLabel("Util Dual-Port :");
-            Miscc.Add("evadeCB", new ComboBox("Which Evade?", 0, "ezEvade", "Evade#"));
-            Miscc.Add("aramCB", new ComboBox("Which Aram Auto Play?", 0, "AutoSharp", "AramDETFull"));
 
             /*
+            //Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));
+            public static bool orbwalker { get { return Miscc["orbwalker"].Cast<CheckBox>().CurrentValue; } }
+            public static bool VCursor { get { return Miscc["VCursor"].Cast<CheckBox>().CurrentValue; } }
+            //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
             Miscc.Add("stream", new CheckBox("Enable StreamBuddy?", false));
             public static bool stream { get { return Miscc["stream"].Cast<CheckBox>().CurrentValue; } }
             public static bool randomUlt { get { return Miscc["randomUlt"].Cast<CheckBox>().CurrentValue; } }
