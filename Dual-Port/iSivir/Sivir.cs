@@ -36,7 +36,7 @@ namespace iSivir
 
         private static Menu Menu;
 
-        public static Menu comboMenu, harassMenu, laneMenu, miscMenu, drawMenu;
+        public static Menu comboMenu, harassMenu, laneMenu, miscMenu;
 
         private static readonly List<DangerousSpell> DangerousSpells = new List<DangerousSpell>
                                                                            {
