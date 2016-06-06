@@ -131,7 +131,7 @@ namespace iSivir
             LoadMenu();
 
             Game.OnUpdate += OnUpdate;
-            Orbwalking.AfterAttack += OnAfterAttack;
+            Orbwalker.OnPostAttack += OnAfterAttack;
             Obj_AI_Base.OnProcessSpellCast += OnSpellCast;
             GameObject.OnCreate += OnCreateObject;
         }
@@ -202,9 +202,10 @@ namespace iSivir
             }
         }
 
-        private static void OnAfterAttack(AttackableUnit unit, AttackableUnit target)
+
+        private static void OnAfterAttack(AttackableUnit target, EventArgs args)
         {
-            if (!unit.IsMe || !unit.IsValid) return;
+            if (!target.IsMe || !target.IsValid) return;
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
