@@ -18,8 +18,6 @@
         /// </summary>
         public FaceOfTheMountain()
         {
-            IncomingDamageManager.RemoveDelay = 500;
-            IncomingDamageManager.Skillshots = true;
             Game.OnUpdate += this.Game_OnUpdate;
         }
 
@@ -69,7 +67,6 @@
             this.Menu.Add("UseFaceCombo", new CheckBox("Activate"));
             this.Menu.Add("ModeFACE", new ComboBox("Activation mode: ", 1, "Use always", "Use in combo"));
             this.Menu.Add("face-min-health", new Slider("Use on Hp %", 50));
-            this.Menu.Add("face-min-damage", new Slider("Incoming damage percentage", 50, 1));
             foreach (var x in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly))
             {
                 this.Menu.Add("Faceon" + x.ChampionName, new CheckBox("Use for " + x.ChampionName));
@@ -108,13 +105,10 @@
                     }
 
                     var enemies = ally.LSCountEnemiesInRange(800);
-                    var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
 
                     if (ally.HealthPercent <= getSliderItem(this.Menu, "face-min-health") && enemies >= 1)
                     {
-                        if ((int)(totalDamage / ally.Health)
-                            > getSliderItem(this.Menu, "face-min-damage")
-                            || ally.HealthPercent < getSliderItem(this.Menu, "face-min-health"))
+                        if (ally.HealthPercent < getSliderItem(this.Menu, "face-min-health"))
                         {
                             Items.UseItem((int)this.Id, ally);
                             Console.ForegroundColor = ConsoleColor.Green;

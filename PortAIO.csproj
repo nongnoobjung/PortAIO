@@ -1231,7 +1231,6 @@
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\FloatExtensions.cs" />
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\FontExtension.cs" />
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\GameObjects.cs" />
-    <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\IncomingDamageManager.cs" />
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\MDrawing.cs" />
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\SpriteExtension.cs" />
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\VectorExtensions.cs" />

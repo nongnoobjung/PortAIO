@@ -20,8 +20,6 @@
         /// </summary>
         public Seraphs()
         {
-            IncomingDamageManager.RemoveDelay = 500;
-            IncomingDamageManager.Skillshots = true;
             Game.OnUpdate += this.Game_OnUpdate;
         }
 
@@ -71,7 +69,6 @@
             this.Menu.Add("UseSeraphsCombo", new CheckBox("Activated"));
             this.Menu.Add("ModeSERAPH", new ComboBox("Activation mode: ", 1, "Use always", "Use in combo"));
             this.Menu.Add("seraphs-min-health", new Slider("Health percentage", 20, 1));
-            this.Menu.Add("seraphs-min-damage", new Slider("Incoming damage percentage", 20, 1));
             this.Menu.AddSeparator();
         }
 
@@ -98,13 +95,10 @@
                 }
 
                 var enemies = this.Player.LSCountEnemiesInRange(800);
-                var totalDamage = IncomingDamageManager.GetDamage(this.Player) * 1.1f;
 
                 if (this.Player.HealthPercent <= getSliderItem(this.Menu, "seraphs-min-health") && enemies >= 1)
                 {
-                    if ((int)(totalDamage / this.Player.Health)
-                        > getSliderItem(this.Menu, "seraphs-min-damage")
-                        || this.Player.HealthPercent < getSliderItem(this.Menu, "seraphs-min-health"))
+                    if (this.Player.HealthPercent < getSliderItem(this.Menu, "seraphs-min-health"))
                     {
                         Items.UseItem((int)this.Id, this.Player);
                         Console.ForegroundColor = ConsoleColor.Green;

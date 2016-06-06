@@ -18,8 +18,6 @@
         /// </summary>
         public Locket()
         {
-            IncomingDamageManager.RemoveDelay = 500;
-            IncomingDamageManager.Skillshots = true;
             Game.OnUpdate += this.Game_OnUpdate;
         }
 
@@ -69,7 +67,6 @@
             this.Menu.Add("UseLocketCombo", new CheckBox("Activate"));
             this.Menu.Add("ModeLOCKET", new ComboBox("Activation mode: ", 1, "Use always", "Use in combo"));
             this.Menu.Add("locket-min-health", new Slider("Health percentage", 50, 1));
-            this.Menu.Add("locket-min-damage", new Slider("Incoming damage percentage", 50, 1));
             this.Menu.AddSeparator();
         }
 
@@ -99,14 +96,11 @@
                 foreach (var ally in HeroManager.Allies.Where(a => a.LSIsValidTarget(600f, false) && !a.LSIsRecalling()))
                 {
                     var enemies = ally.LSCountEnemiesInRange(600f);
-                    var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
 
                     if (ally.HealthPercent <= getSliderItem(this.Menu, "locket-min-health")
                         && enemies >= 1)
                     {
-                        if ((int)(totalDamage / ally.Health)
-                            > getSliderItem(this.Menu, "locket-min-damage")
-                            || ally.HealthPercent < getSliderItem(this.Menu, "locket-min-health"))
+                        if (ally.HealthPercent < getSliderItem(this.Menu, "locket-min-health"))
                         {
                             Items.UseItem((int)this.Id, ally);
                             Console.ForegroundColor = ConsoleColor.Green;
