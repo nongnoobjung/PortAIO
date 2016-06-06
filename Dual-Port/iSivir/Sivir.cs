@@ -158,9 +158,8 @@ namespace iSivir
         {
             var sender = sender1 as AIHeroClient;
 
-            if (sender == null || sender.IsMe || sender.IsAlly || !args.Target.IsMe || !Spells[SpellSlot.E].IsReady()
-                || !getCheckBoxItem(comboMenu, "com.isivir.combo.useE") || args.SData.IsAutoAttack()
-                || ObjectManager.Player.IsInvulnerable) return;
+            if (sender == null || sender.IsMe || sender.IsAlly || !args.Target.IsMe || !Spells[SpellSlot.E].IsReady() || !getCheckBoxItem(comboMenu, "com.isivir.combo.useE") || args.SData.IsAutoAttack() || ObjectManager.Player.IsInvulnerable)
+                return;
 
             if (sender.LSGetSpellDamage(ObjectManager.Player, args.Slot) >= ObjectManager.Player.Health
                 && args.SData.TargettingType == SpellDataTargetType.Self)
@@ -170,8 +169,7 @@ namespace iSivir
 
             foreach (var spell in DangerousSpells)
             {
-                if (sender.ChampionName == spell.ChampionName && args.SData.Name == spell.SpellName
-                    && args.Slot == spell.Slot && !spell.IsTargetMissle)
+                if (sender.ChampionName == spell.ChampionName && args.SData.Name == spell.SpellName && args.Slot == spell.Slot && !spell.IsTargetMissle)
                 {
                     Utility.DelayAction.Add((int)spell.Delay, () => Spells[SpellSlot.E].Cast());
                 }
@@ -291,13 +289,13 @@ namespace iSivir
             comboMenu.Add("com.isivir.combo.useW", new CheckBox("Use W", true));
             comboMenu.Add("com.isivir.combo.useE", new CheckBox("Use E for targetted spells", true));
 
-            var autoShield = comboMenu.AddSubMenu("Auto Shield", "com.isivir.combo.autoShield");
+            comboMenu.AddGroupLabel("Auto Shield");
             {
                 foreach (var spell in DangerousSpells)
                 {
                     if (HeroManager.Enemies.Any(x => x.ChampionName == spell.ChampionName))
                     {
-                        autoShield.Add(spell.SpellName, new CheckBox(spell.ChampionName + ": " + spell.Slot, true));
+                        comboMenu.Add(spell.SpellName, new CheckBox(spell.ChampionName + ": " + spell.Slot, true));
                     }
                 }
 
