@@ -319,8 +319,6 @@ namespace iSivir
             miscMenu.Add("com.isivir.miscc.noW", new Slider("No W if x aa can kill", 1, 0, 10));
 
 
-            miscMenu = Menu.AddSubMenu("iSivir - Drawing Options", "com.isivir.drawing");
-
             }
         }
 
