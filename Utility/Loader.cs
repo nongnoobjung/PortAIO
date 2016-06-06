@@ -25,9 +25,8 @@ namespace PortAIO.Utility
         public static bool urfSpell { get { return Miscc["urfSpell"].Cast<CheckBox>().CurrentValue; } }
         public static bool pastingSharp { get { return Miscc["pastingSharp"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoJungle { get { return Miscc["autoJungle"].Cast<CheckBox>().CurrentValue; } }
-
-
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
+        public static bool nabbctivator { get { return Miscc["nabbctivator"].Cast<CheckBox>().CurrentValue; } }
         public static bool sdkPredictioner { get { return Miscc["sdkPredictioner"].Cast<CheckBox>().CurrentValue; } }
         public static bool cheat { get { return Miscc["cheat"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoSharp { get { return Miscc["autoSharp"].Cast<CheckBox>().CurrentValue; } }
@@ -461,6 +460,7 @@ namespace PortAIO.Utility
             Miscc.Add("urfSpell", new CheckBox("Enable URF Spam Speller?", false));
             Miscc.AddSeparator();
             Miscc.Add("pastingSharp", new CheckBox("Enable PastingSharp?", false));
+            Miscc.Add("nabbctivator", new CheckBox("Enable NabbActivator?", true));
             //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
             Miscc.Add("autoJungle", new CheckBox("Enable Auto Jungle?", false));
             //Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));
