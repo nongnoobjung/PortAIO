@@ -28,7 +28,7 @@ namespace AutoJungle
             {
                 case "MasterYi":
                     Hero = ObjectManager.Player;
-                    Type = BuildType.NOC;
+                    Type = BuildType.YI;
 
                     Q = new Spell(SpellSlot.Q, 600);
                     Q.SetTargetted(0.5f, float.MaxValue);
@@ -848,6 +848,14 @@ namespace AutoJungle
             var targetHero = Program._GameInfo.Target;
             if (Hero.Spellbook.IsChanneling &&
                 targetHero.Health > Program.player.LSGetAutoAttackDamage(targetHero, true) * 2)
+            {
+                return false;
+            }
+            if (Program.getCheckBoxItem("ComboSmite"))
+            {
+                Data.Jungle.CastSmiteHero((AIHeroClient)targetHero);
+            }
+            if (Hero.Spellbook.IsAutoAttacking)
             {
                 return false;
             }
