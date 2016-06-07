@@ -21,6 +21,7 @@ namespace PortAIO.Utility
         public static bool chatLogger { get { return Miscc["chatLogger"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoFF { get { return Miscc["autoFF"].Cast<CheckBox>().CurrentValue; } }
         public static bool urfSpell { get { return Miscc["urfSpell"].Cast<CheckBox>().CurrentValue; } }
+        public static bool emoteSpammer { get { return Miscc["emoteSpammer"].Cast<CheckBox>().CurrentValue; } }
         public static bool pastingSharp { get { return Miscc["pastingSharp"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoJungle { get { return Miscc["autoJungle"].Cast<CheckBox>().CurrentValue; } }
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
@@ -464,6 +465,7 @@ namespace PortAIO.Utility
             Miscc.AddSeparator();
             Miscc.Add("pastingSharp", new CheckBox("Enable PastingSharp?", false));
             Miscc.Add("autoJungle", new CheckBox("Enable Auto Jungle?", false));
+            Miscc.Add("emoteSpammer", new CheckBox("Enable Emote Spammer?", false));
 
             /*
             //Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));

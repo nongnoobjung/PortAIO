@@ -205,9 +205,14 @@ namespace PortAIO
                     PastingSharp.Program.Game_OnGameLoad();
                 }
 
+                if (Loader.emoteSpammer)
+                {
+                    EmoteSpammer.Program.Game_OnGameLoad();
+                }
+
                 //if (Loader.VCursor)
                 //{
-                    //VCursor.Program.Game_OnGameLoad();
+                //VCursor.Program.Game_OnGameLoad();
                 //}
 
                 if (Loader.autoJungle)

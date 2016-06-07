@@ -1188,6 +1188,7 @@
     <Compile Include="Utility\AutoSharp\Utils\Positioning.cs" />
     <Compile Include="Utility\AutoSharp\Utils\Wizard.cs" />
     <Compile Include="Utility\ChatLogger\Program.cs" />
+    <Compile Include="Utility\EmoteSpammer\Program.cs" />
     <Compile Include="Utility\NabbActivator\Activator\Cleansers.cs" />
     <Compile Include="Utility\NabbActivator\Activator\Consumables.cs" />
     <Compile Include="Utility\NabbActivator\Activator\Defensives.cs" />
