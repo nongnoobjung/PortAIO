@@ -2877,6 +2877,27 @@ namespace ezEvade
             });
             #endregion
 
+            #region Taric
+
+            Spells.Add(
+            new SpellData
+            {
+                charName = "Taric",
+                dangerlevel = 3,
+                missileName = "TaricEMissile",
+                name = "TaricE",
+                radius = 100,
+                range = 750,
+                fixedRange = true,
+                spellDelay = 1000,
+                spellKey = SpellSlot.E,
+                spellName = "TaricE",
+                spellType = SpellType.Line,
+                isSpecial = true
+            });
+
+            #endregion
+
             #region Thresh
 
             Spells.Add(
