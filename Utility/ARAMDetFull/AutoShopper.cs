@@ -37,8 +37,6 @@ namespace ARAMDetFull
 
         private static bool gotStartingItems = false;
 
-        private static bool willGoOverItem = false;
-
         private static List<InvItem> inv = new List<InvItem>();
         private static List<InvItem> inv2 = new List<InvItem>();
 
@@ -91,7 +89,6 @@ namespace ARAMDetFull
             }
             else
             {
-                willGoOverItem = false;
                 var best = getBestBuyItem();
                 if (best == -1)
                     return;
@@ -152,7 +149,6 @@ namespace ARAMDetFull
                 if (itNow.id == id)
                 {
                     canBuyOnfull.Add(masterId);
-                    willGoOverItem = true;
                     itNow.setUsed();
                     return;
                 }
@@ -190,7 +186,6 @@ namespace ARAMDetFull
             {
                 if (itNow.id == item)
                 {
-                    willGoOverItem = true;
                     itNow.setUsed();
                     return 0;
                 }

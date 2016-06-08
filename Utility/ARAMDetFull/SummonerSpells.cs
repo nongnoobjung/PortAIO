@@ -149,7 +149,7 @@ namespace ARAMDetFull
             {
                 if (!spell.IsReady())
                     return;
-                if (player.LSCountEnemysInRange(600) > 1 && player.HealthPercent < 40)
+                if (player.LSCountEnemiesInRange(600) > 1 && player.HealthPercent < 40)
                 {
                         spell.Cast(player.Position.LSExtend(ARAMSimulator.fromNex.Position, 450));
                 }
@@ -247,7 +247,7 @@ namespace ARAMDetFull
             {
                 if (!spell.IsReady())
                     return;
-                if (player.LSCountEnemysInRange(600) > 0 && player.HealthPercent < 20)
+                if (player.LSCountEnemiesInRange(600) > 0 && player.HealthPercent < 20)
                 {
                     spell.Cast();
                 }

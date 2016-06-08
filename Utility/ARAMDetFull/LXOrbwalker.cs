@@ -59,7 +59,6 @@ namespace ARAMDetFull
             None,
         }
 
-        private static bool _drawing = true;
         private static bool _attack = true;
         private static bool _movement = true;
         private static bool _disableNextAttack;
@@ -470,16 +469,6 @@ namespace ARAMDetFull
         public static int GetCurrentWindupTime()
         {
             return 100;
-        }
-
-        public void EnableDrawing()
-        {
-            _drawing = true;
-        }
-
-        public void DisableDrawing()
-        {
-            _drawing = false;
         }
 
         public static float GetAutoAttackRange(Obj_AI_Base source = null, AttackableUnit target = null)

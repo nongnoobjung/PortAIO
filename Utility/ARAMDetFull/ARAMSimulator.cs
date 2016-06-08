@@ -12,7 +12,6 @@ using SharpDX;
 using SharpDX.Direct3D9;
 using UnderratedAIO.Helpers;
 using System.Diagnostics;
-using System.ComponentModel;
 using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
