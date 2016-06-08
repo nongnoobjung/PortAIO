@@ -115,7 +115,7 @@ namespace ezEvade
 
         public static void UseEvadeSpell()
         {
-            if (!Situation.ShouldUseEvadeSpell() || !ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
+            if (!Situation.ShouldUseEvadeSpell() || !ObjectCache.menuCache.cache["ActivateEvadeSpells"].Cast<KeyBind>().CurrentValue)
             {
                 return;
             }
@@ -137,7 +137,7 @@ namespace ezEvade
 
         public static bool ActivateEvadeSpell(Spell spell, bool checkSpell = false)
         {
-            if (!ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
+            if (!ObjectCache.menuCache.cache["ActivateEvadeSpells"].Cast<KeyBind>().CurrentValue)
             {
                 return false;
             }
