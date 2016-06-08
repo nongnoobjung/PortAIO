@@ -450,7 +450,7 @@
                                  },
                               new ZhonyaSpell
                                  {
-                                     ChampionName = "Yasuo", SDataName = "yasuorknockupcombow", MissileName = "",
+                                     ChampionName = "Yasuo", SDataName = "YasuoQ3", MissileName = "",
                                      Delay = 1000, MissileSpeed = int.MaxValue, CastRange = 875f
                                  },
                              new ZhonyaSpell
@@ -605,7 +605,7 @@
                         if (firstOrDefault != null)
                         {
                             zhonyaMenu.Add(
-                                    string.Format("Zhonya{0}", spell.SDataName),
+                                    string.Format($"Zhonya{spell.SDataName}"),
                                     new CheckBox(
                                     string.Format(
                                         "{0} ({1}) - {2}",
@@ -697,7 +697,7 @@
                 return;
             }
 
-            if (!getCheckBoxItem(this.Menu, string.Format("Zhonya{0}", sdata.SDataName))
+            if (!getCheckBoxItem(this.Menu, string.Format($"Zhonya{sdata.SDataName}"))
                 || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
             {
                 return;
