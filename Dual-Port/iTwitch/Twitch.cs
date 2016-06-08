@@ -253,7 +253,7 @@ using SebbyLib;
             }
 
 
-            if (getKeyBindItem(comboOptions, "com.itwitch.combo.useEKillable") && Spells[SpellSlot.E].IsReady())
+            if (getCheckBoxItem(comboOptions, "com.itwitch.combo.useEKillable") && Spells[SpellSlot.E].IsReady())
             {
                 if (HeroManager.Enemies.Any(x => x.IsPoisonKillable() && x.LSIsValidTarget(Spells[SpellSlot.E].Range)))
                 {
