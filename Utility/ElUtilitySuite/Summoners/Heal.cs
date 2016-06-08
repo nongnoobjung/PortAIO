@@ -149,7 +149,7 @@
                         return;
                     }
 
-                    var enemies = ally.LSCountEnemiesInRange(600);
+                    var enemies = ally.LSCountEnemiesInRange(750f);
 
                     if (ally.HealthPercent <= getSliderItem(this.Menu, "min-health") && (this.HealSpell.IsInRange(ally) || ally.IsMe) && enemies >= 1)
                     {
