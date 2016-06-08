@@ -269,7 +269,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 var enemy in
                     Program.Enemies.Where(enemy => enemy.LSIsValidTarget(E.Range) && enemy.HasBuff("TwitchDeadlyVenom")))
             {
-                if (getCheckBoxItem(eMenu, "Eks") && E.GetDamage(enemy) > enemy.Health)
+                if (getCheckBoxItem(eMenu, "Eks") && (E.GetDamage(enemy) + E.GetDamage(enemy, 1)) > enemy.Health)
                 {
                     Program.debug("DUPAAA1");
                     E.Cast();
