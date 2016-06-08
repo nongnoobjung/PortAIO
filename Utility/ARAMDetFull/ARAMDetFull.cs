@@ -92,7 +92,7 @@ namespace ARAMDetFull
                 CustomEvents.Game.OnGameEnd += OnGameEnd;
                 ARAMSimulator.setupARMASimulator();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Console.WriteLine(ex);
             }
@@ -110,8 +110,34 @@ namespace ARAMDetFull
 
         private static void onDraw(EventArgs args)
         {
-            Drawing.DrawText(100, 100, Color.Red, "bal: " + ARAMSimulator.balance + " time: ");
+            Drawing.DrawText(100, 100, Color.Red, "bal: " + ARAMSimulator.balance + " time: " );
             return;
+           // ((Jayce)ARAMSimulator.champ).drawCD();
+            foreach (var hel in ObjectManager.Get<Obj_AI_Base>().Where(r => r.IsValid && !r.IsDead && r.Name.Contains("ealth")))
+            {
+                var spos = Drawing.WorldToScreen(hel.Position);
+                Drawing.DrawText(spos.X, spos.Y, Color.Brown, " : " + hel.Name);
+                Drawing.DrawText(spos.X, spos.Y+25, Color.Brown, hel.IsDead + " : " + hel.Type+ " : " + hel.IsValid+ " : " + hel.IsVisible);
+            }
+            var tar = ARAMTargetSelector.getBestTarget(5100);
+            if (tar != null)
+                LeagueSharp.Common.Utility.DrawCircle(tar.Position, 150, Color.Violet);
+
+            foreach (var sec in ARAMSimulator.sectors)
+            {
+                sec.draw();
+            }
+
+            foreach (var ene in MapControl.enemy_champions)
+            {
+                LeagueSharp.Common.Utility.DrawCircle(ene.hero.Position, ene.getReach() , Color.Green);
+            }
+            return;
+
+            foreach (var ene in MapControl.enemy_champions)
+            {
+                LeagueSharp.Common.Utility.DrawCircle(ene.hero.Position, ene.reach, Color.Violet);
+            }
         }
         public static void getAllBuffs()
         {
@@ -126,13 +152,15 @@ namespace ARAMDetFull
 
         private static int lastTick = now;
 
+        private static int tickTimeRng = 77;
+        private static Random rng = null;
         private static void OnGameUpdate(EventArgs args)
         {
             //if (lastTick + tickTimeRng > now)
             //    return;
 
             //if(rng == null)
-            //   rng = new Random();
+             //   rng = new Random();
 
             //tickTimeRng = rng.Next(70, 140);
             lastTick = now;
