@@ -687,7 +687,7 @@ namespace GosuMechanicsYasuo
                     PredictionOutput Q3Pred = Q3.GetPrediction(TsTarget);
                     if (Q3.IsInRange(TsTarget) && Q3Pred.Hitchance >= HitChance.VeryHigh) 
                     {
-                        Q3.Cast(Q3Pred.CastPosition);
+                        Q3.Cast(TsTarget);
                     }
                 }
                 if (!Q3READY() && Q.IsReady() && Q.IsInRange(TsTarget))
@@ -695,7 +695,7 @@ namespace GosuMechanicsYasuo
                     PredictionOutput QPred = Q.GetPrediction(TsTarget);
                     if (Q.IsInRange(TsTarget) && QPred.Hitchance >= HitChance.High)
                     {
-                        Q.Cast(QPred.CastPosition);
+                        Q.Cast(TsTarget);
                     }
                 } 
             }
