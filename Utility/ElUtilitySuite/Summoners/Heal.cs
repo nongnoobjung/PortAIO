@@ -151,7 +151,7 @@
 
                     var enemies = ally.LSCountEnemiesInRange(750f);
 
-                    if (ally.HealthPercent <= getSliderItem(this.Menu, "min-health") && (this.HealSpell.IsInRange(ally) || ally.IsMe) && enemies >= 1)
+                    if (ally.HealthPercent <= getSliderItem(this.Menu, "min-health") && (this.HealSpell.IsInRange(ally) || ally.IsMe) && enemies >= 1 && !ally.IsDead)
                     {
                         if (ally.HealthPercent < getSliderItem(this.Menu, "min-health"))
                         {
