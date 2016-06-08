@@ -36,9 +36,6 @@ namespace ARAMDetFull
                 hero = champ;
                 champSkillShots = SpellDatabase.getChampionSkillshots(champ.ChampionName);
                 champTargSpells = TargetSpellDatabase.getChampionTargSpell(champ.ChampionName);
-
-
-
                 getReach();
             }
 
@@ -57,56 +54,7 @@ namespace ARAMDetFull
                     if (spell.SData.CastRange > range)
                         reach = range;
                 }
-
-                /*foreach (var sShot in champSkillShots)
-                {
-                    if(!hero.Spellbook.GetSpell(sShot.Slot).IsReady())
-                        continue;
-                    float range = (sShot.Range < 1000) ? sShot.Range + sShot.Radius : 1000;
-                    if (range > reach)
-                        reach = range;
-
-                    if (sShot.IsDangerous && dangerReach <= range)
-                    {
-                        activeDangers++;
-                        dangerReach = range;
-                    }
-                }
-
-                foreach (var tSpell in champTargSpells)
-                {
-                    if (!hero.Spellbook.GetSpell(tSpell.Spellslot).IsReady() || tSpell.Type == SpellType.Skillshot)
-                        continue;
-                    float range = (tSpell.Range < 1000) ? tSpell.Range+200 : 1000;
-                    if (range > reach)
-                        reach = range;
-
-                    if (isDangerousTarg(tSpell) && dangerReach <= range)
-                    {
-                        activeDangers++;
-                        dangerReach = range;
-                    }
-                }*/
                 return reach;
-            }
-
-            public int getccCount()
-            {
-                int count = champSkillShots.Count(sShot => sShot.IsDangerous);
-                count += champTargSpells.Count(tSpell => tSpell.Type != SpellType.Skillshot && (tSpell.CcType == CcType.Fear || tSpell.CcType == CcType.Stun || tSpell.CcType == CcType.Pull || tSpell.CcType == CcType.Snare));
-
-                return count;
-            }
-
-            public bool isDangerousTarg(TargetSpellData tSpell)
-            {
-                if (tSpell.Type == SpellType.Skillshot)
-                    return false;
-
-                if (tSpell.CcType == CcType.Stun || tSpell.CcType == CcType.Snare || tSpell.CcType == CcType.Fear ||
-                    tSpell.CcType == CcType.Pull || tSpell.CcType == CcType.Taunt)
-                    return true;
-                return false;
             }
         }
 
@@ -278,14 +226,7 @@ namespace ARAMDetFull
             myControler = new MyControl(ObjectManager.Player);
         }
 
-
-        public static bool inDanger()
-        {
-            int enesAround = enemy_champions.Count(ene => !ene.hero.IsDead && ene.hero.LSIsValidTarget(1300));
-            int allyAround = ally_champions.Count(aly => !aly.hero.IsDead && aly.hero.LSIsValidTarget(700));
-            return (enesAround - allyAround) > 1;
-        }
-
+        
         public static AIHeroClient fightIsOn()
         {
             foreach (var enem in enemy_champions.Where(ene => !ene.hero.IsDead && ene.hero.IsVisible).OrderBy(ene => ene.hero.LSDistance(ObjectManager.Player, true)))
@@ -327,18 +268,6 @@ namespace ARAMDetFull
             }
 
             return false;
-        }
-
-
-        public static int enemiesAroundPoint(Vector2 point, float range)
-        {
-            int count = 0;
-            foreach (var ene in enemy_champions.Where(ene => !ene.hero.IsDead))
-            {
-                if (ene.hero.LSDistance(point, true) < range * range)
-                    count++;
-            }
-            return count;
         }
 
         public static int balanceAroundPoint(Vector2 point, float range)
@@ -438,15 +367,6 @@ namespace ARAMDetFull
                 HeroManager.Enemies
                     .Where(h => h.IsValid && !h.IsDead && h.IsVisible && h.IsEnemy)
                     .OrderBy(h => h.LSDistance(ARAMSimulator.fromNex.Position, true))
-                    .FirstOrDefault();
-        }
-
-        public static Obj_AI_Base ClosestEnemyTower()
-        {
-            return
-                ObjectManager.Get<Obj_AI_Turret>()
-                    .Where(tur => !tur.IsDead)
-                    .OrderBy(tur => tur.LSDistance(ObjectManager.Player.Position, true))
                     .FirstOrDefault();
         }
 

@@ -45,12 +45,6 @@ namespace ARAMDetFull
                 sumBook.CastSpell(ignite, target);
         }
 
-        public void castSmite(AIHeroClient target)
-        {
-            if (smite != SpellSlot.Unknown && sumBook.CanUseSpell(smite) == SpellState.Ready)
-                sumBook.CastSpell(smite, target);
-        }
-
         public void cast(ItemIds item)
         {
             var itemId = (int)item;
@@ -58,24 +52,11 @@ namespace ARAMDetFull
                 LeagueSharp.Common.Items.UseItem(itemId);
         }
 
-        public void cast(ItemIds item, Vector3 target)
-        {
-            var itemId = (int)item;
-            if (LeagueSharp.Common.Items.CanUseItem(itemId))
-                player.Spellbook.CastSpell(getInvSlot(itemId).SpellSlot, target);
-
-        }
-
         public void cast(ItemIds item, Obj_AI_Base target)
         {
             var itemId = (int)item;
             if (LeagueSharp.Common.Items.CanUseItem(itemId))
                 LeagueSharp.Common.Items.UseItem(itemId, target);
-        }
-
-        private InventorySlot getInvSlot(int id)
-        {
-            return player.InventoryItems.FirstOrDefault(iSlot => (int)iSlot.Id == id);
         }
     }
 }

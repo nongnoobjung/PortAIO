@@ -35,49 +35,9 @@ namespace ARAMDetFull
         public int StartTick { get; set; }
         public Vector2 StartPosition { get; set; }
 
-        public int EndTick
-        {
-            get { return (int)(StartTick + Spell.Delay + 1000 * (StartPosition.LSDistance(EndPosition) / Spell.Speed)); }
-        }
-
         public Vector2 EndPosition
         {
             get { return Target.ServerPosition.LSTo2D(); }
-        }
-
-        public Vector2 Direction
-        {
-            get { return (EndPosition - StartPosition).LSNormalized(); }
-        }
-
-        public double Damage
-        {
-            get { return Caster.LSGetSpellDamage(Target, Spell.Name); }
-        }
-
-        public bool IsKillable
-        {
-            get { return Damage >= Target.Health; }
-        }
-
-        public CcType CrowdControl
-        {
-            get { return Spell.CcType; }
-        }
-
-        public SpellType Type
-        {
-            get { return Spell.Type; }
-        }
-
-        public bool IsActive
-        {
-            get { return LXOrbwalker.now <= EndTick; }
-        }
-
-        public bool HasMissile
-        {
-            get { return Spell.Speed == float.MaxValue || Spell.Speed == 0; }
         }
     }
 
@@ -112,18 +72,6 @@ namespace ARAMDetFull
         Targeted,
         Self,
         AutoAttack
-    }
-
-    public enum SpellSlotT
-    {
-        Unknown = -1,
-        Q = 0,
-        W = 1,
-        E = 2,
-        R = 3,
-        Summoner1 = 4,
-        Summoner2 = 5,
-        Recall = 13,
     }
 
     public enum CcType

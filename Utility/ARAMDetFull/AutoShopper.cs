@@ -23,8 +23,6 @@ namespace ARAMDetFull
         ENEMY_LOSING = 4,
     }
 
-    
-
     public class AutoShopper
     {
         private static readonly List<FullItem> itemList = new List<FullItem>();
@@ -60,7 +58,7 @@ namespace ARAMDetFull
         {
             curBuild = build;
         }
-        
+
         public static string Request(string url)
         {
             WebRequest request = WebRequest.Create(url);
@@ -78,7 +76,7 @@ namespace ARAMDetFull
         {
             if (!finished)
                 return;
-            if (!gotStartingItems && player.Level<4)
+            if (!gotStartingItems && player.Level < 4)
             {
                 //Console.WriteLine("buye starting!");
                 foreach (var item in curBuild.startingItems)
@@ -92,47 +90,40 @@ namespace ARAMDetFull
                 var best = getBestBuyItem();
                 if (best == -1)
                     return;
-                //if (willGoOverItem || !inventoryFull())
-                    Shop.BuyItem((ItemId)best);
-              //  else
-               // {
-              //      Console.WriteLine("wont buy");
-               // }
+                Shop.BuyItem((ItemId)best);
             }
         }
 
         public static int freeSlots()
-	    {
-            return ObjectManager.Player.InventoryItems.Count(y => !y.DisplayName.Contains("Poro"))-2;
-	    }
-	
+        {
+            return ObjectManager.Player.InventoryItems.Count(y => !y.DisplayName.Contains("Poro")) - 2;
+        }
+
         public static bool inventoryFull()
-	    {
-	            return freeSlots() == 6;
+        {
+            return freeSlots() == 6;
         }
 
         public static int getBestBuyItem()
         {
             foreach (var item in curBuild.coreItems)
             {
-                if(item.gotIt())
+                if (item.gotIt())
                     continue;
 
                 List<BuyItem> chain = new List<BuyItem>();
                 fillItemsChain(item.getBest().Id, ref chain, true);
-                //Console.WriteLine("chain: " + chain.Count);
 
                 var bestItem =
                     chain.Where(sel => sel.price <= player.Gold && (!inventoryFull() || canBuyOnfull.Contains(sel.item.Id))).OrderByDescending(sel2 => sel2.price).FirstOrDefault();
                 if (bestItem == null || bestItem.price == 0)
                     return -1;
-                //Console.WriteLine("Buy: " + bestItem.item.Name);
                 return bestItem.item.Id;
             }
             return -1;
         }
 
-        public static void fillItemsChain(int id, ref List<BuyItem> ids,bool start = false, int masterId = -1)
+        public static void fillItemsChain(int id, ref List<BuyItem> ids, bool start = false, int masterId = -1)
         {
             if (start)
             {
@@ -161,12 +152,10 @@ namespace ARAMDetFull
                 item = data,
                 price = getItemsPrice(id, true)
             };
-            //Console.WriteLine("item: "+test.item.Name+" : price "+test.price);
             ids.Add(test);
             if (data.From != null)
                 foreach (var item in data.From)
                 {
-                    //Console.WriteLine("req Item: "+(int)item);
                     fillItemsChain(item, ref ids, false, id);
                 }
         }
@@ -192,28 +181,21 @@ namespace ARAMDetFull
             }
 
             var FullItem = getData(item);
-            return FullItem.Goldbase + ((FullItem.From != null)?FullItem.From.Sum(req => getItemsPrice(req)):0);
+            return FullItem.Goldbase + ((FullItem.From != null) ? FullItem.From.Sum(req => getItemsPrice(req)) : 0);
         }
 
         public static FullItem getData(int id)
         {
-            //Console.WriteLine("trying to get data: " + id);
             var item = itemList.FirstOrDefault(it => it.Id == id);
             //if(item == null)
-                //Console.WriteLine("cant get data " + id);
             return item;
-        }
-
-        public static int itemCount(int id, AIHeroClient hero = null)
-        {
-            return (hero ?? ObjectManager.Player).InventoryItems.Count(slot => (int)slot.Id == id);
         }
 
         public static bool gotItem(int id, AIHeroClient hero = null)
         {
             return (hero ?? ObjectManager.Player).InventoryItems.Any(slot => (int)slot.Id == id);
         }
-        
+
     }
 
     public class Build
@@ -254,13 +236,6 @@ namespace ARAMDetFull
         private FullItem secondary;
         private ItemCondition condition;
 
-        public ConditionalItem(int pri, int sec = -1, ItemCondition cond = ItemCondition.TAKE_PRIMARY)
-        {
-            primary =  AutoShopper.getData(pri);
-            secondary = (sec == -1)?null:AutoShopper.getData(sec);
-            condition = cond;
-        }
-
         public ConditionalItem(ItemId pri, ItemId sec = ItemId.Unknown, ItemCondition cond = ItemCondition.TAKE_PRIMARY)
         {
             primary = AutoShopper.getData((int)pri);
@@ -277,11 +252,11 @@ namespace ARAMDetFull
         {
             if (selected != null)
                 return selected;
-            if(condition == ItemCondition.TAKE_PRIMARY)
+            if (condition == ItemCondition.TAKE_PRIMARY)
                 selected = primary;
             if (condition == ItemCondition.ENEMY_MR)
             {
-                if(HeroManager.Enemies.Sum(ene => ene.SpellBlock) > HeroManager.Enemies.Sum(ene => ene.Armor))
+                if (HeroManager.Enemies.Sum(ene => ene.SpellBlock) > HeroManager.Enemies.Sum(ene => ene.Armor))
                     selected = primary;
                 else
                     selected = secondary;
@@ -310,8 +285,6 @@ namespace ARAMDetFull
                 else
                     selected = secondary;
             }
-
-
             return selected;
         }
     }

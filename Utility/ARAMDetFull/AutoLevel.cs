@@ -21,10 +21,9 @@ namespace ARAMDetFull
             LeagueSharp.Common.Utility.DelayAction.Add(
                     8436, () =>
                     {
-                       // var level = new AutoLevel(GetSequence());
-                       // AutoLevel.Enable();
+                        // var level = new AutoLevel(GetSequence());
+                        // AutoLevel.Enable();
                     });
-            
         }
 
         public static void LevelUpOff()
@@ -38,7 +37,7 @@ namespace ARAMDetFull
                         i < ObjectManager.Player.Level;
                         i++)
                     {
-                        var spell = (SpellSlot) (order[i] - 1);
+                        var spell = (SpellSlot)(order[i] - 1);
                         if (ObjectManager.Player.Spellbook.GetSpell(spell).Level < 6)
                         {
                             Console.WriteLine("Level: " + spell);
@@ -81,7 +80,7 @@ namespace ARAMDetFull
                     sequence = new[] { 2, 1, 3, 1, 1, 4, 1, 2, 1, 3, 4, 3, 3, 2, 2, 4, 2, 2 };
                     break;
                 case "Blitzcrank":
-                    sequence = new[] { 1, 3, 1 , 2 , 1,4, 1,3,1,3,4,3,3,2,2,4,2,2  };
+                    sequence = new[] { 1, 3, 1, 2, 1, 4, 1, 3, 1, 3, 4, 3, 3, 2, 2, 4, 2, 2 };
                     break;
                 case "Brand":
                     sequence = new[] { 2, 3, 2, 1, 2, 4, 2, 3, 2, 3, 4, 3, 3, 1, 1, 4, 1, 1 };

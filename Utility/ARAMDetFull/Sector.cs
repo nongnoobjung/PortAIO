@@ -51,12 +51,6 @@ namespace ARAMDetFull
 
         }
 
-        public void draw()
-        {
-            polig.Draw(Color.Red,2);
-            LeagueSharp.Common.Utility.DrawCircle(center.To3D(), 50, Color.Violet);
-        }
-
         public void update()
         {
             enemyChampIn = null;
@@ -182,7 +176,5 @@ namespace ARAMDetFull
             }
             return result;
         }
-
-
     }
 }

@@ -1162,13 +1162,11 @@
     <Compile Include="Utility\ARAMDetFull\Champions\Zyra.cs" />
     <Compile Include="Utility\ARAMDetFull\Console.cs" />
     <Compile Include="Utility\ARAMDetFull\FullItem.cs" />
-    <Compile Include="Utility\ARAMDetFull\FullItemsData.cs" />
     <Compile Include="Utility\ARAMDetFull\ItemHandler.cs" />
     <Compile Include="Utility\ARAMDetFull\Items.cs" />
     <Compile Include="Utility\ARAMDetFull\LXOrbwalker.cs" />
     <Compile Include="Utility\ARAMDetFull\MapControl.cs" />
     <Compile Include="Utility\ARAMDetFull\Polygon.cs" />
-    <Compile Include="Utility\ARAMDetFull\Program.cs" />
     <Compile Include="Utility\ARAMDetFull\Sector.cs" />
     <Compile Include="Utility\ARAMDetFull\SpellData.cs" />
     <Compile Include="Utility\ARAMDetFull\SpellDatabase.cs" />

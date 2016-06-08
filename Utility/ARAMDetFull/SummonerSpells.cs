@@ -19,10 +19,7 @@ namespace ARAMDetFull
         {
             spell = spel;
         }
-
     }
-    
-
 
     class SummonerSpells
     {
@@ -96,7 +93,7 @@ namespace ARAMDetFull
 
         public void useSumoners()
         {
-            if(sSpell1 != null)
+            if (sSpell1 != null)
                 sSpell1.useSpell();
             if (sSpell2 != null)
                 sSpell2.useSpell();
@@ -128,8 +125,6 @@ namespace ARAMDetFull
                         snowed = tar;
                     }
                 }
-
-                
             }
 
             public SnowBall(Spell spel)
@@ -151,7 +146,7 @@ namespace ARAMDetFull
                     return;
                 if (player.LSCountEnemiesInRange(600) > 1 && player.HealthPercent < 40)
                 {
-                        spell.Cast(player.Position.LSExtend(ARAMSimulator.fromNex.Position, 450));
+                    spell.Cast(player.Position.LSExtend(ARAMSimulator.fromNex.Position, 450));
                 }
             }
 
@@ -168,7 +163,7 @@ namespace ARAMDetFull
                 if (!spell.IsReady())
                     return;
                 var tar = ARAMTargetSelector.getBestTarget(450);
-                if(tar != null)
+                if (tar != null)
                     if (tar.HealthPercent > 20 && tar.HealthPercent < 50)
                     {
                         spell.Cast(tar);

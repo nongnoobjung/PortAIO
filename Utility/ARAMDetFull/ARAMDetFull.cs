@@ -46,8 +46,6 @@ namespace ARAMDetFull
 
         public static int gameStart = 0;
 
-        public static Menu Config;
-
         public static int now
         {
             get { return (int)DateTime.Now.TimeOfDay.TotalMilliseconds; }
@@ -61,38 +59,13 @@ namespace ARAMDetFull
 
             try
             {
-
-                Config = MainMenu.AddMenu("ARAM", "Yasuo");
-
-                //Combo
-                var combo = Config.AddSubMenu("Combo Sharp", "combo");
-                combo.Add("comboItems", new CheckBox("Use Items"));
-
-                //LastHit
-                Config.AddSubMenu("LastHit Sharp", "lHit");
-
-                //LaneClear
-                Config.AddSubMenu("LaneClear Sharp", "lClear");
-
-                //Harass
-                Config.AddSubMenu("Harass Sharp", "harass");
-
-                //Extra
-                Config.AddSubMenu("Extra Sharp", "extra");
-
-
-                //Debug
-                var debug = Config.AddSubMenu("Debug", "debug");
-                debug.Add("db_targ", new KeyBind("Debug Target", false, KeyBind.BindTypes.HoldActive, 'T'));
-
-
                 Drawing.OnDraw += onDraw;
                 Game.OnUpdate += OnGameUpdate;
                 Drawing.OnDraw += onDraw;
                 CustomEvents.Game.OnGameEnd += OnGameEnd;
                 ARAMSimulator.setupARMASimulator();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
@@ -110,30 +83,13 @@ namespace ARAMDetFull
 
         private static void onDraw(EventArgs args)
         {
-            Drawing.DrawText(100, 100, Color.Red, "bal: " + ARAMSimulator.balance + " time: " );
-        }
-        public static void getAllBuffs()
-        {
-            foreach (var aly in HeroManager.Enemies)
-            {
-                foreach (var buffs in aly.Buffs)
-                {
-                    Console.WriteLine(aly.ChampionName + " - Buf: " + buffs.Name);
-                }
-            }
+            Drawing.DrawText(100, 100, Color.Red, "bal: " + ARAMSimulator.balance + " time: ");
         }
 
         private static int lastTick = now;
 
         private static void OnGameUpdate(EventArgs args)
         {
-            //if (lastTick + tickTimeRng > now)
-            //    return;
-
-            //if(rng == null)
-             //   rng = new Random();
-
-            //tickTimeRng = rng.Next(70, 140);
             lastTick = now;
             ARAMSimulator.updateArmaPlay();
         }

@@ -21,13 +21,6 @@ namespace ARAMDetFull
 {
     class ARAMSimulator
     {
-        public enum ARAMPlayState
-        {
-            Shopping,
-            Defending,
-            Pushing
-        }
-
         public enum ChampType
         {
             Mage,
@@ -135,7 +128,6 @@ namespace ARAMDetFull
 
         public static Build champBuild;
 
-        public static ItemToShop nextItem;
         public static int lastBuy = 0;
         public static SummonerSpells sSpells;
         public static int tankBal = -20;
@@ -168,23 +160,6 @@ namespace ARAMDetFull
 
         public static void setUpItems()
         {
-
-            /*champBuild = new Build
-            {
-                coreItems = new List<ConditionalItem>
-                {
-                    new ConditionalItem(ItemId.Boots_of_Swiftness),
-                    new ConditionalItem(ItemId.Banshees_Veil,ItemId.Sunfire_Cape,ItemCondition.ENEMY_AP),
-                    new ConditionalItem(ItemId.Last_Whisper),
-                    new ConditionalItem(ItemId.Statikk_Shiv),
-                    new ConditionalItem(ItemId.Maw_of_Malmortius),
-                    new ConditionalItem(ItemId.Frozen_Mallet),
-                },
-                startingItems = new List<ItemId>
-                {
-                    ItemId.Boots_of_Speed,ItemId.Brawlers_Gloves
-                }
-            };*/
             if (getType() == ChampType.Support || getType() == ChampType.Mage)
             {
                 tankBal = 15;
@@ -382,7 +357,6 @@ namespace ARAMDetFull
 
         public static void setChamp()
         {
-            // Chat.Print("Support DeTuKs on his new adventures on LeagueSmurfs.com");
             Chat.Print(player.ChampionName);
             switch (player.ChampionName)
             {
@@ -653,51 +627,7 @@ namespace ARAMDetFull
                 case "Vladimir":
                     champ = new Vladimir();
                     break;
-                    //Vladimir
             }
-        }
-
-        public static void checkItems()
-        {
-
-            for (int i = defBuyThings.Count - 1; i >= 0; i--)
-            {
-                if (hasAllItems(defBuyThings[i]))
-                {
-                    nextItem = defBuyThings[i];
-
-                    return;
-                }
-            }
-        }
-
-        public static bool hasAllItems(ItemToShop its)
-        {
-            try
-            {
-                bool[] usedItems = new bool[15];
-                int itemsMatch = 0;
-                for (int j = 0; j < its.itemsMustHave.Count; j++)
-                {
-                    for (int i = 0; i < player.InventoryItems.Count(); i++)
-                    {
-                        if (usedItems[i])
-                            continue;
-                        if (its.itemsMustHave[j] == (int)player.InventoryItems[i].Id)
-                        {
-                            usedItems[i] = true;
-                            itemsMatch++;
-                            break;
-                        }
-                    }
-                }
-                return itemsMatch == its.itemsMustHave.Count;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
         }
 
         public static void buyItems()
@@ -707,16 +637,6 @@ namespace ARAMDetFull
                 AutoShopper.buyNext();
                 lastBuy = LXOrbwalker.now;
             }
-            /* foreach (var item in nextItem.itemIds)
-             {
-                 if (!LeagueSharp.Common.Items.HasItem(item) && nextItem.goldReach<=player.Gold)
-                 {
-                     Console.WriteLine("Buy itemmss: "+item);
-                     player.BuyItem((ItemId)item);
-                     lastBuy = LXOrbwalker.now;
-                 }
-             }
-         checkItems();*/
         }
 
         public static void setupARMASimulator()
@@ -743,7 +663,6 @@ namespace ARAMDetFull
             float sep = fromNex.Position.LSDistance(toNex.Position) / 40;
 
             Vector2 lastPos = fromNex.Position.LSTo2D();
-            //Setup sectors
             for (int i = 0; i < 40; i++)
             {
                 Vector2 end = lastPos.LSExtend(toNex.Position.LSTo2D(), sep);
@@ -757,7 +676,6 @@ namespace ARAMDetFull
             setUpItems();
             setChamp();
             AutoShopper.setBuild(champBuild);
-            //checkItems();
             sSpells = new SummonerSpells();
             if (champ != null)
             {
@@ -776,7 +694,6 @@ namespace ARAMDetFull
             if (sender.IsValid<MissileClient>())
             {
                 var missile = (MissileClient)sender;
-                // Ally Turret -> Enemy Hero
                 if (missile.SpellCaster.IsValid<Obj_AI_Turret>() && missile.SpellCaster.IsEnemy &&
                     missile.Target.IsValid<AIHeroClient>() && missile.Target.IsAlly)
                 {
@@ -819,13 +736,8 @@ namespace ARAMDetFull
         const UInt32 WM_KEYUP = 0x0101;
         const int VK_F5 = 0x74;
 
-        [DllImport("user32.dll")]
-        static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, int wParam, int lParam);
-
-
         public static void updateArmaPlay()
         {
-
             if (!haveSeenMinion)
             {
                 haveSeenMinion =
@@ -843,7 +755,7 @@ namespace ARAMDetFull
                 Console.WriteLine(ex);
             }
 
-            if ((player.InShop() || player.IsDead)/* && nextItem != null && nextItem.goldReach <= player.Gold*/)
+            if ((player.InShop() || player.IsDead))
             {
                 buyItems();
             }
@@ -935,7 +847,7 @@ namespace ARAMDetFull
                 LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D(), false);
                 return;
             }
-            
+
             awayTo = eAwayFromTo();
             if (awayTo.IsValid() && awayTo.X != 0)
             {
@@ -1056,6 +968,5 @@ namespace ARAMDetFull
             }
             return new Vector2(0, 0);
         }
-
     }
 }

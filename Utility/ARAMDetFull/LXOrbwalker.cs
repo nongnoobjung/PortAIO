@@ -73,6 +73,21 @@ namespace ARAMDetFull
 
         public static float farmRange = 900;
 
+        private static void FireBeforeAttack(Obj_AI_Base target)
+        {
+            if (BeforeAttack != null)
+            {
+                BeforeAttack(new BeforeAttackEventArgs
+                {
+                    Target = target
+                });
+            }
+            else
+            {
+                _disableNextAttack = false;
+            }
+        }
+
         public static void setpOrbwalker()
         {
             _movementPrediction = new Spell(SpellSlot.Unknown, GetAutoAttackRange());
@@ -101,14 +116,10 @@ namespace ARAMDetFull
                         LeagueSharp.Common.Utility.DelayAction.Add((int)350, delegate { ResetAutoAttackTimer(); });
                     else
                         ResetAutoAttackTimer();
-                    //
                 }
                 var spell = MyHero.Spellbook.GetSpell(args.Slot);
                 if (spell.IsAutoAttack() || args.SData.IsAutoAttack())
                 {
-                    /*if(player.IsMelee)
-                        Utility.DelayAction.Add((int)(player.AttackDelay * 1000), delegate { afterAttack(sender, (AttackableUnit)args.Target); });
-                    else*/
                     if (args.Target is Obj_AI_Base)
                         FireAfterAttack(sender, (Obj_AI_Base)args.Target);
                 }
@@ -133,16 +144,10 @@ namespace ARAMDetFull
 
         public static void OrbwalkTo(Vector3 goalPosition, bool useDelay = true, bool onlyChamps = false)
         {
-            CheckAutoWindUp();
             if (MyHero.IsChannelingImportantSpell() || CustomOrbwalkMode)
                 return;
             var target = GetPossibleTarget(onlyChamps || Aggresivity.getIgnoreMinions());
             Orbwalk(goalPosition, target);
-        }
-
-        public static void getTheFukaway()
-        {
-            _delayAttackTill = LXOrbwalker.now + Game.Ping / 2 + 500;
         }
 
         public static void Orbwalk(Vector3 goalPosition, AttackableUnit target, bool useDelay = true)
@@ -156,15 +161,6 @@ namespace ARAMDetFull
                 }
                 if (!CanMove() || !IsAllowedToMove())
                     return;
-                /*if ( MyHero.IsMelee() && target != null &&
-                    target.Position.LSDistance(MyHero.Position) < GetAutoAttackRange(MyHero, target)
-                    && target is AIHeroClient && MyHero.LSDistance(target.Position) < 300)
-                {
-                    _movementPrediction.Delay = MyHero.BasicAttack.SpellCastTime;
-                    _movementPrediction.Speed = MyHero.BasicAttack.MissileSpeed;
-                    MoveTo(_movementPrediction.GetPrediction((AIHeroClient)target).UnitPosition, -1, useDelay);
-                }
-                else*/
                 MoveTo(goalPosition, -1, useDelay);
             }
             catch (Exception ex)
@@ -216,11 +212,6 @@ namespace ARAMDetFull
                 return false;
 
             return true;
-
-        }
-
-        private static void OnDraw(EventArgs args)
-        {
 
         }
 
@@ -460,17 +451,6 @@ namespace ARAMDetFull
             return enemy.Health / MyHero.LSGetAutoAttackDamage(enemy);
         }
 
-
-        private static void CheckAutoWindUp()
-        {
-
-        }
-
-        public static int GetCurrentWindupTime()
-        {
-            return 100;
-        }
-
         public static float GetAutoAttackRange(Obj_AI_Base source = null, AttackableUnit target = null)
         {
             try
@@ -515,11 +495,6 @@ namespace ARAMDetFull
             _movement = value;
         }
 
-        public static bool GetAttack()
-        {
-            return _attack;
-        }
-
         public static bool GetMovement()
         {
             return _movement;
@@ -541,20 +516,6 @@ namespace ARAMDetFull
                     _disableNextAttack = !value;
                     _process = value;
                 }
-            }
-        }
-        private static void FireBeforeAttack(Obj_AI_Base target)
-        {
-            if (BeforeAttack != null)
-            {
-                BeforeAttack(new BeforeAttackEventArgs
-                {
-                    Target = target
-                });
-            }
-            else
-            {
-                _disableNextAttack = false;
             }
         }
 
