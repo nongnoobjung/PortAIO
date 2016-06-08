@@ -610,7 +610,7 @@ namespace AutoJungle
                         continue;
                     }
                     var ally =
-                        HeroManager.Allies.Where(a => !a.IsDead && a.Distance(possibleTarget) < 3000)
+                        HeroManager.Allies.Where(a => !a.IsDead && a.LSDistance(possibleTarget) < 3000)
                             .OrderBy(a => a.LSDistance(possibleTarget))
                             .FirstOrDefault();
                     var hp = possibleTarget.Health - myDmg * getSliderItem("GankFrequency") / 100f;
