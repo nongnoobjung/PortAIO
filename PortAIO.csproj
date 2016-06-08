@@ -1029,6 +1029,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\SPRITES\EloDisplayer\EloDisplayer.Designer.cs" />
+    <Compile Include="Utility\Anti-Stealth\Anti-Stealth.cs" />
     <Compile Include="Utility\AntiAlistar\AntiAlistar.cs" />
     <Compile Include="Utility\ARAMDetFull\Aggresivity.cs" />
     <Compile Include="Utility\ARAMDetFull\ARAMDetFull.cs" />
