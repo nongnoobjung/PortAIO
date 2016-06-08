@@ -443,7 +443,7 @@ namespace PortAIO.Utility
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("Util Dual-Port :");
             Miscc.Add("evadeCB", new ComboBox("Which Evade?", 0, "ezEvade", "Evade#"));
-            Miscc.Add("aramCB", new ComboBox("Which Aram Auto Play?", 0, "AutoSharp", "AramDETFull"));
+            Miscc.Add("aramCB", new ComboBox("Which Aram Auto Play?", 0, "AutoSharp" /*,"AramDETFull"*/));
             Miscc.Add("activatorCB", new ComboBox("Which Activator?", 0, "ElUtilitySuite", "NabbActivator"));
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("Util Changes");

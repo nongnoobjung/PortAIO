@@ -167,7 +167,7 @@ namespace PortAIO
                             AutoSharp.Program.Main();
                             break;
                         case 1:
-                            ARAMDetFull.Program.Init();
+                            //ARAMDetFull.Program.Init();
                             break;
                         default:
                             AutoSharp.Program.Main();
