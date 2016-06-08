@@ -85,11 +85,10 @@ namespace GosuMechanicsYasuo
             if (myHero.ChampionName != "Yasuo")
                 return;
 
-            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 475);
-            Q3 = new LeagueSharp.Common.Spell(SpellSlot.Q, 1000);
-
-            Q.SetSkillshot(GetQ1Delay, 20f, float.MaxValue, false, SkillshotType.SkillshotLine);
-            Q3.SetSkillshot(GetQ2Delay, 90, 1500, false, SkillshotType.SkillshotLine);
+            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 505);
+            Q3 = new LeagueSharp.Common.Spell(SpellSlot.Q, 1100);
+            Q.SetSkillshot(GetQ1Delay, 20, float.MaxValue, false, SkillshotType.SkillshotLine);
+            Q3.SetSkillshot(GetQ2Delay, 90, 1200, false, SkillshotType.SkillshotLine);
 
             var slot = ObjectManager.Player.GetSpellSlot("summonerdot");
             if (slot != SpellSlot.Unknown)
@@ -683,20 +682,20 @@ namespace GosuMechanicsYasuo
 
             if (TsTarget != null && getCheckBoxItem(comboMenu, "QC"))
             {
-                if (Q3READY() && Q3.IsReady() && TsTarget.LSIsValidTarget(Q3.Range) && !IsDashing)
+                if (Q3READY() && Q3.IsReady() && Q3.IsInRange(TsTarget) && !IsDashing)
                 {
                     PredictionOutput Q3Pred = Q3.GetPrediction(TsTarget);
                     if (Q3.IsInRange(TsTarget) && Q3Pred.Hitchance >= HitChance.VeryHigh) 
                     {
-                        Q3.Cast(Q3Pred.CastPosition, true);
+                        Q3.Cast(Q3Pred.CastPosition);
                     }
                 }
-                if (!Q3READY() && Q.IsReady() && TsTarget.LSIsValidTarget(Q.Range))
+                if (!Q3READY() && Q.IsReady() && Q.IsInRange(TsTarget))
                 {
                     PredictionOutput QPred = Q.GetPrediction(TsTarget);
                     if (Q.IsInRange(TsTarget) && QPred.Hitchance >= HitChance.High)
                     {
-                        Q.Cast(QPred.CastPosition, true);
+                        Q.Cast(QPred.CastPosition);
                     }
                 } 
             }
