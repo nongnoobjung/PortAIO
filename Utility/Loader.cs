@@ -16,6 +16,7 @@ namespace PortAIO.Utility
 {
     class Loader
     {
+        public static bool antiStealth { get { return Miscc["antiStealth"].Cast<CheckBox>().CurrentValue; } }
         public static bool limitedShat { get { return Miscc["limitedShat"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoLevel { get { return Miscc["autoLevel"].Cast<CheckBox>().CurrentValue; } }
         public static bool chatLogger { get { return Miscc["chatLogger"].Cast<CheckBox>().CurrentValue; } }
@@ -472,6 +473,7 @@ namespace PortAIO.Utility
             Miscc.Add("pastingSharp", new CheckBox("Enable PastingSharp?", false));
             Miscc.Add("autoJungle", new CheckBox("Enable Auto Jungle?", false));
             Miscc.Add("emoteSpammer", new CheckBox("Enable Emote Spammer?", false));
+            Miscc.Add("antiStealth", new CheckBox("Enable Anti Stealth (ElUtil)?", false));
 
             /*
             //Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));

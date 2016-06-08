@@ -220,6 +220,11 @@ namespace PortAIO
                     AutoJungle.Program.OnGameLoad();
                 }
 
+                if (Loader.antiStealth)
+                {
+                    new AntiStealth.AntiStealth();
+                }
+
                 //if (Loader.orbwalker)
                 //{
                     //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();
