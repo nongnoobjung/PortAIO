@@ -436,7 +436,7 @@ namespace ezEvade
 
         private void Game_OnProcessSpell(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!hero.IsMe)
+            if (!hero.IsMe || !ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
             {
                 return;
             }
@@ -602,6 +602,11 @@ namespace ezEvade
 
         private void DodgeSkillShots()
         {
+            if (!ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
+            {
+                return;
+            }
+
             if (!Situation.ShouldDodge())
             {
                 isDodging = false;
