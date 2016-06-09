@@ -49,5 +49,7 @@ Utility Ports [Only doing after Champions are completed] :
 - OKTW Ward Standalone [Already in PortAIO]
 - LeagueSharp.Utility [Looks harder than anything I've ever ported]
 - AioCaster
+- AutoSharp - Once working again
+- AutoJungle - Once working again
 
 ------------------------------------------------------------------------
