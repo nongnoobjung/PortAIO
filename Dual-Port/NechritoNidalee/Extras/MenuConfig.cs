@@ -49,6 +49,8 @@ namespace Nechrito_Nidalee
 
             misc = Menu.AddSubMenu("Misc", "Misc");
             misc.Add("Gapcloser", new CheckBox("Gapcloser"));
+            misc.Add("manaW", new Slider("Use W Mana %", 15, 0, 100));
+
 
             draw = Menu.AddSubMenu("Draw", "Draw");
             draw.Add("dind", new CheckBox("Draw damage indicator"));
@@ -68,6 +70,7 @@ namespace Nechrito_Nidalee
         public static bool Gapcloser => getCheckBoxItem(misc, "Gapcloser");
 
         public static bool FleeMouse => getKeyBindItem(flee, "FleeMouse");
+        public static int manaW => getSliderItem(misc, "manaW");
 
         public static int ManaHeal => getSliderItem(heal, "ManaHeal");
         public static int SelfHeal => getSliderItem(heal, "SelfHeal");
