@@ -98,11 +98,8 @@ namespace ARAMDetFull
 
             AllEnemys = ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsEnemy).ToList();
             AllAllys = ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsAlly).ToList();
-
             EnemyTowers = ObjectManager.Get<Obj_AI_Turret>().Where(tow => tow.IsEnemy).ToList();
-
             EnemyBarracs = ObjectManager.Get<Obj_BarracksDampener>().Where(tow => tow.IsEnemy).ToList();
-
             EnemyHQ = ObjectManager.Get<Obj_HQ>().Where(tow => tow.IsEnemy).ToList();
         }
 
@@ -123,7 +120,6 @@ namespace ARAMDetFull
                     if (args.Target is Obj_AI_Base)
                         FireAfterAttack(sender, (Obj_AI_Base)args.Target);
                 }
-
             }
         }
 
@@ -225,7 +221,6 @@ namespace ARAMDetFull
             if (unit.IsMe)
             {
                 _lastAATick = LXOrbwalker.now;
-                // ReSharper disable once CanBeReplacedWithTryCastAndCheckForNull
                 if (spell.Target is Obj_AI_Base)
                 {
                     FireOnTargetSwitch((Obj_AI_Base)spell.Target);

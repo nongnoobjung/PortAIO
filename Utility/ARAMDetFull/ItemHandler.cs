@@ -35,12 +35,10 @@ namespace UnderratedAIO.Helpers
         public static Items.Item Zhonya = new Items.Item(3157, 0);
         public static Items.Item Wooglet = new Items.Item(3090, 0);
 
-
         public static void useItems()
         {
             try
             {
-
                 var target = ARAMTargetSelector.getBestTarget(500);
                 if(target != null)
                     UseItems(target);

@@ -26,10 +26,8 @@ namespace ARAMDetFull
         public static bool getIgnoreMinions()
         {
             agresiveMoves.RemoveAll(mov => mov.endAt < LXOrbwalker.now);
-            
             return agresiveMoves.Any(agr => agr.ignoreMinions);
         }
-
     }
 
     public class AgresiveMove

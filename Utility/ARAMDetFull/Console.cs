@@ -14,7 +14,6 @@ namespace ARAMDetFull
         {
             System.Console.WriteLine(ex);
             Chat.Print(ex.ToString());
-
         }
     }
 }

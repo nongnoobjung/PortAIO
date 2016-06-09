@@ -26,20 +26,13 @@ namespace ARAMDetFull
     public class AutoShopper
     {
         private static readonly List<FullItem> itemList = new List<FullItem>();
-
         public static AIHeroClient player = ObjectManager.Player;
-
         public static int testGold = 1375;
-
         public static Build curBuild;
-
         private static bool gotStartingItems = false;
-
         private static List<InvItem> inv = new List<InvItem>();
         private static List<InvItem> inv2 = new List<InvItem>();
-
         private static List<int> canBuyOnfull = new List<int>();
-
         private static bool finished = false;
 
         public static void init()
@@ -78,7 +71,6 @@ namespace ARAMDetFull
                 return;
             if (!gotStartingItems && player.Level < 4)
             {
-                //Console.WriteLine("buye starting!");
                 foreach (var item in curBuild.startingItems)
                 {
                     Shop.BuyItem(item);
@@ -110,10 +102,8 @@ namespace ARAMDetFull
             {
                 if (item.gotIt())
                     continue;
-
                 List<BuyItem> chain = new List<BuyItem>();
                 fillItemsChain(item.getBest().Id, ref chain, true);
-
                 var bestItem =
                     chain.Where(sel => sel.price <= player.Gold && (!inventoryFull() || canBuyOnfull.Contains(sel.item.Id))).OrderByDescending(sel2 => sel2.price).FirstOrDefault();
                 if (bestItem == null || bestItem.price == 0)
@@ -187,7 +177,6 @@ namespace ARAMDetFull
         public static FullItem getData(int id)
         {
             var item = itemList.FirstOrDefault(it => it.Id == id);
-            //if(item == null)
             return item;
         }
 
@@ -195,7 +184,6 @@ namespace ARAMDetFull
         {
             return (hero ?? ObjectManager.Player).InventoryItems.Any(slot => (int)slot.Id == id);
         }
-
     }
 
     public class Build

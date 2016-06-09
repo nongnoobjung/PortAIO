@@ -31,11 +31,9 @@ namespace ARAMDetFull
             if (lastLevelup + 2000 < LXOrbwalker.now)
             {
                 lastLevelup = LXOrbwalker.now;
-                //return;
                 if (ObjectManager.Player.SpellTrainingPoints > 0)
-                    for (var i = ObjectManager.Player.Level - ObjectManager.Player.SpellTrainingPoints;
-                        i < ObjectManager.Player.Level;
-                        i++)
+                {
+                    for (var i = ObjectManager.Player.Level - ObjectManager.Player.SpellTrainingPoints; i < ObjectManager.Player.Level; i++)
                     {
                         var spell = (SpellSlot)(order[i] - 1);
                         if (ObjectManager.Player.Spellbook.GetSpell(spell).Level < 6)
@@ -44,6 +42,7 @@ namespace ARAMDetFull
                             ObjectManager.Player.Spellbook.LevelUpSpell(spell);
                         }
                     }
+                }
             }
         }
 

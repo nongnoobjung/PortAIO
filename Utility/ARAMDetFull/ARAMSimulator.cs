@@ -46,7 +46,6 @@ namespace ARAMDetFull
             {
                 get
                 {
-
                     return (last) ? 99999999 : itemIds.Sum(ids => Items.GetItem(ids).GetPriceToBuy());
                 }
             }
@@ -112,8 +111,8 @@ namespace ARAMDetFull
 
         public static string[] dpsAS =
         {
-
         };
+
         public static AIHeroClient player = ObjectManager.Player;
 
         public static GameObject fromNex = null;
@@ -357,7 +356,6 @@ namespace ARAMDetFull
 
         public static void setChamp()
         {
-            Chat.Print(player.ChampionName);
             switch (player.ChampionName)
             {
                 case "Cassiopeia":
@@ -643,7 +641,6 @@ namespace ARAMDetFull
         {
             GameObject.OnCreate += TowerAttackOnCreate;
             GameObject.OnDelete += onDelete;
-
             foreach (var tur in ObjectManager.Get<Obj_HQ>())
             {
                 if (tur.Team == GameObjectTeam.Chaos && player.Team == GameObjectTeam.Chaos)
@@ -657,7 +654,6 @@ namespace ARAMDetFull
                 if (tur.Team == GameObjectTeam.Order && player.Team == GameObjectTeam.Chaos)
                     toNex = tur;
             }
-
             if (fromNex == null)
                 return;
             float sep = fromNex.Position.LSDistance(toNex.Position) / 40;
@@ -721,17 +717,12 @@ namespace ARAMDetFull
 
         public static bool towerAttackedMe = false;
         public static bool towerAttackedAlly = false;
-
         public static bool haveSeenMinion = false;
-
         public static bool ramboMode = false;
-
         public static int balance = 0;
         public static int agrobalance = 0;
         public static Vector2 awayTo;
-
         public static AIHeroClient deepestAlly = player;
-
         const UInt32 WM_KEYDOWN = 0x0100;
         const UInt32 WM_KEYUP = 0x0101;
         const int VK_F5 = 0x74;
@@ -740,9 +731,7 @@ namespace ARAMDetFull
         {
             if (!haveSeenMinion)
             {
-                haveSeenMinion =
-                    ObjectManager.Get<Obj_AI_Minion>().Any(min => min.IsTargetable && min.IsAlly && min.Health > 50) ||
-                    ARAMDetFull.gameStart + 44 * 1000 < ARAMDetFull.now;
+                haveSeenMinion = ObjectManager.Get<Obj_AI_Minion>().Any(min => min.IsTargetable && min.IsAlly && min.Health > 50) || ARAMDetFull.gameStart + 44 * 1000 < ARAMDetFull.now;
             }
             if (!haveSeenMinion)
                 return;
@@ -759,28 +748,22 @@ namespace ARAMDetFull
             {
                 buyItems();
             }
-
             if (champ != null)
             {
                 champ.alwaysCheck();
             }
-
             setRambo();
             if (player.IsDead)
                 return;
-
             var closestEnemy = HeroManager.Enemies.Where(ene => !ene.IsDead && ene.IsTargetable && !ARAMTargetSelector.IsInvulnerable(ene)).OrderBy(ene => player.Position.LSDistance(ene.Position, true)).FirstOrDefault();
             if (closestEnemy != null && ramboMode)
             {
                 LXOrbwalker.OrbwalkTo(closestEnemy.Position, false, true);
                 return;
             }
-
             agrobalance = Aggresivity.getAgroBalance();
             balance = (ARAMTargetSelector.IsInvulnerable(player) || player.IsZombie) ? 250 : MapControl.balanceAroundPointAdvanced(player.Position.LSTo2D(), 380 - agrobalance * 5) - tankBal + agrobalance;
-
             LXOrbwalker.inDanger = balance < 0;
-
             if (champ != null)
             {
                 try
@@ -795,7 +778,6 @@ namespace ARAMDetFull
                     Console.WriteLine(ex);
                 }
             }
-
             if (!Sector.inTowerRange(player.Position.LSTo2D()) || towerAttackedAlly || player.HealthPercent < 25)
             {
                 try
@@ -817,37 +799,30 @@ namespace ARAMDetFull
                     Console.WriteLine(ex);
                 }
             }
-
             deepestAlly = HeroManager.Allies.OrderBy(al => toNex.Position.LSDistance(al.Position, true)).FirstOrDefault();
             var lookRange = player.AttackRange + ((player.IsMelee) ? 160 : 35);
             var easyKill = HeroManager.Enemies.FirstOrDefault(ene => !ene.IsDead && ene.LSDistance(player, true) < lookRange * lookRange && !ARAMTargetSelector.IsInvulnerable(ene) && ene.Health / 2.5 < player.LSGetAutoAttackDamage(ene));
-
             if (easyKill != null)
             {
                 LXOrbwalker.OrbwalkTo(easyKill.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), player.AttackRange * 0.4f).To3D(), true);
             }
-
             if (balance < 0)
                 LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D(), false, true);
-
             if (moveToRelicIfForHeal())
             {
                 return;
             }
-
             if (!player.UnderTurret(true))
             {
                 towerAttackedMe = false;
                 towerAttackedAlly = false;
             }
-
             if (towerAttackedMe)
             {
                 LXOrbwalker.CustomOrbwalkMode = false;
                 LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D(), false);
                 return;
             }
-
             awayTo = eAwayFromTo();
             if (awayTo.IsValid() && awayTo.X != 0)
             {
@@ -904,7 +879,6 @@ namespace ARAMDetFull
                 }
             }
         }
-
         public static bool moveToRelicIfForHeal()
         {
             var relicHeal = MapControl.ClosestRelic();
@@ -928,19 +902,16 @@ namespace ARAMDetFull
         {
             if (target.IsAlly || target.IsDead || !target.LSIsValidTarget())
                 return false;
-
             float distTo = target.LSDistance(player, true);
             bool dangerousAround = (balance < -player.HealthPercent);
             float targetReack = (!dangerousAround) ? player.AttackRange + 150 : MapControl.getByObj(target).getReach();
             if (distTo > targetReack * targetReack)
                 return false;
-
             var per = target.Direction.LSTo2D().LSPerpendicular();
             var dir = new Vector3(per, 0);
             var enemDir = target.Position + dir * 40;
             if (target.LSDistance(fromNex.Position, true) < enemDir.LSDistance(fromNex.Position, true))
                 return false;
-
             return true;
         }
 
@@ -948,18 +919,14 @@ namespace ARAMDetFull
         {
             if (player.IsMelee())
                 return new Vector2(0, 0);
-
             Vector2 backTo = player.Position.LSTo2D();
             int count = 0;
-
             backTo -= (toNex.Position - player.Position).LSTo2D();
             foreach (var enem in ObjectManager.Get<AIHeroClient>().Where(enemIsOnMe))
             {
                 count++;
                 backTo -= (enem.Position - player.Position).LSTo2D();
             }
-
-
             if (count > 0)
             {
                 var awayTo = player.Position.LSTo2D().LSExtend(backTo, 700);

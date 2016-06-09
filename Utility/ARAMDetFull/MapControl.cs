@@ -169,10 +169,8 @@ namespace ARAMDetFull
                 {
                     try
                     {
-
                         if (spell == null || !spell.IsReady())
                             continue;
-
                         float dmg = 0;
                         var checkRange = spell.Range + 250;
                         if (hero.LSDistance(target, true) < checkRange * checkRange)
@@ -239,7 +237,6 @@ namespace ARAMDetFull
                     return enem.hero;
                 }
             }
-
             return null;
         }
 
@@ -247,13 +244,11 @@ namespace ARAMDetFull
         {
             foreach (var enem in enemy_champions.Where(ene => !ene.hero.IsDead && ene.hero.IsVisible).OrderBy(ene => ene.hero.LSDistance(ObjectManager.Player, true)))
             {
-
                 if (ally_champions.Where(ene => !ene.hero.IsDead && !ene.hero.IsMe).Any(ally => enem.hero.LSDistance(ally.hero, true) < 400 * 400))
                 {
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -261,12 +256,10 @@ namespace ARAMDetFull
         {
             if (myControler.canDoDmgTo(target) > target.Health)
                 return true;
-
             if (ally_champions.Where(ene => !ene.hero.IsDead && !ene.hero.IsMe).Any(ally => target.LSDistance(ally.hero, true) < 300 * 300))
             {
                 return true;
             }
-
             return false;
         }
 
@@ -274,7 +267,6 @@ namespace ARAMDetFull
         {
             int balance = 0;
             balance -= enemy_champions.Where(ene => !ene.hero.IsDead).Count(ene => ene.hero.LSDistance(point, true) < range * range);
-
             balance += ally_champions.Where(aly => !aly.hero.IsDead).Count(aly => aly.hero.LSDistance(point, true) < (range - 150) * (range - 150));
             return balance;
         }
@@ -287,36 +279,23 @@ namespace ARAMDetFull
                 var reach = ene.reach + rangePlus;
                 if (!ene.hero.IsDead && ene.hero.LSDistance(point, true) < reach * reach && !unitIsUseless(ene.hero) && !notVisibleAndMostLieklyNotThere(ene.hero))
                 {
-                    balance -= (int)((ene.hero.HealthPercent + 20 - ene.hero.Deaths * 4 + ene.hero.ChampionsKilled * 4) *
-                                      ((ARAMSimulator.player.Level < 7)
-                                          ? 1.3f
-                                          : 1f));
+                    balance -= (int)((ene.hero.HealthPercent + 20 - ene.hero.Deaths * 4 + ene.hero.ChampionsKilled * 4) * ((ARAMSimulator.player.Level < 7) ? 1.3f : 1f));
                 }
             }
-
-
             foreach (var aly in ally_champions)
             {
                 var reach = aly.reach + 500;
-                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < reach * reach &&
-                    aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + fearDistance + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
+                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < reach * reach && aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + fearDistance + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
                     balance += ((int)aly.hero.HealthPercent + 20 + 20 - aly.hero.Deaths * 4 + aly.hero.ChampionsKilled * 4);
             }
-            var myBal = ((int)myControler.hero.HealthPercent + 20 + 20 - myControler.hero.Deaths * 10 +
-                         myControler.hero.ChampionsKilled * 10);
+            var myBal = ((int)myControler.hero.HealthPercent + 20 + 20 - myControler.hero.Deaths * 10 + myControler.hero.ChampionsKilled * 10);
             balance += (myBal < 0) ? 10 : myBal;
             return balance;
         }
 
         public static double unitIsUselessFor(Obj_AI_Base unit)
         {
-            var result =
-                unit.Buffs.Where(
-                    buff =>
-                        buff.IsActive && Game.Time <= buff.EndTime &&
-                        (buff.Type == BuffType.Charm || buff.Type == BuffType.Knockup || buff.Type == BuffType.Stun ||
-                         buff.Type == BuffType.Suppression || buff.Type == BuffType.Snare || buff.Type == BuffType.Fear))
-                    .Aggregate(0d, (current, buff) => Math.Max(current, buff.EndTime));
+            var result = unit.Buffs.Where(buff => buff.IsActive && Game.Time <= buff.EndTime && (buff.Type == BuffType.Charm || buff.Type == BuffType.Knockup || buff.Type == BuffType.Stun || buff.Type == BuffType.Suppression || buff.Type == BuffType.Snare || buff.Type == BuffType.Fear)).Aggregate(0d, (current, buff) => Math.Max(current, buff.EndTime));
             return (result - Game.Time);
         }
 
@@ -329,7 +308,6 @@ namespace ARAMDetFull
         {
             var distEneNex = ARAMSimulator.toNex.Position.LSDistance(unit.Position);
             var distEneNexDeepest = ARAMSimulator.toNex.Position.LSDistance(ARAMSimulator.deepestAlly.Position);
-
             return !ARAMSimulator.deepestAlly.IsDead && distEneNexDeepest + 1500 < distEneNex;
         }
 
@@ -345,8 +323,7 @@ namespace ARAMDetFull
 
         public static bool safeGap(Vector2 position)
         {
-            return myControler.hero.HealthPercent < 13 || (!Sector.inTowerRange(position) &&
-                   (MapControl.balanceAroundPointAdvanced(position, 500) > 0)) || position.LSDistance(ARAMSimulator.fromNex.Position, true) < myControler.hero.Position.LSDistance(ARAMSimulator.fromNex.Position, true);
+            return myControler.hero.HealthPercent < 13 || (!Sector.inTowerRange(position) && (MapControl.balanceAroundPointAdvanced(position, 500) > 0)) || position.LSDistance(ARAMSimulator.fromNex.Position, true) < myControler.hero.Position.LSDistance(ARAMSimulator.fromNex.Position, true);
         }
 
         public static List<int> usedRelics = new List<int>();
@@ -354,20 +331,13 @@ namespace ARAMDetFull
         public static Obj_AI_Base ClosestRelic()
         {
             var closesEnem = ClosestEnemyTobase();
-            //var closesEnemTower = ClosestEnemyTobase();
-            var hprelics = ObjectManager.Get<Obj_AI_Base>().Where(
-                r => r.IsValid && !r.IsDead && (r.Name.Contains("HealthRelic") || r.Name.Contains("BardChime") || (r.Name.Contains("BardPickup") && ObjectManager.Player.ChampionName == "Bard"))
-                    && !usedRelics.Contains(r.NetworkId) && (closesEnem == null || r.LSDistance(ARAMSimulator.fromNex.Position, true) - 500 < closesEnem.LSDistance(ARAMSimulator.fromNex.Position, true))).ToList().OrderBy(r => ARAMSimulator.player.LSDistance(r, true));
+            var hprelics = ObjectManager.Get<Obj_AI_Base>().Where(r => r.IsValid && !r.IsDead && (r.Name.Contains("HealthRelic") || r.Name.Contains("BardChime") || (r.Name.Contains("BardPickup") && ObjectManager.Player.ChampionName == "Bard")) && !usedRelics.Contains(r.NetworkId) && (closesEnem == null || r.LSDistance(ARAMSimulator.fromNex.Position, true) - 500 < closesEnem.LSDistance(ARAMSimulator.fromNex.Position, true))).ToList().OrderBy(r => ARAMSimulator.player.LSDistance(r, true));
             return hprelics.FirstOrDefault();
         }
 
         public static Obj_AI_Base ClosestEnemyTobase()
         {
-            return
-                HeroManager.Enemies
-                    .Where(h => h.IsValid && !h.IsDead && h.IsVisible && h.IsEnemy)
-                    .OrderBy(h => h.LSDistance(ARAMSimulator.fromNex.Position, true))
-                    .FirstOrDefault();
+            return HeroManager.Enemies.Where(h => h.IsValid && !h.IsDead && h.IsVisible && h.IsEnemy).OrderBy(h => h.LSDistance(ARAMSimulator.fromNex.Position, true)).FirstOrDefault();
         }
 
         /* LOGIC!!

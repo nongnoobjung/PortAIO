@@ -54,14 +54,11 @@ namespace ARAMDetFull
         private static void onLoad(EventArgs args)
         {
             gameStart = now;
-
             Chat.Print("ARAm - Sharp by DeTuKs");
-
             try
             {
                 Drawing.OnDraw += onDraw;
                 Game.OnUpdate += OnGameUpdate;
-                Drawing.OnDraw += onDraw;
                 CustomEvents.Game.OnGameEnd += OnGameEnd;
                 ARAMSimulator.setupARMASimulator();
             }
@@ -83,7 +80,7 @@ namespace ARAMDetFull
 
         private static void onDraw(EventArgs args)
         {
-            Drawing.DrawText(100, 100, Color.Red, "bal: " + ARAMSimulator.balance + " time: ");
+            Drawing.DrawText(100, 100, Color.Red, "bal: " + ARAMSimulator.balance);
         }
 
         private static int lastTick = now;
