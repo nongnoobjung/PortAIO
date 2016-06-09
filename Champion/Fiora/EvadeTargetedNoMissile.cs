@@ -37,7 +37,10 @@ namespace FioraProject
             evadeMenu.Add("W", new CheckBox("Use W"));
             foreach (var spell in Spells.Where(i => HeroManager.Enemies.Any(a => string.Equals(a.ChampionName, i.ChampionName, StringComparison.InvariantCultureIgnoreCase))))
             {
-                evadeMenu.Add(spell.ChampionName + spell.Slot, new CheckBox(spell.ChampionName + " (" + spell.Slot + ")", false));
+                if (evadeMenu[spell.ChampionName + spell.Slot] == null)
+                {
+                    evadeMenu.Add(spell.ChampionName + spell.Slot, new CheckBox(spell.ChampionName + " (" + spell.Slot + ")", false));
+                }
             }
 
             Game.OnUpdate += OnUpdateDashes;
