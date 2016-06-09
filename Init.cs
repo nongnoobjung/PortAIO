@@ -159,22 +159,6 @@ namespace PortAIO
                     SPredictioner.Program.Init();
                 }
 
-                if (Loader.autoSharp)
-                {
-                    switch (Loader.aramCB)
-                    {
-                        case 0:
-                            AutoSharp.Program.Main();
-                            break;
-                        case 1:
-                            //ARAMDetFull.Program.Init();
-                            break;
-                        default:
-                            AutoSharp.Program.Main();
-                            break;
-                    }
-                }
-
                 if (Loader.limitedShat)
                 {
                     LimitedShat.Program.Game_OnGameLoad();
@@ -208,16 +192,6 @@ namespace PortAIO
                 if (Loader.emoteSpammer)
                 {
                     EmoteSpammer.Program.Game_OnGameLoad();
-                }
-
-                //if (Loader.VCursor)
-                //{
-                //VCursor.Program.Game_OnGameLoad();
-                //}
-
-                if (Loader.autoJungle)
-                {
-                    AutoJungle.Program.OnGameLoad();
                 }
 
                 if (Loader.antiStealth)
