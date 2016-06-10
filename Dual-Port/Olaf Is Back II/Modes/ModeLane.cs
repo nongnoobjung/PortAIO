@@ -102,24 +102,24 @@ namespace OlafxQx.Modes
                 }
             }
 
-            //if (W.IsReady() && MenuLocal["Lane.UseW"].Cast<ComboBox>().CurrentValue != 0)
-            //{
-            //    var wCount = MenuLocal["Lane.UseW"].Cast<ComboBox>().CurrentValue;
+            if (MenuLocal["Lane.UseW"].Cast<ComboBox>().CurrentValue != 0 && W.IsReady())
+            {
+                var wCount = MenuLocal["Lane.UseW"].Cast<ComboBox>().CurrentValue;
 
-            //    var totalAa =
-            //        ObjectManager.Get<Obj_AI_Minion>()
-            //            .Where(
-            //                m =>
-            //                    m.IsEnemy && !m.IsDead &&
-            //                    m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
-            //            .Sum(mob => (int) mob.Health);
+                var totalAa =
+                    ObjectManager.Get<Obj_AI_Minion>()
+                        .Where(
+                            m =>
+                                m.IsEnemy && !m.IsDead &&
+                                m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
+                        .Sum(mob => (int)mob.Health);
 
-            //    totalAa = (int) (totalAa/ObjectManager.Player.TotalAttackDamage);
-            //    if (totalAa >= wCount + 3)
-            //    {
-            //        W.Cast();
-            //    }
-            //}
+                totalAa = (int)(totalAa / ObjectManager.Player.TotalAttackDamage);
+                if (totalAa >= wCount + 3)
+                {
+                    W.Cast();
+                }
+            }
 
             var useE = MenuLocal["Lane.UseE"].Cast<ComboBox>().CurrentValue;
             if (useE != 0 && E.IsReady())
