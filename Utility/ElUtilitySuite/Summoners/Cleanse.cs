@@ -224,8 +224,8 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Swain", Name = "SwainShadowGraspRoot", MenuName = "Swain (Q)", Evade = false,
-                                     DoT = true, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q,
+                                     Champion = "Swain", Name = "SwainShadowGraspRoot", MenuName = "Swain (W)", Evade = false,
+                                     DoT = true, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
