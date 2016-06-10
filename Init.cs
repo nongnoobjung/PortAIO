@@ -616,6 +616,9 @@ namespace PortAIO
                             case 1:
                                 Tyler1.Program.Load();
                                 break;
+                            case 2:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 RevampedDraven.Program.OnLoad();
                                 break;

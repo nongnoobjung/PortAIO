@@ -339,10 +339,8 @@ namespace Tyler1
 
                         if (GameObjects.EnemyHeroes.Count(e => e.IsHPBarRendered && e.IsMelee && e.ServerPosition.Distance(AXE.Position) < 350) >= 1)
                         {
-                            //user probably doesn't want to go there, try the next reticle
                             break;
                         }
-                        //maybe user just has potato reaction time
                         return;
                     }
                     if (AXE.Distance(Player.ServerPosition) > 60 && Orbwalker.CanMove)

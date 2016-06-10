@@ -445,6 +445,7 @@
     <Compile Include="Dual-Port\Marksman II\Champions\Caitlyn.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\Champion.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\Corki.cs" />
+    <Compile Include="Dual-Port\Marksman II\Champions\Draven.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\PlayerSpells.cs" />
     <Compile Include="Dual-Port\Marksman II\Common\CommonAutoBush.cs" />
     <Compile Include="Dual-Port\Marksman II\Common\CommonAutoLevel.cs" />
