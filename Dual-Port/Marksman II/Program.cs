@@ -74,10 +74,10 @@ namespace Marksman
                 case "draven":
                     ChampionClass = new Draven();
                     break;
-                    /*
                 case "ezreal":
                     ChampionClass = new Ezreal();
                     break;
+                    /*
                 case "graves":
                     ChampionClass = new Graves();
                     break;

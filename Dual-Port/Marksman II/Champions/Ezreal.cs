@@ -17,37 +17,38 @@ using Marksman.Common;
 
 namespace Marksman.Champions
 {
+    using EloBuddy;
+    using EloBuddy.SDK;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK.Menu.Values;
     using Marksman.Utils;
 
     internal class Ezreal : Champion
     {
-        public static Spell Q;
+        public static LeagueSharp.Common.Spell Q;
 
-        public static Spell E;
+        public static LeagueSharp.Common.Spell E;
 
-        public static Spell W;
+        public static LeagueSharp.Common.Spell W;
 
-        public static Spell R;
+        public static LeagueSharp.Common.Spell R;
 
         private static bool haveIceBorn = false;
 
         public Ezreal()
         {
-            Q = new Spell(SpellSlot.Q, 1190);
+            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 1190);
             Q.SetSkillshot(0.25f, 60f, 2000f, true, SkillshotType.SkillshotLine);
 
-            W = new Spell(SpellSlot.W, 950);
+            W = new LeagueSharp.Common.Spell(SpellSlot.W, 950);
             W.SetSkillshot(0.25f, 80f, 1600f, false, SkillshotType.SkillshotLine);
 
-            E = new Spell(SpellSlot.E);
+            E = new LeagueSharp.Common.Spell(SpellSlot.E);
 
-            R = new Spell(SpellSlot.R, 2500);
+            R = new LeagueSharp.Common.Spell(SpellSlot.R, 2500);
             R.SetSkillshot(1f, 160f, 2000f, false, SkillshotType.SkillshotLine);
 
-            Utility.HpBarDamageIndicator.DamageToUnit = GetComboDamage;
-            Utility.HpBarDamageIndicator.Enabled = true;
-
-            Obj_AI_Base.OnBuffAdd += (sender, args) =>
+            Obj_AI_Base.OnBuffGain += (sender, args) =>
             {
                 //if (sender.IsMe)
                 //Game.PrintChat(args.Buff.Name);
@@ -55,14 +56,14 @@ namespace Marksman.Champions
 
             Utils.PrintMessage("Ezreal loaded");
         }
-      
-        public override void Orbwalking_AfterAttack(AttackableUnit unit, AttackableUnit target)
+
+        public override void Orbwalking_AfterAttack(AttackableUnit target, EventArgs args)
         {
-            var t = target as Obj_AI_Hero;
-            if (t != null && (ComboActive || HarassActive) && unit.IsMe && !t.HasKindredUltiBuff())
+            var t = target as AIHeroClient;
+            if (t != null && (ComboActive || HarassActive) && !t.HasKindredUltiBuff())
             {
-                var useQ = GetValue<bool>("UseQ" + (ComboActive ? "C" : "H"));
-                var useW = GetValue<bool>("UseW" + (ComboActive ? "C" : "H"));
+                var useQ = ComboActive ? Program.combo["UseQC"].Cast<CheckBox>().CurrentValue : Program.harass["UseQH"].Cast<CheckBox>().CurrentValue;
+                var useW = ComboActive ? Program.combo["UseWC"].Cast<CheckBox>().CurrentValue : Program.harass["UseWH"].Cast<CheckBox>().CurrentValue;
 
                 if (Q.IsReady() && useQ)
                 {
@@ -77,32 +78,32 @@ namespace Marksman.Champions
 
         public override void Drawing_OnDraw(EventArgs args)
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => R.IsReady() && enemy.IsValidTarget() && R.GetDamage(enemy) > enemy.Health))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => R.IsReady() && enemy.LSIsValidTarget() && R.GetDamage(enemy) > enemy.Health))
             {
-                Marksman.Common.CommonGeometry.DrawBox(new Vector2(Drawing.Width*0.43f, Drawing.Height*0.80f), 185, 18, Color.FromArgb(242, 255, 236, 6), 1, System.Drawing.Color.Black);
-                Marksman.Common.CommonGeometry.DrawText(Marksman.Common.CommonGeometry.Text, "Killable enemy with ultimate: " + enemy.ChampionName, Drawing.Width*0.435f, Drawing.Height*0.803f, SharpDX.Color.Black);
+                Marksman.Common.CommonGeometry.DrawBox(new Vector2(Drawing.Width * 0.43f, Drawing.Height * 0.80f), 185, 18, Color.FromArgb(242, 255, 236, 6), 1, System.Drawing.Color.Black);
+                Marksman.Common.CommonGeometry.DrawText(Marksman.Common.CommonGeometry.Text, "Killable enemy with ultimate: " + enemy.ChampionName, Drawing.Width * 0.435f, Drawing.Height * 0.803f, SharpDX.Color.Black);
             }
 
-            Spell[] spellList = {Q, W};
+            LeagueSharp.Common.Spell[] spellList = { Q, W };
             foreach (var spell in spellList)
             {
-                var menuItem = GetValue<Circle>("Draw" + spell.Slot);
-                if (menuItem.Active)
-                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, menuItem.Color);
+                var menuItem = Program.marksmanDrawings["Draw" + spell.Slot].Cast<CheckBox>().CurrentValue;
+                if (menuItem)
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, Color.FromArgb(100, 255, 0, 255));
             }
 
-            var drawRMin = Program.Config.SubMenu("Combo").Item("DrawRMin").GetValue<Circle>();
-            if (drawRMin.Active)
+            var drawRMin = Program.combo["DrawRMin"].Cast<CheckBox>().CurrentValue;
+            if (drawRMin)
             {
-                var minRRange = Program.Config.SubMenu("Combo").Item("UseRCMinRange").GetValue<Slider>().Value;
-                Render.Circle.DrawCircle(ObjectManager.Player.Position, minRRange, drawRMin.Color, 2);
+                var minRRange = Program.combo["UseRCMinRange"].Cast<Slider>().CurrentValue;
+                Render.Circle.DrawCircle(ObjectManager.Player.Position, minRRange, Color.DarkRed, 2);
             }
 
-            var drawRMax = Program.Config.SubMenu("Combo").Item("DrawRMax").GetValue<Circle>();
-            if (drawRMax.Active)
+            var drawRMax = Program.combo["DrawRMax"].Cast<CheckBox>().CurrentValue;
+            if (drawRMax)
             {
-                var maxRRange = Program.Config.SubMenu("Combo").Item("UseRCMaxRange").GetValue<Slider>().Value;
-                Render.Circle.DrawCircle(ObjectManager.Player.Position, maxRRange, drawRMax.Color, 2);
+                var maxRRange = Program.combo["UseRCMaxRange"].Cast<Slider>().CurrentValue;
+                Render.Circle.DrawCircle(ObjectManager.Player.Position, maxRRange, Color.DarkMagenta, 2);
             }
         }
 
@@ -110,21 +111,21 @@ namespace Marksman.Champions
         {
             Console.WriteLine(Q.GetHitchance().ToString());
             haveIceBorn = ObjectManager.Player.InventoryItems.Any(i => i.Id == ItemId.Iceborn_Gauntlet);
-            
-            if (GetValue<bool>("ChargeR.Enable") && Orbwalker.ActiveMode != Orb.Orbwalking.OrbwalkingMode.Combo)
+
+            if (Program.misc["ChargeR.Enable"].Cast<CheckBox>().CurrentValue && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
-                var rCooldown = GetValue<Slider>("ChargeR.Cooldown").Value;
-                var rMinMana = GetValue<Slider>("ChargeR.MinMana").Value;
+                var rCooldown = Program.misc["ChargeR.Cooldown"].Cast<Slider>().CurrentValue;
+                var rMinMana = Program.misc["ChargeR.MinMana"].Cast<Slider>().CurrentValue;
 
                 if (ObjectManager.Player.ManaPercent >= rMinMana && R.Cooldown >= rCooldown)
                 {
                     var vMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range);
                     foreach (var hit in from minions in vMinions
-                        select Q.GetPrediction(minions)
+                                        select Q.GetPrediction(minions)
                         into qP
-                        let hit = qP.CastPosition.Extend(ObjectManager.Player.Position, -140)
-                        where qP.Hitchance >= HitChance.High
-                        select hit)
+                                        let hit = qP.CastPosition.LSExtend(ObjectManager.Player.Position, -140)
+                                        where qP.Hitchance >= HitChance.High
+                                        select hit)
                     {
                         Q.Cast(hit);
                     }
@@ -134,45 +135,45 @@ namespace Marksman.Champions
 
 
             // 3070 tear of the goddess
-         //  foreach (var i in ObjectManager.Player.InventoryItems)
-          //  {
-                //Game.PrintChat(i.IData.Id.ToString());
-        //    }
+            //  foreach (var i in ObjectManager.Player.InventoryItems)
+            //  {
+            //Game.PrintChat(i.IData.Id.ToString());
+            //    }
 
-            if (GetValue<bool>("PingCH"))
+            if (Program.misc["PingCH"].Cast<CheckBox>().CurrentValue)
             {
                 foreach (var enemy in
                     HeroManager.Enemies.Where(
                         enemy =>
-                            R.IsReady() && enemy.IsValidTarget() && R.GetDamage(enemy) > enemy.Health
-                            && enemy.Distance(ObjectManager.Player) > Q.Range))
+                            R.IsReady() && enemy.LSIsValidTarget() && R.GetDamage(enemy) > enemy.Health
+                            && enemy.LSDistance(ObjectManager.Player) > Q.Range))
                 {
-                    Utils.MPing.Ping(enemy.Position.To2D());
+                    Utils.MPing.Ping(enemy.Position.LSTo2D());
                 }
             }
 
-            Obj_AI_Hero t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-            var toggleQ = Program.Config.Item("UseQTH").GetValue<KeyBind>().Active;
-            var toggleW = Program.Config.Item("UseWTH").GetValue<KeyBind>().Active;
-            if ((toggleQ || toggleW) && t.IsValidTarget(Q.Range) && ToggleActive)
+            AIHeroClient t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+            var toggleQ = Program.harass["UseQTH"].Cast<KeyBind>().CurrentValue;
+            var toggleW = Program.harass["UseWTH"].Cast<KeyBind>().CurrentValue;
+            if ((toggleQ || toggleW) && t.LSIsValidTarget(Q.Range) && ToggleActive)
             {
                 if (Q.IsReady() && toggleQ)
                 {
                     if (ObjectManager.Player.HasBuff("Recall")) return;
 
-                    var useQt = (Program.Config.Item("DontQToggleHarass" + t.ChampionName) != null
-                                 && Program.Config.Item("DontQToggleHarass" + t.ChampionName).GetValue<bool>() == false);
+                    var useQt = (Program.harass["DontQToggleHarass" + t.ChampionName] != null
+                                 && Program.harass["DontQToggleHarass" + t.ChampionName].Cast<CheckBox>().CurrentValue == false);
                     if (useQt)
                     {
                         Q.CastIfHitchanceGreaterOrEqual(t);
                     }
                 }
 
-                if (W.IsReady() && t.IsValidTarget(W.Range) && toggleW)
+                if (W.IsReady() && t.LSIsValidTarget(W.Range) && toggleW)
                 {
                     if (ObjectManager.Player.HasBuff("Recall")) return;
-                    var useWt = (Program.Config.Item("DontWToggleHarass" + t.ChampionName) != null
-                                 && Program.Config.Item("DontWToggleHarass" + t.ChampionName).GetValue<bool>() == false);
+                    var useWt = (Program.harass["DontWToggleHarass" + t.ChampionName] != null
+                                 && Program.harass["DontWToggleHarass" + t.ChampionName].Cast<CheckBox>().CurrentValue == false);
                     if (useWt)
                     {
                         W.Cast(t);
@@ -182,35 +183,35 @@ namespace Marksman.Champions
 
             if (ComboActive || HarassActive)
             {
-                t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
+                t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
 
-                var useQ = GetValue<bool>("UseQ" + (ComboActive ? "C" : "H"));
-                var useW = GetValue<bool>("UseW" + (ComboActive ? "C" : "H"));
-                var useR = Program.Config.SubMenu("Combo").Item("UseRC").GetValue<bool>();
+                var useQ = ComboActive ? Program.combo["UseQC"].Cast<CheckBox>().CurrentValue : Program.harass["UseQH"].Cast<CheckBox>().CurrentValue;
+                var useW = ComboActive ? Program.combo["UseWC"].Cast<CheckBox>().CurrentValue : Program.harass["UseWH"].Cast<CheckBox>().CurrentValue;
+                var useR = Program.combo["UseRC"].Cast<CheckBox>().CurrentValue;
 
-                if (Orb.Orbwalking.CanMove(100) && !t.HasKindredUltiBuff())
+                if (Orbwalker.CanMove && !t.HasKindredUltiBuff())
                 {
-                    if (useQ && Q.IsReady() && t.IsValidTarget(Q.Range))
+                    if (useQ && Q.IsReady() && t.LSIsValidTarget(Q.Range))
                     {
                         Q.CastIfHitchanceGreaterOrEqual(t);
                     }
 
-                    if (useW && W.IsReady() && t.IsValidTarget(W.Range))
+                    if (useW && W.IsReady() && t.LSIsValidTarget(W.Range))
                     {
                         W.Cast(t);
                     }
 
                     if (R.IsReady() && useR)
                     {
-                        var maxRRange = Program.Config.SubMenu("Combo").Item("UseRCMaxRange").GetValue<Slider>().Value;
-                        var minRRange = Program.Config.SubMenu("Combo").Item("UseRCMinRange").GetValue<Slider>().Value;
+                        var maxRRange = Program.combo["UseRCMaxRange"].Cast<Slider>().CurrentValue;
+                        var minRRange = Program.combo["UseRCMinRange"].Cast<Slider>().CurrentValue;
 
-                        if (Q.IsReady() && t.IsValidTarget(Q.Range) && Q.GetPrediction(t).CollisionObjects.Count == 0
-                            && t.Health < ObjectManager.Player.GetSpellDamage(t, SpellSlot.Q)) return;
+                        if (Q.IsReady() && t.LSIsValidTarget(Q.Range) && Q.GetPrediction(t).CollisionObjects.Count == 0
+                            && t.Health < ObjectManager.Player.LSGetSpellDamage(t, SpellSlot.Q)) return;
 
-                        if (t.IsValidTarget() && ObjectManager.Player.Distance(t) >= minRRange
-                            && ObjectManager.Player.Distance(t) <= maxRRange
-                            && t.Health <= ObjectManager.Player.GetSpellDamage(t, SpellSlot.R))
+                        if (t.LSIsValidTarget() && ObjectManager.Player.LSDistance(t) >= minRRange
+                            && ObjectManager.Player.LSDistance(t) <= maxRRange
+                            && t.Health <= ObjectManager.Player.LSGetSpellDamage(t, SpellSlot.R))
                         {
                             R.Cast(t);
                         }
@@ -218,22 +219,19 @@ namespace Marksman.Champions
                 }
             }
 
-            if (R.IsReady() && GetValue<KeyBind>("CastR").Active)
+            if (R.IsReady() && Program.misc["CastR"].Cast<KeyBind>().CurrentValue)
             {
-                t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-                if (t.IsValidTarget()) R.Cast(t);
+                t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
+                if (t.LSIsValidTarget()) R.Cast(t);
             }
         }
 
         public override bool LaneClearMenu(Menu config)
         {
-            var qSubMenu = new Menu("Q Farm", "Lane.QFarm");
-            {
-                qSubMenu.AddItem(new MenuItem("Lane.UseQ" + Id, "Q: Everytime").SetValue(true)).SetFontStyle(FontStyle.Regular, Q.MenuColor());
-                qSubMenu.AddItem(new MenuItem("Lane.UseQ.AARange" + Id, "Q: Auto of AA Range").SetValue(true)).SetFontStyle(FontStyle.Regular, Q.MenuColor());
-                qSubMenu.AddItem(new MenuItem("Lane.Q.HeatlhPrediction" + Id, "Q: Health Prediciton").SetValue(true)).SetFontStyle(FontStyle.Regular, Q.MenuColor());
-            }
-            config.AddSubMenu(qSubMenu);
+            config.AddGroupLabel("Q Settings : ");
+            config.Add("Lane.UseQ", new CheckBox("Q: Everytime"));
+            config.Add("Lane.UseQ.AARange", new CheckBox("Q: Auto of AA Range"));
+            config.Add("Lane.Q.HeatlhPrediction", new CheckBox("Q: Health Prediciton"));
             return true;
         }
 
@@ -244,40 +242,40 @@ namespace Marksman.Champions
                 return;
             }
 
-            if (!GetValue<bool>("Lane.UseQ") && !GetValue<bool>("Lane.UseQ.AARange") && !GetValue<bool>("Lane.UseQ.HeatlhPrediction"))
+            if (!Program.laneclear["Lane.UseQ"].Cast<CheckBox>().CurrentValue && !Program.laneclear["Lane.UseQ.AARange"].Cast<CheckBox>().CurrentValue && !Program.laneclear["Lane.Q.HeatlhPrediction"].Cast<CheckBox>().CurrentValue)
             {
                 return;
             }
 
             var vMinions = MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range);
 
-            if (GetValue<bool>("Lane.UseQ"))
+            if (Program.laneclear["Lane.UseQ"].Cast<CheckBox>().CurrentValue)
             {
                 foreach (var minions in
                     vMinions.Where(
-                        minions => minions.Health < ObjectManager.Player.GetSpellDamage(minions, SpellSlot.Q)))
+                        minions => minions.Health < ObjectManager.Player.LSGetSpellDamage(minions, SpellSlot.Q)))
                 {
                     var qP = Q.GetPrediction(minions);
-                    var hit = qP.CastPosition.Extend(ObjectManager.Player.Position, -140);
+                    var hit = qP.CastPosition.LSExtend(ObjectManager.Player.Position, -140);
                     if (qP.Hitchance >= HitChance.High) Q.Cast(hit);
                 }
             }
 
-            if (GetValue<bool>("Lane.UseQ.AARange"))
+            if (Program.laneclear["Lane.UseQ.AARange"].Cast<CheckBox>().CurrentValue)
             {
                 foreach (var minions in
                     vMinions.Where(
                         minions =>
-                            minions.Health < ObjectManager.Player.GetSpellDamage(minions, SpellSlot.Q) &&
-                            !minions.IsValidTarget(Orb.Orbwalking.GetRealAutoAttackRange(null) + 65)))
+                            minions.Health < ObjectManager.Player.LSGetSpellDamage(minions, SpellSlot.Q) &&
+                            !minions.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65)))
                 {
                     var qP = Q.GetPrediction(minions);
-                    var hit = qP.CastPosition.Extend(ObjectManager.Player.Position, -140);
+                    var hit = qP.CastPosition.LSExtend(ObjectManager.Player.Position, -140);
                     if (qP.Hitchance >= HitChance.High) Q.Cast(hit);
                 }
             }
 
-            if (GetValue<bool>("Lane.Q.HeatlhPrediction"))
+            if (Program.laneclear["Lane.Q.HeatlhPrediction"].Cast<CheckBox>().CurrentValue)
             {
                 foreach (var n in vMinions)
                 {
@@ -295,13 +293,10 @@ namespace Marksman.Champions
 
         public override void ExecuteJungleClear()
         {
-            if (!Q.IsReady() || GetValue<StringList>("Jungle.Q").SelectedIndex == 0)
+            if (!Q.IsReady() || Program.jungleClear["Jungle.Q"].Cast<ComboBox>().CurrentValue == 0)
             {
                 return;
             }
-
-
-
             var jungleMobs = Utils.GetMobs(Q.Range, Utils.MobTypes.All);
 
             if (jungleMobs != null)
@@ -312,138 +307,120 @@ namespace Marksman.Champions
                 }
                 else
                 {
-                    switch (GetValue<StringList>("Jungle.Q").SelectedIndex)
+                    switch (Program.jungleClear["Jungle.Q"].Cast<ComboBox>().CurrentValue)
                     {
                         case 1:
-                        {
-                            Q.Cast(jungleMobs);
-                            break;
-                        }
-                        case 2:
-                        {
-                            jungleMobs = Utils.GetMobs(Q.Range, Utils.MobTypes.BigBoys);
-                            if (jungleMobs != null)
                             {
                                 Q.Cast(jungleMobs);
+                                break;
                             }
-                            break;
-                        }
+                        case 2:
+                            {
+                                jungleMobs = Utils.GetMobs(Q.Range, Utils.MobTypes.BigBoys);
+                                if (jungleMobs != null)
+                                {
+                                    Q.Cast(jungleMobs);
+                                }
+                                break;
+                            }
                     }
                 }
             }
         }
 
-        private static float GetComboDamage(Obj_AI_Hero t)
+        private static float GetComboDamage(AIHeroClient t)
         {
             var fComboDamage = 0f;
 
-            if (Q.IsReady()) fComboDamage += (float) ObjectManager.Player.GetSpellDamage(t, SpellSlot.Q);
+            if (Q.IsReady()) fComboDamage += (float)ObjectManager.Player.LSGetSpellDamage(t, SpellSlot.Q);
 
-            if (W.IsReady()) fComboDamage += (float) ObjectManager.Player.GetSpellDamage(t, SpellSlot.W);
+            if (W.IsReady()) fComboDamage += (float)ObjectManager.Player.LSGetSpellDamage(t, SpellSlot.W);
 
-            if (E.IsReady()) fComboDamage += (float) ObjectManager.Player.GetSpellDamage(t, SpellSlot.E);
+            if (E.IsReady()) fComboDamage += (float)ObjectManager.Player.LSGetSpellDamage(t, SpellSlot.E);
 
-            if (R.IsReady()) fComboDamage += (float) ObjectManager.Player.GetSpellDamage(t, SpellSlot.R);
+            if (R.IsReady()) fComboDamage += (float)ObjectManager.Player.LSGetSpellDamage(t, SpellSlot.R);
 
             if (ObjectManager.Player.GetSpellSlot("summonerdot") != SpellSlot.Unknown
                 && ObjectManager.Player.Spellbook.CanUseSpell(ObjectManager.Player.GetSpellSlot("summonerdot"))
-                == SpellState.Ready && ObjectManager.Player.Distance(t) < 550)
-                fComboDamage += (float) ObjectManager.Player.GetSummonerSpellDamage(t, Damage.SummonerSpell.Ignite);
+                == SpellState.Ready && ObjectManager.Player.LSDistance(t) < 550)
+                fComboDamage += (float)ObjectManager.Player.GetSummonerSpellDamage(t, LeagueSharp.Common.Damage.SummonerSpell.Ignite);
 
-            if (Items.CanUseItem(3144) && ObjectManager.Player.Distance(t) < 550)
-                fComboDamage += (float) ObjectManager.Player.GetItemDamage(t, Damage.DamageItems.Bilgewater);
+            if (Items.CanUseItem(3144) && ObjectManager.Player.LSDistance(t) < 550)
+                fComboDamage += (float)ObjectManager.Player.GetItemDamage(t, LeagueSharp.Common.Damage.DamageItems.Bilgewater);
 
-            if (Items.CanUseItem(3153) && ObjectManager.Player.Distance(t) < 550)
-                fComboDamage += (float) ObjectManager.Player.GetItemDamage(t, Damage.DamageItems.Botrk);
+            if (Items.CanUseItem(3153) && ObjectManager.Player.LSDistance(t) < 550)
+                fComboDamage += (float)ObjectManager.Player.GetItemDamage(t, LeagueSharp.Common.Damage.DamageItems.Botrk);
 
             return fComboDamage;
         }
 
         public override bool ComboMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQC" + Id, "Q").SetValue(true));
-            config.AddItem(new MenuItem("UseWC" + Id, "W").SetValue(true));
+            config.Add("UseQC", new CheckBox("Q"));
+            config.Add("UseWC", new CheckBox("W"));
 
-            var xRMenu = new Menu("R", "ComboR");
+            config.AddGroupLabel("R");
             {
-                xRMenu.AddItem(new MenuItem("UseRC", "Use").SetValue(true));
-                xRMenu.AddItem(new MenuItem("UseRCMinRange", "Min. Range").SetValue(new Slider(200, 200, 1000)));
-                xRMenu.AddItem(new MenuItem("UseRCMaxRange", "Max. Range").SetValue(new Slider(1500, 500, 2000)));
-                xRMenu.AddItem(new MenuItem("DrawRMin", "Draw Min. R Range").SetValue(new Circle(true, Color.DarkRed)));
-                xRMenu.AddItem(
-                    new MenuItem("DrawRMax", "Draw Max. R Range").SetValue(new Circle(true, Color.DarkMagenta)));
-
-                config.AddSubMenu(xRMenu);
+                config.Add("UseRC", new CheckBox("Use R"));
+                config.Add("UseRCMinRange", new Slider("Min. Range", 200, 200, 1000));
+                config.Add("UseRCMaxRange", new Slider("Max. Range", 1500, 500, 2000));
+                config.Add("DrawRMin", new CheckBox("Draw Min. R Range"));//.SetValue(new Circle(true, Color.DarkRed)));
+                config.Add("DrawRMax", new CheckBox("Draw Max. R Range"));//.SetValue(new Circle(true, Color.DarkMagenta)));
             }
             return true;
         }
 
         public override bool HarassMenu(Menu config)
         {
-            var qSubMenu = new Menu("Q:", "Harass.Q");
+            config.AddGroupLabel("Q Settings : ");
             {
-                qSubMenu.AddItem(new MenuItem("UseQH" + Id, "Use:").SetValue(true));
-                qSubMenu.AddItem(new MenuItem("UseQTH", "Toggle:").SetValue(new KeyBind("T".ToCharArray()[0], KeyBindType.Toggle))).Permashow(true, "Marksman | Toggle Q");
-                qSubMenu.AddSubMenu(new Menu("Don't Toggle:", "DontQToggleHarass"));
-                foreach (var enemy in ObjectManager.Get<Obj_AI_Hero>().Where(enemy => enemy.Team != ObjectManager.Player.Team))
+                config.Add("UseQH", new CheckBox("Use Q:"));
+                config.Add("UseQTH", new KeyBind("Toggle:", false, KeyBind.BindTypes.PressToggle, 'T'));
+                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != ObjectManager.Player.Team))
                 {
-                    qSubMenu.SubMenu("DontQToggleHarass").AddItem(new MenuItem("DontQToggleHarass" + enemy.ChampionName, enemy.ChampionName).SetValue(false));
+                    config.Add("DontQToggleHarass" + enemy.ChampionName, new CheckBox("Don't Q : " + enemy.ChampionName, false));
                 }
-                config.AddSubMenu(qSubMenu);
             }
-
-            var wSubMenu = new Menu("W:", "Harass.W");
+            config.AddGroupLabel("W Settings : ");
             {
-                wSubMenu.AddItem(new MenuItem("UseWH" + Id, "Use:").SetValue(true));
-                wSubMenu.AddItem(new MenuItem("UseWTH", "Toggle:").SetValue(new KeyBind("H".ToCharArray()[0], KeyBindType.Toggle))).Permashow(true, "Marksman | Toggle W");
-                wSubMenu.AddSubMenu(new Menu("Don't Toggle:", "DontWToggleHarass"));
-                foreach (var enemy in ObjectManager.Get<Obj_AI_Hero>().Where(enemy => enemy.Team != ObjectManager.Player.Team))
+                config.Add("UseWH", new CheckBox("Use W:"));
+                config.Add("UseWTH", new KeyBind("Toggle:", false, KeyBind.BindTypes.PressToggle, 'H'));
+                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != ObjectManager.Player.Team))
                 {
-                    wSubMenu.SubMenu("DontWToggleHarass").AddItem(new MenuItem("DontWToggleHarass" + enemy.ChampionName, enemy.ChampionName).SetValue(false));
+                    config.Add("DontWToggleHarass" + enemy.ChampionName, new CheckBox("Don't W : " + enemy.ChampionName, false));
                 }
-                config.AddSubMenu(wSubMenu);
             }
-
-            
             return true;
         }
 
         public override bool MiscMenu(Menu config)
         {
-            config.AddItem(new MenuItem("ChargeR.Enable" + Id, "Charge R with Q").SetValue(false).SetFontStyle(FontStyle.Regular, SharpDX.Color.GreenYellow));
-            config.AddItem(new MenuItem("ChargeR.Cooldown" + Id, Utils.Tab + "if R cooldown >").SetValue(new Slider(20, 10, 120)));
-            config.AddItem(new MenuItem("ChargeR.MinMana" + Id, Utils.Tab + "And Min. Mana > %").SetValue(new Slider(50, 0, 100)));
-            
-            config.AddItem(
-                new MenuItem("CastR" + Id, "Cast R (2000 Range)").SetValue(
-                    new KeyBind("T".ToCharArray()[0], KeyBindType.Press)));
-            config.AddItem(new MenuItem("PingCH" + Id, "Ping Killable Enemy with R").SetValue(true));
+            config.Add("ChargeR.Enable", new CheckBox("Charge R with Q", false));
+            config.Add("ChargeR.Cooldown", new Slider("^ if R cooldown >", 20, 10, 120));
+            config.Add("ChargeR.MinMana", new Slider("^^ And Min. Mana > %", 50, 0, 100));
+            config.AddSeparator();
+            config.Add("CastR", new KeyBind("Cast R (2000 Range)", false, KeyBind.BindTypes.HoldActive, 'T'));
+            config.Add("PingCH", new CheckBox("Ping Killable Enemy with R"));
             return true;
         }
 
         public override bool DrawingMenu(Menu config)
         {
-            config.AddItem(
-                new MenuItem("DrawQ" + Id, "Q range").SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
-            config.AddItem(
-                new MenuItem("DrawW" + Id, "W range").SetValue(new Circle(false, Color.FromArgb(100, 255, 255, 255))));
-            var dmgAfterComboItem = new MenuItem("DamageAfterCombo", "Damage After Combo").SetValue(true);
-
-            config.AddItem(dmgAfterComboItem);
+            config.Add("DrawQ", new CheckBox("Q range"));//.SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
+            config.Add("DrawW", new CheckBox("W range", false));//.SetValue(new Circle(false, Color.FromArgb(100, 255, 255, 255))));
             return true;
         }
 
-   
+
         public override bool JungleClearMenu(Menu config)
         {
-            config.AddItem(new MenuItem("Jungle.Q" + Id, "Use Q").SetValue(new StringList(new[] {"Off", "On", "Just big Monsters"}, 1)))
-                .SetFontStyle(FontStyle.Regular, Q.MenuColor());
+            config.Add("Jungle.Q", new ComboBox("Use Q", 1, "Off", "On", "Just big Monsters"));
             return true;
         }
 
         public override void PermaActive()
         {
-          
+
         }
     }
 }
