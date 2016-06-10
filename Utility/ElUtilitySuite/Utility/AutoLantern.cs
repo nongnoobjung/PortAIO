@@ -86,6 +86,7 @@
             var autoLanternMenu = rootMenu.AddSubMenu("Thresh Lantern", "Threshlantern");
             {
                 autoLanternMenu.Add("ThreshLantern", new CheckBox("Auto click Thresh lantern"));
+                autoLanternMenu.Add("ThreshHawkMode", new CheckBox("Only use key", false));
                 autoLanternMenu.Add("ThreshLanternHotkey", new KeyBind("Hotkey", false, KeyBind.BindTypes.HoldActive, 'M'));
                 autoLanternMenu.Add("ThreshLanternHPSlider", new Slider("Click when HP %", 20));
             }
@@ -176,8 +177,8 @@
                     return;
                 }
 
-                if (this.Player.HealthPercent < this.ClickBelowHp
-                    || getKeyBindItem(this.Menu, "ThreshLanternHotkey"))
+                if (getCheckBoxItem(this.Menu, "ThreshHawkMode") ? getKeyBindItem(this.Menu, "ThreshLanternHotkey") :
+                    getKeyBindItem(this.Menu, "ThreshLanternHotkey") || this.Player.HealthPercent < this.ClickBelowHp)
                 {
                     if (this.ThreshLantern.Position.LSDistance(this.Player.Position) <= 500)
                     {
