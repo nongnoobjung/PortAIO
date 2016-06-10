@@ -288,7 +288,10 @@ namespace hi_im_gosu
             {
                 foreach (var enemy in EntityManager.Heroes.Enemies.Where(x => x.LSIsValidTarget(E.Range) && !x.HasBuffOfType(BuffType.SpellShield) && !x.HasBuffOfType(BuffType.SpellImmunity) && threeSixty(x)))
                 {
-                    E.Cast(enemy);
+                    if (Player.LSDistance(enemy) < 450)
+                    {
+                        E.Cast(enemy);
+                    }
                 }
             }
         }
