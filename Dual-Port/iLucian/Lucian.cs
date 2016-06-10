@@ -92,12 +92,12 @@ namespace iLucian
                 return;
             }
 
-            if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.Distance(ObjectManager.Player.ServerPosition) < 300)) return;
+            if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition) < 300)) return;
 
             if (Variables.Spell[Variables.Spells.E].IsReady())
             {
                 Variables.Spell[Variables.Spells.E].Cast(
-                    ObjectManager.Player.ServerPosition.Extend(gapcloser.End, -475));
+                    ObjectManager.Player.ServerPosition.LSExtend(gapcloser.End, -475));
             }
         }
 
@@ -261,7 +261,7 @@ namespace iLucian
                         && getCheckBoxItem(MenuGenerator.jungleclearOptions, "com.ilucian.jungleclear.e"))
                     {
                         Variables.Spell[Variables.Spells.E].Cast(
-                            ObjectManager.Player.Position.Extend(Game.CursorPos, 475));
+                            ObjectManager.Player.Position.LSExtend(Game.CursorPos, 475));
                     }
                 }
             }
@@ -371,11 +371,11 @@ namespace iLucian
                 foreach (var meleeTarget in
                     HeroManager.Enemies.Where(
                         x =>
-                        x.IsMelee && x.Distance(ObjectManager.Player) <= x.AttackRange * 2f
+                        x.IsMelee && x.LSDistance(ObjectManager.Player) <= x.AttackRange * 2f
                         && ObjectManager.Player.HealthPercent <= 30 && x.HealthPercent > 50))
                 {
                     Variables.Spell[Variables.Spells.E].Cast(
-                        ObjectManager.Player.ServerPosition.Extend(meleeTarget.Position, -475));
+                        ObjectManager.Player.ServerPosition.LSExtend(meleeTarget.Position, -475));
                 }
             }
 
@@ -588,14 +588,14 @@ namespace iLucian
                     ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRadius);
 
                 var collision = Variables.Spell[Variables.Spells.Q].GetCollision(
-                    ObjectManager.Player.Position.To2D(),
-                    new List<Vector2> { prediction.UnitPosition.To2D() });
+                    ObjectManager.Player.Position.LSTo2D(),
+                    new List<Vector2> { prediction.UnitPosition.LSTo2D() });
 
                 foreach (var cs in collision)
                 {
                     if (collision.Count < getSliderItem(MenuGenerator.laneclearOptions, "com.ilucian.laneclear.qMinions")) continue;
-                    if (collision.Last().Distance(ObjectManager.Player) - collision[0].Distance(ObjectManager.Player)
-                        <= 600 && collision[0].Distance(ObjectManager.Player) <= 500)
+                    if (collision.Last().LSDistance(ObjectManager.Player) - collision[0].LSDistance(ObjectManager.Player)
+                        <= 600 && collision[0].LSDistance(ObjectManager.Player) <= 500)
                     {
                         Variables.Spell[Variables.Spells.Q].Cast(cs);
                     }
