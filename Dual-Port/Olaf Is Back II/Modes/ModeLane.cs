@@ -122,7 +122,7 @@ namespace OlafxQx.Modes
             //}
 
             var useE = MenuLocal["Lane.UseE"].Cast<ComboBox>().CurrentValue;
-            if (E.IsReady())
+            if (useE != 0 && E.IsReady())
             {
                 var minions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, E.Range);
 
