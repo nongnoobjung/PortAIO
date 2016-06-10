@@ -3434,7 +3434,7 @@ namespace EvadeSharp
                     SpellName = "TaliyahW",
                     Slot = SpellSlot.W,
                     Type = SkillShotType.SkillshotCircle,
-                    Delay = 700,
+                    Delay = 600,
                     Range = 900,
                     Radius = 200,
                     MissileSpeed = int.MaxValue,
