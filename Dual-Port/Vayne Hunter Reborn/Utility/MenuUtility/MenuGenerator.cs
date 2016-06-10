@@ -71,6 +71,7 @@ namespace VayneHunter_Reborn.Utility.MenuUtility
             miscMenu.Add("dz191.vhr.misc.condemn.pushdistance", new Slider("E Push Distance", 420, 350, 470));
             miscMenu.Add("dz191.vhr.misc.condemn.accuracy", new Slider("Accuracy (Revolution Only)", 45, 1, 65));
             miscMenu.Add("dz191.vhr.misc.condemn.enextauto", new KeyBind("E Next Auto", false, KeyBind.BindTypes.PressToggle, 'T'));
+            miscMenu.Add("dz191.vhr.misc.condemn.flashcondemn", new KeyBind("Condemn -> Flash", false, KeyBind.BindTypes.HoldActive, 'W'));
             miscMenu.Add("dz191.vhr.misc.condemn.onlystuncurrent", new CheckBox("Only stun current target"));
             miscMenu.Add("dz191.vhr.misc.condemn.autoe", new CheckBox("Auto E"));
             miscMenu.Add("dz191.vhr.misc.condemn.eks", new CheckBox("Smart E KS"));

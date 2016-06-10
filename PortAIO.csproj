@@ -848,6 +848,7 @@
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\ModuleList\Condemn\CondemnJungleMobs.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\ModuleList\Condemn\EAfterAA.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\ModuleList\Condemn\EKS.cs" />
+    <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\ModuleList\Condemn\FlashCondemn.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\ModuleList\Condemn\FlashRepel.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\ModuleList\Condemn\LowLifePeel.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\ModuleList\Misc\DisableMovement.cs" />
