@@ -442,6 +442,7 @@
     <Compile Include="Dual-Port\LeBlanc II\Modes\ModeSettings.cs" />
     <Compile Include="Dual-Port\LeBlanc II\Program.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\Ashe.cs" />
+    <Compile Include="Dual-Port\Marksman II\Champions\Caitlyn.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\Champion.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\PlayerSpells.cs" />
     <Compile Include="Dual-Port\Marksman II\Common\CommonAutoBush.cs" />

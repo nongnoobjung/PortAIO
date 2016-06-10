@@ -65,10 +65,10 @@ namespace Marksman
                 case "ashe":
                     ChampionClass = new Ashe();
                     break;
-                    /*
                 case "caitlyn":
                     ChampionClass = new Caitlyn();
                     break;
+                    /*
                 case "corki":
                     ChampionClass = new Corki();
                     break;
