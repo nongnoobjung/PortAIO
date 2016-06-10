@@ -6,11 +6,13 @@ using System.Drawing;
 using System.Linq;
 using LeagueSharp;
 using LeagueSharp.Common;
-using Marksman.Orb;
 using Marksman.Utils;
 using SharpDX;
 using Color = System.Drawing.Color;
-using Orbwalking = Marksman.Orb.Orbwalking;
+using EloBuddy;
+using EloBuddy.SDK.Menu;
+using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK;
 
 #endregion
 
@@ -18,18 +20,18 @@ namespace Marksman.Champions
 {
     internal class Corki : Champion
     {
-        public Spell Q, W, E;
-        public Spell R1, R2;
+        public LeagueSharp.Common.Spell Q, W, E;
+        public LeagueSharp.Common.Spell R1, R2;
 
         public Corki()
         {
             Utils.Utils.PrintMessage("Corki loaded");
 
-            Q = new Spell(SpellSlot.Q, 825f, TargetSelector.DamageType.Magical) { MinHitChance = HitChance.High };
-            W = new Spell(SpellSlot.W, 600f, TargetSelector.DamageType.Magical);
-            E = new Spell(SpellSlot.E, 700f);
-            R1 = new Spell(SpellSlot.R, 1300f, TargetSelector.DamageType.Magical) { MinHitChance = HitChance.High };
-            R2 = new Spell(SpellSlot.R, 1500f, TargetSelector.DamageType.Magical) { MinHitChance = HitChance.VeryHigh };
+            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 825f, DamageType.Magical) { MinHitChance = HitChance.High };
+            W = new LeagueSharp.Common.Spell(SpellSlot.W, 600f, DamageType.Magical);
+            E = new LeagueSharp.Common.Spell(SpellSlot.E, 700f);
+            R1 = new LeagueSharp.Common.Spell(SpellSlot.R, 1300f, DamageType.Magical) { MinHitChance = HitChance.High };
+            R2 = new LeagueSharp.Common.Spell(SpellSlot.R, 1500f, DamageType.Magical) { MinHitChance = HitChance.VeryHigh };
 
             Q.SetSkillshot(0.35f, 240f, 1300f, false, SkillshotType.SkillshotCircle);
             W.SetSkillshot(0.35f, 140f, 1500f, false, SkillshotType.SkillshotLine);
@@ -41,96 +43,45 @@ namespace Marksman.Champions
 
         public override void Drawing_OnDraw(EventArgs args)
         {
-            Circle drawKillableMinions = GetValue<Circle>("Lane.UseQ.DrawKM");
-            if (drawKillableMinions.Active && Q.IsReady() && Orbwalker.ActiveMode != Orbwalking.OrbwalkingMode.Combo)
+            bool drawKillableMinions = Program.laneclear["Lane.UseQ.DrawKM"].Cast<CheckBox>().CurrentValue;
+            if (drawKillableMinions && Q.IsReady() && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 foreach (Obj_AI_Base m in
                     MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q.Range)
                         .Where(x => E.CanCast(x) && x.Health < Q.GetDamage(x)))
                 {
-                    Render.Circle.DrawCircle(m.Position, (float)(m.BoundingRadius * 2), drawKillableMinions.Color, 5);
+                    Render.Circle.DrawCircle(m.Position, (float)(m.BoundingRadius * 2), Color.Wheat, 5);
                 }
             }
-            //if (JungleClearActive || LaneClearActive)
-            //{
-            //    IEnumerable<Obj_AI_Base> list = ObjectManager.Get<Obj_AI_Minion>().Where(w => w.IsValidTarget(Q.Range));
-            //    IEnumerable<Obj_AI_Base> mobs;
-            //    if (JungleClearActive)
-            //    {
-            //        mobs = list.Where(w => w.Team == GameObjectTeam.Neutral);
-            //        if (GetValue<StringList>("Jungle.UseQ").SelectedIndex == 1)
-            //        {
 
-            //            IEnumerable<Obj_AI_Base> oMob = (from fMobs in mobs
-            //                from fBigBoys in
-            //                    new[]
-            //                    {
-            //                        "SRU_Blue", "SRU_Gromp", "SRU_Murkwolf", "SRU_Razorbeak", "SRU_Red",
-            //                        "SRU_Krug", "SRU_Dragon", "SRU_Baron", "Sru_Crab"
-            //                    }
-            //                where fBigBoys == fMobs.SkinName
-            //                select fMobs).AsEnumerable();
-
-
-            //            mobs = oMob;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        mobs = list;
-            //    }
-
-
-            //    var objAiBases = mobs as IList<Obj_AI_Base> ?? mobs.ToList();
-            //    List<Obj_AI_Base> m1 = objAiBases.ToList();
-
-            //    foreach (var m in objAiBases)
-            //    {
-            //        var locLine = W.GetLineFarmLocation(m1);
-            //        if (locLine.MinionsHit >= 3 && W.IsInRange(locLine.Position.To3D()))
-            //        {
-            //            Render.Circle.DrawCircle(m.Position, 105f, Color.Red);
-            //            W.Cast(locLine.Position);
-            //            return;
-            //        }
-
-            //        var locCircular = Q.GetCircularFarmLocation(m1, Q.Width);
-            //        if (locCircular.MinionsHit >= 3 && Q.IsInRange(locCircular.Position.To3D()))
-            //        {
-            //            Render.Circle.DrawCircle(locCircular.Position.To3D(), 105f, Color.Red);
-            //            Q.Cast(locCircular.Position);
-            //            return;
-            //        }
-            //    }
-            //}
-            //return;
-
-            Spell[] spellList = { Q, E };
-            foreach (Spell spell in spellList)
+            LeagueSharp.Common.Spell[] spellList = { Q, E };
+            foreach (LeagueSharp.Common.Spell spell in spellList)
             {
-                Circle menuItem = GetValue<Circle>("Draw" + spell.Slot);
-                if (menuItem.Active)
-                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, menuItem.Color);
+                bool menuItem = Program.marksmanDrawings["Draw" + spell.Slot].Cast<CheckBox>().CurrentValue;
+                if (menuItem && spell.Slot == SpellSlot.Q)
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, System.Drawing.Color.Aqua);
+                if (menuItem && spell.Equals(spell.Slot == SpellSlot.E))
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, System.Drawing.Color.Wheat);
             }
 
-            var drawR = GetValue<Circle>("DrawR1");
-            if (drawR.Active)
+            var drawR = Program.marksmanDrawings["DrawR1"].Cast<CheckBox>().CurrentValue;
+            if (drawR)
             {
-                Render.Circle.DrawCircle(ObjectManager.Player.Position, R1.Range, drawR.Color);
+                Render.Circle.DrawCircle(ObjectManager.Player.Position, R1.Range, Color.DarkOrange);
             }
         }
 
         public override void Game_OnGameUpdate(EventArgs args)
         {
-            if (R1.IsReady() && GetValue<bool>("UseRM"))
+            if (R1.IsReady() && Program.misc["UseRM"].Cast<CheckBox>().CurrentValue)
             {
                 bool bigRocket = HasBigRocket();
                 foreach (
-                    Obj_AI_Hero hero in
-                        ObjectManager.Get<Obj_AI_Hero>()
+                    AIHeroClient hero in
+                        ObjectManager.Get<AIHeroClient>()
                             .Where(
                                 hero =>
-                                    hero.IsValidTarget(bigRocket ? R2.Range : R1.Range) &&
+                                    hero.LSIsValidTarget(bigRocket ? R2.Range : R1.Range) &&
                                     R1.GetDamage(hero) * (bigRocket ? 1.5f : 1f) > hero.Health))
                 {
                     if (bigRocket)
@@ -144,35 +95,35 @@ namespace Marksman.Champions
                 }
             }
 
-            if ((!ComboActive && !HarassActive) || !Orbwalking.CanMove(100)) return;
+            if ((!ComboActive && !HarassActive) || !Orbwalker.CanMove) return;
 
-            var useQ = GetValue<bool>("UseQ" + (ComboActive ? "C" : "H"));
-            var useE = GetValue<bool>("UseE" + (ComboActive ? "C" : "H"));
-            var useR = GetValue<bool>("UseR" + (ComboActive ? "C" : "H"));
-            var rLim = GetValue<Slider>("Rlim" + (ComboActive ? "C" : "H")).Value;
+            var useQ = ComboActive ? Program.combo["UseQC"].Cast<CheckBox>().CurrentValue : Program.harass["UseQH"].Cast<CheckBox>().CurrentValue;
+            var useE = ComboActive ? Program.combo["UseEC"].Cast<CheckBox>().CurrentValue : Program.harass["UseEH"].Cast<CheckBox>().CurrentValue;
+            var useR = ComboActive ? Program.combo["UseRC"].Cast<CheckBox>().CurrentValue : Program.harass["UseRH"].Cast<CheckBox>().CurrentValue;
+            var rLim = ComboActive ? Program.combo["RlimC"].Cast<Slider>().CurrentValue : Program.harass["RlimH"].Cast<Slider>().CurrentValue;
 
             if (useQ && Q.IsReady())
             {
-                var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Magical);
+                var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
                 if (t != null)
-                    if (Q.Cast(t, false, true) == Spell.CastStates.SuccessfullyCasted)
+                    if (Q.Cast(t, false, true) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)
                         return;
             }
 
             if (useE && E.IsReady())
             {
-                var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
+                var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
                 if (t.IsValidTarget())
-                    if (E.Cast(t, false, true) == Spell.CastStates.SuccessfullyCasted)
+                    if (E.Cast(t, false, true) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)
                         return;
             }
 
             if (useR && R1.IsReady() && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo > rLim)
             {
                 bool bigRocket = HasBigRocket();
-                Obj_AI_Hero t = TargetSelector.GetTarget(bigRocket ? R2.Range : R1.Range, TargetSelector.DamageType.Magical);
+                AIHeroClient t = TargetSelector.GetTarget(bigRocket ? R2.Range : R1.Range, DamageType.Magical);
 
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     if (bigRocket)
                     {
@@ -188,7 +139,7 @@ namespace Marksman.Champions
 
         public override void ExecuteLaneClear()
         {
-            int laneQValue = GetValue<StringList>("Lane.UseQ").SelectedIndex;
+            int laneQValue = Program.laneclear["Lane.UseQ"].Cast<ComboBox>().CurrentValue;
             if (laneQValue != 0 && Q.IsReady())
             {
                 Vector2 minions = Q.GetCircularFarmMinions(laneQValue);
@@ -198,7 +149,7 @@ namespace Marksman.Champions
                 }
             }
 
-            int laneEValue = GetValue<StringList>("Lane.UseE").SelectedIndex;
+            int laneEValue = Program.laneclear["Lane.UseE"].Cast<ComboBox>().CurrentValue;
             if (laneEValue != 0 && E.IsReady())
             {
                 int minCount = E.GetMinionCountsInRange();
@@ -208,10 +159,10 @@ namespace Marksman.Champions
                 }
             }
 
-            int laneRValue = GetValue<StringList>("Lane.UseR").SelectedIndex;
-            if (laneRValue != 0 && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo >= GetValue<Slider>("Lane.UseR.Lim").Value)
+            int laneRValue = Program.laneclear["Lane.UseR"].Cast<ComboBox>().CurrentValue;
+            if (laneRValue != 0 && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo >= Program.laneclear["Lane.UseR.Lim"].Cast<Slider>().CurrentValue)
             {
-                int rocketType = GetValue<StringList>("Lane.UseR.Bomb").SelectedIndex;
+                int rocketType = Program.laneclear["Lane.UseR.Bomb"].Cast<ComboBox>().CurrentValue;
                 if (R1.IsReady() && (rocketType == 0 || rocketType == 2) && !HasBigRocket())
                 {
                     Vector2 minions = R1.GetCircularFarmMinions(laneRValue);
@@ -233,7 +184,7 @@ namespace Marksman.Champions
 
         public override void ExecuteJungleClear()
         {
-            int jungleQValue = GetValue<StringList>("Jungle.UseQ").SelectedIndex;
+            int jungleQValue = Program.jungleClear["Jungle.UseQ"].Cast<ComboBox>().CurrentValue;
             if (jungleQValue != 0 && W.IsReady())
             {
                 Obj_AI_Base jungleMobs = Utils.Utils.GetMobs(Q.Range,
@@ -245,7 +196,7 @@ namespace Marksman.Champions
                 }
             }
 
-            int jungleEValue = GetValue<StringList>("Jungle.UseE").SelectedIndex;
+            int jungleEValue = Program.jungleClear["Jungle.UseE"].Cast<ComboBox>().CurrentValue;
             if (W.IsReady() && jungleEValue != 0)
             {
                 Obj_AI_Base jungleMobs = Utils.Utils.GetMobs(E.Range,
@@ -258,13 +209,13 @@ namespace Marksman.Champions
                 }
             }
 
-            int jungleRValue = GetValue<StringList>("Jungle.UseR").SelectedIndex;
-            if (jungleRValue != 0 && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo > GetValue<Slider>("Jungle.UseR.Lim").Value)
+            int jungleRValue = Program.jungleClear["Jungle.UseR"].Cast<ComboBox>().CurrentValue;
+            if (jungleRValue != 0 && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo > Program.jungleClear["Jungle.UseR.Lim"].Cast<Slider>().CurrentValue)
             {
                 Obj_AI_Base jungleMobs = Utils.Utils.GetMobs(R1.Range, jungleRValue != 1 ? Utils.Utils.MobTypes.All : Utils.Utils.MobTypes.BigBoys, jungleRValue != 1 ? jungleRValue : 1);
                 if (jungleMobs != null)
                 {
-                    var rocketType = GetValue<StringList>("Jungle.UseR.Bomb").SelectedIndex;
+                    var rocketType = Program.jungleClear["Jungle.UseR.Bomb"].Cast<ComboBox>().CurrentValue;
                     if (R1.IsReady() && (rocketType == 0 || rocketType == 1) && !HasBigRocket())
                     {
                         R1.Cast(jungleMobs);
@@ -278,23 +229,23 @@ namespace Marksman.Champions
             }
         }
 
-        public override void Orbwalking_AfterAttack(AttackableUnit unit, AttackableUnit target)
+        public override void Orbwalking_AfterAttack(AttackableUnit target, EventArgs args)
         {
-            var t = target as Obj_AI_Hero;
-            if (t == null || (!ComboActive && !HarassActive) || !unit.IsMe)
+            var t = target as AIHeroClient;
+            if (t == null || (!ComboActive && !HarassActive))
                 return;
 
-            var useQ = GetValue<bool>("UseQ" + (ComboActive ? "C" : "H"));
-            var useE = GetValue<bool>("UseE" + (ComboActive ? "C" : "H"));
-            var useR = GetValue<bool>("UseR" + (ComboActive ? "C" : "H"));
-            var rLim = GetValue<Slider>("Rlim" + (ComboActive ? "C" : "H")).Value;
+            var useQ = ComboActive ? Program.combo["UseQC"].Cast<CheckBox>().CurrentValue : Program.harass["UseQH"].Cast<CheckBox>().CurrentValue;
+            var useE = ComboActive ? Program.combo["UseEC"].Cast<CheckBox>().CurrentValue : Program.harass["UseEH"].Cast<CheckBox>().CurrentValue;
+            var useR = ComboActive ? Program.combo["UseRC"].Cast<CheckBox>().CurrentValue : Program.harass["UseRH"].Cast<CheckBox>().CurrentValue;
+            var rLim = ComboActive ? Program.combo["RlimC"].Cast<Slider>().CurrentValue : Program.harass["RlimH"].Cast<Slider>().CurrentValue;
 
             if (useQ && Q.IsReady())
-                if (Q.Cast(t, false, true) == Spell.CastStates.SuccessfullyCasted)
+                if (Q.Cast(t, false, true) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)
                     return;
 
             if (useE && E.IsReady())
-                if (E.Cast(t, false, true) == Spell.CastStates.SuccessfullyCasted)
+                if (E.Cast(t, false, true) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)
                     return;
 
             if (useR && R1.IsReady() && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo > rLim)
@@ -317,35 +268,35 @@ namespace Marksman.Champions
 
         public override bool ComboMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQC" + Id, "Use Q").SetValue(true));
-            config.AddItem(new MenuItem("UseEC" + Id, "Use E").SetValue(true));
-            config.AddItem(new MenuItem("UseRC" + Id, "Use R").SetValue(true));
-            config.AddItem(new MenuItem("RlimC" + Id, "Keep R Stacks").SetValue(new Slider(0, 0, 7)));
+            config.Add("UseQC", new CheckBox("Use Q"));
+            config.Add("UseEC", new CheckBox("Use E"));
+            config.Add("UseRC", new CheckBox("Use R"));
+            config.Add("RlimC", new Slider("Keep R Stacks", 0, 0, 7));
             return true;
         }
 
         public override bool HarassMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQH" + Id, "Use Q").SetValue(true));
-            config.AddItem(new MenuItem("UseEH" + Id, "Use E").SetValue(false));
-            config.AddItem(new MenuItem("UseRH" + Id, "Use R").SetValue(true));
-            config.AddItem(new MenuItem("RlimH" + Id, "Keep R Stacks").SetValue(new Slider(3, 0, 7)));
+            config.Add("UseQH", new CheckBox("Use Q"));
+            config.Add("UseEH", new CheckBox("Use E", false));
+            config.Add("UseRH", new CheckBox("Use R"));
+            config.Add("RlimH", new Slider("Keep R Stacks", 3, 0, 7));
             return true;
         }
 
         public override bool DrawingMenu(Menu config)
         {
-            config.AddItem(new MenuItem("DrawQ" + Id, "Q range").SetValue(new Circle(true, System.Drawing.Color.Aqua, 1)));
-            config.AddItem(new MenuItem("DrawE" + Id, "E range").SetValue(new Circle(false, System.Drawing.Color.Wheat, 1)));
-            config.AddItem(new MenuItem("DrawR1" + Id, "R range").SetValue(new Circle(false, System.Drawing.Color.DarkOrange, 1)));
-            config.AddItem(new MenuItem("Draw.Packet" + Id, "Show Turbo-Packet Remaining Time").SetValue(new StringList(new[] { "Off", "Everytime", "Show 20 secs Left" }, 2)));
+            config.Add("DrawQ", new CheckBox("Q range"));//.SetValue(new Circle(true, System.Drawing.Color.Aqua, 1)));
+            config.Add("DrawE", new CheckBox("E range"));//.SetValue(new Circle(false, System.Drawing.Color.Wheat, 1)));
+            config.Add("DrawR1", new CheckBox("R range"));//.SetValue(new Circle(false, System.Drawing.Color.DarkOrange, 1)));
+            config.Add("Draw.Packet", new ComboBox("Show Turbo-Packet Remaining Time", 2, "Off", "Everytime", "Show 20 secs Left"));
             return true;
         }
 
         public override bool MiscMenu(Menu config)
         {
-            config.AddItem(new MenuItem("ShowPosition" + Id, "Show Position").SetValue(new KeyBind("H".ToCharArray()[0], KeyBindType.Press)));
-            config.AddItem(new MenuItem("UseRM" + Id, "Use R To Killsteal").SetValue(true));
+            config.Add("ShowPosition", new KeyBind("Show Position", false, KeyBind.BindTypes.HoldActive, 'H'));
+            config.Add("UseRM", new CheckBox("Use R To Killsteal"));
             return true;
         }
 
@@ -358,11 +309,11 @@ namespace Marksman.Champions
                 {
                     strQ[i] = "Mobs Count >= " + i;
                 }
-                config.AddItem(new MenuItem("Lane.UseQ" + Id, "Q: Use").SetValue(new StringList(strQ, 2))).SetFontStyle(FontStyle.Regular, Q.MenuColor());
+                config.Add("Lane.UseQ", new ComboBox("Q: Use", 2, strQ));
             }
 
-            config.AddItem(new MenuItem("Lane.UseQ.Prepare" + Id, "Q: Prepare Minions for multi farm").SetValue(new StringList(new[] { "Off", "On", "Just Under Ally Turret" }, 2))).SetFontStyle(FontStyle.Regular, Q.MenuColor());
-            config.AddItem(new MenuItem("Lane.UseQ.DrawKM" + Id, "Q: Draw Killable Minions").SetValue(new Circle(true, Color.Wheat, 85f))).SetFontStyle(FontStyle.Regular, Q.MenuColor());
+            config.Add("Lane.UseQ.Prepare", new ComboBox("Q: Prepare Minions for multi farm", 2, "Off", "On", "Just Under Ally Turret"));
+            config.Add("Lane.UseQ.DrawKM", new CheckBox("Q: Draw Killable Minions"));//.SetValue(new Circle(true, Color.Wheat, 85f))).SetFontStyle(FontStyle.Regular, Q.MenuColor());
 
 
             string[] strW = new string[6];
@@ -372,9 +323,6 @@ namespace Marksman.Champions
                 {
                     strW[i] = "Mobs Count >= " + i;
                 }
-                //TODO: Add W Lane Clear for Corki
-                //                config.AddItem(new MenuItem("Lane.UseW" + Id, "W: Use").SetValue(new StringList(strW, 2))).SetFontStyle(FontStyle.Regular, E.MenuColor());
-                //                config.AddItem(new MenuItem("Lane.UseW.Mode" + Id, "W: Mode").SetValue(new StringList(new []{"Just Under Ally Turret", "If I'm Alone/in Safe", "Use Everytime"}))).SetFontStyle(FontStyle.Regular, E.MenuColor());
             }
 
             string[] strE = new string[7];
@@ -385,7 +333,7 @@ namespace Marksman.Champions
                     strE[i] = "Mobs Count >= " + i;
                 }
 
-                config.AddItem(new MenuItem("Lane.UseE" + Id, "E: Use").SetValue(new StringList(strE, 2))).SetFontStyle(FontStyle.Regular, E.MenuColor());
+                config.Add("Lane.UseE", new ComboBox("E: Use", 2, strE));
             }
 
             string[] strR = new string[4];
@@ -396,9 +344,9 @@ namespace Marksman.Champions
                     strR[i] = "Minion Count >= " + i;
                 }
 
-                config.AddItem(new MenuItem("Lane.UseR" + Id, "R:").SetValue(new StringList(strR, 3))).SetFontStyle(FontStyle.Regular, R1.MenuColor());
-                config.AddItem(new MenuItem("Lane.UseR.Lim" + Id, "R: Keep Stacks").SetValue(new Slider(0, 0, 7))).SetFontStyle(FontStyle.Regular, R1.MenuColor());
-                config.AddItem(new MenuItem("Lane.UseR.Bomb" + Id, "R: Rocket Type").SetValue(new StringList(new[] { "Small-Rocked", "Big-Rocked", "Both" }, 0))).SetFontStyle(FontStyle.Regular, R1.MenuColor());
+                config.Add("Lane.UseR", new ComboBox("R:", 3, strR));
+                config.Add("Lane.UseR.Lim", new Slider("R: Keep Stacks", 0, 0, 7));
+                config.Add("Lane.UseR.Bomb", new ComboBox("R: Rocket Type", 0, "Small-Rocked", "Big-Rocked", "Both"));
             }
             return true;
         }
@@ -415,7 +363,7 @@ namespace Marksman.Champions
                     strQ[i] = "Mobs Count >= " + i;
                 }
 
-                config.AddItem(new MenuItem("Jungle.UseQ" + Id, "Q: Use").SetValue(new StringList(strQ, 1))).SetFontStyle(FontStyle.Regular, Q.MenuColor());
+                config.Add("Jungle.UseQ", new ComboBox("Q: Use", 1, strQ));
             }
 
             string[] strE = new string[4];
@@ -428,8 +376,7 @@ namespace Marksman.Champions
                     strE[i] = "Mobs Count >= " + i;
                 }
 
-                config.AddItem(new MenuItem("Jungle.UseE" + Id, "E: Use").SetValue(new StringList(strE, 1))).SetFontStyle(FontStyle.Regular, E.MenuColor());
-                //config.AddItem(new MenuItem("Jungle.UseE.Lock" + Id, "E: Lock Position").SetValue(new StringList(new[] { "Off", "On", "On: if enemy so far" }, 1))).SetFontStyle(FontStyle.Regular, SharpDX.Color.GreenYellow);
+                config.Add("Jungle.UseE", new ComboBox("E: Use", 1, strE));
             }
 
             string[] strR = new string[4];
@@ -441,9 +388,9 @@ namespace Marksman.Champions
                     strR[i] = "Mob Count >= " + i;
                 }
 
-                config.AddItem(new MenuItem("Jungle.UseR" + Id, "R:").SetValue(new StringList(strR, 3))).SetFontStyle(FontStyle.Regular, R1.MenuColor());
-                config.AddItem(new MenuItem("Jungle.UseR.Lim" + Id, "R: Keep Stacks").SetValue(new Slider(0, 0, 7))).SetFontStyle(FontStyle.Regular, R1.MenuColor());
-                config.AddItem(new MenuItem("Jungle.UseR.Bomb" + Id, "R: Rocked Type").SetValue(new StringList(new[] { "Small-Rocked", "Big-Rocked", "Both" }, 0))).SetFontStyle(FontStyle.Regular, R1.MenuColor());
+                config.Add("Jungle.UseR", new ComboBox("R:", 3, strR));
+                config.Add("Jungle.UseR.Lim", new Slider("R: Keep Stacks", 0, 0, 7));
+                config.Add("Jungle.UseR.Bomb", new ComboBox("R: Rocked Type", 0, "Small-Rocked", "Big-Rocked", "Both"));
             }
 
             return true;

@@ -521,6 +521,9 @@ namespace PortAIO
                             case 2:
                                 D_Corki.Program.Game_OnGameLoad();
                                 break;
+                            case 3:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 ElCorki.Corki.Game_OnGameLoad();
                                 break;
