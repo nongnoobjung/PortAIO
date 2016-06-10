@@ -45,6 +45,7 @@ namespace iLucian.MenuHelper
             harassOptions.Add("com.ilucian.harass.q", new CheckBox("Use Q", true));
             harassOptions.Add("com.ilucian.harass.qExtended", new CheckBox("Use Extended Q", true));
             harassOptions.Add("com.ilucian.harass.w", new CheckBox("Use W", true));
+            harassOptions.Add("com.ilucian.harass.mana", new Slider("Min Mana % for harass", 70, 0, 100));
 
             laneclearOptions = Variables.Menu.AddSubMenu(":: iLucian - Laneclear Options", "com.ilucian.laneclear");
             laneclearOptions.Add("com.ilucian.laneclear.q", new CheckBox("Use Q", true));
