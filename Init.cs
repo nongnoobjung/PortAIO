@@ -682,7 +682,18 @@ namespace PortAIO
                         UnderratedAIO.Champions.Garen.OnLoad();
                         break;
                     case "gnar": // Slutty Gnar
-                        Slutty_Gnar_Reworked.Gnar.OnLoad();
+                        switch (Loader.gnar)
+                        {
+                            case 0:
+                                Slutty_Gnar_Reworked.Gnar.OnLoad();
+                                break;
+                            case 1:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                Slutty_Gnar_Reworked.Gnar.OnLoad();
+                                break;
+                        }
                         break;
                     case "gragas": // Gragas - Drunk Carry
                         switch (Loader.gragas)

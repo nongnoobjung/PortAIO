@@ -4,8 +4,10 @@ using System;
 using System.Drawing;
 using LeagueSharp;
 using LeagueSharp.Common;
-using Marksman.Orb;
-using Orbwalking = Marksman.Orb.Orbwalking;
+using EloBuddy;
+using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK.Menu;
+using EloBuddy.SDK;
 
 #endregion
 
@@ -13,35 +15,35 @@ namespace Marksman.Champions
 {
     internal class Gnar : Champion
     {
-        private static readonly Obj_AI_Hero vGnar = ObjectManager.Player;
-        public Spell E;
-        public Spell Q;
-        public Spell W;
+        private static readonly AIHeroClient vGnar = ObjectManager.Player;
+        public LeagueSharp.Common.Spell E;
+        public LeagueSharp.Common.Spell Q;
+        public LeagueSharp.Common.Spell W;
 
         public Gnar()
         {
             Utils.Utils.PrintMessage("Gnar loaded.");
 
-            Q = new Spell(SpellSlot.Q, 1100);
+            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 1100);
             Q.SetSkillshot(0.5f, 50f, 1200f, false, SkillshotType.SkillshotLine);
 
-            W = new Spell(SpellSlot.W, 600);
+            W = new LeagueSharp.Common.Spell(SpellSlot.W, 600);
 
-            E = new Spell(SpellSlot.E, 500);
+            E = new LeagueSharp.Common.Spell(SpellSlot.E, 500);
             E.SetSkillshot(0.5f, 50f, 1200f, false, SkillshotType.SkillshotCircle);
         }
 
         public override void Game_OnGameUpdate(EventArgs args)
         {
-            if (!Orbwalking.CanMove(100))
+            if (!Orbwalker.CanMove)
                 return;
 
-            var useQ = GetValue<bool>("UseQ" + (ComboActive ? "C" : "H"));
+            var useQ = ComboActive ? Program.combo["UseQC"].Cast<CheckBox>().CurrentValue : Program.harass["UseQH"].Cast<CheckBox>().CurrentValue;
             if (ComboActive || HarassActive)
             {
                 if (Q.IsReady() && useQ)
                 {
-                    var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
+                    var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
                     if (t != null)
                     {
                         Q.Cast(t, false, true);
@@ -50,13 +52,13 @@ namespace Marksman.Champions
             }
         }
 
-        public override void Orbwalking_AfterAttack(AttackableUnit unit, AttackableUnit target)
+        public override void Orbwalking_AfterAttack(AttackableUnit target, EventArgs args)
         {
-            var t = target as Obj_AI_Hero;
-            if (t != null && (ComboActive || HarassActive) && unit.IsMe)
+            var t = target as AIHeroClient;
+            if (t != null && (ComboActive || HarassActive))
             {
-                var useQ = GetValue<bool>("UseQ" + (ComboActive ? "C" : "H"));
-                var useW = GetValue<bool>("UseW" + (ComboActive ? "C" : "H"));
+                var useQ = ComboActive ? Program.combo["UseQC"].Cast<CheckBox>().CurrentValue : Program.harass["UseQH"].Cast<CheckBox>().CurrentValue;
+                var useW = ComboActive ? Program.combo["UseWC"].Cast<CheckBox>().CurrentValue : Program.harass["UseWH"].Cast<CheckBox>().CurrentValue;
 
                 if (W.IsReady() && useW)
                 {
@@ -71,37 +73,34 @@ namespace Marksman.Champions
 
         public override void Drawing_OnDraw(EventArgs args)
         {
-            Spell[] spellList = {Q, W, E};
+            LeagueSharp.Common.Spell[] spellList = {Q, W, E};
             foreach (var spell in spellList)
             {
-                var menuItem = GetValue<Circle>("Draw" + spell.Slot);
-                if (menuItem.Active)
-                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, menuItem.Color);
+                var menuItem = Program.marksmanDrawings["Draw" + spell.Slot].Cast<CheckBox>().CurrentValue;
+                if (menuItem)
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, Color.FromArgb(100, 255, 0, 255));
             }
         }
 
         public override bool ComboMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQC" + Id, "Use Q").SetValue(true));
-            config.AddItem(new MenuItem("UseWC" + Id, "Use W").SetValue(true));
+            config.Add("UseQC", new CheckBox("Use Q"));
+            config.Add("UseWC", new CheckBox("Use W"));
             return true;
         }
 
         public override bool HarassMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQH" + Id, "Use Q").SetValue(false));
-            config.AddItem(new MenuItem("UseWH" + Id, "Use W").SetValue(false));
+            config.Add("UseQH", new CheckBox("Use Q", false));
+            config.Add("UseWH", new CheckBox("Use W", false));
             return true;
         }
 
         public override bool DrawingMenu(Menu config)
         {
-            config.AddItem(
-                new MenuItem("DrawQ" + Id, "Q range").SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
-            config.AddItem(
-                new MenuItem("DrawW" + Id, "W range").SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
-            config.AddItem(
-                new MenuItem("DrawE" + Id, "E range").SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
+            config.Add("DrawQ", new CheckBox("Q range"));//.SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
+            config.Add("DrawW", new CheckBox("W range"));//.SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
+            config.Add("DrawE", new CheckBox("E range"));//.SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
             return true;
         }
 
@@ -109,6 +108,7 @@ namespace Marksman.Champions
         {
             return true;
         }
+
         public override bool JungleClearMenu(Menu config)
         {
             return false;

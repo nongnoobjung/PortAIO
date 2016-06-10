@@ -77,12 +77,12 @@ namespace Marksman
                 case "ezreal":
                     ChampionClass = new Ezreal();
                     break;
+                case "gnar":
+                    ChampionClass = new Gnar();
+                    break;
                     /*
                 case "graves":
                     ChampionClass = new Graves();
-                    break;
-                case "gnar":
-                    ChampionClass = new Gnar();
                     break;
                 case "jinx":
                     ChampionClass = new Jinx();
