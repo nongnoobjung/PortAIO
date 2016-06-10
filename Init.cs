@@ -287,6 +287,9 @@ namespace PortAIO
                             case 1:
                                 Challenger_Series.Program.Main();
                                 break;
+                            case 2:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
