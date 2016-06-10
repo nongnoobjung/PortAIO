@@ -104,7 +104,7 @@ namespace ElRengarRevamped
                             }
                             break;
                         case 1:
-                            if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.W") && spells[Spells.W].IsReady())
+                            if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.W") && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                             {
                                 CastW();
                             }
