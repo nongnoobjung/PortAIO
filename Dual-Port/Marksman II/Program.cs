@@ -80,10 +80,10 @@ namespace Marksman
                 case "gnar":
                     ChampionClass = new Gnar();
                     break;
-                    /*
                 case "graves":
                     ChampionClass = new Graves();
                     break;
+                    /*
                 case "jinx":
                     ChampionClass = new Jinx();
                     break;

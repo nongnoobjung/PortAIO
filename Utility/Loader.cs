@@ -81,7 +81,7 @@ namespace PortAIO.Utility
         public static int ekko { get { return Miscc["ekko"].Cast<ComboBox>().CurrentValue; } }
         public static int rumble { get { return Miscc["rumble"].Cast<ComboBox>().CurrentValue; } }
         public static int riven { get { return Miscc["riven"].Cast<ComboBox>().CurrentValue; } }
-        public static int graves { get { return Miscc["graves"].Cast<ComboBox>().CurrentValue; } }
+        public static int graves { get { return Miscc["Graves"].Cast<ComboBox>().CurrentValue; } }
         public static int ahri { get { return Miscc["ahri"].Cast<ComboBox>().CurrentValue; } }
         public static bool banwards { get { return Miscc["banwards"].Cast<CheckBox>().CurrentValue; } }
         public static bool antialistar { get { return Miscc["antialistar"].Cast<CheckBox>().CurrentValue; } }
@@ -360,7 +360,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[42]))
                 {
-                    Miscc.Add("Graves", new ComboBox("Use addon for Graves : ", 0, "OKTW", "D-Graves"));
+                    Miscc.Add("Graves", new ComboBox("Use addon for Graves : ", 0, "OKTW", "D-Graves", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[43]))
                 {

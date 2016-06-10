@@ -369,6 +369,9 @@ namespace PortAIO
                             case 1:
                                 D_Graves.Program.Game_OnGameLoad();
                                 break;
+                            case 2:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
