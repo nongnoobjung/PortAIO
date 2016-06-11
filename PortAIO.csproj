@@ -580,6 +580,7 @@
     <Compile Include="Dual-Port\TophSharp\Taliyah.cs" />
     <Compile Include="Dual-Port\Tyler1\Program.cs" />
     <Compile Include="Dual-Port\Tyler1\Utils.cs" />
+    <Compile Include="Dual-Port\Underrated Renekton\Renekton.cs" />
     <Compile Include="Dual-Port\UnderratedFiora\Fiora.cs" />
     <Compile Include="Champion\Fizz\Program.cs" />
     <Compile Include="Champion\Galio\Program.cs" />

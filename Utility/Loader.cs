@@ -106,6 +106,7 @@ namespace PortAIO.Utility
         public static int activatorCB { get { return Miscc["activatorCB"].Cast<ComboBox>().CurrentValue; } }
         public static int olaf { get { return Miscc["olaf"].Cast<ComboBox>().CurrentValue; } }
         public static int gnar { get { return Miscc["gnar"].Cast<ComboBox>().CurrentValue; } }
+        public static int renekton { get { return Miscc["renekton"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -180,6 +181,7 @@ namespace PortAIO.Utility
             "Bard", //59
             "Olaf", // 60
             "Gnar", //61
+            "Renekton", //62
         });
 
         public static void Menu()
@@ -437,6 +439,10 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[61]))
                 {
                     Miscc.Add("gnar", new ComboBox("Use addon for Gnar : ", 0, "SluttyGnar", "Marksman II"));
+                }
+                if (Player.ChampionName.Equals(Champion[62]))
+                {
+                    Miscc.Add("reneton", new ComboBox("Use addon for Renekton : ", 0, "ExorAIO", "UnderratedAIO"));
                 }
             }
             else

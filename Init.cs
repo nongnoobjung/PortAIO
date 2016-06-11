@@ -568,10 +568,25 @@ namespace PortAIO
                     case "pantheon":
                         ExorSDK.AIO.OnLoad();
                         break;
-                    case "renekton":
                     case "tryndamere":
                         ExorAIO.Core.Bootstrap.BuildMenu();
                         ExorAIO.Core.Bootstrap.LoadChampion();
+                        break;
+                    case "renekton":
+                        switch (Loader.renekton)
+                        {
+                            case 0:
+                                ExorAIO.Core.Bootstrap.BuildMenu();
+                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                break;
+                            case 1:
+                                UnderratedAIO.Champions.Renekton.OnLoad();
+                                break;
+                            default:
+                                ExorAIO.Core.Bootstrap.BuildMenu();
+                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                break;
+                        }
                         break;
                     case "ryze":
                         switch (Loader.ryze)
