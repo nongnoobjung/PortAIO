@@ -35,6 +35,7 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Shen Hand of God
 - [RE-PORT] Nechrito Riven - Some Big Changes Happened and it's all different now
 - Lee Is Back [https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Lee%20is%20Back]
+- Sharpshooter
 
 Utility Ports [Only doing after Champions are completed] :
 - DZAwareness [https://github.com/DZ191/LeagueSharp/tree/master/DZAwarenessAIO]
