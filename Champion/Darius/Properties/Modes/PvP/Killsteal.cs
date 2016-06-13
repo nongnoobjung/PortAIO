@@ -25,7 +25,7 @@ namespace ExorSDK.Champions.Darius
             ///     The KillSteal R Logic.
             /// </summary>
             /// 
-            var target = TargetSelector.GetTarget(Vars.R.Range, DamageType.Magical);
+            var target = TargetSelector.GetTarget(Vars.R.Range, DamageType.Physical);
             if (target == null || !target.IsValid)
             {
                 return;
