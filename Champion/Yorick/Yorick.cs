@@ -24,11 +24,12 @@ namespace UnderratedAIO.Champions
         public static bool GhostDelay;
         public static int GhostRange = 2200;
         public static int LastAATick;
-
+        public static IncomingDamage IncDamages;
         public static Menu menuD, menuC, menuH, menuLC, menuM;
 
         public Yorick()
         {
+            IncDamages = new IncomingDamage();
             InitYorick();
             InitMenu();
             Game.OnUpdate += Game_OnGameUpdate;
@@ -40,15 +41,13 @@ namespace UnderratedAIO.Champions
 
         private static bool Yorickghost
         {
-            get { return player.Spellbook.GetSpell(SpellSlot.R).Name == "yorickreviveallyguide"; }
+            get { return player.Spellbook.GetSpell(SpellSlot.R).Name == "YorickReviveAllyGuide"; }
         }
 
         private void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args)
         {
             if (Yorickghost)
             {
-                var clone = MinionManager.GetMinions(3000, MinionTypes.All, MinionTeam.Ally).FirstOrDefault(m => m.HasBuff("yorickunholysymbiosis"));
-
                 if (args == null || clone == null)
                 {
                     return;
@@ -63,6 +62,19 @@ namespace UnderratedAIO.Champions
 
         private void Game_OnGameUpdate(EventArgs args)
         {
+            if (Yorickghost && clone == null)
+            {
+                clone =
+                    ObjectManager.Get<Obj_AI_Minion>()
+                        .FirstOrDefault(
+                            m =>
+                                m.IsAlly && m.Distance(player) < 3000 &&
+                                HeroManager.Allies.Any(h => h.Name.ToLower().Equals(m.Name.ToLower())));
+                if (clone != null)
+                {
+                    Console.WriteLine("Found: " + clone.Name);
+                }
+            }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Combo();
@@ -79,28 +91,16 @@ namespace UnderratedAIO.Champions
                 Clear();
             }
 
-            if (Yorickghost && !GhostDelay && getCheckBoxItem(menuM, "autoMoveGhost"))
+            if (R.IsReady() && Yorickghost && !GhostDelay && getCheckBoxItem(menuM, "autoMoveGhost"))
             {
                 moveGhost();
             }
         }
 
-        public static bool CanCloneAttack(Obj_AI_Minion ghost)
-        {
-            if (ghost != null)
-            {
-                return Utils.GameTimeTickCount >=
-                       LastAATick + Game.Ping + 100 + (ghost.AttackDelay - ghost.AttackCastDelay)*1000;
-            }
-            return false;
-        }
+        public static Obj_AI_Minion clone;
 
         private void moveGhost()
         {
-            var ghost =
-                (Obj_AI_Minion)
-                    MinionManager.GetMinions(3000, MinionTypes.All, MinionTeam.Ally)
-                        .FirstOrDefault(m => m.HasBuff("yorickunholysymbiosis"));
             var Gtarget = TargetSelector.GetTarget(GhostRange, DamageType.Magical);
             switch (getBoxItem(menuM, "ghostTarget"))
             {
@@ -109,56 +109,22 @@ namespace UnderratedAIO.Champions
                     break;
                 case 1:
                     Gtarget =
-                        HeroManager.Enemies.Where(i => player.Distance(i) <= R.Range)
+                        HeroManager.Enemies.Where(i => player.Distance(i) <= 1500)
                             .OrderBy(i => i.Health)
                             .FirstOrDefault();
                     break;
                 case 2:
                     Gtarget =
-                        HeroManager.Enemies.Where(i => player.Distance(i) <= R.Range)
+                        HeroManager.Enemies.Where(i => player.Distance(i) <= 1500)
                             .OrderBy(i => player.Distance(i))
-                            .FirstOrDefault(); break;
+                            .FirstOrDefault();
+                    break;
                 default:
                     break;
             }
-            if (ghost != null && Gtarget != null && Gtarget.IsValid && ghost.CanAttack) // BERB @ not sure
+            if (clone != null && Gtarget != null && Gtarget.IsValid)
             {
-                if (ghost.IsMelee)
-                {
-                    if (CanCloneAttack(ghost) || player.HealthPercent < 25)
-                    {
-                        R.CastOnUnit(Gtarget, getCheckBoxItem(config, "packets"));
-                    }
-                    else
-                    {
-                        var prediction = Prediction.GetPrediction(Gtarget, 2);
-                        R.Cast(
-                            Gtarget.Position.Extend(prediction.UnitPosition, Orbwalking.GetRealAutoAttackRange(Gtarget)),
-                            getCheckBoxItem(config, "packets"));
-                    }
-                }
-                else
-                {
-                    if (CanCloneAttack(ghost) || player.HealthPercent < 25)
-                    {
-                        R.CastOnUnit(Gtarget, getCheckBoxItem(config, "packets"));
-                    }
-                    else
-                    {
-                        var pred = Prediction.GetPrediction(Gtarget, 0.5f);
-                        var point =
-                            CombatHelper.PointsAroundTheTargetOuterRing(pred.UnitPosition, Gtarget.AttackRange/2)
-                                .Where(p => !p.IsWall())
-                                .OrderBy(p => p.CountEnemiesInRange(500))
-                                .ThenBy(p => p.LSDistance(player.Position))
-                                .FirstOrDefault();
-
-                        if (point.IsValid())
-                        {
-                            R.Cast(point, getCheckBoxItem(config, "packets"));
-                        }
-                    }
-                }
+                R.CastOnUnit(Gtarget, getCheckBoxItem(config, "packets"));
                 GhostDelay = true;
                 Utility.DelayAction.Add(200, () => GhostDelay = false);
             }
@@ -166,11 +132,12 @@ namespace UnderratedAIO.Champions
 
         private static void AfterAttack(AttackableUnit target, EventArgs args)
         {
+            var nearestMob = Jungle.GetNearest(player.Position);
             if (Q.IsReady() &&
                 ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && getCheckBoxItem(menuC, "useq") &&
                   target is AIHeroClient) ||
-                 (getCheckBoxItem(menuLC, "useqLC") &&
-                  Jungle.GetNearest(player.Position).LSDistance(player.Position) < player.AttackRange + 30)))
+                 (getCheckBoxItem(menuLC, "useqLC") && nearestMob != null &&
+                   nearestMob.Distance(player.Position) < player.AttackRange + 30)))
             {
                 Q.Cast(getCheckBoxItem(config, "packets"));
                 Orbwalker.ResetAutoAttack();
@@ -191,8 +158,9 @@ namespace UnderratedAIO.Champions
 
         private void Combo()
         {
-            var target = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-            if (Yorickghost && !GhostDelay && getCheckBoxItem(menuC, "moveGhost") &&
+            AIHeroClient target = TargetSelector.GetTarget(1500, DamageType.Physical);
+
+            if (R.IsReady() && Yorickghost && !GhostDelay && config.Item("moveGhost", true).GetValue<bool>() &&
                 !getCheckBoxItem(menuM, "autoMoveGhost"))
             {
                 moveGhost();
@@ -213,15 +181,17 @@ namespace UnderratedAIO.Champions
             {
                 E.CastOnUnit(target, getCheckBoxItem(config, "packets"));
             }
-
+            
             var ally =
                 HeroManager.Allies.Where(
                     i =>
                         !i.IsDead &&
-                        (i.Health * 100 / i.MaxHealth) <= menuC["atpercenty"].Cast<Slider>().CurrentValue &&
-                        player.Distance(i) < R.Range && !menuM["ulty" + i.BaseSkinName].Cast<CheckBox>().CurrentValue)
+                        ((i.Health * 100 / i.MaxHealth) <= menuC["atpercenty"].Cast<Slider>().CurrentValue ||
+                         IncDamages.GetAllyData(i.NetworkId).IsAboutToDie) && player.Distance(i) < R.Range &&
+                        !menuM["ulty" + i.BaseSkinName].Cast<CheckBox>().CurrentValue && i.CountEnemiesInRange(750) > 0)
                     .OrderByDescending(i => Environment.Hero.GetAdOverTime(player, i, 5))
                     .FirstOrDefault();
+
             if (!Yorickghost && ally != null && getCheckBoxItem(menuC, "user") && R.IsInRange(ally) && R.IsReady())
             {
                 R.Cast(ally, getCheckBoxItem(config, "packets"));
@@ -267,7 +237,7 @@ namespace UnderratedAIO.Champions
             }
             var target =
                 MinionManager.GetMinions(E.Range, MinionTypes.All, MinionTeam.NotAlly)
-                    .Where(i => i.Health < E.GetDamage(i) || i.Health > 500f)
+                    .Where(i => i.Health < E.GetDamage(i) || i.Health > 600f)
                     .OrderByDescending(i => i.Distance(player))
                     .FirstOrDefault();
             if (getCheckBoxItem(menuLC, "useeLC") && E.CanCast(target))
@@ -403,8 +373,7 @@ namespace UnderratedAIO.Champions
             // Misc Settings
             menuM = config.AddSubMenu("Misc ", "Msettings");
             menuM.Add("autoMoveGhost", new CheckBox("Always move ghost", false));
-            menuM.Add("ghostTarget",
-                new ComboBox("Ghost target priority", 0, "Targetselector", "Lowest health", "Closest to you"));
+            menuM.Add("ghostTarget", new ComboBox("Ghost target priority", 0, "Targetselector", "Lowest health", "Closest to you"));
             menuM.AddGroupLabel("Don't ult on");
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsAlly))
             {
