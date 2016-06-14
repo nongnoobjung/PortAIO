@@ -195,6 +195,12 @@ namespace UnderratedAIO.Champions
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
+
+            if (R.IsReady() && Yorickghost && !GhostDelay && getCheckBoxItem(menuC, "moveGhost") &&
+                !getCheckBoxItem(menuM, "autoMoveGhost"))
+            {
+                moveGhost();
+            }
         }
 
         private void Harass()
