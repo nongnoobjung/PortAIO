@@ -160,11 +160,6 @@ namespace UnderratedAIO.Champions
         {
             AIHeroClient target = TargetSelector.GetTarget(1500, DamageType.Physical);
 
-            if (R.IsReady() && Yorickghost && !GhostDelay && config.Item("moveGhost", true).GetValue<bool>() &&
-                !getCheckBoxItem(menuM, "autoMoveGhost"))
-            {
-                moveGhost();
-            }
             if (target == null)
             {
                 return;
