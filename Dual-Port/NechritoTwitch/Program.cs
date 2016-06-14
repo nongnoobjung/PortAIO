@@ -52,17 +52,60 @@ namespace Nechrito_Twitch
 
         private static void Game_OnUpdate(EventArgs args)
         {
+            AutoE();
+            Exploit();
+
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)) Combo();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)) Harass();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) LaneClear(); JungleClear();
-            AutoE();
-           // Recall();
         }
 
-        public static void Combo()
+        private static void Exploit()
+        {
+            var target = TargetSelector.GetTarget(Player.AttackRange, DamageType.Physical);
+            if (target == null || !target.IsValidTarget() || target.IsInvulnerable) return;
+
+            if (!MenuConfig.Exploit) return;
+            if (!Spells._q.IsReady()) return;
+
+            if (Spells._e.IsReady() && MenuConfig.EAA)
+            {
+                if (!target.IsFacing(Player))
+                {
+                    Chat.Print("Target is not facing, will now return");
+                    return;
+                }
+                if (target.Distance(Player) >= Player.AttackRange)
+                {
+                    Chat.Print("Out of AA Range, will now return");
+                    return;
+                }
+
+                if (target.Health <= Player.GetAutoAttackDamage(target) * 1.33 + GetDamage(target))
+                {
+                    Spells._e.Cast();
+                    Chat.Print("Casting E to then cast AA Q");
+                }
+            }
+
+            if (target.Health < Player.GetAutoAttackDamage(target, true) && Player.Spellbook.IsAutoAttacking)
+            {
+                Spells._q.Cast();
+                do
+                {
+                    Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Exploit Active</font></b><b><font color=\"#FFFFFF\">]</font></b>");
+                    Chat.Print("Casting Q");
+                } while (Spells._q.Cast());
+            }
+
+        }
+
+        private static void Combo()
         {
             var target = TargetSelector.GetTarget(Spells._w.Range, DamageType.Physical);
-            if (target == null || !target.IsValidTarget() || target.IsDead || target.IsInvulnerable) return;
+            if (target == null || !target.IsValidTarget() || target.IsInvulnerable) return;
+
+
 
             if (!MenuConfig.UseW) return;
             if (target.Health < Player.GetAutoAttackDamage(target, true) * 2) return;
@@ -80,12 +123,13 @@ namespace Nechrito_Twitch
 
             if (!Orbwalking.InAutoAttackRange(target) && target.GetBuffCount("twitchdeadlyvenom") >= MenuConfig.ESlider && Player.ManaPercent >= 50 && Spells._e.IsReady())
             {
-                Spells._e.Cast(target);
+                Spells._e.Cast();
             }
 
             if (!MenuConfig.HarassW) return;
             var wPred = Spells._w.GetPrediction(target).CastPosition;
-            if (target.IsValidTarget(Spells._w.Range) && Spells._w.CanCast(target))
+
+            if (target.IsValidTarget(Spells._w.Range) && Spells._w.IsReady())
             {
                 Spells._w.Cast(wPred);
             }
@@ -105,6 +149,7 @@ namespace Nechrito_Twitch
 
             if (Spells._w.IsReady())
             {
+                if (wPrediction.MinionsHit >= 4)
                 Spells._w.Cast(wPrediction.Position);
             }
         }
@@ -131,20 +176,19 @@ namespace Nechrito_Twitch
 
         private static void Recall()
         {
-            if (MenuConfig.QRecall)
+
+            Spellbook.OnCastSpell += (sender, eventArgs) =>
             {
+                if (!MenuConfig.QRecall) return;
                 if (!Spells._q.IsReady() || !Spells._recall.IsReady()) return;
-                Spellbook.OnCastSpell += (sender, eventArgs) =>
-                {
-                    if (eventArgs.Slot != SpellSlot.Recall) return;
+                if (eventArgs.Slot != SpellSlot.Recall) return;
 
-                    Spells._q.Cast();
-                   LeagueSharp.Common.Utility.DelayAction.Add((int)Spells._q.Delay + 300, () => ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall));
-                    eventArgs.Process = false;
-                };
-            }
+                Spells._q.Cast();
+               LeagueSharp.Common.Utility.DelayAction.Add((int)Spells._q.Delay + 300,
+                    () => ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall));
+                eventArgs.Process = false;
+            };
         }
-
 
         private static void AutoE()
         {

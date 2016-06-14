@@ -84,10 +84,9 @@ namespace Spirit_Karma.Event
 
         private static void Combo()
         {
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().OrderBy(hp => hp.Health))
+            foreach (var enemy in GameObjects.EnemyHeroes.Where(x => !x.IsDead && !x.IsZombie).OrderBy(hp => hp.Health))
             {
-                if (!enemy.LSIsValidTarget(Spells.Q.Range) || enemy.IsDead)
-                    return;
+                if (!enemy.IsValidTarget(Spells.Q.Range) || enemy.IsDead || enemy.IsInvulnerable) return;
 
                 Usables.Locket();
                 //    Usables.Seraph();

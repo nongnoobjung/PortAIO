@@ -7,7 +7,7 @@ namespace Nechrito_Twitch
 {
     internal class MenuConfig
     {
-        public static Menu Config, combo, harass, lane, draw, steal, misc;
+        public static Menu Config, combo, harass, lane, draw, steal, misc, ExploitMenu;
         public static string MenuName = "Nechrito Twitch";
 
         public static void LoadMenu()
@@ -27,10 +27,16 @@ namespace Nechrito_Twitch
 
             steal = Config.AddSubMenu("Steal", "Steal");
             steal.Add("StealEpic", new CheckBox("Dragon & Baron"));
-            steal.Add("StealBuff", new CheckBox("Buffs"));
+            steal.Add("StealBuff", new CheckBox("Steal Redbuff"));
 
             misc = Config.AddSubMenu("Misc", "Misc");
             misc.Add("QRecall", new KeyBind("QRecall", false, KeyBind.BindTypes.HoldActive, 'T'));
+
+            ExploitMenu = Config.AddSubMenu("ExploitMenu", "ExploitMenu");
+            ExploitMenu.Add("Exploit", new CheckBox("Exploits", false));
+            ExploitMenu.AddLabel("Will Instant Q After Kill");
+            ExploitMenu.Add("EAA", new CheckBox("E AA Q", false));
+            ExploitMenu.AddLabel("Will cast E if killable by E + AA then Q");
 
             draw = Config.AddSubMenu("Draw", "Draw");
             draw.Add("dind", new CheckBox("Dmg Indicator"));
@@ -66,5 +72,8 @@ namespace Nechrito_Twitch
         public static bool Dind => getCheckBoxItem(draw, "dind");
         public static bool QRecall => getKeyBindItem(misc, "QRecall");
         public static int ESlider => getSliderItem(harass, "ESlider");
+        public static bool Exploit => getCheckBoxItem(draw, "Exploit");
+        public static bool EAA => getCheckBoxItem(draw, "EAA");
+
     }
 }

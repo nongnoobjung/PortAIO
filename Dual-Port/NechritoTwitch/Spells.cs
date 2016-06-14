@@ -15,6 +15,7 @@ namespace Nechrito_Twitch
 
         public static void Initialise()
         {
+            _q = new Spell(SpellSlot.Q);
             _w = new Spell(SpellSlot.W, 950);
             _w.SetSkillshot(0.25f, 120f, 1400f, false, SkillshotType.SkillshotCircle);
             _e = new Spell(SpellSlot.E, 1200);
