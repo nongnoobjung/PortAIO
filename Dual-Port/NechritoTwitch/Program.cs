@@ -26,7 +26,16 @@ namespace Nechrito_Twitch
     {
         private static readonly AIHeroClient Player = ObjectManager.Player;
         private static readonly HpBarIndicator Indicator = new HpBarIndicator();
-        private static float GetDamage(AIHeroClient target)
+        private static readonly string[] Monsters =
+        {
+           "SRU_Red", "SRU_Gromp", "SRU_Krug","SRU_Razorbeak","SRU_Murkwolf"
+        };
+
+        private static readonly string[] Dragons =
+        {
+            "SRU_Dragon_Air","SRU_Dragon_Fire","SRU_Dragon_Water","SRU_Dragon_Earth","SRU_Dragon_Elder","SRU_Baron","SRU_RiftHerald"
+        };
+        private static float GetDamage(Obj_AI_Base target)
         {
             return Spells._e.GetDamage(target);
         }
@@ -47,135 +56,140 @@ namespace Nechrito_Twitch
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)) Harass();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) LaneClear(); JungleClear();
             AutoE();
-            //Recall();
+           // Recall();
         }
 
         public static void Combo()
         {
-            var target = TargetSelector.GetTarget(Spells._e.Range, DamageType.Physical);
-            if (target == null) return;
+            var target = TargetSelector.GetTarget(Spells._w.Range, DamageType.Physical);
+            if (target == null || !target.IsValidTarget() || target.IsDead || target.IsInvulnerable) return;
 
-            if (MenuConfig.UseW)
+            if (!MenuConfig.UseW) return;
+            if (target.Health < Player.GetAutoAttackDamage(target, true) * 2) return;
+            var wPred = Spells._w.GetPrediction(target).CastPosition;
+
+            if (Spells._w.IsReady())
             {
-                if (target.IsValidTarget(Spells._w.Range) && Spells._w.CanCast(target))
-                {
-                    Spells._w.Cast(target);
-                }
+                Spells._w.Cast(wPred);
             }
-
-
-
-
         }
 
         public static void Harass()
         {
             var target = TargetSelector.GetTarget(Spells._e.Range, DamageType.Physical);
-            if (!Orbwalking.InAutoAttackRange(target) && target.GetBuffCount("twitchdeadlyvenom") >= MenuConfig.ESlider && Player.ManaPercent > 50 && Spells._e.IsReady())
+
+            if (!Orbwalking.InAutoAttackRange(target) && target.GetBuffCount("twitchdeadlyvenom") >= MenuConfig.ESlider && Player.ManaPercent >= 50 && Spells._e.IsReady())
             {
                 Spells._e.Cast(target);
             }
-            if (MenuConfig.harassW)
+
+            if (!MenuConfig.HarassW) return;
+            var wPred = Spells._w.GetPrediction(target).CastPosition;
+            if (target.IsValidTarget(Spells._w.Range) && Spells._w.CanCast(target))
             {
-                if (target.IsValidTarget(Spells._w.Range) && Spells._w.CanCast(target))
-                {
-                    Spells._w.Cast(target);
-                }
+                Spells._w.Cast(wPred);
             }
         }
+
         public static void LaneClear()
         {
-            if (MenuConfig.laneW)
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)) return;
+
+            var minions = MinionManager.GetMinions(Player.ServerPosition, 800);
+
+            if (minions == null) return;
+
+            var wPrediction = Spells._w.GetCircularFarmLocation(minions);
+
+            if (!MenuConfig.LaneW) return;
+
+            if (Spells._w.IsReady())
             {
-                var minions = MinionManager.GetMinions(Player.Position, Spells._w.Range);
-                if (minions.Count >= 5)
-                    Spells._w.Cast(minions[5].ServerPosition);
+                Spells._w.Cast(wPrediction.Position);
             }
-            /* Laneclear E Lasthit, Add stacks for enemies + minion lasthit
-            var minion = MinionManager.GetMinions(Player.Position, Spells._e.Range);
-            foreach (var m in minion)
-            {
-                if (m.HasBuff("twitchdeadlyvenom") && Spells._e.IsKillable(m))
-                        Spells._e.Cast(m);
-            }
-            */
         }
 
         public static void JungleClear()
         {
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
-            {
-                var mobs = MinionManager.GetMinions(Player.Position, Spells._w.Range, MinionTypes.All,
-                       MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)) return;
 
-                if (mobs.Count != 0)
+            var mobs = MinionManager.GetMinions(Player.Position, Spells._w.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
+
+            var wPrediction = Spells._w.GetCircularFarmLocation(mobs);
+            if (mobs.Count == 0) return;
+
+            Spells._w.Cast(wPrediction.Position);
+
+            foreach (var m in ObjectManager.Get<Obj_AI_Base>().Where(x => Monsters.Contains(x.CharData.BaseSkinName) && !x.IsDead))
+            {
+                if (m.Health < Spells._e.GetDamage(m))
                 {
-                    Spells._w.Cast(mobs[0].ServerPosition);
-                    foreach (var m in mobs)
-                    {
-                        if (m.HasBuff("twitchdeadlyvenom"))
-                        {
-                            if (Spells._e.IsKillable(m))
-                                Spells._e.Cast();
-                        }
-                    }
+                    Spells._e.Cast(m);
                 }
             }
         }
 
-        /* Recall Bug with MenuConfig
         private static void Recall()
         {
             if (MenuConfig.QRecall)
             {
-                if (Spells._q.IsReady() && Spells._recall.IsReady())
+                if (!Spells._q.IsReady() || !Spells._recall.IsReady()) return;
+                Spellbook.OnCastSpell += (sender, eventArgs) =>
                 {
+                    if (eventArgs.Slot != SpellSlot.Recall) return;
+
                     Spells._q.Cast();
-                    Spells._recall.Cast();
-                }
+                   LeagueSharp.Common.Utility.DelayAction.Add((int)Spells._q.Delay + 300, () => ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall));
+                    eventArgs.Process = false;
+                };
             }
-            
         }
-        */
-        public static void AutoE()
+
+
+        private static void AutoE()
         {
             var mob = MinionManager.GetMinions(Spells._e.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
 
-            foreach (var m in mob)
+            if (MenuConfig.StealEpic)
             {
-                if ((m.CharData.BaseSkinName.Contains("Dragon") || m.CharData.BaseSkinName.Contains("Baron")))
+                foreach (var m in ObjectManager.Get<Obj_AI_Base>().Where(x => Dragons.Contains(x.CharData.BaseSkinName) && !x.IsDead))
+                {
+                    if (m.Health < Spells._e.GetDamage(m))
+                    {
+                        Spells._e.Cast(m);
+                    }
+                }
+            }
+
+            if (MenuConfig.StealBuff)
+            {
+                foreach (var m in mob)
+                {
+                    if (m.CharData.BaseSkinName.Contains("SRU_Red") && MenuConfig.StealBuff) continue;
                     if (Spells._e.IsKillable(m))
                         Spells._e.Cast();
-
-
-
+                }
             }
-            if (MenuConfig.KsE)
-            {
-                foreach (
-                    var enemy in
-                        ObjectManager.Get<AIHeroClient>()
-                            .Where(enemy => enemy.IsValidTarget(Spells._e.Range) && Spells._e.IsKillable(enemy)))
-                    Spells._e.Cast(enemy);
 
+            if (!MenuConfig.KsE) return;
+
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsValidTarget(Spells._e.Range) && Spells._e.IsKillable(enemy)))
+            {
+                Spells._e.Cast(enemy);
             }
         }
 
 
         private static void Drawing_OnEndScene(EventArgs args)
         {
-            foreach (
-                var enemy in
-                    ObjectManager.Get<AIHeroClient>()
-                        .Where(ene => ene.IsValidTarget() && !ene.IsZombie))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.IsValidTarget() && !ene.IsZombie))
             {
-                if (MenuConfig.dind)
-                {
-                    Indicator.unit = enemy;
-                    Indicator.drawDmg(GetDamage(enemy), new ColorBGRA(255, 204, 0, 170));
-                }
+                if (!MenuConfig.Dind) continue;
+
+                Indicator.unit = enemy;
+                Indicator.drawDmg(GetDamage(enemy), new ColorBGRA(255, 204, 0, 170));
             }
         }
-
+      
     }
 }

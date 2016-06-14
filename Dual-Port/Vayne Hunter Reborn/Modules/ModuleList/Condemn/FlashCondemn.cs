@@ -7,79 +7,89 @@ using VayneHunter_Reborn.Skills.Tumble.VHRQ;
 using VayneHunter_Reborn.Utility;
 using VayneHunter_Reborn.Utility.MenuUtility;
 using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK;
+using Spell = LeagueSharp.Common.Spell;
+
 
 namespace VayneHunter_Reborn.Modules.ModuleList.Condemn
 {
+    using Utility = LeagueSharp.Common.Utility;
+
     class FlashCondemn : IModule
     {
         private static Spell E
         {
-            get { return Variables.spells[SpellSlot.E]; }
+            get
+            {
+                return Variables.spells[SpellSlot.E];
+            }
         }
 
         private static Spell Flash
         {
-            get { return new Spell(ObjectManager.Player.GetSpellSlot("SummonerFlash"), 425f); }
+            get
+            {
+                return new Spell(ObjectManager.Player.GetSpellSlot("SummonerFlash"), 425f);
+            }
         }
 
         public void OnLoad()
         {
         }
 
+
         public bool ShouldGetExecuted()
         {
-            return MenuGenerator.miscMenu["dz191.vhr.misc.condemn.flashcondemn"].Cast<KeyBind>().CurrentValue &&
-                   Variables.spells[SpellSlot.E].IsReady() && Flash.Slot != SpellSlot.Unknown && Flash.IsReady();
+            return MenuGenerator.miscMenu["dz191.vhr.misc.condemn.flashcondemn"].Cast<KeyBind>().CurrentValue
+                   && Variables.spells[SpellSlot.E].IsReady() && Flash.Slot != SpellSlot.Unknown && Flash.IsReady();
         }
 
         public ModuleType GetModuleType()
         {
-            return ModuleType.OnAfterAA;
+            return ModuleType.OnUpdate;
         }
 
         public void OnExecute()
         {
-            var pushDistance = MenuGenerator.miscMenu["dz191.vhr.misc.condemn.pushdistance"].Cast<Slider>().CurrentValue - 25;
+            var pushDistance = 450;
 
+            var target = TargetSelector.SelectedTarget != null
+                             ? TargetSelector.SelectedTarget
+                             : TargetSelector.GetTarget(E.Range, DamageType.Physical);
 
-            foreach (var target in HeroManager.Enemies.Where(en => en.LSIsValidTarget(E.Range) && !en.LSIsDashing()))
+            var flashPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos, Flash.Range);
+
+            var prediction = E.GetPrediction(target);
+
+            if (target.LSIsDashing() || !E.IsReady()) return;
+
+            if (prediction.Hitchance >= HitChance.VeryHigh)
             {
-                var canFlashBehind = ObjectManager.Player.LSDistance(target) <
-                                     Flash.Range - ObjectManager.Player.BoundingRadius;
-                var flashPosition = ObjectManager.Player.ServerPosition.LSExtend(target.ServerPosition, Flash.Range);
-
-                if (!canFlashBehind || !flashPosition.IsSafe())
+                var endPosition = prediction.UnitPosition.LSExtend(flashPosition, -pushDistance);
+                if (endPosition.IsWall())
                 {
-                    return;
+                    Variables.LastCondemnFlashTime = Environment.TickCount;
+                    E.CastOnUnit(target);
+                    Utility.DelayAction.Add((int)(E.Delay + Game.Ping / 2f), () => Flash.Cast(flashPosition));
                 }
-
-                var Prediction = Variables.spells[SpellSlot.E].GetPrediction(target);
-
-                if (Prediction.Hitchance >= HitChance.VeryHigh)
+                else
                 {
-                    var endPosition = Prediction.UnitPosition.LSExtend(flashPosition, -pushDistance);
-                    if (endPosition.LSIsWall())
+                    // It's not a wall.
+                    var step = pushDistance / 5f;
+                    for (float i = 0; i < pushDistance; i += step)
                     {
-                        Variables.LastCondemnFlashTime = Environment.TickCount;
-                        E.CastOnUnit(target);
-                        Flash.Cast(flashPosition);
-                    }
-                    else
-                    {
-                        //It's not a wall.
-                        var step = pushDistance / 5f;
-                        for (float i = 0; i < pushDistance; i += step)
+                        var endPositionEx = prediction.UnitPosition.LSExtend(flashPosition, -i);
+                        if (endPositionEx.IsWall())
                         {
-                            var endPositionEx = Prediction.UnitPosition.LSExtend(flashPosition, -i);
-                            if (endPositionEx.LSIsWall())
-                            {
-                                Variables.LastCondemnFlashTime = Environment.TickCount;
-                                E.CastOnUnit(target);
-                                Flash.Cast(flashPosition);
-                                return;
-                            }
+                            Variables.LastCondemnFlashTime = Environment.TickCount;
+                            E.CastOnUnit(target);
+                            Utility.DelayAction.Add((int)(E.Delay + Game.Ping / 2f), () => Flash.Cast(flashPosition));
+
+                            // Flash.Cast(flashPosition);
+                            return;
                         }
                     }
+                    
                 }
 
             }

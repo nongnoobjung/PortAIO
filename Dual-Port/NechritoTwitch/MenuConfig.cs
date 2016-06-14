@@ -5,14 +5,14 @@ using LeagueSharp.Common;
 
 namespace Nechrito_Twitch
 {
-    class MenuConfig
+    internal class MenuConfig
     {
-        public static Menu Config, combo, harass, lane, draw;
-        public static string menuName = "Nechrito Twitch";
+        public static Menu Config, combo, harass, lane, draw, steal, misc;
+        public static string MenuName = "Nechrito Twitch";
 
         public static void LoadMenu()
         {
-            Config = MainMenu.AddMenu(menuName, menuName);
+            Config = MainMenu.AddMenu(MenuName, MenuName);
 
             combo = Config.AddSubMenu("Combo", "Combo");
             combo.Add("UseW", new CheckBox("Use W"));
@@ -24,6 +24,13 @@ namespace Nechrito_Twitch
 
             lane = Config.AddSubMenu("Lane", "Lane");
             lane.Add("laneW", new CheckBox("Use W"));
+
+            steal = Config.AddSubMenu("Steal", "Steal");
+            steal.Add("StealEpic", new CheckBox("Dragon & Baron"));
+            steal.Add("StealBuff", new CheckBox("Buffs"));
+
+            misc = Config.AddSubMenu("Misc", "Misc");
+            misc.Add("QRecall", new KeyBind("QRecall", false, KeyBind.BindTypes.HoldActive, 'T'));
 
             draw = Config.AddSubMenu("Draw", "Draw");
             draw.Add("dind", new CheckBox("Dmg Indicator"));
@@ -52,9 +59,12 @@ namespace Nechrito_Twitch
         // Menu Items
         public static bool UseW => getCheckBoxItem(combo, "UseW");
         public static bool KsE => getCheckBoxItem(combo, "KsE");
-        public static bool laneW => getCheckBoxItem(lane, "laneW");
-        public static bool harassW => getCheckBoxItem(harass, "harassW");
-        public static bool dind => getCheckBoxItem(draw, "dind");
+        public static bool LaneW => getCheckBoxItem(lane, "laneW");
+        public static bool StealEpic => getCheckBoxItem(steal, "StealEpic");
+        public static bool StealBuff => getCheckBoxItem(steal, "StealBuff");
+        public static bool HarassW => getCheckBoxItem(harass, "harassW");
+        public static bool Dind => getCheckBoxItem(draw, "dind");
+        public static bool QRecall => getKeyBindItem(misc, "QRecall");
         public static int ESlider => getSliderItem(harass, "ESlider");
     }
 }
