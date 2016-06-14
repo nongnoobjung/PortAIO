@@ -83,6 +83,9 @@ namespace Marksman
                 case "graves":
                     ChampionClass = new Graves();
                     break;
+                case "jhin":
+                    ChampionClass = new Jhin();
+                    break;
                     /*
                 case "jinx":
                     ChampionClass = new Jinx();

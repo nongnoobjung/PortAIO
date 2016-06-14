@@ -286,7 +286,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[23]))
                 {
-                    Miscc.Add("jhin", new ComboBox("Use addon for Jhin : ", 0, "Jhin Virtuoso", "OKTW", "hJhin"));
+                    Miscc.Add("jhin", new ComboBox("Use addon for Jhin : ", 0, "Jhin Virtuoso", "OKTW", "hJhin", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[24]))
                 {

@@ -810,6 +810,9 @@ namespace PortAIO
                             case 2:
                                 hJhin.Program.Load();
                                 break;
+                            case 3:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 Jhin___The_Virtuoso.Jhin.JhinOnLoad();
                                 break;
