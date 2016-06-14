@@ -1,10 +1,6 @@
 ﻿To-Do :
-- Shen Q Clearing
-- Akali Q Last Hit
-- Veigar R in Zhonya
-
-- Bard Flee [Don't have Bard so can't fix]
-- Tahm Kench Crash [Don't have TK]
+- Update NechritoTwitch [https://github.com/Nechrito/Leaguesharp/commits/master] - Commit "sadf" & "Twitch Update"
+- Update VHR every commit after VHR: Fixed Special Focus and Q interfering with FlashCondemn. [https://github.com/DZ191/LeagueSharp/commits/master]
 
 ------------------------------------------------------------------------
 
