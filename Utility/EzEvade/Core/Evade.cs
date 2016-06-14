@@ -759,7 +759,7 @@ namespace ezEvade
 
             if (ObjectCache.menuCache.cache["DodgeDangerousKeyEnabled"].Cast<CheckBox>().CurrentValue == true)
             {
-                if (ObjectCache.menuCache.cache["DodgeDangerousKey"].Cast<CheckBox>().CurrentValue == true || ObjectCache.menuCache.cache["DodgeDangerousKey2"].Cast<CheckBox>().CurrentValue == true)
+                if (ObjectCache.menuCache.cache["DodgeDangerousKey"].Cast<KeyBind>().CurrentValue == true || ObjectCache.menuCache.cache["DodgeDangerousKey2"].Cast<KeyBind>().CurrentValue == true)
                     return true;
             }
 
