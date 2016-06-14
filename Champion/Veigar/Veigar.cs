@@ -30,7 +30,7 @@ namespace FreshBooster.Champion
         public const string ChampName = "Veigar";   // Edit
         public static AIHeroClient Player;
         public static LeagueSharp.Common.Spell _Q, _W, _E, _R;
-        public static Menu menu, Combo, Harass, LaneClear, JungleClear, KillSteal, Misc, Draw;
+        public static Menu menu, Combo, Harass, LaneClear, JungleClear, KillSteal, Misc, Draw, LastHit;
         // Default Setting
 
         private void SkillSet()
@@ -106,6 +106,9 @@ namespace FreshBooster.Champion
                 Harass.Add("Veigar_HUseE", new CheckBox("Use E - When target can't only move"));
                 Harass.Add("Veigar_HManarate", new Slider("Mana %", 20));
                 Harass.Add("Veigar_AutoHUseQ", new KeyBind("Auto Harass", false, KeyBind.BindTypes.PressToggle, 'T'));
+
+                LastHit = menu.AddSubMenu("Last Hit", "Last Hit");
+                LastHit.Add("Veigar_LHUseQ", new CheckBox("Use Q to Kill Minion"));
 
                 LaneClear = menu.AddSubMenu("LaneClear", "LaneClear");
                 LaneClear.Add("Veigar_LUseQ", new CheckBox("Use Q"));
@@ -268,6 +271,15 @@ namespace FreshBooster.Champion
                     }
                 }
 
+                // Last Hit
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
+                {
+                    if (getCheckBoxItem(LastHit, "Veigar_LHUseQ") && _Q.IsReady())
+                    {
+                        LastHitQ();
+                    }
+                }
+
                 //LaneClear
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) && getSliderItem(LaneClear, "Veigar_LManarate") < Player.ManaPercent)
                 {
@@ -276,9 +288,10 @@ namespace FreshBooster.Champion
                     {
                         if (getCheckBoxItem(LaneClear, "Veigar_LUseQ"))
                         {
-                            if (getCheckBoxItem(LaneClear, "Veigar_LUseQSet") && item.Health < _Q.GetDamage(item))
+                            if (getCheckBoxItem(LaneClear, "Veigar_LUseQSet"))
                             {
-                                _Q.CastIfHitchanceEquals(item, LeagueSharp.Common.HitChance.High, true);
+                                //_Q.CastIfHitchanceEquals(item, LeagueSharp.Common.HitChance.High, true);
+                                LastHitQ();
                                 return;
                             }
                             if (!getCheckBoxItem(LaneClear, "Veigar_LUseQSet"))
@@ -294,9 +307,10 @@ namespace FreshBooster.Champion
                     {
                         if (getCheckBoxItem(JungleClear, "Veigar_JUseQ"))
                         {
-                            if (getCheckBoxItem(JungleClear, "Veigar_JUseQSet") && item.Health < _Q.GetDamage(item))
+                            if (getCheckBoxItem(JungleClear, "Veigar_JUseQSet"))
                             {
-                                _Q.CastIfHitchanceEquals(item, LeagueSharp.Common.HitChance.Low, true);
+                                //_Q.CastIfHitchanceEquals(item, LeagueSharp.Common.HitChance.Low, true);
+                                LastHitQ();
                                 return;
                             }
                             if (!getCheckBoxItem(JungleClear, "Veigar_JUseQSet"))
@@ -318,6 +332,40 @@ namespace FreshBooster.Champion
             }
         }
 
+        public static Obj_AI_Base qMiniForWait;
+        public static Obj_AI_Base qMiniTarget;
+
+        private static void LastHitQ()
+        {
+            if (!_Q.IsReady())
+            {
+                return;
+            }
+            if (getCheckBoxItem(JungleClear, "Veigar_JUseQSet") || getCheckBoxItem(LaneClear, "Veigar_LUseQSet"))
+            {
+                var minions = MinionManager.GetMinions(_Q.Range, MinionTypes.All, MinionTeam.NotAlly).Where(m => m.LSIsValidTarget() && m.Health > 5 && m.LSDistance(Player) < _Q.Range && m.Health < _Q.GetDamage(m));
+                var objAiBases = from minion in minions let pred = _Q.GetCollision(Player.Position.LSTo2D(), new List<Vector2>() { Player.Position.LSExtend(minion.Position, _Q.Range).LSTo2D() }, 70f) orderby pred.Count descending select minion;
+                if (objAiBases.Any())
+                {
+                    foreach (var minion in objAiBases)
+                    {
+                        var collision = _Q.GetCollision(Player.Position.LSTo2D(), new List<Vector2>() { Player.Position.LSExtend(minion.Position, _Q.Range).LSTo2D() }, 70f).OrderBy(c => c.Distance(Player)).ToList();
+                        if (collision.Count <= 2 || collision[0].NetworkId == minion.NetworkId || collision[1].NetworkId == minion.NetworkId)
+                        {
+                            if (collision.Count == 1)
+                            {
+                                _Q.Cast(minion);
+                            }
+                            else
+                            {
+                                _Q.Cast(minion);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public static double getRDam(AIHeroClient target)
         {
             // thanks GOS
@@ -335,7 +383,8 @@ namespace FreshBooster.Champion
                 rDam = new[] { 350, 500, 650 }[_R.Level] + (1.5f * Player.TotalMagicalDamage);
             }
 
-            return rDam + ((0.015 * rDam) * (100 - ((target.Health / target.MaxHealth) * 100)));
+            //return rDam + ((0.015 * rDam) * (100 - ((target.Health / target.MaxHealth) * 100)));
+            return Player.CalculateDamageOnUnit(target, DamageType.Magical, (float)(rDam + ((0.015 * rDam) * (100 - ((target.Health / target.MaxHealth) * 100)))));
         }
 
         public static void SpellUseE(AIHeroClient target)
