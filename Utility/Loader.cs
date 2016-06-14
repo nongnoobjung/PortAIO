@@ -107,6 +107,7 @@ namespace PortAIO.Utility
         public static int olaf { get { return Miscc["olaf"].Cast<ComboBox>().CurrentValue; } }
         public static int gnar { get { return Miscc["gnar"].Cast<ComboBox>().CurrentValue; } }
         public static int renekton { get { return Miscc["renekton"].Cast<ComboBox>().CurrentValue; } }
+        public static int jinx { get { return Miscc["jinx"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -182,6 +183,7 @@ namespace PortAIO.Utility
             "Olaf", // 60
             "Gnar", //61
             "Renekton", //62
+            "Jinx", //63
         });
 
         public static void Menu()
@@ -198,7 +200,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[1]))
                 {
-                    Miscc.Add("kogmaw", new ComboBox("Use addon for Kog'Maw : ", 0, "Sharpshooter", "ChallengerSeries", "OKTW"));
+                    Miscc.Add("kogmaw", new ComboBox("Use addon for Kog'Maw : ", 0, "Sharpshooter", "ChallengerSeries", "OKTW", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[2]))
                 {
@@ -206,7 +208,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[3]))
                 {
-                    Miscc.Add("kalista", new ComboBox("Use addon for Kalista : ", 0, "iKalista", "iKalista - Reborn", "ChallengerSeries"));
+                    Miscc.Add("kalista", new ComboBox("Use addon for Kalista : ", 0, "Marksman II", "iKalista - Reborn", "ChallengerSeries"));
                 }
                 if (Player.ChampionName.Equals(Champion[4]))
                 {
@@ -226,7 +228,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[8]))
                 {
-                    Miscc.Add("lucian", new ComboBox("Use addon for Lucian : ", 0, "LCS Lucian", "ChallengerSeries", "iLucian"));
+                    Miscc.Add("lucian", new ComboBox("Use addon for Lucian : ", 0, "LCS Lucian", "ChallengerSeries", "iLucian", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[9]))
                 {
@@ -290,7 +292,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[24]))
                 {
-                    Miscc.Add("kindred", new ComboBox("Use addon for Kindred : ", 0, "Kindred Yin Yang", "OKTW"));
+                    Miscc.Add("kindred", new ComboBox("Use addon for Kindred : ", 0, "Kindred Yin Yang", "OKTW", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[25]))
                 {
@@ -406,7 +408,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[53]))
                 {
-                    Miscc.Add("sivir", new ComboBox("Use addon for Sivir : ", 0, "OKTW", "ExorAIO SDK", "iSivir"));
+                    Miscc.Add("sivir", new ComboBox("Use addon for Sivir : ", 0, "OKTW", "ExorAIO SDK", "iSivir", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[54]))
                 {
@@ -443,6 +445,10 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[62]))
                 {
                     Miscc.Add("reneton", new ComboBox("Use addon for Renekton : ", 0, "ExorAIO", "UnderratedAIO"));
+                }
+                if (Player.ChampionName.Equals(Champion[63]))
+                {
+                    Miscc.Add("jinx", new ComboBox("Use addon for Jinx : ", 0, "OKTW", "Marksman II"));
                 }
             }
             else

@@ -450,7 +450,13 @@
     <Compile Include="Dual-Port\Marksman II\Champions\Gnar.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\Graves.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\Jhin.cs" />
+    <Compile Include="Dual-Port\Marksman II\Champions\Jinx.cs" />
+    <Compile Include="Dual-Port\Marksman II\Champions\Kalista.cs" />
+    <Compile Include="Dual-Port\Marksman II\Champions\Kindred.cs" />
+    <Compile Include="Dual-Port\Marksman II\Champions\Kogmaw.cs" />
+    <Compile Include="Dual-Port\Marksman II\Champions\Lucian.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\PlayerSpells.cs" />
+    <Compile Include="Dual-Port\Marksman II\Champions\Sivir.cs" />
     <Compile Include="Dual-Port\Marksman II\Common\CommonAutoBush.cs" />
     <Compile Include="Dual-Port\Marksman II\Common\CommonAutoLevel.cs" />
     <Compile Include="Dual-Port\Marksman II\Common\CommonAutoPink.cs" />

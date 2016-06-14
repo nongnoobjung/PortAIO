@@ -3,9 +3,7 @@ using System;
 using System.Linq;
 using LeagueSharp;
 using LeagueSharp.Common;
-using Marksman.Orb;
 using Marksman.Utils;
-using Orbwalking = Marksman.Orb.Orbwalking;
 
 #endregion
 
@@ -15,7 +13,10 @@ namespace Marksman.Champions
     using SharpDX;
     using Color = System.Drawing.Color;
     using Marksman.Utils;
-
+    using EloBuddy;
+    using EloBuddy.SDK.Menu.Values;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK;
     internal class DangerousSpells
     {
         public string ChampionName { get; private set; }
@@ -30,21 +31,21 @@ namespace Marksman.Champions
 
     internal class Sivir : Champion
     {
-        public static Spell Q;
-        public Spell E;
-        public Spell W;
+        public static LeagueSharp.Common.Spell Q;
+        public LeagueSharp.Common.Spell E;
+        public LeagueSharp.Common.Spell W;
         public static List<DangerousSpells> DangerousList = new List<DangerousSpells>();
 
         public Sivir()
         {
-            Q = new Spell(SpellSlot.Q, 1220);
+            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 1220);
             Q.SetSkillshot(0.25f, 90f, 1350f, false, SkillshotType.SkillshotLine);
 
-            W = new Spell(SpellSlot.W, 593);
+            W = new LeagueSharp.Common.Spell(SpellSlot.W, 593);
 
-            E = new Spell(SpellSlot.E);
+            E = new LeagueSharp.Common.Spell(SpellSlot.E);
 
-            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
+            Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
 
             DangerousList.Add(new DangerousSpells("darius", SpellSlot.R));
             DangerousList.Add(new DangerousSpells("fiddlesticks", SpellSlot.Q));
@@ -60,32 +61,32 @@ namespace Marksman.Champions
             Utils.PrintMessage("Sivir loaded.");
         }
 
-        public override void Orbwalking_BeforeAttack(Orbwalking.BeforeAttackEventArgs args)
+        public override void Orbwalking_BeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
             if (!W.IsReady())
             {
                 return;
             }
 
-            if (GetValue<bool>("Misc.UseW.Inhibitor") && args.Target is Obj_BarracksDampener)
+            if (Program.misc["Misc.UseW.Inhibitor"].Cast<CheckBox>().CurrentValue && args.Target is Obj_BarracksDampener)
             {
                 W.Cast();
             }
 
-            if (GetValue<bool>("Misc.UseW.Nexus") && args.Target is Obj_HQ)
+            if (Program.misc["Misc.UseW.Nexus"].Cast<CheckBox>().CurrentValue && args.Target is Obj_HQ)
             {
                 W.Cast();
             }
 
-            if (GetValue<bool>("Misc.UseW.Turret") && args.Target is Obj_AI_Turret)
+            if (Program.misc["Misc.UseW.Turret"].Cast<CheckBox>().CurrentValue && args.Target is Obj_AI_Turret)
             {
                 W.Cast();
             }
         }
 
-        public void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        public void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!E.IsReady() || !(sender is Obj_AI_Hero))
+            if (!E.IsReady() || !(sender is AIHeroClient))
             {
                 return;
             }
@@ -94,19 +95,19 @@ namespace Marksman.Champions
             {
                 foreach (
                     var c in
-                        DangerousList.Where(c => ((Obj_AI_Hero) sender).ChampionName.ToLower() == c.ChampionName)
-                            .Where(c => args.SData.Name == ((Obj_AI_Hero) sender).GetSpell(c.SpellSlot).Name))
+                        DangerousList.Where(c => ((AIHeroClient) sender).ChampionName.ToLower() == c.ChampionName)
+                            .Where(c => args.SData.Name == ((AIHeroClient) sender).GetSpell(c.SpellSlot).Name))
                 {
                     E.Cast();
                 }
             }
 
-            if (((Obj_AI_Hero) sender).ChampionName.ToLower() == "vayne" && args.SData.Name == ((Obj_AI_Hero) sender).GetSpell(SpellSlot.E).Name)
+            if (((AIHeroClient) sender).ChampionName.ToLower() == "vayne" && args.SData.Name == ((AIHeroClient) sender).GetSpell(SpellSlot.E).Name)
             {
                 for (var i = 1; i < 8; i++)
                 {
-                    var championBehind = ObjectManager.Player.Position + Vector3.Normalize(((Obj_AI_Hero) sender).ServerPosition - ObjectManager.Player.Position)*(-i*50);
-                    if (championBehind.IsWall())
+                    var championBehind = ObjectManager.Player.Position + Vector3.Normalize(((AIHeroClient) sender).ServerPosition - ObjectManager.Player.Position)*(-i*50);
+                    if (championBehind.LSIsWall())
                     {
                         E.Cast();
                     }
@@ -116,10 +117,10 @@ namespace Marksman.Champions
 
         public override void Game_OnGameUpdate(EventArgs args)
         {
-            if (GetValue<bool>("AutoQ") || GetValue<bool>("UseQ"))
+            if (Program.misc["AutoQ"].Cast<CheckBox>().CurrentValue)
             {
-                var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-                if (Q.IsReady() && t.IsValidTarget())
+                var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+                if (Q.IsReady() && t.LSIsValidTarget())
                 {
                     if ((t.HasBuffOfType(BuffType.Slow) || t.HasBuffOfType(BuffType.Stun) ||
                          t.HasBuffOfType(BuffType.Snare) || t.HasBuffOfType(BuffType.Fear) ||
@@ -133,11 +134,11 @@ namespace Marksman.Champions
 
             if (ComboActive || HarassActive)
             {
-                var useQ = GetValue<bool>("UseQ" + (ComboActive ? "C" : "H"));
+                var useQ = ComboActive ? Program.combo["UseQC"].Cast<CheckBox>().CurrentValue : Program.harass["UseQH"].Cast<CheckBox>().CurrentValue;
 
                 if (Q.IsReady() && useQ)
                 {
-                    var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
+                    var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
                     if (t != null)
                     {
                         Q.CastIfHitchanceGreaterOrEqual(t);
@@ -155,7 +156,7 @@ namespace Marksman.Champions
             {
                 if (Q.IsReady())
                 {
-                    switch (Program.Config.Item("UseQ.Jungle").GetValue<StringList>().SelectedIndex)
+                    switch (Program.jungleClear["UseQ.Jungle"].Cast<ComboBox>().CurrentValue)
                     {
                         case 1:
                         {
@@ -176,7 +177,7 @@ namespace Marksman.Champions
 
                 if (W.IsReady())
                 {
-                    var jW = Program.Config.Item("UseW.Jungle").GetValue<StringList>().SelectedIndex;
+                    var jW = Program.jungleClear["UseW.Jungle"].Cast<ComboBox>().CurrentValue;
                     if (jW != 0)
                     {
                         if (jW == 1)
@@ -195,7 +196,7 @@ namespace Marksman.Champions
                                     .Where(
                                         m =>
                                             m.Team == GameObjectTeam.Neutral &&
-                                            m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 165))
+                                            m.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 165))
                                     .Sum(mob => (int) mob.Health);
                             totalAa = (int) (totalAa/ObjectManager.Player.TotalAttackDamage);
                             if (totalAa > jW)
@@ -210,7 +211,7 @@ namespace Marksman.Champions
 
         public override void ExecuteLaneClear()
         {
-            var qJ = Program.Config.Item("UseQ.Lane").GetValue<StringList>().SelectedIndex;
+            var qJ = Program.laneclear["UseQ.Lane"].Cast<ComboBox>().CurrentValue;
             if (qJ != 0)
             {
                 var minionsQ = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q.Range, MinionTypes.All);
@@ -219,7 +220,7 @@ namespace Marksman.Champions
                     if (Q.IsReady())
                     {
                         var locQ = Q.GetLineFarmLocation(minionsQ);
-                        if (minionsQ.Count == minionsQ.Count(m => ObjectManager.Player.Distance(m) < Q.Range) &&
+                        if (minionsQ.Count == minionsQ.Count(m => ObjectManager.Player.LSDistance(m) < Q.Range) &&
                             locQ.MinionsHit > qJ && locQ.Position.IsValid())
                         {
                             Q.Cast(locQ.Position);
@@ -227,7 +228,7 @@ namespace Marksman.Champions
                     }
                 }
             }
-            var wJ = Program.Config.Item("UseW.Lane").GetValue<StringList>().SelectedIndex;
+            var wJ = Program.laneclear["UseW.Lane"].Cast<ComboBox>().CurrentValue;
             if (wJ != 0)
             {
                 var minionsW = MinionManager.GetMinions(ObjectManager.Player.ServerPosition,
@@ -242,13 +243,14 @@ namespace Marksman.Champions
             }
         }
 
-        public override void Orbwalking_AfterAttack(AttackableUnit unit, AttackableUnit target)
+        public override void Orbwalking_AfterAttack(AttackableUnit target, EventArgs args)
         {
-            var t = target as Obj_AI_Hero;
-            if (t != null && (ComboActive || HarassActive) && unit.IsMe)
+            var t = target as AIHeroClient;
+            if (t != null && (ComboActive || HarassActive))
             {
-                var useQ = GetValue<bool>("UseQ" + (ComboActive ? "C" : "H"));
-                var useW = GetValue<bool>("UseWC");
+                var useQ = ComboActive ? Program.combo["UseQC"].Cast<CheckBox>().CurrentValue : Program.harass["UseQH"].Cast<CheckBox>().CurrentValue;
+
+                var useW = Program.combo["UseWC"].Cast<CheckBox>().CurrentValue;
 
                 if (W.IsReady() && useW)
                 {
@@ -259,41 +261,40 @@ namespace Marksman.Champions
 
         public override void Drawing_OnDraw(EventArgs args)
         {
-            Spell[] spellList = {Q};
+            LeagueSharp.Common.Spell[] spellList = {Q};
             foreach (var spell in spellList)
             {
-                var menuItem = GetValue<Circle>("Draw" + spell.Slot);
-                if (menuItem.Active)
-                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, menuItem.Color);
+                var menuItem = Program.marksmanDrawings["Draw" + spell.Slot].Cast<CheckBox>().CurrentValue;
+                if (menuItem)
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, Color.FromArgb(100, 255, 0, 255));
             }
         }
 
         public override bool ComboMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQC" + Id, "Use Q").SetValue(true));
-            config.AddItem(new MenuItem("UseWC" + Id, "Use W").SetValue(true));
+            config.Add("UseQC", new CheckBox("Use Q"));
+            config.Add("UseWC", new CheckBox("Use W"));
             return true;
         }
 
         public override bool HarassMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQH" + Id, "Use Q").SetValue(false));
+            config.Add("UseQH", new CheckBox("Use Q", false));
             return true;
         }
 
         public override bool MiscMenu(Menu config)
         {
-            config.AddItem(new MenuItem("AutoQ" + Id, "Auto Q on Stun/Slow/Fear/Taunt/Snare").SetValue(true));
-            config.AddItem(new MenuItem("Misc.UseW.Turret" + Id, "Use W for Turret").SetValue(false));
-            config.AddItem(new MenuItem("Misc.UseW.Inhibitor" + Id, "Use W for Inhibitor").SetValue(true));
-            config.AddItem(new MenuItem("Misc.UseW.Nexus" + Id, "Use W for Nexus").SetValue(true));
+            config.Add("AutoQ", new CheckBox("Auto Q on Stun/Slow/Fear/Taunt/Snare"));
+            config.Add("Misc.UseW.Turret", new CheckBox("Use W for Turret", false));
+            config.Add("Misc.UseW.Inhibitor", new CheckBox("Use W for Inhibitor"));
+            config.Add("Misc.UseW.Nexus", new CheckBox("Use W for Nexus"));
             return true;
         }
 
         public override bool DrawingMenu(Menu config)
         {
-            config.AddItem(
-                new MenuItem("DrawQ" + Id, "Q range").SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
+            config.Add("DrawQ", new CheckBox("Q range"));//.SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
             return true;
         }
 
@@ -307,8 +308,8 @@ namespace Marksman.Champions
                 strQ[i] = "Minion Count >= " + i;
             }
 
-            config.AddItem(new MenuItem("UseQ.Lane", Utils.Tab + "Use Q:").SetValue(new StringList(strQ, 0)));
-            config.AddItem(new MenuItem("UseQR.Lane", Utils.Tab + "Use Q for out of AA Range").SetValue(true));
+            config.Add("UseQ.Lane", new ComboBox(Utils.Tab + "Use Q:", 0, strQ));
+            config.Add("UseQR.Lane", new CheckBox(Utils.Tab + "Use Q for out of AA Range"));
 
 
             string[] strW = new string[5];
@@ -319,16 +320,14 @@ namespace Marksman.Champions
                 strW[i] = "Minion Count >= " + i;
             }
 
-            config.AddItem(new MenuItem("UseW.Lane", Utils.Tab + "Use W:").SetValue(new StringList(strW, 0)));
+            config.Add("UseW.Lane", new ComboBox(Utils.Tab + "Use W:", 0, strW));
 
             return true;
         }
 
         public override bool JungleClearMenu(Menu config)
         {
-            config.AddItem(
-                new MenuItem("UseQ.Jungle", "Use Q").SetValue(
-                    new StringList(new[] {"Off", "On", "Just for big Monsters"}, 1)));
+            config.Add("UseQ.Jungle", new ComboBox("Use Q", 1, "Off", "On", "Just for big Monsters"));
 
             string[] strW = new string[8];
             strW[0] = "Off";
@@ -339,7 +338,7 @@ namespace Marksman.Champions
                 strW[i] = "If need to AA more than >= " + i;
             }
 
-            config.AddItem(new MenuItem("UseW.Jungle", "Use W").SetValue(new StringList(strW, 4)));
+            config.Add("UseW.Jungle", new ComboBox("Use W", 4, strW));
 
             return true;
         }

@@ -86,7 +86,6 @@ namespace Marksman
                 case "jhin":
                     ChampionClass = new Jhin();
                     break;
-                    /*
                 case "jinx":
                     ChampionClass = new Jinx();
                     break;
@@ -102,14 +101,15 @@ namespace Marksman
                 case "lucian":
                     ChampionClass = new Lucian();
                     break;
+                case "sivir":
+                    ChampionClass = new Sivir();
+                    break;
+                    /*
                 case "missfortune":
                     ChampionClass = new MissFortune();
                     break;
                 case "quinn":
                     ChampionClass = new Quinn();
-                    break;
-                case "sivir":
-                    ChampionClass = new Sivir();
                     break;
                 case "teemo":
                     ChampionClass = new Teemo();

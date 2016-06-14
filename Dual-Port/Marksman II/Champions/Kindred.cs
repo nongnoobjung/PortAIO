@@ -6,16 +6,18 @@ using System.Drawing;
 using System.Linq;
 using LeagueSharp;
 using LeagueSharp.Common;
-using Marksman.Orb;
 using Marksman.Utils;
 using SharpDX.Direct3D9;
 using Font = SharpDX.Direct3D9.Font;
-using Orbwalking = Marksman.Orb.Orbwalking;
 
 #endregion
 
 namespace Marksman.Champions
 {
+    using EloBuddy;
+    using EloBuddy.SDK;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK.Menu.Values;
     using System.Threading;
 
     using Utils = LeagueSharp.Common.Utils;
@@ -35,22 +37,22 @@ namespace Marksman.Champions
 
     internal class Kindred : Champion, IKindred
     {
-        public static Spell Q;
-        public static Spell E;
-        public static Spell W;
-        public static Spell R;
-        public static Obj_AI_Hero KindredECharge;
+        public static LeagueSharp.Common.Spell Q;
+        public static LeagueSharp.Common.Spell E;
+        public static LeagueSharp.Common.Spell W;
+        public static LeagueSharp.Common.Spell R;
+        public static AIHeroClient KindredECharge;
         public static List<DangerousSpells> DangerousList = new List<DangerousSpells>();
 
         public Kindred()
         {
-            Q = new Spell(SpellSlot.Q, 375);
-            W = new Spell(SpellSlot.W, 900);
-            E = new Spell(SpellSlot.E, 740);
-            R = new Spell(SpellSlot.R, 1100);
+            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 375);
+            W = new LeagueSharp.Common.Spell(SpellSlot.W, 900);
+            E = new LeagueSharp.Common.Spell(SpellSlot.E, 740);
+            R = new LeagueSharp.Common.Spell(SpellSlot.R, 1100);
             R.SetSkillshot(1f, 160f, 2000f, false, SkillshotType.SkillshotCircle);
 
-            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
+            Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
 
             DangerousList.Add(new DangerousSpells("darius", SpellSlot.R));
             DangerousList.Add(new DangerousSpells("garen", SpellSlot.R));
@@ -64,15 +66,15 @@ namespace Marksman.Champions
             Marksman.Utils.Utils.PrintMessage("Kindred loaded.");
         }
 
-        public override void Obj_AI_Base_OnBuffAdd(Obj_AI_Base sender, Obj_AI_BaseBuffAddEventArgs args)
+        public override void Obj_AI_Base_OnBuffAdd(Obj_AI_Base sender, Obj_AI_BaseBuffGainEventArgs args)
         {
             if (args.Buff.Name.ToLower() == "kindredecharge" && !sender.IsMe)
             {
-                KindredECharge = sender as Obj_AI_Hero;
+                KindredECharge = sender as AIHeroClient;
             }
         }
 
-        public override void Obj_AI_Base_OnBuffRemove(Obj_AI_Base sender, Obj_AI_BaseBuffRemoveEventArgs args)
+        public override void Obj_AI_Base_OnBuffRemove(Obj_AI_Base sender, Obj_AI_BaseBuffLoseEventArgs args)
         {
             if (args.Buff.Name.ToLower() == "kindredecharge" && !sender.IsMe)
             {
@@ -88,13 +90,13 @@ namespace Marksman.Champions
         {
         }
 
-        public override void Orbwalking_AfterAttack(AttackableUnit unit, AttackableUnit target)
+        public override void Orbwalking_AfterAttack(AttackableUnit target, EventArgs args)
         {
         }
 
         public override void Drawing_OnDraw(EventArgs args)
         {
-            var drawQ = GetValue<StringList>("DrawQ").SelectedIndex;
+            var drawQ = Program.marksmanDrawings["DrawQ"].Cast<ComboBox>().CurrentValue;
             switch (drawQ)
             {
                 case 1:
@@ -104,25 +106,25 @@ namespace Marksman.Champions
                     Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range + Orbwalking.GetRealAutoAttackRange(null) + 65, Color.Aqua);
                     break;
             }
-            Spell[] spellList = { W, E, R };
+            LeagueSharp.Common.Spell[] spellList = { W, E, R };
             foreach (var spell in spellList)
             {
-                var menuItem = GetValue<Circle>("Draw" + spell.Slot);
-                if (menuItem.Active)
+                var menuItem = Program.marksmanDrawings["Draw" + spell.Slot].Cast<CheckBox>().CurrentValue;
+                if (menuItem)
                 {
-                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, menuItem.Color);
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, Color.FromArgb(100, 255, 255, 255));
                 }
             }
         }
 
-        public void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        public void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (!R.IsReady())
             {
                 return;
             }
 
-            if (sender.Type != GameObjectType.obj_AI_Hero)
+            if (sender.Type != GameObjectType.AIHeroClient)
             {
                 return;
             }
@@ -134,13 +136,13 @@ namespace Marksman.Champions
 
             if (R.IsReady())
             {
-                if (sender.IsEnemy && sender is Obj_AI_Hero && args.Target.IsMe)
+                if (sender.IsEnemy && sender is AIHeroClient && args.Target.IsMe)
                 {
                     foreach (
                         var c in
-                            DangerousList.Where(c => ((Obj_AI_Hero) sender).ChampionName.ToLower() == c.ChampionName)
+                            DangerousList.Where(c => ((AIHeroClient) sender).ChampionName.ToLower() == c.ChampionName)
                                 .Where(c => args.Slot == c.SpellSlot))
-                        //.Where(c => args.SData.Name == ((Obj_AI_Hero)sender).GetSpell(c.SpellSlot).Name))
+                        //.Where(c => args.SData.Name == ((AIHeroClient)sender).GetSpell(c.SpellSlot).Name))
                     {
                         R.Cast(ObjectManager.Player.Position);
                     }
@@ -151,9 +153,9 @@ namespace Marksman.Champions
             if (R.IsReady())
             {
                 var x = 0d;
-                if (ObjectManager.Player.HealthPercent < 20 && ObjectManager.Player.CountEnemiesInRange(500) > 0)
+                if (ObjectManager.Player.HealthPercent < 20 && ObjectManager.Player.LSCountEnemiesInRange(500) > 0)
                 {
-                    x = HeroManager.Enemies.Where(e => e.IsValidTarget(1000))
+                    x = HeroManager.Enemies.Where(e => e.LSIsValidTarget(1000))
                         .Aggregate(0, (current, enemy) => (int)(current + enemy.Health));
                 }
                 if (ObjectManager.Player.Health < x)
@@ -161,14 +163,14 @@ namespace Marksman.Champions
                     R.Cast(ObjectManager.Player.Position);
                 }
                 
-                if (Program.Config.Item("UserRC").GetValue<bool>() &&
+                if (Program.combo["UseRC"].Cast<CheckBox>().CurrentValue &&
                     ObjectManager.Player.Health < ObjectManager.Player.MaxHealth * .2)
                 {
                     if (!sender.IsMe && sender.IsEnemy && R.IsReady() && args.Target.IsMe) // for minions attack
                     {
                         R.Cast(ObjectManager.Player.Position);
                     }
-                    else if (!sender.IsMe && sender.IsEnemy && (sender is Obj_AI_Hero || sender is Obj_AI_Turret) &&
+                    else if (!sender.IsMe && sender.IsEnemy && (sender is AIHeroClient || sender is Obj_AI_Turret) &&
                              args.Target.IsMe && R.IsReady())
                     {
                         R.Cast(ObjectManager.Player.Position);
@@ -177,16 +179,16 @@ namespace Marksman.Champions
             }
         }
 
-        public override void Orbwalking_BeforeAttack(Orbwalking.BeforeAttackEventArgs args)
+        public override void Orbwalking_BeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
             foreach (
-                var target in
+                var targetA in
                     HeroManager.Enemies.Where(
                         e =>
-                            e.IsValid && e.Distance(ObjectManager.Player) < Orbwalking.GetRealAutoAttackRange(null) + 65 &&
-                            e.IsVisible).Where(target => target.HasBuff("kindredcharge")))
+                            e.IsValid && e.LSDistance(ObjectManager.Player) < Orbwalking.GetRealAutoAttackRange(null) + 65 &&
+                            e.IsVisible).Where(targetA => targetA.HasBuff("kindredcharge")))
             {
-                Orbwalker.ForceTarget(target);
+                Orbwalker.ForcedTarget = targetA;
             }
         }
 
@@ -195,9 +197,9 @@ namespace Marksman.Champions
             if (R.IsReady())
             {
                 var x = 0d;
-                if (ObjectManager.Player.HealthPercent < 20 && ObjectManager.Player.CountEnemiesInRange(500) > 0)
+                if (ObjectManager.Player.HealthPercent < 20 && ObjectManager.Player.LSCountEnemiesInRange(500) > 0)
                 {
-                    x = HeroManager.Enemies.Where(e => e.IsValidTarget(1000))
+                    x = HeroManager.Enemies.Where(e => e.LSIsValidTarget(1000))
                         .Aggregate(0, (current, enemy) => (int)(current + enemy.Health));
                 }
                 if (ObjectManager.Player.Health < x)
@@ -206,38 +208,37 @@ namespace Marksman.Champions
                 }
             }
 
-            Obj_AI_Hero t = null;
+            AIHeroClient t = null;
             if (KindredECharge != null)
             {
                 t = KindredECharge;
-                TargetSelector.SetTarget(KindredECharge);
             }
             else
             {
-                t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
+                t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
             }
 
 
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
             {
                 return;
             }
 
             if (ComboActive && !t.HasKindredUltiBuff())
             {
-                if (t.IsValidTarget(Q.Range + Orbwalking.GetRealAutoAttackRange(null) + 65) && !t.HasKindredUltiBuff())
+                if (t.LSIsValidTarget(Q.Range + Orbwalking.GetRealAutoAttackRange(null) + 65) && !t.HasKindredUltiBuff())
                 {
                     if (Q.IsReady())
                     {
                         Q.Cast(Game.CursorPos);
                     }
 
-                    if (E.IsReady() && t.IsValidTarget(E.Range))
+                    if (E.IsReady() && t.LSIsValidTarget(E.Range))
                     {
                         E.CastOnUnit(t);
                     }
 
-                    if (W.IsReady() && t.IsValidTarget(W.Range))
+                    if (W.IsReady() && t.LSIsValidTarget(W.Range))
                     {
                         W.Cast();
                     }
@@ -247,51 +248,34 @@ namespace Marksman.Champions
 
         public override bool ComboMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQC" + Id, "Use Q").SetValue(true));
-            config.AddItem(new MenuItem("UseWC" + Id, "Use W").SetValue(true));
-            config.AddItem(new MenuItem("UseEC" + Id, "Use E").SetValue(true));
-            config.AddItem(new MenuItem("UseRC" + Id, "Use R").SetValue(true));
+            config.Add("UseQC", new CheckBox("Use Q"));
+            config.Add("UseWC", new CheckBox("Use W"));
+            config.Add("UseEC", new CheckBox("Use E"));
+            config.Add("UseRC", new CheckBox("Use R"));
             return true;
         }
 
         public override bool HarassMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQH" + Id, "Q").SetValue(true));
-            config.AddItem(new MenuItem("UseWH" + Id, "W").SetValue(true));
-            config.AddItem(
-                new MenuItem("UseEH" + Id, "Use E").SetValue(new KeyBind("H".ToCharArray()[0], KeyBindType.Toggle)));
-            config.AddItem(
-                new MenuItem("UseETH", "E (Toggle)").SetValue(new KeyBind("H".ToCharArray()[0], KeyBindType.Toggle)));
+            config.Add("UseQH", new CheckBox("Q"));
+            config.Add("UseWH", new CheckBox("W"));
             return true;
         }
 
         public override bool LaneClearMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQL" + Id, "Use Q").SetValue(true)).ValueChanged +=
-                delegate (object sender, OnValueChangeEventArgs args)
-                {
-                    config.Item("UseQLM").Show(args.GetNewValue<bool>());
-                    Program.ChampionClass.Config.Item("LaneMinMana").Show(args.GetNewValue<bool>());
-                };
-            config.AddItem(new MenuItem("UseQLM", "Min. Minion:").SetValue(new Slider(2, 1, 3)));
-            config.AddItem(new MenuItem("UseWL", "Use W").SetValue(false));
+            config.Add("UseQL", new CheckBox("Use Q"));
+            config.Add("UseQLM", new Slider("Min. Minion:", 2, 1, 3));
+            config.Add("UseWL", new CheckBox("Use W", false));
             return true;
         }
 
         public override bool DrawingMenu(Menu config)
         {
-            config.AddItem(
-                new MenuItem("DrawQ" + Id, "Q range").SetValue(new StringList(new[] { "Off", "Q Range", "Q + AA Range" }, 2)));
-            config.AddItem(
-                new MenuItem("DrawW" + Id, "W range").SetValue(new Circle(false, Color.FromArgb(100, 255, 255, 255))));
-            config.AddItem(
-                new MenuItem("DrawE" + Id, "E range").SetValue(new Circle(false, Color.FromArgb(100, 255, 255, 255))));
-            config.AddItem(
-                new MenuItem("DrawR" + Id, "R range").SetValue(new Circle(false, Color.FromArgb(100, 255, 255, 255))));
-            var dmgAfterComboItem = new MenuItem("DamageAfterCombo", "Damage After Combo").SetValue(true);
-
-            config.AddItem(dmgAfterComboItem);
-
+            config.Add("DrawQ", new ComboBox("Q range", 2, "Off", "Q Range", "Q + AA Range"));//.SetValue(new StringList(new[] { "Off", "Q Range", "Q + AA Range" }, 2)));
+            config.Add("DrawW", new CheckBox("W range"));//.SetValue(new Circle(false, Color.FromArgb(100, 255, 255, 255))));
+            config.Add("DrawE", new CheckBox("E range"));//.SetValue(new Circle(false, Color.FromArgb(100, 255, 255, 255))));
+            config.Add("DrawR", new CheckBox("R range"));//.SetValue(new Circle(false, Color.FromArgb(100, 255, 255, 255))));
             return true;
         }
 
@@ -302,11 +286,11 @@ namespace Marksman.Champions
 
         public override void ExecuteLaneClear()
         {
-            var useQ = Program.Config.Item("UseQL").GetValue<StringList>().SelectedIndex;
+            var useQ = Program.laneclear["UseQL"].Cast<ComboBox>().CurrentValue;
 
             var minion =
                 MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range)
-                    .FirstOrDefault(m => m.Health < ObjectManager.Player.GetSpellDamage(m, SpellSlot.Q));
+                    .FirstOrDefault(m => m.Health < ObjectManager.Player.LSGetSpellDamage(m, SpellSlot.Q));
 
             if (minion != null)
             {
@@ -317,7 +301,7 @@ namespace Marksman.Champions
                             MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range)
                                 .FirstOrDefault(
                                     m =>
-                                        m.Health < ObjectManager.Player.GetSpellDamage(m, SpellSlot.Q)
+                                        m.Health < ObjectManager.Player.LSGetSpellDamage(m, SpellSlot.Q)
                                         && m.Health > ObjectManager.Player.TotalAttackDamage);
                         Q.Cast(minion);
                         break;
@@ -327,8 +311,8 @@ namespace Marksman.Champions
                             MinionManager.GetMinions(ObjectManager.Player.Position, Q.Range)
                                 .FirstOrDefault(
                                     m =>
-                                        m.Health < ObjectManager.Player.GetSpellDamage(m, SpellSlot.Q)
-                                        && ObjectManager.Player.Distance(m)
+                                        m.Health < ObjectManager.Player.LSGetSpellDamage(m, SpellSlot.Q)
+                                        && ObjectManager.Player.LSDistance(m)
                                         > Orbwalking.GetRealAutoAttackRange(null) + 65);
                         Q.Cast(minion);
                         break;
@@ -338,27 +322,25 @@ namespace Marksman.Champions
 
         public override bool JungleClearMenu(Menu config)
         {
-            config.AddItem(new MenuItem("UseQJ" + Id, "Use Q").SetValue(new StringList(new[] { "Off", "On", "Just big Monsters" }, 1)));
-            config.AddItem(new MenuItem("UseWJ" + Id, "Use W").SetValue(new StringList(new[] { "Off", "On", "Just big Monsters" }, 1)));
-            config.AddItem(new MenuItem("UseEJ" + Id, "Use E").SetValue(new StringList(new[] { "Off", "On", "Just big Monsters" }, 1)));
-
+            config.Add("UseQJ", new ComboBox("Use Q", 1, "Off", "On", "Just big Monsters"));
+            config.Add("UseWJ", new ComboBox("Use W", 1, "Off", "On", "Just big Monsters"));
+            config.Add("UseEJ", new ComboBox("Use E", 1, "Off", "On", "Just big Monsters"));
             return true;
         }
 
         public override void ExecuteJungleClear()
         {
-            Game.PrintChat("laksdjlasdjlaskd");
             var jungleMobs = Marksman.Utils.Utils.GetMobs(Q.Range + Orbwalking.GetRealAutoAttackRange(null) + 65,
                 Marksman.Utils.Utils.MobTypes.All);
 
             if (jungleMobs != null)
             {
-                switch (GetValue<StringList>("UseQJ").SelectedIndex)
+                switch (Program.jungleClear["UseQJ"].Cast<ComboBox>().CurrentValue)
                 {
                     case 1:
                         {
-                            if (jungleMobs.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65))
-                                Q.Cast(jungleMobs.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65)
+                            if (jungleMobs.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65))
+                                Q.Cast(jungleMobs.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65)
                                     ? Game.CursorPos
                                     : jungleMobs.Position);
                             break;
@@ -370,7 +352,7 @@ namespace Marksman.Champions
                                 Marksman.Utils.Utils.MobTypes.BigBoys);
                             if (jungleMobs != null)
                             {
-                                Q.Cast(jungleMobs.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65)
+                                Q.Cast(jungleMobs.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65)
                                     ? Game.CursorPos
                                     : jungleMobs.Position);
                             }
@@ -378,11 +360,11 @@ namespace Marksman.Champions
                         }
                 }
 
-                switch (GetValue<StringList>("UseWJ").SelectedIndex)
+                switch (Program.jungleClear["UseWJ"].Cast<ComboBox>().CurrentValue)
                 {
                     case 1:
                         {
-                            if (jungleMobs.IsValidTarget(W.Range))
+                            if (jungleMobs.LSIsValidTarget(W.Range))
                                 W.Cast(jungleMobs.Position);
                             break;
                         }
@@ -397,11 +379,11 @@ namespace Marksman.Champions
                         }
                 }
 
-                switch (GetValue<StringList>("UseEJ").SelectedIndex)
+                switch (Program.jungleClear["UseEJ"].Cast<ComboBox>().CurrentValue)
                 {
                     case 1:
                         {
-                            if (jungleMobs.IsValidTarget(E.Range))
+                            if (jungleMobs.LSIsValidTarget(E.Range))
                                 E.CastOnUnit(jungleMobs);
                             break;
                         }
@@ -417,6 +399,11 @@ namespace Marksman.Champions
                 }
 
             }
+        }
+
+        public void Orbwalking_AfterAttack(AttackableUnit unit, AttackableUnit target)
+        {
+            throw new NotImplementedException();
         }
     }
 }

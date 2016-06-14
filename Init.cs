@@ -418,6 +418,9 @@ namespace PortAIO
                             case 2:
                                 iSivir.Sivir.OnLoad();
                                 break;
+                            case 3:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
@@ -437,9 +440,22 @@ namespace PortAIO
                                 break;
                         }
                         break;
+                    case "jinx":
+                        switch (Loader.jinx)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
                     case "thresh": // OKTW - Sebby - All Seeby champs go down here
                     case "annie":
-                    case "jinx":
                     case "karthus":
                     case "missfortune":
                     case "malzahar":
@@ -822,7 +838,7 @@ namespace PortAIO
                         switch (Loader.kalista)
                         {
                             case 0:
-                                new IKalista.Kalista();
+                                Marksman.Program.Game_OnGameLoad();
                                 break;
                             case 1:
                                 new iKalistaReborn.Kalista();
@@ -831,7 +847,7 @@ namespace PortAIO
                                 Challenger_Series.Program.Main();
                                 break;
                             default:
-                                new iKalistaReborn.Kalista();
+                                Marksman.Program.Game_OnGameLoad();
                                 break;
                         }
                         break;
@@ -898,6 +914,9 @@ namespace PortAIO
                             case 1:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
+                            case 2:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 Kindred___YinYang.Program.Game_OnGameLoad();
                                 break;
@@ -914,6 +933,9 @@ namespace PortAIO
                                 break;
                             case 2:
                                 SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 3:
+                                Marksman.Program.Game_OnGameLoad();
                                 break;
                             default:
                                 Challenger_Series.Program.Main();
@@ -975,6 +997,9 @@ namespace PortAIO
                             case 2:
                                 var lucian = new Lucian();
                                 lucian.OnLoad();
+                                break;
+                            case 3:
+                                Marksman.Program.Game_OnGameLoad();
                                 break;
                             default:
                                 LCS_Lucian.Program.OnLoad();
