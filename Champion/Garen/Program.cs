@@ -135,17 +135,7 @@ namespace UnderratedAIO.Champions
                           player.CountEnemiesInRange(1500) == 1) && getRDamage(target) > targHP && targHP > 0;
             if (rLogic && target.LSDistance(player) < R.Range)
             {
-                if (!(GarenE && target.Health < getEDamage(target, true) && target.LSDistance(player) < E.Range))
-                {
-                    if (GarenE)
-                    {
-                        E.Cast(getCheckBoxItem(config, "packets"));
-                    }
-                    else
-                    {
                         R.Cast(target, getCheckBoxItem(config, "packets"));
-                    }
-                }
             }
             var data = IncDamages.GetAllyData(player.NetworkId);
             if (getCheckBoxItem(comboMenu, "usew") && W.IsReady() && target.IsFacing(player) &&
