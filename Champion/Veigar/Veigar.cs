@@ -331,10 +331,7 @@ namespace FreshBooster.Champion
                 }
             }
         }
-
-        public static Obj_AI_Base qMiniForWait;
-        public static Obj_AI_Base qMiniTarget;
-
+        
         private static void LastHitQ()
         {
             if (!_Q.IsReady())

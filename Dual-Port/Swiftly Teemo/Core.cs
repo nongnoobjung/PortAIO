@@ -4,6 +4,7 @@ using EloBuddy;
 using LeagueSharp.SDK;
 using EloBuddy.SDK;
 using Spell = LeagueSharp.SDK.Spell;
+using LeagueSharp.SDK.Core.Utils;
 
 #endregion
 
@@ -11,7 +12,7 @@ namespace Swiftly_Teemo
 {
     internal class Core
     {
-        public static AIHeroClient Target => TargetSelector.GetTarget(Spells.R.Range * 2, DamageType.Magical);
+        public static AIHeroClient Target => TargetSelector.GetTarget(Player.GetRealAutoAttackRange(), DamageType.Physical);
         public static AIHeroClient Player => ObjectManager.Player;
         public class Spells
         {

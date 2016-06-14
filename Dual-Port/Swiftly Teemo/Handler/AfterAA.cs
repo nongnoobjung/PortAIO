@@ -14,18 +14,19 @@ namespace Swiftly_Teemo.Handler
         {
             if (dgfg is AIHeroClient)
             {
-                   var Target = dgfg as AIHeroClient;
+                var Target = dgfg as AIHeroClient;
 
-                    if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+                {
+                    if (Target == null || Target.IsDead || Target.IsInvulnerable || !Target.IsValidTarget(Spells.Q.Range)) return;
                     {
-                        if (Target == null || Target.IsDead || Target.IsInvulnerable || !Target.IsValidTarget(Spells.Q.Range)) return;
+                        if (MenuConfig.TowerCheck && Target.IsUnderEnemyTurret()) return;
+                        if (Spells.Q.IsReady())
                         {
-                            if (Spells.Q.IsReady())
-                            {
-                                Spells.Q.Cast(Target);
-                            }
+                            Spells.Q.Cast(Target);
                         }
-                    
+                    }
+
                     if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)) return;
 
                     var mob = GameObjects.Jungle.Where(m => m != null && m.IsValidTarget(Player.AttackRange) && !GameObjects.JungleSmall.Contains(m));

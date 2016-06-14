@@ -23,8 +23,8 @@ namespace Swiftly_Teemo
             {
                 return;
             }
-            Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Swiftly Teemo</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Version: 1</font></b>");
-            Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Update</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Release</font></b>");
+            Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Swiftly Teemo</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Version: 4</font></b>");
+            Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Update</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> TowerCheck & R Draw</font></b>");
 
              Spells.Load();
              MenuConfig.Load();
@@ -59,7 +59,7 @@ namespace Swiftly_Teemo
 
         private static void Drawing_OnEndScene(EventArgs args)
         {
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.IsValidTarget() && ene.IsValidTarget(750) && !ene.IsZombie))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.IsValidTarget() && ene.IsValidTarget(1000) && !ene.IsZombie))
             {
                 if (!MenuConfig.Dind) continue;
 
