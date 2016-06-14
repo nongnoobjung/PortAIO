@@ -1,6 +1,5 @@
 ﻿To-Do :
-- Update NechritoTwitch [https://github.com/Nechrito/Leaguesharp/commits/master] - Commit "sadf" & "Twitch Update"
-- Update VHR every commit after VHR: Fixed Special Focus and Q interfering with FlashCondemn. [https://github.com/DZ191/LeagueSharp/commits/master]
+- NabbActivar Crash (?)
 
 ------------------------------------------------------------------------
 
@@ -33,6 +32,7 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Lee Is Back [https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Lee%20is%20Back]
 - Sharpshooter
 - Korean Zed [Will need to be fixed afterwards]
+- [RE-PORT] Badao Riven - it was broken last time I tested
 
 Utility Ports [Only doing after Champions are completed] :
 - DZAwareness [https://github.com/DZ191/LeagueSharp/tree/master/DZAwarenessAIO]
