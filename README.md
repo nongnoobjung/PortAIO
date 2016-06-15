@@ -20,5 +20,6 @@ If you are still recieve compile errors refer here : https://www.elobuddy.net/to
 ---
 
 ### - Crashing & Other Bugs
-#####Make sure you're playing on BORDERLESS and not FULLSCREEN.
-#####If the addon you are using isn't working, clear your AppData. If it doesn't work, make a new issue.
+Make sure you're playing on BORDERLESS and not FULLSCREEN.
+
+If the addon you are using isn't working, clear your AppData. If it doesn't work, make a new issue.
