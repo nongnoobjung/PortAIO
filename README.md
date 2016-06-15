@@ -9,11 +9,8 @@ https://www.elobuddy.net/profile/277-xionlunix/ - This guy is trying to take cre
 
 - How I will prioritize things now, bug reports > suggestions > requests > comments/concerns.
 
-#
-- When making an issue be SPECIFIC, don't give me a one fucking line report saying it doesn't work. What doesn't work and maybe why you don't think it works. If an addon crashes, when does it crash, who does it crash with? If you have an issue with a dual-port supported champion, which dual-port are you using? etc... Don't give me fucking bullshit and expect me to read your damn mind and exactly know your situation to fix it.
-
 #### DO. NOT. PM. ME. ABOUT. PORTAIO. ALL COMMENTS GO ON ISSUES.
-#### Don't buy ported addon's, ask me via an issue and I'll mostly likely do it for free.
+#### Don't buy ported addon's, ask me or Muse30 via an issue and I'll mostly likely do it for free.
 
 ---
 
