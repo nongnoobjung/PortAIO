@@ -72,7 +72,7 @@
             {
                 if (sender.NetworkId == target.NetworkId)
                 {
-                    if (getCheckBoxItem(SkyLv_Taric.Combo, "Taric.EOnDashendPosition") && E.IsReady() && Player.Distance(args.EndPos) < E.Range)
+                    if (getCheckBoxItem(SkyLv_Taric.Combo, "Taric.EOnDashendPosition") && E.IsReady() && Player.LSDistance(args.EndPos) < E.Range)
                     {
                         var delay = (int)(args.EndTick - Game.Time - E.Delay - 0.1f);
                         if (delay > 0)
@@ -88,9 +88,9 @@
 
                 if (getCheckBoxItem(SkyLv_Taric.Combo, "Taric.UseEFromAlly") && E.IsReady() && Player.Mana >= E.ManaCost)
                 {
-                    foreach (var AllyHero in ObjectManager.Get<AIHeroClient>().Where(a => !a.IsMe && a.IsDead && a.Team == ObjectManager.Player.Team && Player.Distance(a) < 1600 && (a.HasBuff("TaricWAllyBuff") || a.HasBuff("TaricW"))))
+                    foreach (var AllyHero in ObjectManager.Get<AIHeroClient>().Where(a => !a.IsMe && a.IsDead && a.Team == ObjectManager.Player.Team && Player.LSDistance(a) < 1600 && (a.HasBuff("TaricWAllyBuff") || a.HasBuff("TaricW"))))
                     {
-                        var Allytarget = ObjectManager.Get<AIHeroClient>().Where(t => !t.IsDead && t.Team != ObjectManager.Player.Team && AllyHero.Distance(args.EndPos) < E.Range).FirstOrDefault();
+                        var Allytarget = ObjectManager.Get<AIHeroClient>().Where(t => !t.IsDead && t.Team != ObjectManager.Player.Team && AllyHero.LSDistance(args.EndPos) < E.Range).FirstOrDefault();
 
                         if (sender.NetworkId == Allytarget.NetworkId)
                         {

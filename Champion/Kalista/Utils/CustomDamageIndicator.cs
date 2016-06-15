@@ -63,7 +63,7 @@ namespace iKalistaReborn.Utils
                     var unit in
                         EntityManager.MinionsAndMonsters.GetJungleMonsters().Where(
                             x =>
-                            ObjectManager.Player.Distance(x) <= SpellManager.Spell[SpellSlot.E].Range
+                            ObjectManager.Player.LSDistance(x) <= SpellManager.Spell[SpellSlot.E].Range
                             && x.IsValidTarget() && x.IsHPBarRendered && x.HasRendBuff()))
                 {
                     Render.Circle.DrawCircle(unit.Position, 500f, unit.IsMobKillable() ? Color.GreenYellow : Color.Red);

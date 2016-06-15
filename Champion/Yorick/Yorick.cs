@@ -102,14 +102,14 @@ namespace UnderratedAIO.Champions
                     break;
                 case 1:
                     Gtarget =
-                        HeroManager.Enemies.Where(i => player.Distance(i) <= 1500)
+                        HeroManager.Enemies.Where(i => player.LSDistance(i) <= 1500)
                             .OrderBy(i => i.Health)
                             .FirstOrDefault();
                     break;
                 case 2:
                     Gtarget =
-                        HeroManager.Enemies.Where(i => player.Distance(i) <= 1500)
-                            .OrderBy(i => player.Distance(i))
+                        HeroManager.Enemies.Where(i => player.LSDistance(i) <= 1500)
+                            .OrderBy(i => player.LSDistance(i))
                             .FirstOrDefault();
                     break;
                 default:
@@ -130,7 +130,7 @@ namespace UnderratedAIO.Champions
                 ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && getCheckBoxItem(menuC, "useq") &&
                   target is AIHeroClient) ||
                  (getCheckBoxItem(menuLC, "useqLC") && nearestMob != null &&
-                   nearestMob.Distance(player.Position) < player.AttackRange + 30)))
+                   nearestMob.LSDistance(player.Position) < player.AttackRange + 30)))
             {
                 Q.Cast(getCheckBoxItem(config, "packets"));
                 Orbwalker.ResetAutoAttack();
@@ -175,7 +175,7 @@ namespace UnderratedAIO.Champions
                     i =>
                         !i.IsDead &&
                         ((i.Health * 100 / i.MaxHealth) <= menuC["atpercenty"].Cast<Slider>().CurrentValue ||
-                         IncDamages.GetAllyData(i.NetworkId).IsAboutToDie) && player.Distance(i) < R.Range &&
+                         IncDamages.GetAllyData(i.NetworkId).IsAboutToDie) && player.LSDistance(i) < R.Range &&
                         !menuM["ulty" + i.BaseSkinName].Cast<CheckBox>().CurrentValue && i.CountEnemiesInRange(750) > 0)
                     .OrderByDescending(i => Environment.Hero.GetAdOverTime(player, i, 5))
                     .FirstOrDefault();
@@ -232,7 +232,7 @@ namespace UnderratedAIO.Champions
             var target =
                 MinionManager.GetMinions(E.Range, MinionTypes.All, MinionTeam.NotAlly)
                     .Where(i => i.Health < E.GetDamage(i) || i.Health > 600f)
-                    .OrderByDescending(i => i.Distance(player))
+                    .OrderByDescending(i => i.LSDistance(player))
                     .FirstOrDefault();
             if (getCheckBoxItem(menuLC, "useeLC") && E.CanCast(target))
             {

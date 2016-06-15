@@ -120,7 +120,7 @@ namespace KurisuNidalee
                                         var obj = qoutput.CollisionObjects.Cast<Obj_AI_Minion>().ToList();
                                         if (obj.Count == 1)
                                         {
-                                            if (obj.Any(i => i.Health <= KL.Player.GetSummonerSpellDamage(i, Damage.SummonerSpell.Smite) && KL.Player.Distance(i) < 500 && KL.Player.Spellbook.CastSpell(KL.Smite, obj.First())))
+                                            if (obj.Any(i => i.Health <= KL.Player.GetSummonerSpellDamage(i, Damage.SummonerSpell.Smite) && KL.Player.LSDistance(i) < 500 && KL.Player.Spellbook.CastSpell(KL.Smite, obj.First())))
                                             {
                                                 KL.Spells["Javelin"].Cast(qoutput.CastPosition);
                                                 return;

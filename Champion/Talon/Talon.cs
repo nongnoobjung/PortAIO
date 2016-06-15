@@ -249,7 +249,7 @@ namespace GFUELTalon
                     }
                 }
 
-                if (getCheckBoxItem(comboMenu, "GFUELTalon.Combo.W") && target.Distance(Player.Position) < W.Range &&
+                if (getCheckBoxItem(comboMenu, "GFUELTalon.Combo.W") && target.LSDistance(Player.Position) < W.Range &&
                     W.IsReady())
                 {
                     var prediction = W.GetPrediction(target);
@@ -291,7 +291,7 @@ namespace GFUELTalon
                     return;
                 }
 
-                if (getCheckBoxItem(harassMenu, "GFUELTalon.Harass.W") && target.Distance(Player.Position) < W.Range &&
+                if (getCheckBoxItem(harassMenu, "GFUELTalon.Harass.W") && target.LSDistance(Player.Position) < W.Range &&
                     W.IsReady())
                 {
                     var prediction = W.GetPrediction(target);
@@ -511,7 +511,7 @@ namespace GFUELTalon
 
             return centerlocation.MinionsHit >= getSliderItem(laneclearMenu, "GFUELTalon.laneclear.count")
                 ? MinionManager.GetMinions(1000)
-                    .OrderBy(x => x.Distance(centerlocation.Position))
+                    .OrderBy(x => x.LSDistance(centerlocation.Position))
                     .FirstOrDefault()
                 : null;
         }

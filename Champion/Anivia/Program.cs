@@ -227,16 +227,16 @@ namespace PortAIO.Champion.Anivia
             if (Program.Combo && Player.Mana > RMANA + EMANA + WMANA)
             {
                 var t = TargetSelector.GetTarget(W.Range, DamageType.Magical);
-                if (t.LSIsValidTarget(W.Range) && W.GetPrediction(t).CastPosition.Distance(t.Position) > 100)
+                if (t.LSIsValidTarget(W.Range) && W.GetPrediction(t).CastPosition.LSDistance(t.Position) > 100)
                 {
-                    if (Player.Position.Distance(t.ServerPosition) > Player.Position.Distance(t.Position))
+                    if (Player.Position.LSDistance(t.ServerPosition) > Player.Position.LSDistance(t.Position))
                     {
-                        if (t.Position.Distance(Player.ServerPosition) < t.Position.Distance(Player.Position))
+                        if (t.Position.LSDistance(Player.ServerPosition) < t.Position.LSDistance(Player.Position))
                             Program.CastSpell(W, t);
                     }
                     else
                     {
-                        if (t.Position.Distance(Player.ServerPosition) > t.Position.Distance(Player.Position) && t.Distance(Player) < R.Range)
+                        if (t.Position.LSDistance(Player.ServerPosition) > t.Position.LSDistance(Player.Position) && t.LSDistance(Player) < R.Range)
                             Program.CastSpell(W, t);
                     }
                 }

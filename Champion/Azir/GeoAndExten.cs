@@ -29,7 +29,7 @@ namespace HeavenStrikeAzir
         {
             var direction = (to - from).Normalized();
 
-            for (float d = 0; d < from.Distance(to); d = d + step)
+            for (float d = 0; d < from.LSDistance(to); d = d + step)
             {
                 var testPoint = from + d * direction;
                 var flags = NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y);
@@ -48,7 +48,7 @@ namespace HeavenStrikeAzir
             if (Fstwall != null)
             {
                 var firstwall = ((Vector2)Fstwall);
-                for (float d = step; d < firstwall.Distance(to) + 1000; d = d + step)
+                for (float d = step; d < firstwall.LSDistance(to) + 1000; d = d + step)
                 {
                     var testPoint = firstwall + d * direction;
                     var flags = NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y);
@@ -87,7 +87,7 @@ namespace HeavenStrikeAzir
             var LstWall = GetLastWallPoint(Player.Position.To2D(), posW);
             if (LstWall == null)
                 return posW;
-            if (posW.Distance((Vector2)LstWall) / ((Vector2)FstWall).Distance((Vector2)LstWall) <= 0.5f)
+            if (posW.LSDistance((Vector2)LstWall) / ((Vector2)FstWall).LSDistance((Vector2)LstWall) <= 0.5f)
                 return (Vector2)LstWall;
             return null;
         }

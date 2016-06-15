@@ -408,7 +408,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 var angle = i*2*Math.PI/CircleLineSegmentN;
                 var point = new Vector3(position.X + radius*(float) Math.Cos(angle),
                     position.Y + radius*(float) Math.Sin(angle), position.Z);
-                if (point.Distance(Player.Position.Extend(finalPos, radius)) < 430)
+                if (point.LSDistance(Player.Position.LSExtend(finalPos, radius)) < 430)
                 {
                     points.Add(point);
                     //Utility.DrawCircle(point, 20, System.Drawing.Color.Aqua, 1, 1);

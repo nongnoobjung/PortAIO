@@ -147,7 +147,7 @@
             var gapCloserActive = this.Menu.Item("ElEasy.Leona.Interrupt.Activated").IsActive();
 
             if (gapCloserActive && spells[Spells.Q].IsReady()
-                && gapcloser.Sender.Distance(this.Player) < spells[Spells.Q].Range)
+                && gapcloser.Sender.LSDistance(this.Player) < spells[Spells.Q].Range)
             {
                 spells[Spells.Q].Cast();
             }
@@ -184,7 +184,7 @@
             Interrupter2.InterruptableTargetEventArgs args)
         {
             if (args.DangerLevel != Interrupter2.DangerLevel.High
-                || sender.Distance(this.Player) > spells[Spells.R].Range)
+                || sender.LSDistance(this.Player) > spells[Spells.R].Range)
             {
                 return;
             }

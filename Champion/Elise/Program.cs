@@ -322,7 +322,7 @@ namespace GFUELElise
                     }
 
                     if (getCheckBoxItem(comboMenu, "GFUELElise.ComboSpider.E") && Player.LSDistance(target) <= SpiderE.Range
-                        && Player.Distance(target) > SpiderQ.Range && SpiderE.IsReady())
+                        && Player.LSDistance(target) > SpiderQ.Range && SpiderE.IsReady())
                     {
                         if (target.IsValidTarget(SpiderQ.Range))
                         {

@@ -346,7 +346,7 @@ namespace FreshBooster.Champion
                 {
                     foreach (var minion in objAiBases)
                     {
-                        var collision = _Q.GetCollision(Player.Position.LSTo2D(), new List<Vector2>() { Player.Position.LSExtend(minion.Position, _Q.Range).LSTo2D() }, 70f).OrderBy(c => c.Distance(Player)).ToList();
+                        var collision = _Q.GetCollision(Player.Position.LSTo2D(), new List<Vector2>() { Player.Position.LSExtend(minion.Position, _Q.Range).LSTo2D() }, 70f).OrderBy(c => c.LSDistance(Player)).ToList();
                         if (collision.Count <= 2 || collision[0].NetworkId == minion.NetworkId || collision[1].NetworkId == minion.NetworkId)
                         {
                             if (collision.Count == 1)

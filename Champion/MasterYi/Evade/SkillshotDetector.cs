@@ -82,7 +82,7 @@ namespace MasterSharp
             {
                 //Console.WriteLine(
                     //Environment.TickCount + " Projectile Created: " + missile.SData.Name + " distance: " +
-                    //missile.StartPosition.Distance(missile.EndPosition) + "Radius: " +
+                    //missile.StartPosition.LSDistance(missile.EndPosition) + "Radius: " +
                     //missile.SData.CastRadiusSecondary + " Speed: " + missile.SData.MissileSpeed);
             }
 
@@ -106,7 +106,7 @@ namespace MasterSharp
 
             //Calculate the real end Point:
             var direction = (endPos - unitPosition).Normalized();
-            if (unitPosition.Distance(endPos) > spellData.Range || spellData.FixedRange)
+            if (unitPosition.LSDistance(endPos) > spellData.Range || spellData.FixedRange)
             {
                 endPos = unitPosition + direction*spellData.Range;
             }
@@ -114,11 +114,11 @@ namespace MasterSharp
             if (spellData.ExtraRange != -1)
             {
                 endPos = endPos +
-                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.Distance(unitPosition))*direction;
+                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.LSDistance(unitPosition))*direction;
             }
 
             var castTime = Environment.TickCount - Game.Ping/2 - (spellData.MissileDelayed ? 0 : spellData.Delay) -
-                           (int) (1000*missilePosition.Distance(unitPosition)/spellData.MissileSpeed);
+                           (int) (1000*missilePosition.LSDistance(unitPosition)/spellData.MissileSpeed);
 
             //Trigger the skillshot detection callbacks.
             TriggerOnDetectSkillshot(DetectionType.RecvPacket, spellData, castTime, unitPosition, endPos, unit);
@@ -165,7 +165,7 @@ namespace MasterSharp
 
 #if DEBUG
             //Console.WriteLine(
-                //"Missile deleted: " + missile.SData.Name + " D: " + missile.EndPosition.Distance(missile.Position));
+                //"Missile deleted: " + missile.SData.Name + " D: " + missile.EndPosition.LSDistance(missile.Position));
 #endif
 
             detectedSkillShots.RemoveAll(
@@ -275,7 +275,7 @@ namespace MasterSharp
 
             //Calculate the real end Point:
             var direction = (endPos - startPos).Normalized();
-            if (startPos.Distance(endPos) > spellData.Range || spellData.FixedRange)
+            if (startPos.LSDistance(endPos) > spellData.Range || spellData.FixedRange)
             {
                 endPos = startPos + direction*spellData.Range;
             }
@@ -283,7 +283,7 @@ namespace MasterSharp
             if (spellData.ExtraRange != -1)
             {
                 endPos = endPos +
-                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.Distance(startPos))*direction;
+                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.LSDistance(startPos))*direction;
             }
 
 

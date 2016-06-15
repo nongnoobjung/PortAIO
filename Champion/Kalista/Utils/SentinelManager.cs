@@ -133,7 +133,7 @@ namespace iKalistaReborn.Utils
                     if (OpenLocations.Count > 0 && SentLocation == null)
                     {
                         var closestLocation = OpenLocations.Where(o => Locations[o.Item1][o.Item2].IsInRange(Player.Instance, W.Range - MaxRandomRadius / 2))
-                            .OrderByDescending(o => Locations[o.Item1][o.Item2].Distance(Player.Instance, true))
+                            .OrderByDescending(o => Locations[o.Item1][o.Item2].LSDistance(Player.Instance, true))
                             .FirstOrDefault();
                         if (closestLocation != null)
                         {

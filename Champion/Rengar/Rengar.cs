@@ -50,7 +50,7 @@ namespace ElRengarRevamped
             var unit2 =
                 ObjectManager.Get<Obj_AI_Base>()
                     .FirstOrDefault(
-                        a => (a.IsValid<AIHeroClient>()) && a.IsEnemy && a.Distance(Game.CursorPos) < a.BoundingRadius + 1000 && a.IsValidTarget());
+                        a => (a.IsValid<AIHeroClient>()) && a.IsEnemy && a.LSDistance(Game.CursorPos) < a.BoundingRadius + 1000 && a.IsValidTarget());
             if (unit2 != null)
             {
                 SelectedEnemy = unit2;
