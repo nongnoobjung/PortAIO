@@ -40,7 +40,7 @@ namespace UnderratedAIO.Helpers
                     var newPos = new Vector3(minion.Position.X + 80, minion.Position.Y + 80, minion.Position.Z);
                     for (var i = 1; i < 4; i++)
                     {
-                        var rotated = newPos.To2D().RotateAroundPoint(newPos.To2D(), 90*i).To3D();
+                        var rotated = newPos.LSTo2D().RotateAroundPoint(newPos.LSTo2D(), 90*i).To3D();
                         if (countMinionsInrange(rotated, spellWidth) > hits && player.LSDistance(rotated) <= spellrange)
                         {
                             bestPos = newPos;
@@ -108,7 +108,7 @@ namespace UnderratedAIO.Helpers
                     var newPos = new Vector3(hero.Position.X + 80, hero.Position.Y + 80, hero.Position.Z);
                     for (var i = 1; i < 4; i++)
                     {
-                        var rotated = newPos.To2D().RotateAroundPoint(newPos.To2D(), 90*i).To3D();
+                        var rotated = newPos.LSTo2D().RotateAroundPoint(newPos.LSTo2D(), 90*i).To3D();
                         if (countChampsAtrange(rotated, spellwidth) > hits && player.LSDistance(rotated) <= spellrange)
                         {
                             bestPos = newPos;

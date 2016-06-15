@@ -63,7 +63,7 @@ namespace FioraProject
         {
             if (args.Msg == (uint)WindowsMessages.WM_RBUTTONDOWN)
             {
-                LastClickPoint = Game.CursorPos.To2D();
+                LastClickPoint = Game.CursorPos.LSTo2D();
             }
         }
     }

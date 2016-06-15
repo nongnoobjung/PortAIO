@@ -943,7 +943,7 @@ namespace LeblancOLD
                         circle1.Draw(Color.Black, 3);
 
                         var circle =
-                            new CommonGeometry.Circle2(hero.Position.To2D(), 140 + (buffName.b1.Number * 20),
+                            new CommonGeometry.Circle2(hero.Position.LSTo2D(), 140 + (buffName.b1.Number * 20),
                                 Game.Time - buffName.b.StartTime, buffName.b.EndTime - buffName.b.StartTime).ToPolygon();
                         circle.Draw(buffName.b1.Color, 3);
                     }

@@ -630,7 +630,7 @@ namespace ElUtilitySuite.Items
         /// <returns></returns>
         private bool CanEvadeMissile(MissileClient missile, Obj_AI_Base hero)
         {
-            var heroPos = hero.ServerPosition.To2D();
+            var heroPos = hero.ServerPosition.LSTo2D();
             float evadeTime = 0;
             float spellHitTime = 0;
 
@@ -638,7 +638,7 @@ namespace ElUtilitySuite.Items
                 && !missile.SData.TargettingType.ToString().Contains("Aoe"))
             {
                 var projection =
-                    heroPos.ProjectOn(missile.StartPosition.To2D(), missile.EndPosition.To2D()).SegmentPoint;
+                    heroPos.ProjectOn(missile.StartPosition.LSTo2D(), missile.EndPosition.LSTo2D()).SegmentPoint;
                 evadeTime = 1000 * (missile.SData.LineWidth - heroPos.LSDistance(projection) + hero.BoundingRadius)
                             / hero.MoveSpeed;
                 spellHitTime = GetSpellHitTime(missile, projection);
@@ -686,7 +686,7 @@ namespace ElUtilitySuite.Items
                 endPosition = missile.StartPosition + Vector3.Normalize(endPosition - missile.StartPosition) * sdata.CastRange;
             }
 
-            if (missile.SData.LineWidth + Player.BoundingRadius > Player.ServerPosition.To2D().LSDistance(Player.ServerPosition.To2D().ProjectOn(missile.StartPosition.To2D(), endPosition.To2D()).SegmentPoint))
+            if (missile.SData.LineWidth + Player.BoundingRadius > Player.ServerPosition.LSTo2D().LSDistance(Player.ServerPosition.LSTo2D().ProjectOn(missile.StartPosition.LSTo2D(), endPosition.LSTo2D()).SegmentPoint))
             {
                 zhonyaItem.Cast();
             }
@@ -723,7 +723,7 @@ namespace ElUtilitySuite.Items
                     - Environment.TickCount - Game.Ping);
             }
 
-            var spellPos = missile.Position.To2D();
+            var spellPos = missile.Position.LSTo2D();
             return 1000 * spellPos.LSDistance(pos) / missile.SData.MissileAccel;
         }
 
@@ -786,7 +786,7 @@ namespace ElUtilitySuite.Items
                             ? args.SData.LineWidth
                             : (args.SData.CastRadius < 1 ? args.SData.CastRadiusSecondary : args.SData.CastRadius);
 
-            if ((isLinear && width + Player.BoundingRadius > Player.ServerPosition.To2D().LSDistance(Player.ServerPosition.To2D().ProjectOn(args.Start.To2D(), endPosition.To2D()).SegmentPoint)) || (!isLinear && Player.LSDistance(endPosition) <= width + Player.BoundingRadius))
+            if ((isLinear && width + Player.BoundingRadius > Player.ServerPosition.LSTo2D().LSDistance(Player.ServerPosition.LSTo2D().ProjectOn(args.Start.LSTo2D(), endPosition.LSTo2D()).SegmentPoint)) || (!isLinear && Player.LSDistance(endPosition) <= width + Player.BoundingRadius))
             {
 
                 zhonyaItem.Cast();

@@ -69,7 +69,7 @@ namespace MasterSharp
             if (sender.IsValid && sender.Team == ObjectManager.Player.Team && args.SData.Name == "YasuoWMovingWall")
             {
                 WallCastT = Environment.TickCount;
-                YasuoWallCastedPos = sender.ServerPosition.To2D();
+                YasuoWallCastedPos = sender.ServerPosition.LSTo2D();
             }
         }
 
@@ -84,7 +84,7 @@ namespace MasterSharp
                 return new FastPredResult
                 {
                     IsMoving = true,
-                    CurrentPos = unit.ServerPosition.To2D(),
+                    CurrentPos = unit.ServerPosition.LSTo2D(),
                     PredictedPos = path.CutPath((int) d)[0]
                 };
             }
@@ -93,8 +93,8 @@ namespace MasterSharp
                 return new FastPredResult
                 {
                     IsMoving = false,
-                    CurrentPos = unit.ServerPosition.To2D(),
-                    PredictedPos = unit.ServerPosition.To2D()
+                    CurrentPos = unit.ServerPosition.LSTo2D(),
+                    PredictedPos = unit.ServerPosition.LSTo2D()
                 };
             }
             return new FastPredResult
@@ -169,8 +169,8 @@ namespace MasterSharp
                         var wallWidth = 300 + 50*Convert.ToInt32(level);
 
 
-                        var wallDirection = (wall.Position.To2D() - YasuoWallCastedPos).Normalized().Perpendicular();
-                        var wallStart = wall.Position.To2D() + wallWidth/2*wallDirection;
+                        var wallDirection = (wall.Position.LSTo2D() - YasuoWallCastedPos).Normalized().Perpendicular();
+                        var wallStart = wall.Position.LSTo2D() + wallWidth/2*wallDirection;
                         var wallEnd = wallStart - wallWidth*wallDirection;
                         var wallPolygon = new Geometry.Rectangle(wallStart, wallEnd, 75).ToPolygon();
                         var intersection = new Vector2();

@@ -111,9 +111,9 @@ namespace SPrediction
             }
             else
             {
-                List<Vector2> wp = args.Path.Select(p => p.To2D()).ToList();
+                List<Vector2> wp = args.Path.Select(p => p.LSTo2D()).ToList();
                 List<Vector2> sample1 = new List<Vector2>();
-                wp.Insert(0, sender.ServerPosition.To2D());
+                wp.Insert(0, sender.ServerPosition.LSTo2D());
 
                 for (int i = 0; i < wp.Count - 1; i++)
                 {

@@ -207,10 +207,10 @@ namespace SPrediction
             if (yasuoWall == null)
                 return false;
 
-            Vector2 yasuoWallDirection = (yasuoWall.Position.To2D() - yasuoWallCastedPos).Normalized().Perpendicular();
+            Vector2 yasuoWallDirection = (yasuoWall.Position.LSTo2D() - yasuoWallCastedPos).Normalized().Perpendicular();
             float yasuoWallWidth = 300 + 50 * yasuoWallLevel;
 
-            Vector2 yasuoWallStart = yasuoWall.Position.To2D() + yasuoWallWidth / 2f * yasuoWallDirection;
+            Vector2 yasuoWallStart = yasuoWall.Position.LSTo2D() + yasuoWallWidth / 2f * yasuoWallDirection;
             Vector2 yasuoWallEnd = yasuoWallStart - yasuoWallWidth * yasuoWallDirection;
 
             Geometry.Polygon yasuoWallPoly = ClipperWrapper.DefineRectangle(yasuoWallStart, yasuoWallEnd, 5);
@@ -241,10 +241,10 @@ namespace SPrediction
             if (yasuoWall == null)
                 return false;
 
-            Vector2 yasuoWallDirection = (yasuoWall.Position.To2D() - yasuoWallCastedPos).Normalized().Perpendicular();
+            Vector2 yasuoWallDirection = (yasuoWall.Position.LSTo2D() - yasuoWallCastedPos).Normalized().Perpendicular();
             float yasuoWallWidth = 300 + 50 * yasuoWallLevel;
 
-            Vector2 yasuoWallStart = yasuoWall.Position.To2D() + yasuoWallWidth / 2f * yasuoWallDirection;
+            Vector2 yasuoWallStart = yasuoWall.Position.LSTo2D() + yasuoWallWidth / 2f * yasuoWallDirection;
             Vector2 yasuoWallEnd = yasuoWallStart - yasuoWallWidth * yasuoWallDirection;
 
             Geometry.Polygon yasuoWallPoly = ClipperWrapper.DefineRectangle(yasuoWallStart, yasuoWallEnd, 5);
@@ -312,7 +312,7 @@ namespace SPrediction
             {
                 yasuoWallCastedTick = Utils.TickCount;
                 yasuoWallLevel = args.Level;
-                yasuoWallCastedPos = sender.ServerPosition.To2D();
+                yasuoWallCastedPos = sender.ServerPosition.LSTo2D();
             }
         }
     }

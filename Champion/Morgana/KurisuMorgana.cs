@@ -187,7 +187,7 @@ namespace KurisuMorgana
             {
                 if (getCheckBoxItem(wwmenu, "farmw") && _w.IsReady())
                 {
-                    var minionpositions = MinionManager.GetMinions(_w.Range).Select(x => x.Position.To2D());
+                    var minionpositions = MinionManager.GetMinions(_w.Range).Select(x => x.Position.LSTo2D());
                     var location = MinionManager.GetBestCircularFarmLocation(minionpositions.ToList(), _w.Width,
                         _w.Range);
                     if (location.MinionsHit >= getSliderItem(wwmenu, "farmcount"))

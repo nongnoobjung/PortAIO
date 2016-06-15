@@ -626,7 +626,7 @@ namespace KurisuNidalee
             {
                 var wallPosition = movePosition;
 
-                var direction = (Game.CursorPos.To2D() - wallPosition.To2D()).Normalized();
+                var direction = (Game.CursorPos.LSTo2D() - wallPosition.LSTo2D()).Normalized();
                 var maxAngle = 80f;
                 var step = maxAngle/20;
                 float currentAngle = 0;

@@ -80,12 +80,12 @@ namespace SoloVayne.Skills.Condemn
 
                 //Condemn To Wall Logic
                 var condemnRectangle =
-                    new SOLOPolygon(SOLOPolygon.Rectangle(targetPosition.To2D(), finalPosition.LSTo2D(), Hero.BoundingRadius));
+                    new SOLOPolygon(SOLOPolygon.Rectangle(targetPosition.LSTo2D(), finalPosition.LSTo2D(), Hero.BoundingRadius));
                 var condemnRectangle_ex =
-                    new SOLOPolygon(SOLOPolygon.Rectangle(Hero.ServerPosition.To2D(), finalPosition_ex.LSTo2D(),
+                    new SOLOPolygon(SOLOPolygon.Rectangle(Hero.ServerPosition.LSTo2D(), finalPosition_ex.LSTo2D(),
                         Hero.BoundingRadius));
                 var condemnRectangle_3 =
-                    new SOLOPolygon(SOLOPolygon.Rectangle(prediction.CastPosition.To2D(), finalPosition_3.LSTo2D(),
+                    new SOLOPolygon(SOLOPolygon.Rectangle(prediction.CastPosition.LSTo2D(), finalPosition_3.LSTo2D(),
                         Hero.BoundingRadius));
 
                 if (IsBothNearWall(Hero))
@@ -144,8 +144,8 @@ namespace SoloVayne.Skills.Condemn
         {
             Vector3[] vList =
             {
-                (player.ServerPosition.To2D() + Range*player.Direction.To2D()).To3D(),
-                (player.ServerPosition.To2D() - Range*player.Direction.To2D()).To3D()
+                (player.ServerPosition.LSTo2D() + Range*player.Direction.LSTo2D()).To3D(),
+                (player.ServerPosition.LSTo2D() - Range*player.Direction.LSTo2D()).To3D()
             };
 
             return vList;

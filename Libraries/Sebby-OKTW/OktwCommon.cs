@@ -122,12 +122,12 @@ namespace SebbyLib
                 var prediction = QWER.GetPrediction(hero);
                 var powCalc = Math.Pow(QWER.Width + extraWith + hero.BoundingRadius, 2);
                 if (
-                    prediction.UnitPosition.To2D()
-                        .LSDistance(QWER.From.To2D(), QWER.GetPrediction(t).CastPosition.To2D(), true, true) <= powCalc)
+                    prediction.UnitPosition.LSTo2D()
+                        .LSDistance(QWER.From.LSTo2D(), QWER.GetPrediction(t).CastPosition.LSTo2D(), true, true) <= powCalc)
                 {
                     return true;
                 }
-                if (prediction.UnitPosition.To2D().LSDistance(QWER.From.To2D(), t.ServerPosition.To2D(), true, true) <=
+                if (prediction.UnitPosition.LSTo2D().LSDistance(QWER.From.LSTo2D(), t.ServerPosition.LSTo2D(), true, true) <=
                     powCalc)
                 {
                     return true;
@@ -147,8 +147,8 @@ namespace SebbyLib
                 if (args.SData.LineWidth > 0)
                 {
                     var powCalc = Math.Pow(args.SData.LineWidth + target.BoundingRadius, 2);
-                    if (pred.To2D().LSDistance(args.End.To2D(), args.Start.To2D(), true, true) <= powCalc ||
-                        target.ServerPosition.To2D().LSDistance(args.End.To2D(), args.Start.To2D(), true, true) <= powCalc)
+                    if (pred.LSTo2D().LSDistance(args.End.LSTo2D(), args.Start.LSTo2D(), true, true) <= powCalc ||
+                        target.ServerPosition.LSTo2D().LSDistance(args.End.LSTo2D(), args.Start.LSTo2D(), true, true) <= powCalc)
                     {
                         return true;
                     }
@@ -266,11 +266,11 @@ namespace SebbyLib
             var level = yasuoWall.WallLvl;
             var wallWidth = 350 + 50*level;
             var wallDirection =
-                (yasuoWall.CastPosition.To2D() - yasuoWall.YasuoPosition.To2D()).LSNormalized().Perpendicular();
-            var wallStart = yasuoWall.CastPosition.To2D() + wallWidth/2f*wallDirection;
+                (yasuoWall.CastPosition.LSTo2D() - yasuoWall.YasuoPosition.LSTo2D()).LSNormalized().Perpendicular();
+            var wallStart = yasuoWall.CastPosition.LSTo2D() + wallWidth/2f*wallDirection;
             var wallEnd = wallStart - wallWidth*wallDirection;
 
-            if (wallStart.LSIntersection(wallEnd, to.To2D(), from.To2D()).Intersects)
+            if (wallStart.LSIntersection(wallEnd, to.LSTo2D(), from.LSTo2D()).Intersects)
             {
                 return true;
             }
@@ -290,8 +290,8 @@ namespace SebbyLib
 
         public static void DrawLineRectangle(Vector3 start2, Vector3 end2, int radius, float width, Color color)
         {
-            var start = start2.To2D();
-            var end = end2.To2D();
+            var start = start2.LSTo2D();
+            var end = end2.LSTo2D();
             var dir = (end - start).Normalized();
             var pDir = dir.Perpendicular();
 

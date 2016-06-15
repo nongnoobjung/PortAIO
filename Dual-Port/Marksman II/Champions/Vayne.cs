@@ -127,11 +127,11 @@ namespace Marksman.Champions
 
                         case 3:
                         {
-                            if (t.LSDistance(ObjectManager.Player.Position) > Orbwalking.GetRealAutoAttackRange(null) && Q.IsPositionSafe(t.Position.To2D()))
+                            if (t.LSDistance(ObjectManager.Player.Position) > Orbwalking.GetRealAutoAttackRange(null) && Q.IsPositionSafe(t.Position.LSTo2D()))
                             {
                                 Q.Cast(t.Position);
                             }
-                            else if (Q.IsPositionSafe(Game.CursorPos.To2D()))
+                            else if (Q.IsPositionSafe(Game.CursorPos.LSTo2D()))
                             {
                                 Q.Cast(Game.CursorPos);
                             }
@@ -165,15 +165,15 @@ namespace Marksman.Champions
                         let prediction = E.GetPrediction(hero)
                         where
                             NavMesh.GetCollisionFlags(
-                                prediction.UnitPosition.To2D()
+                                prediction.UnitPosition.LSTo2D()
                                     .Extend(
-                                        ObjectManager.Player.ServerPosition.To2D(),
+                                        ObjectManager.Player.ServerPosition.LSTo2D(),
                                         -GetValue<Slider>("PushDistance").Value)
                                     .To3D()).HasFlag(CollisionFlags.Wall) ||
                             NavMesh.GetCollisionFlags(
-                                prediction.UnitPosition.To2D()
+                                prediction.UnitPosition.LSTo2D()
                                     .Extend(
-                                        ObjectManager.Player.ServerPosition.To2D(),
+                                        ObjectManager.Player.ServerPosition.LSTo2D(),
                                         -(GetValue<Slider>("PushDistance").Value/2))
                                     .To3D()).HasFlag(CollisionFlags.Wall)
                         select hero)
@@ -379,10 +379,10 @@ namespace Marksman.Champions
                         var startpos = t.Position;
                         var endpos = tt;
                         var endpos1 = tt +
-                                      (startpos - endpos).To2D().Normalized().Rotated(45*(float) Math.PI/180).To3D()*
+                                      (startpos - endpos).LSTo2D().Normalized().Rotated(45*(float) Math.PI/180).To3D()*
                                       t.BoundingRadius;
                         var endpos2 = tt +
-                                      (startpos - endpos).To2D().Normalized().Rotated(-45*(float) Math.PI/180).To3D()*
+                                      (startpos - endpos).LSTo2D().Normalized().Rotated(-45*(float) Math.PI/180).To3D()*
                                       t.BoundingRadius;
 
                         var width = 2;

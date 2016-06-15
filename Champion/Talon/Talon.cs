@@ -507,7 +507,7 @@ namespace GFUELTalon
         {
             var minions = MinionManager.GetMinions(E.Range);
             var centerlocation =
-                MinionManager.GetBestCircularFarmLocation(minions.Select(x => x.Position.To2D()).ToList(), 500, E.Range);
+                MinionManager.GetBestCircularFarmLocation(minions.Select(x => x.Position.LSTo2D()).ToList(), 500, E.Range);
 
             return centerlocation.MinionsHit >= getSliderItem(laneclearMenu, "GFUELTalon.laneclear.count")
                 ? MinionManager.GetMinions(1000)

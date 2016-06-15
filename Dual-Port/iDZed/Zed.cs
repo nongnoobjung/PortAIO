@@ -271,8 +271,8 @@ namespace iDZed
                 if (_spells[SpellSlot.W].IsReady() && WShadowSpell.ToggleState == 0
                     && Environment.TickCount - _spells[SpellSlot.W].LastCastAttemptT > 0)
                 {
-                    var position = Player.ServerPosition.To2D()
-                        .Extend(target.ServerPosition.To2D(), _spells[SpellSlot.W].Range);
+                    var position = Player.ServerPosition.LSTo2D()
+                        .Extend(target.ServerPosition.LSTo2D(), _spells[SpellSlot.W].Range);
                     if (position.LSDistance(target) <= _spells[SpellSlot.Q].Range)
                     {
                         if (IsPassWall(Player.ServerPosition, target.ServerPosition))
@@ -873,7 +873,7 @@ namespace iDZed
             double count = Vector3.Distance(start, end);
             for (uint i = 0; i <= count; i += 25)
             {
-                var pos = start.To2D().Extend(Player.ServerPosition.To2D(), -i);
+                var pos = start.LSTo2D().Extend(Player.ServerPosition.LSTo2D(), -i);
                 if (pos.IsWall())
                 {
                     return true;
@@ -903,7 +903,7 @@ namespace iDZed
             {
                 var bestPositionQ =
                     MinionManager.GetBestLineFarmLocation(
-                        allMinionsQ.Select(x => x.ServerPosition.To2D()).ToList(),
+                        allMinionsQ.Select(x => x.ServerPosition.LSTo2D()).ToList(),
                         _spells[SpellSlot.Q].Width,
                         _spells[SpellSlot.Q].Range);
                 if (bestPositionQ.MinionsHit >= getSliderItem(laneclearMenu, "com.idz.zed.laneclear.qhit"))
@@ -917,7 +917,7 @@ namespace iDZed
             {
                 var eLocation =
                     MinionManager.GetBestLineFarmLocation(
-                        allMinionsE.Select(x => x.ServerPosition.To2D()).ToList(),
+                        allMinionsE.Select(x => x.ServerPosition.LSTo2D()).ToList(),
                         _spells[SpellSlot.E].Width,
                         _spells[SpellSlot.E].Range);
                 if (eLocation.MinionsHit >= getSliderItem(laneclearMenu, "com.idz.zed.laneclear.ehit"))

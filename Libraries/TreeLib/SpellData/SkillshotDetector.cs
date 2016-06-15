@@ -76,7 +76,7 @@ namespace TreeLib.SpellData
                     Evade.DetectedSkillshots.Where(
                         i =>
                             i.SpellData.MissileSpellName == spellName && i.Unit.NetworkId == caster.NetworkId &&
-                            (missile.EndPosition.To2D() - missile.StartPosition.To2D()).AngleBetween(i.Direction) < 10 &&
+                            (missile.EndPosition.LSTo2D() - missile.StartPosition.LSTo2D()).AngleBetween(i.Direction) < 10 &&
                             i.SpellData.CanBeRemoved))
                 {
                     OnDeleteMissile(skillshot, missile);
@@ -87,7 +87,7 @@ namespace TreeLib.SpellData
                 i =>
                     (i.SpellData.MissileSpellName == spellName || i.SpellData.ExtraMissileNames.Contains(spellName)) &&
                     (i.Unit.NetworkId == caster.NetworkId &&
-                     (missile.EndPosition.To2D() - missile.StartPosition.To2D()).AngleBetween(i.Direction) < 10 &&
+                     (missile.EndPosition.LSTo2D() - missile.StartPosition.LSTo2D()).AngleBetween(i.Direction) < 10 &&
                      i.SpellData.CanBeRemoved || i.SpellData.ForceRemove));
         }
 
@@ -108,9 +108,9 @@ namespace TreeLib.SpellData
             {
                 return;
             }
-            var missilePosition = missile.Position.To2D();
-            var unitPosition = missile.StartPosition.To2D();
-            var endPos = missile.EndPosition.To2D();
+            var missilePosition = missile.Position.LSTo2D();
+            var unitPosition = missile.StartPosition.LSTo2D();
+            var endPos = missile.EndPosition.LSTo2D();
             var direction = (endPos - unitPosition).Normalized();
             if (unitPosition.LSDistance(endPos) > spellData.Range || spellData.FixedRange)
             {
@@ -168,20 +168,20 @@ namespace TreeLib.SpellData
             {
                 foreach (var obj in ObjectManager.Get<GameObject>().Where(i => i.Name.Contains(spellData.FromObject)))
                 {
-                    startPos = obj.Position.To2D();
+                    startPos = obj.Position.LSTo2D();
                 }
             }
             else
             {
-                startPos = sender.ServerPosition.To2D();
+                startPos = sender.ServerPosition.LSTo2D();
             }
             if (spellData.FromObjects != null && spellData.FromObjects.Length > 0)
             {
                 foreach (var obj in
                     ObjectManager.Get<GameObject>().Where(i => i.IsEnemy && spellData.FromObjects.Contains(i.Name)))
                 {
-                    var start = obj.Position.To2D();
-                    var end = start + spellData.Range * (args.End.To2D() - obj.Position.To2D()).Normalized();
+                    var start = obj.Position.LSTo2D();
+                    var end = start + spellData.Range * (args.End.LSTo2D() - obj.Position.LSTo2D()).Normalized();
                     TriggerOnDetectSkillshot(
                         DetectionType.ProcessSpell, spellData, Utils.GameTimeTickCount - Game.Ping / 2, start, end,
                         sender);
@@ -191,7 +191,7 @@ namespace TreeLib.SpellData
             {
                 return;
             }
-            var endPos = args.End.To2D();
+            var endPos = args.End.LSTo2D();
             if (spellData.SpellName == "LucianQ" && args.Target != null &&
                 args.Target.NetworkId == ObjectManager.Player.NetworkId)
             {

@@ -79,7 +79,7 @@ namespace Marksman.Champions
             })
                 .Any<Obj_AI_Turret>(
                     turret =>
-                        Vector2.Distance(unit.Position.To2D(), turret.Position.To2D()) < 900f && turret.IsAlly);
+                        Vector2.Distance(unit.Position.LSTo2D(), turret.Position.LSTo2D()) < 900f && turret.IsAlly);
         }
 
         public static bool TeleportTurret(Obj_AI_Hero vTarget)

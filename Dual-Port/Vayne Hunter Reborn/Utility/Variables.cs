@@ -53,7 +53,7 @@ namespace VayneHunter_Reborn.Utility
                 return
                     HeroManager.Enemies.FindAll(
                         m => m.IsMelee() && m.LSDistance(ObjectManager.Player) <= PlayerHelper.GetRealAutoAttackRange(m, ObjectManager.Player)
-                            && (m.ServerPosition.To2D() + (m.BoundingRadius + 25f) * m.Direction.To2D().Perpendicular()).LSDistance(ObjectManager.Player.ServerPosition.To2D()) <= m.ServerPosition.LSDistance(ObjectManager.Player.ServerPosition)
+                            && (m.ServerPosition.LSTo2D() + (m.BoundingRadius + 25f) * m.Direction.LSTo2D().Perpendicular()).LSDistance(ObjectManager.Player.ServerPosition.LSTo2D()) <= m.ServerPosition.LSDistance(ObjectManager.Player.ServerPosition)
                             && m.LSIsValidTarget(Range, false));
             }
         }

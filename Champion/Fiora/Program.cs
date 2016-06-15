@@ -438,12 +438,12 @@ namespace FioraProject
             }
             if (activewalljump)
             {
-                var Fstwall = GetFirstWallPoint(Player.Position.To2D(), Game.CursorPos.To2D());
+                var Fstwall = GetFirstWallPoint(Player.Position.LSTo2D(), Game.CursorPos.LSTo2D());
                 if (Fstwall != null)
                 {
                     var firstwall = ((Vector2)Fstwall);
-                    var pos = firstwall.Extend(Game.CursorPos.To2D(), 100);
-                    var Lstwall = GetLastWallPoint(firstwall, Game.CursorPos.To2D());
+                    var pos = firstwall.Extend(Game.CursorPos.LSTo2D(), 100);
+                    var Lstwall = GetLastWallPoint(firstwall, Game.CursorPos.LSTo2D());
                     if (Lstwall != null)
                     {
                         var lastwall = ((Vector2)Lstwall);
@@ -453,7 +453,7 @@ namespace FioraProject
                             {
                                 var pos1 = pos.RotateAround(firstwall, i);
                                 var pos2 = firstwall.Extend(pos1, 400);
-                                if (pos1.InTheCone(firstwall, Game.CursorPos.To2D(), 60) && pos1.IsWall() && !pos2.IsWall())
+                                if (pos1.InTheCone(firstwall, Game.CursorPos.LSTo2D(), 60) && pos1.IsWall() && !pos2.IsWall())
                                 {
                                     Render.Circle.DrawCircle(firstwall.To3D(), 50, Color.Green);
                                     goto Finish;
@@ -482,11 +482,11 @@ namespace FioraProject
         {
             if (usewalljump && activewalljump)
             {
-                var Fstwall = GetFirstWallPoint(Player.Position.To2D(), Game.CursorPos.To2D());
+                var Fstwall = GetFirstWallPoint(Player.Position.LSTo2D(), Game.CursorPos.LSTo2D());
                 if (Fstwall != null)
                 {
                     var firstwall = ((Vector2)Fstwall);
-                    var Lstwall = GetLastWallPoint(firstwall, Game.CursorPos.To2D());
+                    var Lstwall = GetLastWallPoint(firstwall, Game.CursorPos.LSTo2D());
                     if (Lstwall != null)
                     {
                         var lastwall = ((Vector2)Lstwall);
@@ -497,25 +497,25 @@ namespace FioraProject
                             {
                                 if (Utils.GameTimeTickCount - movetick < (70 + Math.Min(60, Game.Ping)))
                                     break;
-                                if (Player.LSDistance(Game.CursorPos) <= 1200 && Player.Position.To2D().Extend(Game.CursorPos.To2D(), i).IsWall())
+                                if (Player.LSDistance(Game.CursorPos) <= 1200 && Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), i).IsWall())
                                 {
-                                    EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.To2D().Extend(Game.CursorPos.To2D(), i - 20).To3D());
+                                    EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), i - 20).To3D());
                                     movetick = Utils.GameTimeTickCount;
                                     break;
                                 }
                                 EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo,
                                     Player.LSDistance(Game.CursorPos) <= 1200 ?
-                                    Player.Position.To2D().Extend(Game.CursorPos.To2D(), 200).To3D() :
+                                    Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), 200).To3D() :
                                     Game.CursorPos);
                             }
                             if (y.IsWall() && LeagueSharp.Common.Prediction.GetPrediction(Player, 500).UnitPosition.LSDistance(Player.Position) <= 10 && Q.IsReady())
                             {
-                                var pos = Player.Position.To2D().Extend(Game.CursorPos.To2D(), 100);
+                                var pos = Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), 100);
                                 for (int i = 0; i <= 359; i++)
                                 {
-                                    var pos1 = pos.RotateAround(Player.Position.To2D(), i);
-                                    var pos2 = Player.Position.To2D().Extend(pos1, 400);
-                                    if (pos1.InTheCone(Player.Position.To2D(), Game.CursorPos.To2D(), 60) && pos1.IsWall() && !pos2.IsWall())
+                                    var pos1 = pos.RotateAround(Player.Position.LSTo2D(), i);
+                                    var pos2 = Player.Position.LSTo2D().Extend(pos1, 400);
+                                    if (pos1.InTheCone(Player.Position.LSTo2D(), Game.CursorPos.LSTo2D(), 60) && pos1.IsWall() && !pos2.IsWall())
                                     {
                                         Q.Cast(pos2);
                                     }
@@ -582,7 +582,7 @@ namespace FioraProject
         public static bool InMiddileWall(Vector2 firstwall, Vector2 lastwall)
         {
             var midwall = new Vector2((firstwall.X + lastwall.X) / 2, (firstwall.Y + lastwall.Y) / 2);
-            var point = midwall.Extend(Game.CursorPos.To2D(), 50);
+            var point = midwall.Extend(Game.CursorPos.LSTo2D(), 50);
             for (int i = 0; i <= 350; i = i + 10)
             {
                 var testpoint = point.RotateAround(midwall, i);
@@ -605,13 +605,13 @@ namespace FioraProject
                 if (target.LSIsValidTarget(OrbwalkToPassiveRange) && !target.IsZombie)
                 {
                     var status = target.GetPassiveStatus(0);
-                    if (Player.Position.To2D().LSDistance(target.Position.To2D()) <= OrbwalkToPassiveRange && status.HasPassive
+                    if (Player.Position.LSTo2D().LSDistance(target.Position.LSTo2D()) <= OrbwalkToPassiveRange && status.HasPassive
                         && ((TargetingMode == TargetMode.Selected && OrbwalkToPassiveTargeted && (OrbwalkTargetedUnderTower || !Player.UnderTurret(true)))
                         || (TargetingMode == TargetMode.Optional && OrbwalkToPassiveOptional && (OrbwalkOptionalUnderTower || !Player.UnderTurret(true)))
                         || (TargetingMode == TargetMode.Priority && OrbwalkToPassivePriority && (OrbwalkPriorityUnderTower || !Player.UnderTurret(true)))))
                     {
-                        var point = status.PassivePredictedPositions.OrderBy(x => x.LSDistance(Player.Position.To2D())).FirstOrDefault();
-                        point = point.IsValid() ? point : Game.CursorPos.To2D();
+                        var point = status.PassivePredictedPositions.OrderBy(x => x.LSDistance(Player.Position.LSTo2D())).FirstOrDefault();
+                        point = point.IsValid() ? point : Game.CursorPos.LSTo2D();
                         Orbwalker.OrbwalkTo(point.To3D());
                     }
                     else Orbwalker.OrbwalkTo(Game.CursorPos);

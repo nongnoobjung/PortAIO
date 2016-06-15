@@ -504,7 +504,7 @@ namespace Slutty_Gnar_Reworked
                 if (target == null)
                     return;
                 var qpred = GnarSpells.QMini.GetPrediction(target);
-                var collision = GnarSpells.QMini.GetCollision(Player.Position.To2D(), new List<Vector2> {qpred.CastPosition.To2D()});
+                var collision = GnarSpells.QMini.GetCollision(Player.Position.LSTo2D(), new List<Vector2> {qpred.CastPosition.LSTo2D()});
                 var mincol = collision.Where(obj => obj != null && obj.LSIsValidTarget() && !obj.IsDead && obj.IsMinion);
 
                 var aiBases = mincol as Obj_AI_Base[] ?? mincol.ToArray();

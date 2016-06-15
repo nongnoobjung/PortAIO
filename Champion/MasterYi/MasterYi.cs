@@ -119,9 +119,9 @@ namespace MasterSharp
             {
                 if (!Q.IsReady() || target.Path.Count() == 0 || !target.IsMoving)
                     return;
-                var nextEnemPath = target.Path[0].To2D();
-                var dist = player.Position.To2D().LSDistance(target.Position.To2D());
-                var distToNext = nextEnemPath.LSDistance(player.Position.To2D());
+                var nextEnemPath = target.Path[0].LSTo2D();
+                var dist = player.Position.LSTo2D().LSDistance(target.Position.LSTo2D());
+                var distToNext = nextEnemPath.LSDistance(player.Position.LSTo2D());
                 if (distToNext <= dist)
                     return;
                 var msDif = player.MoveSpeed - target.MoveSpeed;

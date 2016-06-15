@@ -73,7 +73,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
             {
                 if (!getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.tumble.noqenemies.old"))
                 {
-                    var Vector2Position = position.To2D();
+                    var Vector2Position = position.LSTo2D();
                     var enemyPoints = getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.tumble.dynamicqsafety")
                         ? GetEnemyPoints()
                         : GetEnemyPoints(false);
@@ -128,11 +128,11 @@ namespace VayneHunter_Reborn.Skills.Tumble
             }
 
             const int currentStep = 30;
-            var direction = ObjectManager.Player.Direction.To2D().Perpendicular();
+            var direction = ObjectManager.Player.Direction.LSTo2D().Perpendicular();
             for (var i = 0f; i < 360f; i += currentStep)
             {
                 var angleRad = LeagueSharp.Common.Geometry.DegreeToRadian(i);
-                var rotatedPosition = ObjectManager.Player.Position.To2D() + (300f * direction.Rotated(angleRad));
+                var rotatedPosition = ObjectManager.Player.Position.LSTo2D() + (300f * direction.Rotated(angleRad));
                 if (CondemnLogic.GetCondemnTarget(rotatedPosition.To3D()).LSIsValidTarget() && rotatedPosition.To3D().IsSafe())
                 {
                     return rotatedPosition.To3D();
@@ -145,7 +145,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
         public static List<Vector2> GetEnemyPoints(bool dynamic = true)
         {
             var staticRange = 360f;
-            var polygonsList = Variables.EnemiesClose.Select(enemy => new Geometry.Circle(enemy.ServerPosition.To2D(), (dynamic ? (enemy.IsMelee ? enemy.AttackRange * 1.5f : enemy.AttackRange) : staticRange) + enemy.BoundingRadius + 20).ToPolygon()).ToList();
+            var polygonsList = Variables.EnemiesClose.Select(enemy => new Geometry.Circle(enemy.ServerPosition.LSTo2D(), (dynamic ? (enemy.IsMelee ? enemy.AttackRange * 1.5f : enemy.AttackRange) : staticRange) + enemy.BoundingRadius + 20).ToPolygon()).ToList();
             var pathList = Geometry.ClipPolygons(polygonsList);
             var pointList = pathList.SelectMany(path => path, (path, point) => new Vector2(point.X, point.Y)).Where(currentPoint => !currentPoint.IsWall()).ToList();
             return pointList;

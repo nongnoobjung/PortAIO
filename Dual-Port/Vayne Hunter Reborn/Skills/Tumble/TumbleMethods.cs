@@ -190,8 +190,8 @@ namespace VayneHunter_Reborn.Skills.Tumble
                     case 3:
                         //Credits to Kurisu's Graves!
                         var range = Orbwalking.GetRealAutoAttackRange(target);
-                        var path = LeagueSharp.Common.Geometry.CircleCircleIntersection(ObjectManager.Player.ServerPosition.To2D(),
-                            LeagueSharp.Common.Prediction.GetPrediction(target, 0.25f).UnitPosition.To2D(), 300f, range);
+                        var path = LeagueSharp.Common.Geometry.CircleCircleIntersection(ObjectManager.Player.ServerPosition.LSTo2D(),
+                            LeagueSharp.Common.Prediction.GetPrediction(target, 0.25f).UnitPosition.LSTo2D(), 300f, range);
 
                         if (path.Count() > 0)
                         {
@@ -215,7 +215,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
             var afterTumblePosition = PlayerHelper.GetAfterTumblePosition(Game.CursorPos);
             var CursorPos = Game.CursorPos;
             var EnemyPoints = TumblePositioning.GetEnemyPoints();
-            if (afterTumblePosition.IsSafe(true) || (!EnemyPoints.Contains(Game.CursorPos.To2D())) || (Variables.EnemiesClose.Count() == 1))
+            if (afterTumblePosition.IsSafe(true) || (!EnemyPoints.Contains(Game.CursorPos.LSTo2D())) || (Variables.EnemiesClose.Count() == 1))
             {
                 if (afterTumblePosition.LSDistance(Target.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(Target))
                 {
@@ -268,8 +268,8 @@ namespace VayneHunter_Reborn.Skills.Tumble
         {
             Vector3[] vList =
             {
-                (ObjectManager.Player.ServerPosition.To2D() + Range * ObjectManager.Player.Direction.To2D()).To3D(),
-                (ObjectManager.Player.ServerPosition.To2D() - Range * ObjectManager.Player.Direction.To2D()).To3D()
+                (ObjectManager.Player.ServerPosition.LSTo2D() + Range * ObjectManager.Player.Direction.LSTo2D()).To3D(),
+                (ObjectManager.Player.ServerPosition.LSTo2D() - Range * ObjectManager.Player.Direction.LSTo2D()).To3D()
 
             };
 

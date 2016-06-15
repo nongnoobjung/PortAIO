@@ -1379,7 +1379,7 @@ namespace ElLeeSin
 
         private static Vector2 V2E(Vector3 from, Vector3 direction, float distance)
         {
-            return from.To2D() + distance*Vector3.Normalize(direction - from).To2D();
+            return from.LSTo2D() + distance*Vector3.Normalize(direction - from).LSTo2D();
         }
 
         private static void WardCombo()
@@ -1442,14 +1442,14 @@ namespace ElLeeSin
                 return;
             }
 
-            var basePos = Player.Position.To2D();
-            var newPos = pos.To2D() - Player.Position.To2D();
+            var basePos = Player.Position.LSTo2D();
+            var newPos = pos.LSTo2D() - Player.Position.LSTo2D();
 
             if (JumpPos == new Vector2())
             {
                 if (reqinMaxRange)
                 {
-                    JumpPos = pos.To2D();
+                    JumpPos = pos.LSTo2D();
                 }
                 else if (maxRange || Player.LSDistance(pos) > 590)
                 {

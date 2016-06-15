@@ -93,8 +93,8 @@ namespace VayneHunter_Reborn.Skills.Condemn.Methods
                 var finalPosition = targetPosition.LSExtend(ObjectManager.Player.ServerPosition, -PushDistance);
                 var finalPosition_ex = Hero.ServerPosition.LSExtend(ObjectManager.Player.ServerPosition, -PushDistance);
 
-                var condemnRectangle = new VHRPolygon(VHRPolygon.Rectangle(targetPosition.To2D(), finalPosition.To2D(), Hero.BoundingRadius));
-                var condemnRectangle_ex = new VHRPolygon(VHRPolygon.Rectangle(Hero.ServerPosition.To2D(), finalPosition_ex.To2D(), Hero.BoundingRadius));
+                var condemnRectangle = new VHRPolygon(VHRPolygon.Rectangle(targetPosition.LSTo2D(), finalPosition.LSTo2D(), Hero.BoundingRadius));
+                var condemnRectangle_ex = new VHRPolygon(VHRPolygon.Rectangle(Hero.ServerPosition.LSTo2D(), finalPosition_ex.LSTo2D(), Hero.BoundingRadius));
 
                 if (IsBothNearWall(Hero))
                 {
@@ -129,8 +129,8 @@ namespace VayneHunter_Reborn.Skills.Condemn.Methods
         {
             Vector3[] vList =
             {
-                (player.ServerPosition.To2D() + Range * player.Direction.To2D()).To3D(),
-                (player.ServerPosition.To2D() - Range * player.Direction.To2D()).To3D()
+                (player.ServerPosition.LSTo2D() + Range * player.Direction.LSTo2D()).To3D(),
+                (player.ServerPosition.LSTo2D() - Range * player.Direction.LSTo2D()).To3D()
 
             };
 

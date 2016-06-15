@@ -84,7 +84,7 @@ namespace TreeLib.SpellData
                 return new FastPredResult
                 {
                     IsMoving = true,
-                    CurrentPos = unit.ServerPosition.To2D(),
+                    CurrentPos = unit.ServerPosition.LSTo2D(),
                     PredictedPos = path.CutPath((int) d)[0]
                 };
             }
@@ -191,8 +191,8 @@ namespace TreeLib.SpellData
                         }
                         var level = wall.Name.Substring(wall.Name.Length - 6, 1);
                         var wallWidth = 300 + 50 * Convert.ToInt32(level);
-                        var wallDirection = (wall.Position.To2D() - wallCastedPos).Normalized().Perpendicular();
-                        var wallStart = wall.Position.To2D() + wallWidth / 2f * wallDirection;
+                        var wallDirection = (wall.Position.LSTo2D() - wallCastedPos).Normalized().Perpendicular();
+                        var wallStart = wall.Position.LSTo2D() + wallWidth / 2f * wallDirection;
                         var wallEnd = wallStart - wallWidth * wallDirection;
                         var wallPolygon = new Geometry.Rectangle(wallStart, wallEnd, 75).ToPolygon();
                         var intersections = new List<Vector2>();
@@ -240,7 +240,7 @@ namespace TreeLib.SpellData
                     return;
                 }
                 wallCastT = Utils.GameTimeTickCount;
-                wallCastedPos = sender.ServerPosition.To2D();
+                wallCastedPos = sender.ServerPosition.LSTo2D();
             };
         }
 

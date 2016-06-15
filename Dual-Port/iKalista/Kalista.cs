@@ -581,7 +581,7 @@ namespace IKalista
             double distance = Vector3.Distance(start, end);
             for (uint i = 0; i < distance; i += 10)
             {
-                var tempPosition = start.LSExtend(end, i).To2D();
+                var tempPosition = start.LSExtend(end, i).LSTo2D();
                 if (tempPosition.IsWall())
                 {
                     return true;
@@ -955,15 +955,15 @@ namespace IKalista
                 for (var i = 0; i < difference; i += (int)target.BoundingRadius)
                 {
                     var point =
-                        minion.ServerPosition.To2D().Extend(ObjectManager.Player.ServerPosition.To2D(), -i).To3D();
+                        minion.ServerPosition.LSTo2D().Extend(ObjectManager.Player.ServerPosition.LSTo2D(), -i).To3D();
                     var time = spells[SpellSlot.Q].Delay
                                + (ObjectManager.Player.LSDistance(point) / spells[SpellSlot.Q].Speed * 1000f);
 
                     var prediction = LeagueSharp.Common.Prediction.GetPrediction(target, time);
 
                     var collision = spells[SpellSlot.Q].GetCollision(
-                        point.To2D(),
-                        new List<Vector2> { prediction.UnitPosition.To2D() });
+                        point.LSTo2D(),
+                        new List<Vector2> { prediction.UnitPosition.LSTo2D() });
 
                     if (collision.Any(x => x.GetTotalHealth() > spells[SpellSlot.Q].GetDamage(x)))
                     {

@@ -28,7 +28,7 @@ namespace TreeLib.SpellData
 
         public static Vector2 PlayerPosition
         {
-            get { return ObjectManager.Player.ServerPosition.To2D(); }
+            get { return ObjectManager.Player.ServerPosition.LSTo2D(); }
         }
 
         #region Methods
@@ -109,7 +109,7 @@ namespace TreeLib.SpellData
                 {
                     const int Angle = 60;
                     var edge1 =
-                        (skillshot.End - skillshot.Unit.ServerPosition.To2D()).Rotated(
+                        (skillshot.End - skillshot.Unit.ServerPosition.LSTo2D()).Rotated(
                             -Angle / 2f * (float) Math.PI / 180);
                     var edge2 = edge1.Rotated(Angle * (float) Math.PI / 180);
                     foreach (var skillshotToAdd in
@@ -117,13 +117,13 @@ namespace TreeLib.SpellData
                             ObjectManager.Get<Obj_AI_Minion>()
                                 .Where(x => x.IsEnemy)
                                 .Where(i => i.Name == "Seed" && i.LSDistance(skillshot.Unit) < 800)
-                        let v = minion.ServerPosition.To2D() - skillshot.Unit.ServerPosition.To2D()
+                        let v = minion.ServerPosition.LSTo2D() - skillshot.Unit.ServerPosition.LSTo2D()
                         where edge1.CrossProduct(v) > 0 && v.CrossProduct(edge2) > 0
-                        let start = minion.ServerPosition.To2D()
+                        let start = minion.ServerPosition.LSTo2D()
                         let end =
-                            skillshot.Unit.ServerPosition.To2D()
+                            skillshot.Unit.ServerPosition.LSTo2D()
                                 .Extend(
-                                    minion.ServerPosition.To2D(), skillshot.Unit.LSDistance(minion) > 200 ? 1300 : 1000)
+                                    minion.ServerPosition.LSTo2D(), skillshot.Unit.LSDistance(minion) > 200 ? 1300 : 1000)
                         select
                             new Skillshot(
                                 skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, start, end,
@@ -201,9 +201,9 @@ namespace TreeLib.SpellData
                             var extendedE = new Skillshot(
                                 skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, skillshot.Start,
                                 skillshot.End + skillshot.Direction * 100, skillshot.Unit);
-                            if (!extendedE.IsSafe(m.Position.To2D()))
+                            if (!extendedE.IsSafe(m.Position.LSTo2D()))
                             {
-                                endPos = m.Position.To2D();
+                                endPos = m.Position.LSTo2D();
                             }
                             break;
                         }

@@ -31,7 +31,7 @@ namespace SOLOVayne
             if (sender.IsValid && sender.Team != ObjectManager.Player.Team && args.SData.Name == "YasuoWMovingWall")
             {
                 _wallCastT = Environment.TickCount;
-                _yasuoWallCastedPos = sender.ServerPosition.To2D();
+                _yasuoWallCastedPos = sender.ServerPosition.LSTo2D();
             }
         }
 
@@ -68,14 +68,14 @@ namespace SOLOVayne
             var wallWidth = 300 + 50*Convert.ToInt32(level);
 
             var wallDirection =
-                (wall.Position.To2D() - _yasuoWallCastedPos).Normalized().Perpendicular();
-            var wallStart = wall.Position.To2D() + wallWidth/2f*wallDirection;
+                (wall.Position.LSTo2D() - _yasuoWallCastedPos).Normalized().Perpendicular();
+            var wallStart = wall.Position.LSTo2D() + wallWidth/2f*wallDirection;
             var wallEnd = wallStart - wallWidth*wallDirection;
 
             for (var i = 0; i < start.LSDistance(end); i += 30)
             {
                 var currentPosition = start.LSExtend(end, i);
-                if (wallStart.Intersection(wallEnd, currentPosition.LSTo2D(), start.To2D()).Intersects)
+                if (wallStart.Intersection(wallEnd, currentPosition.LSTo2D(), start.LSTo2D()).Intersects)
                 {
                     return true;
                 }

@@ -395,7 +395,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             var rDmg = R.GetDamage(target);
             var output = R.GetPrediction(target);
-            var direction = output.CastPosition.To2D() - Player.Position.To2D();
+            var direction = output.CastPosition.LSTo2D() - Player.Position.LSTo2D();
             direction.Normalize();
             var enemies = ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy && x.LSIsValidTarget()).ToList();
             var dmg = (from enemy in enemies let prediction = R.GetPrediction(enemy) let predictedPosition = prediction.CastPosition let v = output.CastPosition - Player.ServerPosition let w = predictedPosition - Player.ServerPosition let c1 = Vector3.Dot(w, v) let c2 = Vector3.Dot(v, v) let b = c1/(double) c2 let pb = Player.ServerPosition + (float) b*v let length = Vector3.Distance(predictedPosition, pb) where length < R.Width + 100 + enemy.BoundingRadius/2 && Player.LSDistance(predictedPosition) < Player.LSDistance(target.ServerPosition) select enemy).Count();

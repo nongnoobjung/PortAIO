@@ -213,8 +213,8 @@ namespace Ziggs
                                 target.LSDistance(ObjectManager.Player))
                             {
                                 var cp =
-                                    ObjectManager.Player.ServerPosition.To2D()
-                                        .Extend(prediction.UnitPosition.To2D(), W.Range)
+                                    ObjectManager.Player.ServerPosition.LSTo2D()
+                                        .Extend(prediction.UnitPosition.LSTo2D(), W.Range)
                                         .To3D();
                                 W.Cast(cp);
                                 UseSecondWT = Utils.TickCount;
@@ -308,7 +308,7 @@ namespace Ziggs
             var castToMouse = getKeyBindItem(miscMenu, "WToMouse");
             if (castToMouse || Utils.TickCount - LastWToMouseT < 400)
             {
-                var pos = ObjectManager.Player.ServerPosition.To2D().Extend(Game.CursorPos.To2D(), -150).To3D();
+                var pos = ObjectManager.Player.ServerPosition.LSTo2D().Extend(Game.CursorPos.LSTo2D(), -150).To3D();
                 W.Cast(pos, true);
                 if (castToMouse)
                 {
@@ -326,8 +326,8 @@ namespace Ziggs
                         enemy.BoundingRadius + enemy.AttackRange + ObjectManager.Player.BoundingRadius &&
                         enemy.IsMelee()
                     let direction =
-                        (enemy.ServerPosition.To2D() - ObjectManager.Player.ServerPosition.To2D()).Normalized()
-                    let pos = ObjectManager.Player.ServerPosition.To2D()
+                        (enemy.ServerPosition.LSTo2D() - ObjectManager.Player.ServerPosition.LSTo2D()).Normalized()
+                    let pos = ObjectManager.Player.ServerPosition.LSTo2D()
                     select pos + Math.Min(200, Math.Max(50, enemy.LSDistance(ObjectManager.Player)/2))*direction)
                 {
                     W.Cast(pos.To3D(), true);
@@ -372,7 +372,7 @@ namespace Ziggs
                     {
                         p = prediction.CastPosition -
                             100*
-                            (prediction.CastPosition.To2D() - ObjectManager.Player.ServerPosition.To2D()).Normalized()
+                            (prediction.CastPosition.LSTo2D() - ObjectManager.Player.ServerPosition.LSTo2D()).Normalized()
                                 .To3D();
                     }
                     else
@@ -385,8 +385,8 @@ namespace Ziggs
                 else if (ObjectManager.Player.ServerPosition.LSDistance(prediction.CastPosition) <=
                          (Q1.Range + Q2.Range)/2)
                 {
-                    var p = ObjectManager.Player.ServerPosition.To2D()
-                        .Extend(prediction.CastPosition.To2D(), Q1.Range - 100);
+                    var p = ObjectManager.Player.ServerPosition.LSTo2D()
+                        .Extend(prediction.CastPosition.LSTo2D(), Q1.Range - 100);
 
                     if (!CheckQCollision(target, prediction.UnitPosition, p.To3D()))
                     {
@@ -395,9 +395,9 @@ namespace Ziggs
                 }
                 else
                 {
-                    var p = ObjectManager.Player.ServerPosition.To2D() +
+                    var p = ObjectManager.Player.ServerPosition.LSTo2D() +
                             Q1.Range*
-                            (prediction.CastPosition.To2D() - ObjectManager.Player.ServerPosition.To2D()).Normalized
+                            (prediction.CastPosition.LSTo2D() - ObjectManager.Player.ServerPosition.LSTo2D()).Normalized
                                 ();
 
                     if (!CheckQCollision(target, prediction.UnitPosition, p.To3D()))
@@ -410,31 +410,31 @@ namespace Ziggs
 
         private static bool CheckQCollision(Obj_AI_Base target, Vector3 targetPosition, Vector3 castPosition)
         {
-            var direction = (castPosition.To2D() - ObjectManager.Player.ServerPosition.To2D()).Normalized();
-            var firstBouncePosition = castPosition.To2D();
+            var direction = (castPosition.LSTo2D() - ObjectManager.Player.ServerPosition.LSTo2D()).Normalized();
+            var firstBouncePosition = castPosition.LSTo2D();
             var secondBouncePosition = firstBouncePosition +
                                        direction*0.4f*
-                                       ObjectManager.Player.ServerPosition.To2D().LSDistance(firstBouncePosition);
+                                       ObjectManager.Player.ServerPosition.LSTo2D().LSDistance(firstBouncePosition);
             var thirdBouncePosition = secondBouncePosition +
                                       direction*0.6f*firstBouncePosition.LSDistance(secondBouncePosition);
 
             //TODO: Check for wall collision.
 
-            if (thirdBouncePosition.LSDistance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius)
+            if (thirdBouncePosition.LSDistance(targetPosition.LSTo2D()) < Q1.Width + target.BoundingRadius)
             {
                 //Check the second one.
-                if ((from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.LSIsValidTarget(3000) let predictedPos = Q2.GetPrediction(minion) where predictedPos.UnitPosition.To2D().LSDistance(secondBouncePosition) <
+                if ((from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.LSIsValidTarget(3000) let predictedPos = Q2.GetPrediction(minion) where predictedPos.UnitPosition.LSTo2D().LSDistance(secondBouncePosition) <
                                                                                                                                                           Q2.Width + minion.BoundingRadius select minion).Any())
                 {
                     return true;
                 }
             }
 
-            if (secondBouncePosition.LSDistance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius ||
-                thirdBouncePosition.LSDistance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius)
+            if (secondBouncePosition.LSDistance(targetPosition.LSTo2D()) < Q1.Width + target.BoundingRadius ||
+                thirdBouncePosition.LSDistance(targetPosition.LSTo2D()) < Q1.Width + target.BoundingRadius)
             {
                 //Check the first one
-                return (from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.LSIsValidTarget(3000) let predictedPos = Q1.GetPrediction(minion) where predictedPos.UnitPosition.To2D().LSDistance(firstBouncePosition) < Q1.Width + minion.BoundingRadius select minion).Any();
+                return (from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.LSIsValidTarget(3000) let predictedPos = Q1.GetPrediction(minion) where predictedPos.UnitPosition.LSTo2D().LSDistance(firstBouncePosition) < Q1.Width + minion.BoundingRadius select minion).Any();
             }
 
             return true;

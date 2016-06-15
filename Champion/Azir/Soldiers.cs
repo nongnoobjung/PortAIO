@@ -117,8 +117,8 @@ namespace HeavenStrikeAzir
                 foreach (var hero in championpredictedposition)
                 {
                     foreach (var mainminionsoldier in mainminion.Soldier)
-                        if (LeagueSharp.Common.Geometry.LSDistance(hero.Position.To2D(), mainminionsoldier.Position.To2D(),
-                            mainminionsoldier.Position.To2D().Extend(mainminionpredictedposition.To2D(), 450), false)
+                        if (LeagueSharp.Common.Geometry.LSDistance(hero.Position.LSTo2D(), mainminionsoldier.Position.LSTo2D(),
+                            mainminionsoldier.Position.LSTo2D().Extend(mainminionpredictedposition.LSTo2D(), 450), false)
                             <= hero.Hero.BoundingRadius + 50)
                         {
                             splashchampions.Add(hero.Hero);
@@ -136,8 +136,8 @@ namespace HeavenStrikeAzir
                 foreach (var minion in minionspredictedposition)
                 {
                     foreach (var mainminionsoldier in mainminion.Soldier)
-                        if (LeagueSharp.Common.Geometry.LSDistance(minion.Position.To2D(), mainminionsoldier.Position.To2D(),
-                            mainminionsoldier.Position.To2D().Extend(mainminionpredictedposition.To2D(), 450), false)
+                        if (LeagueSharp.Common.Geometry.LSDistance(minion.Position.LSTo2D(), mainminionsoldier.Position.LSTo2D(),
+                            mainminionsoldier.Position.LSTo2D().Extend(mainminionpredictedposition.LSTo2D(), 450), false)
                             <= minion.Minion.BoundingRadius + 50)
                         {
                             splashminions.Add(minion.Minion);

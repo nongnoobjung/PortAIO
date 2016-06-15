@@ -45,7 +45,7 @@ namespace SephKhazix
         {
             if (unit != null)
             {
-                return Vector2.Distance(unit.ServerPosition.To2D(), Helper.Khazix.ServerPosition.To2D()) <= range;
+                return Vector2.Distance(unit.ServerPosition.LSTo2D(), Helper.Khazix.ServerPosition.LSTo2D()) <= range;
             }
             return false;
         }
@@ -53,7 +53,7 @@ namespace SephKhazix
         internal static bool PointUnderEnemyTurret(this Vector2 Point)
         {
             var EnemyTurrets =
-                ObjectManager.Get<Obj_AI_Turret>().Find(t => t.IsEnemy && Vector2.Distance(t.Position.To2D(), Point) < 950f);
+                ObjectManager.Get<Obj_AI_Turret>().Find(t => t.IsEnemy && Vector2.Distance(t.Position.LSTo2D(), Point) < 950f);
             return EnemyTurrets != null;
         }
 
@@ -115,8 +115,8 @@ namespace SephKhazix
 
             return !(range < float.MaxValue) ||
                    !(Vector2.DistanceSquared(
-                       (@from.To2D().IsValid() ? @from : ObjectManager.Player.ServerPosition).To2D(),
-                       unitPosition.To2D()) > range * range);
+                       (@from.LSTo2D().IsValid() ? @from : ObjectManager.Player.ServerPosition).LSTo2D(),
+                       unitPosition.LSTo2D()) > range * range);
         }
 
         /*

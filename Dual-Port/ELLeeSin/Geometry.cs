@@ -61,7 +61,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Obj_AI_Base unit, Obj_AI_Base anotherUnit, bool squared = false)
         {
-            return unit.ServerPosition.To2D().LSDistance(anotherUnit.ServerPosition.To2D(), squared);
+            return unit.ServerPosition.LSTo2D().LSDistance(anotherUnit.ServerPosition.LSTo2D(), squared);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Obj_AI_Base unit, AttackableUnit anotherUnit, bool squared = false)
         {
-            return unit.ServerPosition.To2D().LSDistance(anotherUnit.Position.To2D(), squared);
+            return unit.ServerPosition.LSTo2D().LSDistance(anotherUnit.Position.LSTo2D(), squared);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Obj_AI_Base unit, Vector3 point, bool squared = false)
         {
-            return unit.ServerPosition.To2D().LSDistance(point.To2D(), squared);
+            return unit.ServerPosition.LSTo2D().LSDistance(point.LSTo2D(), squared);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Obj_AI_Base unit, Vector2 point, bool squared = false)
         {
-            return unit.ServerPosition.To2D().LSDistance(point, squared);
+            return unit.ServerPosition.LSTo2D().LSDistance(point, squared);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Vector3 v, Vector3 other, bool squared = false)
         {
-            return v.To2D().LSDistance(other, squared);
+            return v.LSTo2D().LSDistance(other, squared);
         }
 
         //Vector2 class extended methods:
@@ -220,7 +220,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Vector2 v, Vector3 to, bool squared = false)
         {
-            return v.LSDistance(to.To2D(), squared);
+            return v.LSDistance(to.LSTo2D(), squared);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Vector2 v, Obj_AI_Base to, bool squared = false)
         {
-            return v.LSDistance(to.ServerPosition.To2D(), squared);
+            return v.LSDistance(to.ServerPosition.LSTo2D(), squared);
         }
 
         /// <summary>
@@ -692,7 +692,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static List<Vector2> To2D(this List<Vector3> path)
         {
-            return path.Select(point => point.To2D()).ToList();
+            return path.Select(point => point.LSTo2D()).ToList();
         }
 
         /// <summary>
@@ -1035,7 +1035,7 @@ namespace ElLeeSin
             /// <param name="point">The point.</param>
             public void Add(Vector3 point)
             {
-                Points.Add(point.To2D());
+                Points.Add(point.LSTo2D());
             }
 
             /// <summary>
@@ -1094,7 +1094,7 @@ namespace ElLeeSin
             /// <returns></returns>
             public bool IsInside(Vector3 point)
             {
-                return !IsOutside(point.To2D());
+                return !IsOutside(point.LSTo2D());
             }
 
             /// <summary>
@@ -1104,7 +1104,7 @@ namespace ElLeeSin
             /// <returns></returns>
             public bool IsInside(GameObject point)
             {
-                return !IsOutside(point.Position.To2D());
+                return !IsOutside(point.Position.LSTo2D());
             }
 
             /// <summary>
@@ -1157,7 +1157,7 @@ namespace ElLeeSin
                 /// <param name="radius">The radius.</param>
                 /// <param name="quality">The quality.</param>
                 public Arc(Vector3 start, Vector3 direction, float angle, float radius, int quality = 20)
-                    : this(start.To2D(), direction.To2D(), angle, radius, quality)
+                    : this(start.LSTo2D(), direction.LSTo2D(), angle, radius, quality)
                 {
                 }
 
@@ -1218,7 +1218,7 @@ namespace ElLeeSin
                 /// <param name="start">The start.</param>
                 /// <param name="end">The end.</param>
                 /// <param name="length">The length.</param>
-                public Line(Vector3 start, Vector3 end, float length = -1) : this(start.To2D(), end.To2D(), length)
+                public Line(Vector3 start, Vector3 end, float length = -1) : this(start.LSTo2D(), end.LSTo2D(), length)
                 {
                 }
 
@@ -1288,7 +1288,7 @@ namespace ElLeeSin
                 /// <param name="center">The center.</param>
                 /// <param name="radius">The radius.</param>
                 /// <param name="quality">The quality.</param>
-                public Circle(Vector3 center, float radius, int quality = 20) : this(center.To2D(), radius, quality)
+                public Circle(Vector3 center, float radius, int quality = 20) : this(center.LSTo2D(), radius, quality)
                 {
                 }
 
@@ -1353,7 +1353,7 @@ namespace ElLeeSin
                 /// <param name="start">The start.</param>
                 /// <param name="end">The end.</param>
                 /// <param name="width">The width.</param>
-                public Rectangle(Vector3 start, Vector3 end, float width) : this(start.To2D(), end.To2D(), width)
+                public Rectangle(Vector3 start, Vector3 end, float width) : this(start.LSTo2D(), end.LSTo2D(), width)
                 {
                 }
 
@@ -1445,7 +1445,7 @@ namespace ElLeeSin
                 /// <param name="outerRadius">The outer radius.</param>
                 /// <param name="quality">The quality.</param>
                 public Ring(Vector3 center, float innerRadius, float outerRadius, int quality = 20)
-                    : this(center.To2D(), innerRadius, outerRadius, quality)
+                    : this(center.LSTo2D(), innerRadius, outerRadius, quality)
                 {
                 }
 
@@ -1531,7 +1531,7 @@ namespace ElLeeSin
                 /// <param name="radius">The radius.</param>
                 /// <param name="quality">The quality.</param>
                 public Sector(Vector3 center, Vector3 direction, float angle, float radius, int quality = 20)
-                    : this(center.To2D(), direction.To2D(), angle, radius, quality)
+                    : this(center.LSTo2D(), direction.LSTo2D(), angle, radius, quality)
                 {
                 }
 

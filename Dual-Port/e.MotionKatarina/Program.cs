@@ -494,7 +494,7 @@ namespace e.Motion_Katarina
                 if (wardId != -1 && !wardJumpPosition.IsWall())
                 {
                     WardJumpReady = true;
-                    PutWard(wardJumpPosition.To2D(), (ItemId)wardId);
+                    PutWard(wardJumpPosition.LSTo2D(), (ItemId)wardId);
                 }
             }
 

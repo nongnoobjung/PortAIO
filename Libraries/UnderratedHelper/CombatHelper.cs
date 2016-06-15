@@ -148,7 +148,7 @@ namespace UnderratedAIO.Helpers
                 for (var j = 1; j < 6; j++)
                 {
                     newPos = new Vector3(target.Position.X + 65*j, target.Position.Y + 65*j, target.Position.Z);
-                    var rotated = newPos.To2D().RotateAroundPoint(target.Position.To2D(), 45*i).To3D();
+                    var rotated = newPos.LSTo2D().RotateAroundPoint(target.Position.LSTo2D(), 45*i).To3D();
                     if (rotated.IsValid() && Environment.Map.CheckWalls(rotated, target.Position) &&
                         player.LSDistance(rotated) < 400)
                     {
@@ -386,18 +386,18 @@ namespace UnderratedAIO.Helpers
         public static Geometry.Polygon GetPoly(Vector3 pos, float range, float widht)
         {
             var POS = player.ServerPosition.Extend(pos, range);
-            var direction = (POS - player.ServerPosition.To2D()).Normalized();
+            var direction = (POS - player.ServerPosition.LSTo2D()).Normalized();
 
-            var pos1 = (player.ServerPosition.To2D() - direction.Perpendicular()*widht/2f).To3D();
+            var pos1 = (player.ServerPosition.LSTo2D() - direction.Perpendicular()*widht/2f).To3D();
 
             var pos2 =
-                (POS + (POS - player.ServerPosition.To2D()).Normalized() +
+                (POS + (POS - player.ServerPosition.LSTo2D()).Normalized() +
                  direction.Perpendicular()*widht/2f).To3D();
 
-            var pos3 = (player.ServerPosition.To2D() + direction.Perpendicular()*widht/2f).To3D();
+            var pos3 = (player.ServerPosition.LSTo2D() + direction.Perpendicular()*widht/2f).To3D();
 
             var pos4 =
-                (POS + (POS - player.ServerPosition.To2D()).Normalized() -
+                (POS + (POS - player.ServerPosition.LSTo2D()).Normalized() -
                  direction.Perpendicular()*widht/2f).To3D();
             var poly = new Geometry.Polygon();
             poly.Add(pos1);
@@ -410,17 +410,17 @@ namespace UnderratedAIO.Helpers
         public static Geometry.Polygon GetPolyFromVector(Vector3 from, Vector3 to, float width)
         {
             var POS = to.Extend(from, from.LSDistance(to));
-            var direction = (POS - to.To2D()).Normalized();
+            var direction = (POS - to.LSTo2D()).Normalized();
 
-            var pos1 = (to.To2D() - direction.Perpendicular()*width/2f).To3D();
+            var pos1 = (to.LSTo2D() - direction.Perpendicular()*width/2f).To3D();
 
             var pos2 =
-                (POS + (POS - to.To2D()).Normalized() + direction.Perpendicular()*width/2f).To3D();
+                (POS + (POS - to.LSTo2D()).Normalized() + direction.Perpendicular()*width/2f).To3D();
 
-            var pos3 = (to.To2D() + direction.Perpendicular()*width/2f).To3D();
+            var pos3 = (to.LSTo2D() + direction.Perpendicular()*width/2f).To3D();
 
             var pos4 =
-                (POS + (POS - to.To2D()).Normalized() - direction.Perpendicular()*width/2f).To3D();
+                (POS + (POS - to.LSTo2D()).Normalized() - direction.Perpendicular()*width/2f).To3D();
             var poly = new Geometry.Polygon();
             poly.Add(pos1);
             poly.Add(pos3);

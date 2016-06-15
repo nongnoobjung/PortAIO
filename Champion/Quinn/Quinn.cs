@@ -410,7 +410,7 @@ namespace GFUELQuinn
             var minions = MinionManager.GetMinions(Q.Range + 500);
             var centerlocation =
                 MinionManager.GetBestCircularFarmLocation(
-                    minions.Select(x => x.Position.To2D()).ToList(),
+                    minions.Select(x => x.Position.LSTo2D()).ToList(),
                     500,
                     Q.Range);
 

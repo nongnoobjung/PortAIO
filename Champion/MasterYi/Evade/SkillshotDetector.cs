@@ -100,9 +100,9 @@ namespace MasterSharp
             {
                 return;
             }
-            var missilePosition = missile.Position.To2D();
-            var unitPosition = missile.StartPosition.To2D();
-            var endPos = missile.EndPosition.To2D();
+            var missilePosition = missile.Position.LSTo2D();
+            var unitPosition = missile.StartPosition.LSTo2D();
+            var endPos = missile.EndPosition.LSTo2D();
 
             //Calculate the real end Point:
             var direction = (endPos - unitPosition).Normalized();
@@ -154,7 +154,7 @@ namespace MasterSharp
                 foreach (var skillshot in detectedSkillShots)
                 {
                     if (skillshot.SpellData.MissileSpellName == spellName && skillshot.Unit.NetworkId == unit.NetworkId &&
-                        (missile.EndPosition.To2D() - missile.StartPosition.To2D()).AngleBetween(skillshot.Direction) <
+                        (missile.EndPosition.LSTo2D() - missile.StartPosition.LSTo2D()).AngleBetween(skillshot.Direction) <
                         10 && skillshot.SpellData.CanBeRemoved)
                     {
                         OnDeleteMissile(skillshot, missile);
@@ -173,7 +173,7 @@ namespace MasterSharp
                     (skillshot.SpellData.MissileSpellName == spellName ||
                      skillshot.SpellData.ExtraMissileNames.Contains(spellName)) &&
                     (skillshot.Unit.NetworkId == unit.NetworkId &&
-                     ((missile.EndPosition.To2D() - missile.StartPosition.To2D()).AngleBetween(skillshot.Direction) < 10) &&
+                     ((missile.EndPosition.LSTo2D() - missile.StartPosition.LSTo2D()).AngleBetween(skillshot.Direction) < 10) &&
                      skillshot.SpellData.CanBeRemoved || skillshot.SpellData.ForceRemove)); // 
         }
 
@@ -235,13 +235,13 @@ namespace MasterSharp
                 {
                     if (o.Name.Contains(spellData.FromObject))
                     {
-                        startPos = o.Position.To2D();
+                        startPos = o.Position.LSTo2D();
                     }
                 }
             }
             else
             {
-                startPos = sender.ServerPosition.To2D();
+                startPos = sender.ServerPosition.LSTo2D();
             }
 
             //For now only zed support.
@@ -251,8 +251,8 @@ namespace MasterSharp
                 {
                     if (obj.IsEnemy && spellData.FromObjects.Contains(obj.Name))
                     {
-                        var start = obj.Position.To2D();
-                        var end = start + spellData.Range*(args.End.To2D() - obj.Position.To2D()).Normalized();
+                        var start = obj.Position.LSTo2D();
+                        var end = start + spellData.Range*(args.End.LSTo2D() - obj.Position.LSTo2D()).Normalized();
                         TriggerOnDetectSkillshot(
                             DetectionType.ProcessSpell, spellData, Environment.TickCount - Game.Ping/2, start, end,
                             sender);
@@ -265,7 +265,7 @@ namespace MasterSharp
                 return;
             }
 
-            var endPos = args.End.To2D();
+            var endPos = args.End.LSTo2D();
 
             if (spellData.SpellName == "LucianQ" && args.Target != null &&
                 args.Target.NetworkId == ObjectManager.Player.NetworkId)

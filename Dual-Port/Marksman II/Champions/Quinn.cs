@@ -83,9 +83,9 @@ namespace Marksman.Champions
         public static bool IsPositionSafe(Obj_AI_Hero target, Spell spell)
             // use underTurret and .Extend for this please
         {
-            var predPos = spell.GetPrediction(target).UnitPosition.To2D();
-            var myPos = ObjectManager.Player.Position.To2D();
-            var newPos = (target.Position.To2D() - myPos);
+            var predPos = spell.GetPrediction(target).UnitPosition.LSTo2D();
+            var myPos = ObjectManager.Player.Position.LSTo2D();
+            var newPos = (target.Position.LSTo2D() - myPos);
             newPos.Normalize();
 
             var checkPos = predPos + newPos*(spell.Range - Vector2.Distance(predPos, myPos));
@@ -101,7 +101,7 @@ namespace Marksman.Champions
             if (closestTower == null)
                 return true;
 
-            if (Vector2.Distance(closestTower.Position.To2D(), checkPos) <= 910)
+            if (Vector2.Distance(closestTower.Position.LSTo2D(), checkPos) <= 910)
                 return false;
 
             return true;

@@ -180,13 +180,13 @@ namespace Kindred___YinYang
         public static void CastSafePosition(Spell spell, AIHeroClient hero)
         {
             if (
-                Geometry.CircleCircleIntersection(ObjectManager.Player.ServerPosition.To2D(),
-                    Prediction.GetPrediction(hero, 0f, hero.AttackRange).UnitPosition.To2D(), spell.Range,
+                Geometry.CircleCircleIntersection(ObjectManager.Player.ServerPosition.LSTo2D(),
+                    Prediction.GetPrediction(hero, 0f, hero.AttackRange).UnitPosition.LSTo2D(), spell.Range,
                     Orbwalking.GetRealAutoAttackRange(hero)).Count() > 0)
             {
                 spell.Cast(
-                    Geometry.CircleCircleIntersection(ObjectManager.Player.ServerPosition.To2D(),
-                        Prediction.GetPrediction(hero, 0f, hero.AttackRange).UnitPosition.To2D(), spell.Range,
+                    Geometry.CircleCircleIntersection(ObjectManager.Player.ServerPosition.LSTo2D(),
+                        Prediction.GetPrediction(hero, 0f, hero.AttackRange).UnitPosition.LSTo2D(), spell.Range,
                         Orbwalking.GetRealAutoAttackRange(hero)).MinOrDefault(i => i.LSDistance(Game.CursorPos)));
             }
             else

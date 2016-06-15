@@ -297,8 +297,8 @@ namespace MasterSharp
                     for (var i = -1; i <= 1; i = i + 2)
                     {
                         var skillshotToAdd = new Skillshot(
-                            DetectionType.ProcessSpell, spellData, Environment.TickCount, missile.Position.To2D(),
-                            missile.Position.To2D() + i*direction*spellData.Range, skillshot.Unit);
+                            DetectionType.ProcessSpell, spellData, Environment.TickCount, missile.Position.LSTo2D(),
+                            missile.Position.LSTo2D() + i*direction*spellData.Range, skillshot.Unit);
                         DetectedSkillshots.Add(skillshotToAdd);
                     }
                 }
@@ -327,7 +327,7 @@ namespace MasterSharp
             }
 
             //Check if the skillshot is too far away.
-            if (skillshot.Start.LSDistance(ObjectManager.Player.ServerPosition.To2D()) >
+            if (skillshot.Start.LSDistance(ObjectManager.Player.ServerPosition.LSTo2D()) >
                 (skillshot.SpellData.Range + skillshot.SpellData.Radius + 1000)*1.5)
             {
                 return;
@@ -390,21 +390,21 @@ namespace MasterSharp
                     {
                         var angle = 60;
                         var edge1 =
-                            (skillshot.End - skillshot.Unit.ServerPosition.To2D()).Rotated(
+                            (skillshot.End - skillshot.Unit.ServerPosition.LSTo2D()).Rotated(
                                 -angle/2*(float) Math.PI/180);
                         var edge2 = edge1.Rotated(angle*(float) Math.PI/180);
 
                         foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
                         {
-                            var v = minion.ServerPosition.To2D() - skillshot.Unit.ServerPosition.To2D();
+                            var v = minion.ServerPosition.LSTo2D() - skillshot.Unit.ServerPosition.LSTo2D();
                             if (minion.Name == "Seed" && edge1.CrossProduct(v) > 0 && v.CrossProduct(edge2) > 0 &&
                                 minion.LSDistance(skillshot.Unit) < 800 &&
                                 (minion.Team != ObjectManager.Player.Team))
                             {
-                                var start = minion.ServerPosition.To2D();
-                                var end = skillshot.Unit.ServerPosition.To2D()
+                                var start = minion.ServerPosition.LSTo2D();
+                                var end = skillshot.Unit.ServerPosition.LSTo2D()
                                     .Extend(
-                                        minion.ServerPosition.To2D(),
+                                        minion.ServerPosition.LSTo2D(),
                                         skillshot.Unit.LSDistance(minion) > 200 ? 1300 : 1000);
 
                                 var skillshotToAdd = new Skillshot(
@@ -477,9 +477,9 @@ namespace MasterSharp
                         foreach (var m in ObjectManager.Get<Obj_AI_Minion>())
                         {
                             if (m.BaseSkinName == "jarvanivstandard" && m.Team == skillshot.Unit.Team &&
-                                skillshot.IsDanger(m.Position.To2D()))
+                                skillshot.IsDanger(m.Position.LSTo2D()))
                             {
-                                endPos = m.Position.To2D();
+                                endPos = m.Position.LSTo2D();
                             }
                         }
 

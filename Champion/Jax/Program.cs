@@ -233,11 +233,11 @@ namespace JaxQx
 
             if (Wards.ToList().Contains(arg.SData.Name))
             {
-                Jumper.testSpellCast = arg.End.To2D();
+                Jumper.testSpellCast = arg.End.LSTo2D();
                 Polygon pol;
-                if ((pol = map.getInWhichPolygon(arg.End.To2D())) != null)
+                if ((pol = map.getInWhichPolygon(arg.End.LSTo2D())) != null)
                 {
-                    Jumper.testSpellProj = pol.getProjOnPolygon(arg.End.To2D());
+                    Jumper.testSpellProj = pol.getProjOnPolygon(arg.End.LSTo2D());
                 }
             }
         }
@@ -252,7 +252,7 @@ namespace JaxQx
             if (getKeyBindItem(miscMenu, "Ward"))
             {
                 EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                Jumper.wardJump(Game.CursorPos.To2D());
+                Jumper.wardJump(Game.CursorPos.LSTo2D());
             }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))

@@ -80,7 +80,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoPoppy
             {
                 if (selectedTarget.BadaoIsValidTarget(BadaoMainVariables.E.Range))
                 {
-                    var predPos = BadaoMainVariables.E.GetPrediction(selectedTarget).UnitPosition.To2D();
+                    var predPos = BadaoMainVariables.E.GetPrediction(selectedTarget).UnitPosition.LSTo2D();
                     if (BadaoMath.GetFirstWallPoint(predPos, predPos.Extend(ObjectManager.Player.Position.LSTo2D(), -300 - selectedTarget.BoundingRadius)) != null)
                     {
                         BadaoMainVariables.E.Cast(selectedTarget);

@@ -121,7 +121,7 @@ namespace YasuoPro
         {
             foreach (var point in Jumpspots)
             {
-                Render.Circle.DrawCircle(point.From.To2D().To3D(), player.BoundingRadius, System.Drawing.Color.White);
+                Render.Circle.DrawCircle(point.From.LSTo2D().To3D(), player.BoundingRadius, System.Drawing.Color.White);
             }
         }
 

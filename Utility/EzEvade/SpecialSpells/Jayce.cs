@@ -59,9 +59,9 @@ namespace ezEvade.SpecialSpells
             {
                 //var particle = obj as Obj_GeneralParticleEmitter;                
 
-                /*var dir = obj.Orientation.To2D();
-                var pos1 = obj.Position.To2D() - dir * 470;
-                var pos2 = obj.Position.To2D() + dir * 470;
+                /*var dir = obj.Orientation.LSTo2D();
+                var pos1 = obj.Position.LSTo2D() - dir * 470;
+                var pos2 = obj.Position.LSTo2D() + dir * 470;
 
                 //Draw.RenderObjects.Add(new Draw.RenderLine(pos1, pos2, 3500));
                 Draw.RenderObjects.Add(new Draw.RenderCircle(pos1, 3500));*/

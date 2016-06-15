@@ -553,13 +553,13 @@ namespace D_Graves
                         var useEreload = getCheckBoxItem(comboMenu, "UseEreload");;
                         if (!_player.HasBuff("GravesBasicAttackAmmo2") && _e.IsReady() && useEreload)
                         {
-                            var direction = (Game.CursorPos - _player.ServerPosition).To2D().Normalized();
+                            var direction = (Game.CursorPos - _player.ServerPosition).LSTo2D().Normalized();
                             for (var step = 0f; step < 360; step += 30)
                             {
                                 for (var a = 450; a > 0; a -= 50)
                                 {
                                     var currentAngle = step * (float)Math.PI / 90;
-                                    var currentCheckPoint = _player.ServerPosition.To2D()
+                                    var currentCheckPoint = _player.ServerPosition.LSTo2D()
                                                             + a * direction.Rotated(currentAngle);
                                     if (currentCheckPoint.To3D().UnderTurret(true) || currentCheckPoint.To3D().IsWall())
                                     {

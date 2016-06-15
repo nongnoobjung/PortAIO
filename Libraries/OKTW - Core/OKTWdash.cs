@@ -112,8 +112,8 @@ namespace OneKeyToWin_AIO_Sebby.Core
                 var orbT = Orbwalker.LastTarget;
                 if (orbT is AIHeroClient)
                 {
-                    var start = Player.Position.To2D();
-                    var end = orbT.Position.To2D();
+                    var start = Player.Position.LSTo2D();
+                    var end = orbT.Position.LSTo2D();
                     var dir = (end - start).Normalized();
                     var pDir = dir.Perpendicular();
 

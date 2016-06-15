@@ -90,7 +90,7 @@ namespace Viktor
                 {
                     GapCloserPos = LeagueSharp.Common.Geometry.LSExtend(e.Start, e.End, e.Sender.Spellbook.GetSpell(e.Slot).SData.CastRangeDisplayOverride);
                 }
-                W.Cast(GapCloserPos.To2D(), true);
+                W.Cast(GapCloserPos.LSTo2D(), true);
             }
         }
 
@@ -199,7 +199,7 @@ namespace Viktor
                 }
                 else if (player.ServerPosition.LSDistance(target.ServerPosition) < EMaxRange)
                 {
-                    startPos = player.ServerPosition.To2D().Extend(target.ServerPosition, E.Range).To3D();
+                    startPos = player.ServerPosition.LSTo2D().Extend(target.ServerPosition, E.Range).To3D();
                     var prediction = EELO.GetPrediction(target);
                     EELO.SourcePosition = startPos;
                     if (prediction.HitChance >= EloBuddy.SDK.Enumerations.HitChance.High)
@@ -384,7 +384,7 @@ namespace Viktor
                 if (farmLocation.MinionsHit > hitNum)
                 {
                     hitNum = farmLocation.MinionsHit;
-                    startPos = minion.Position.To2D();
+                    startPos = minion.Position.LSTo2D();
                     endPos = farmLocation.Position;
                 }
             }

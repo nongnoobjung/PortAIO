@@ -80,11 +80,11 @@ namespace HeavenStrikeAzir
         }
         public static Vector2? GetWPosition(Vector2 to)
         {
-            var posW = Player.Position.To2D().LSExtend(to, Program._w.Range);
-            var FstWall = GetFirstWallPoint(Player.Position.To2D(), posW);
+            var posW = Player.Position.LSTo2D().LSExtend(to, Program._w.Range);
+            var FstWall = GetFirstWallPoint(Player.Position.LSTo2D(), posW);
             if (FstWall == null)
                 return posW;
-            var LstWall = GetLastWallPoint(Player.Position.To2D(), posW);
+            var LstWall = GetLastWallPoint(Player.Position.LSTo2D(), posW);
             if (LstWall == null)
                 return posW;
             if (posW.LSDistance((Vector2)LstWall) / ((Vector2)FstWall).LSDistance((Vector2)LstWall) <= 0.5f)
@@ -93,12 +93,12 @@ namespace HeavenStrikeAzir
         }
         public static List<Vector2?> GetWsPosition(Vector2 to)
         {
-            var posW = Player.Position.To2D().LSExtend(to, Program._w.Range);
+            var posW = Player.Position.LSTo2D().LSExtend(to, Program._w.Range);
             var rad = new double[] { -Math.PI / 2, Math.PI / 2, -Math.PI / 4, Math.PI / 4, 0 };
             var result = new List<Vector2?>();
             foreach (var i in rad)
             {
-                result.Add(GetWPosition(GeoAndExten.RotateAround(posW, Player.Position.To2D(), (float)i)));
+                result.Add(GetWPosition(GeoAndExten.RotateAround(posW, Player.Position.LSTo2D(), (float)i)));
             }
             return result;
         }

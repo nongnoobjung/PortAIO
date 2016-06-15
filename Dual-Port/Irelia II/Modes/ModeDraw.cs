@@ -206,7 +206,7 @@ namespace Irelia.Modes
                     var circle1 = new CommonGeometry.Circle2(new Vector2(ObjectManager.Player.Position.X + 3, ObjectManager.Player.Position.Y - 3), 170f, Game.Time - BlueBuff.StartTime, BlueBuff.EndTime - BlueBuff.StartTime).ToPolygon();
                     circle1.Draw(Color.Black, 4);
 
-                    var circle = new CommonGeometry.Circle2(ObjectManager.Player.Position.To2D(), 170f, Game.Time - BlueBuff.StartTime, BlueBuff.EndTime - BlueBuff.StartTime).ToPolygon();
+                    var circle = new CommonGeometry.Circle2(ObjectManager.Player.Position.LSTo2D(), 170f, Game.Time - BlueBuff.StartTime, BlueBuff.EndTime - BlueBuff.StartTime).ToPolygon();
                     circle.Draw(Color.Blue, 4);
                 }
             }
@@ -218,7 +218,7 @@ namespace Irelia.Modes
                     var circle1 = new CommonGeometry.Circle2(new Vector2(ObjectManager.Player.Position.X + 3, ObjectManager.Player.Position.Y - 3), 150f, Game.Time - RedBuff.StartTime, RedBuff.EndTime - RedBuff.StartTime).ToPolygon();
                     circle1.Draw(Color.Black, 4);
 
-                    var circle = new CommonGeometry.Circle2(ObjectManager.Player.Position.To2D(), 150f, Game.Time - RedBuff.StartTime, RedBuff.EndTime - RedBuff.StartTime).ToPolygon();
+                    var circle = new CommonGeometry.Circle2(ObjectManager.Player.Position.LSTo2D(), 150f, Game.Time - RedBuff.StartTime, RedBuff.EndTime - RedBuff.StartTime).ToPolygon();
                     circle.Draw(Color.Red, 4);
                 }
             }

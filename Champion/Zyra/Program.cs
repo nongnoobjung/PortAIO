@@ -329,7 +329,7 @@ namespace D_Zyra
             if (minions.Count == 0) return;
             var castPostion =
                 MinionManager.GetBestLineFarmLocation(
-                    minions.Select(minion => minion.ServerPosition.To2D()).ToList(),
+                    minions.Select(minion => minion.ServerPosition.LSTo2D()).ToList(),
                     _e.Width,
                     _e.Range);
             _e.Cast(castPostion.Position);
@@ -348,7 +348,7 @@ namespace D_Zyra
             if (minions.Count == 0) return;
             var castPostion =
                 MinionManager.GetBestLineFarmLocation(
-                    minions.Select(minion => minion.ServerPosition.To2D()).ToList(),
+                    minions.Select(minion => minion.ServerPosition.LSTo2D()).ToList(),
                     _e.Width,
                     _e.Range);
             _e.Cast(castPostion.Position);
@@ -373,7 +373,7 @@ namespace D_Zyra
             if (minions.Count == 0) return;
             var castPostion =
                 MinionManager.GetBestCircularFarmLocation(
-                    minions.Select(minion => minion.ServerPosition.To2D()).ToList(),
+                    minions.Select(minion => minion.ServerPosition.LSTo2D()).ToList(),
                     _q.Width,
                     _q.Range);
             _q.Cast(castPostion.Position);
@@ -394,7 +394,7 @@ namespace D_Zyra
             if (minions.Count == 0) return;
             var castPostion =
                 MinionManager.GetBestCircularFarmLocation(
-                    minions.Select(minion => minion.ServerPosition.To2D()).ToList(),
+                    minions.Select(minion => minion.ServerPosition.LSTo2D()).ToList(),
                     _q.Width,
                     _q.Range);
             _q.Cast(castPostion.Position);

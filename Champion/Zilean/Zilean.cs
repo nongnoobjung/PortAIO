@@ -261,7 +261,7 @@ namespace ElZilean
 
             var bestFarmLocation =
                 MinionManager.GetBestCircularFarmLocation(
-                    MinionManager.GetMinions(spells[Spells.Q].Range).Select(m => m.ServerPosition.To2D()).ToList(),
+                    MinionManager.GetMinions(spells[Spells.Q].Range).Select(m => m.ServerPosition.LSTo2D()).ToList(),
                     spells[Spells.Q].Width,
                     spells[Spells.Q].Range);
 

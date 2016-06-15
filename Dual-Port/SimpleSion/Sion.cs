@@ -83,7 +83,7 @@ namespace Sion
         {
             if (sender.IsMe && args.SData.Name == "SionQ")
             {
-                QCastPos = args.End.To2D();
+                QCastPos = args.End.LSTo2D();
             }
         }
 
@@ -107,7 +107,7 @@ namespace Sion
             {
                 if (getCheckBoxItem(rMenu, "MoveToMouse"))
                 {
-                    var p = ObjectManager.Player.Position.To2D().Extend(Game.CursorPos.To2D(), 500);
+                    var p = ObjectManager.Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), 500);
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, p.To3D());
                 }
                 return;
@@ -124,7 +124,7 @@ namespace Sion
                 {
                     if (Q.IsCharging)
                     {
-                        var start = ObjectManager.Player.ServerPosition.To2D();
+                        var start = ObjectManager.Player.ServerPosition.LSTo2D();
                         var end = start.Extend(QCastPos, Q.Range);
                         var direction = (end - start).Normalized();
                         var normal = direction.Perpendicular();
@@ -141,7 +141,7 @@ namespace Sion
                             var A = points[i];
                             var B = points[i == points.Count - 1 ? 0 : i + 1];
 
-                            if (qTarget.ServerPosition.To2D().LSDistance(A, B, true, true) < 50 * 50)
+                            if (qTarget.ServerPosition.LSTo2D().LSDistance(A, B, true, true) < 50 * 50)
                             {
                                 Q.Cast(qTarget, true);
                             }

@@ -49,7 +49,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoPoppy
             if (sender.BadaoIsValidTarget() && sender.IsEnemy && sender is AIHeroClient
                 && BadaoPoppyHelper.UseWAutoAntiDash(sender as AIHeroClient))
             {
-                if (LeagueSharp.Common.Geometry.LSDistance(ObjectManager.Player.Position.To2D(),args.StartPos, args.EndPos,true)
+                if (LeagueSharp.Common.Geometry.LSDistance(ObjectManager.Player.Position.LSTo2D(),args.StartPos, args.EndPos,true)
                     <= BadaoMainVariables.W.Range + sender.BoundingRadius
                     || args.StartPos.LSDistance(ObjectManager.Player.Position.LSTo2D()) <= BadaoMainVariables.W.Range
                     || args.EndPos.LSDistance(ObjectManager.Player.Position.LSTo2D()) <= BadaoMainVariables.W.Range)

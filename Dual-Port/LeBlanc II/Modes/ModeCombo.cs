@@ -647,9 +647,9 @@ namespace Leblanc.Modes
 
             IEnumerable<Vector2> rangedMinionsW = HeroManager.Enemies.Where(e => e.LSIsValidTarget(W.Range + W.Width + 30)).Select(a => a.Position.LSTo2D());
 
-            //rangedMinionsW.AddRange(HeroManager.Enemies.Where(e => e.LSIsValidTarget(W.Range + W.Width + 30)).Select(x => x.Position.To2D()));
+            //rangedMinionsW.AddRange(HeroManager.Enemies.Where(e => e.LSIsValidTarget(W.Range + W.Width + 30)).Select(x => x.Position.LSTo2D()));
             //var rangedMinionsW =
-            //    HeroManager.Enemies.Where(e => e.LSIsValidTarget(W.Range + W.Width + 30)).Select(x => x.Position.To2D());
+            //    HeroManager.Enemies.Where(e => e.LSIsValidTarget(W.Range + W.Width + 30)).Select(x => x.Position.LSTo2D());
 
             var locationW = W.GetCircularFarmLocation((List<Vector2>)rangedMinionsW, W.Width * 0.75f);
 

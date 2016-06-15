@@ -231,7 +231,7 @@ namespace TwistedFate
         {
             var result = 0;
 
-            var startPoint = ObjectManager.Player.ServerPosition.To2D();
+            var startPoint = ObjectManager.Player.ServerPosition.LSTo2D();
             var originalDirection = Q.Range * (position - startPoint).Normalized();
             var originalEndPoint = startPoint + originalDirection;
 
@@ -263,7 +263,7 @@ namespace TwistedFate
             var points = new List<Vector2>();
             var hitBoxes = new List<int>();
 
-            var startPoint = ObjectManager.Player.ServerPosition.To2D();
+            var startPoint = ObjectManager.Player.ServerPosition.LSTo2D();
             var originalDirection = Q.Range * (unitPosition - startPoint).Normalized();
 
             foreach (var enemy in ObjectManager.Get<AIHeroClient>())
@@ -273,7 +273,7 @@ namespace TwistedFate
                     var pos = Q.GetPrediction(enemy);
                     if (pos.Hitchance >= HitChance.Medium)
                     {
-                        points.Add(pos.UnitPosition.To2D());
+                        points.Add(pos.UnitPosition.LSTo2D());
                         hitBoxes.Add((int)enemy.BoundingRadius);
                     }
                 }
@@ -345,7 +345,7 @@ namespace TwistedFate
                                 h =>
                                     ObjectManager.Player.Spellbook.CanUseSpell(SpellSlot.R) == SpellState.Ready && h.LSIsValidTarget() && h.IsEnemy && ComboDamage(h) > h.Health))
                 {
-                    Ping(enemy.Position.To2D());
+                    Ping(enemy.Position.LSTo2D());
                 }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
@@ -400,7 +400,7 @@ namespace TwistedFate
                         if ((pred.Hitchance == HitChance.Immobile && autoQI) ||
                             (pred.Hitchance == HitChance.Dashing && autoQD))
                         {
-                            CastQ(enemy, pred.UnitPosition.To2D());
+                            CastQ(enemy, pred.UnitPosition.LSTo2D());
                         }
                     }
                 }

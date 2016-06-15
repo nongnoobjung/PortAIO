@@ -186,7 +186,7 @@ namespace ezEvade
                             }*/
 
                             /*if (spell.spellObject != null && spell.spellObject.IsValid && spell.spellObject.IsVisible &&
-                                  spell.spellObject.Position.To2D().LSDistance(ObjectCache.myHeroCache.serverPos2D) < spell.info.range + 1000)*/
+                                  spell.spellObject.Position.LSTo2D().LSDistance(ObjectCache.myHeroCache.serverPos2D) < spell.info.range + 1000)*/
 
                             Render.Circle.DrawCircle(new Vector3(spellPos.X, spellPos.Y, myHero.Position.Z), (int)spell.radius, Color.White, spellDrawingWidth);
                         }

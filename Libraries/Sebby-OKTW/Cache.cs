@@ -107,7 +107,7 @@ namespace SebbyLib
                         return true;
                     return false;
                 }
-                if (Vector2.DistanceSquared(@from.To2D(), minion.Position.To2D()) < range*range)
+                if (Vector2.DistanceSquared(@from.LSTo2D(), minion.Position.LSTo2D()) < range*range)
                     return true;
                 return false;
             }

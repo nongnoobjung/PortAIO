@@ -25,7 +25,7 @@ namespace SoloVayne.Skills.Tumble
 
             var positions = TumbleHelper.GetRotatedQPositions();
             var enemyPositions = TumbleHelper.GetEnemyPoints();
-            var safePositions = positions.Where(pos => !enemyPositions.Contains(pos.To2D())).ToList();
+            var safePositions = positions.Where(pos => !enemyPositions.Contains(pos.LSTo2D())).ToList();
             var BestPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos, 300f);
             var AverageDistanceWeight = .60f;
             var ClosestDistanceWeight = .40f;
@@ -105,7 +105,7 @@ namespace SoloVayne.Skills.Tumble
 
                 //If there is a killable enemy among those. 
                 var backwardsPosition =
-                    (ObjectManager.Player.ServerPosition.To2D() + 300f*ObjectManager.Player.Direction.To2D()).To3D();
+                    (ObjectManager.Player.ServerPosition.LSTo2D() + 300f*ObjectManager.Player.Direction.LSTo2D()).To3D();
 
                 if (!LeagueSharp.Common.Utility.UnderTurret(backwardsPosition, true))
                 {
@@ -259,11 +259,11 @@ namespace SoloVayne.Skills.Tumble
                 return Vector3.Zero;
             }
 
-            var direction = ObjectManager.Player.Direction.To2D().LSPerpendicular();
+            var direction = ObjectManager.Player.Direction.LSTo2D().LSPerpendicular();
             for (var i = 0f; i < 360f; i += 45)
             {
                 var angleRad = Geometry.DegreeToRadian(i);
-                var rotatedPosition = ObjectManager.Player.Position.To2D() + 300f*direction.LSRotated(angleRad);
+                var rotatedPosition = ObjectManager.Player.Position.LSTo2D() + 300f*direction.LSRotated(angleRad);
                 if (Provider.GetTarget(rotatedPosition.To3D()).LSIsValidTarget() && rotatedPosition.To3D().IsSafe())
                 {
                     return rotatedPosition.To3D();

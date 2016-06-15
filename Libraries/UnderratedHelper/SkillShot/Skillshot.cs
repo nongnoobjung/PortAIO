@@ -272,7 +272,7 @@ namespace UnderratedAIO.Helpers.SkillShot
             {
                 if (Caster.IsVisible)
                 {
-                    EndPosition = Caster.ServerPosition.To2D();
+                    EndPosition = Caster.ServerPosition.LSTo2D();
                     Direction = (EndPosition - StartPosition).Normalized();
                     UpdatePolygon();
                 }
@@ -411,7 +411,7 @@ namespace UnderratedAIO.Helpers.SkillShot
             }
 
 
-            if (IsSafe(ObjectManager.Player.ServerPosition.To2D()))
+            if (IsSafe(ObjectManager.Player.ServerPosition.LSTo2D()))
             {
                 if (allIntersections.Count == 0)
                 {
@@ -484,7 +484,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                                 CheckUnitCollision(o) != CollisionObjectTypes.Null &&
                                 SkillshotData.CollisionObjects.Any(c => c == CheckUnitCollision(o))))
                 {
-                    var mp = prob.ServerPosition.To2D().ProjectOn(missilePos, unit.ServerPosition.To2D());
+                    var mp = prob.ServerPosition.LSTo2D().ProjectOn(missilePos, unit.ServerPosition.LSTo2D());
                     if (mp.IsOnSegment && mp.SegmentPoint.LSDistance(unit.ServerPosition) < SkillshotData.Radius)
                     {
                         collision = true;
@@ -508,7 +508,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                     LeagueSharp.Common.Collision.GetCollision(
                         new List<Vector3> {StartPosition.To3D2(), missilePosAfterT.To3D2()}, input);
 
-                var projection = unit.ServerPosition.To2D().ProjectOn(missilePos, missilePosAfterT);
+                var projection = unit.ServerPosition.LSTo2D().ProjectOn(missilePos, missilePosAfterT);
                 var pred = Prediction.GetPrediction(input);
                 var poly = CombatHelper.GetPolyFromVector(
                     missilePos.To3D2(), missilePosAfterT.To3D2(), SkillshotData.Radius);
@@ -522,7 +522,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                 return false;
             }
 
-            if (!IsSafe(unit.ServerPosition.To2D()))
+            if (!IsSafe(unit.ServerPosition.LSTo2D()))
             {
                 var timeToExplode = SkillshotData.ExtraDuration + SkillshotData.Delay +
                                     (int) (1000*StartPosition.LSDistance(EndPosition)/SkillshotData.MissileSpeed) -

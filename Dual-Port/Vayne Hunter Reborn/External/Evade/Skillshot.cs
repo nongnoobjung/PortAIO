@@ -216,7 +216,7 @@ namespace VayneHunter_Reborn.External.Evade
             {
                 if (Caster.IsVisible)
                 {
-                    End = Caster.ServerPosition.To2D();
+                    End = Caster.ServerPosition.LSTo2D();
                     Direction = (End - Start).Normalized();
                     UpdatePolygon();
                 }
@@ -326,7 +326,7 @@ namespace VayneHunter_Reborn.External.Evade
         {
             timeOffset /= 2;
 
-            if (IsSafe(ObjectManager.Player.ServerPosition.To2D()))
+            if (IsSafe(ObjectManager.Player.ServerPosition.LSTo2D()))
             {
                 return true;
             }
@@ -335,7 +335,7 @@ namespace VayneHunter_Reborn.External.Evade
             if (SpellData.Type == SkillShotType.SkillshotMissileLine)
             {
                 var missilePositionAfterBlink = GetMissilePosition(delay + timeOffset);
-                var myPositionProjection = ObjectManager.Player.ServerPosition.To2D().ProjectOn(Start, End);
+                var myPositionProjection = ObjectManager.Player.ServerPosition.LSTo2D().ProjectOn(Start, End);
 
                 if (missilePositionAfterBlink.LSDistance(End) < myPositionProjection.SegmentPoint.LSDistance(End))
                 {
@@ -398,7 +398,7 @@ namespace VayneHunter_Reborn.External.Evade
                 SpellData.Type == SkillShotType.SkillshotMissileCone)
             {
                 //Outside the skillshot
-                if (IsSafe(ObjectManager.Player.ServerPosition.To2D()))
+                if (IsSafe(ObjectManager.Player.ServerPosition.LSTo2D()))
                 {
                     //No intersections -> Safe
                     if (allIntersections.Count == 0)
@@ -464,7 +464,7 @@ namespace VayneHunter_Reborn.External.Evade
             }
 
 
-            if (IsSafe(ObjectManager.Player.ServerPosition.To2D()))
+            if (IsSafe(ObjectManager.Player.ServerPosition.LSTo2D()))
             {
                 if (allIntersections.Count == 0)
                 {
@@ -524,7 +524,7 @@ namespace VayneHunter_Reborn.External.Evade
                        projection.SegmentPoint.LSDistance(unit.ServerPosition) < SpellData.Radius;
             }
 
-            if (IsSafe(unit.ServerPosition.To2D()))
+            if (IsSafe(unit.ServerPosition.LSTo2D()))
             {
                 return false;
             }
@@ -547,7 +547,7 @@ namespace VayneHunter_Reborn.External.Evade
                        projection.SegmentPoint.LSDistance(position) < SpellData.Radius;
             }
 
-            if (IsSafe(position.To2D()))
+            if (IsSafe(position.LSTo2D()))
             {
                 return false;
             }

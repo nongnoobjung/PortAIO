@@ -114,7 +114,7 @@ namespace ElLeeSin
                         Render.Circle.DrawCircle(
                             pos,
                             100,
-                            rect.IsOutside(pos.To2D()) ? Color.White : Color.DeepSkyBlue);
+                            rect.IsOutside(pos.LSTo2D()) ? Color.White : Color.DeepSkyBlue);
                     }
                 }
                 else
@@ -148,15 +148,15 @@ namespace ElLeeSin
             }
 
             rect = new Geometry.Polygon.Rectangle(
-                Player.Position.To2D(),
-                Player.Position.To2D().Extend(Game.CursorPos.To2D(), 1050),
+                Player.Position.LSTo2D(),
+                Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), 1050),
                 100);
 
             if (Program.QState && Program.spells[Program.Spells.Q].IsReady())
             {
                 foreach (var pos in JunglePos)
                 {
-                    if (rect.IsOutside(pos.To2D()))
+                    if (rect.IsOutside(pos.LSTo2D()))
                     {
                         continue;
                     }

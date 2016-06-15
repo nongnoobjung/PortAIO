@@ -42,11 +42,11 @@ namespace SAutoCarry.Champions.Helpers
                     if (ObjectManager.Player.LSDistance(vec) < ObjectManager.Player.LSDistance(target.Path.Last()))
                         return IsSafe(target, Game.CursorPos);
                     return IsSafe(target,
-                        Game.CursorPos.To2D()
+                        Game.CursorPos.LSTo2D()
                             .LSRotated(
                                 Geometry.DegreeToRadian(
-                                    (vec - ObjectManager.Player.ServerPosition).To2D()
-                                        .LSAngleBetween((Game.CursorPos - ObjectManager.Player.ServerPosition).To2D())%
+                                    (vec - ObjectManager.Player.ServerPosition).LSTo2D()
+                                        .LSAngleBetween((Game.CursorPos - ObjectManager.Player.ServerPosition).LSTo2D())%
                                     90))
                             .To3D());
                 }
@@ -56,12 +56,12 @@ namespace SAutoCarry.Champions.Helpers
                 return IsSafe(target,
                     ObjectManager.Player.ServerPosition +
                     (target.ServerPosition - ObjectManager.Player.ServerPosition).LSNormalized()
-                        .To2D()
+                        .LSTo2D()
                         .LSRotated(
                             Geometry.DegreeToRadian(90 -
-                                                    (vec - ObjectManager.Player.ServerPosition).To2D()
+                                                    (vec - ObjectManager.Player.ServerPosition).LSTo2D()
                                                         .LSAngleBetween(
-                                                            (Game.CursorPos - ObjectManager.Player.ServerPosition).To2D())))
+                                                            (Game.CursorPos - ObjectManager.Player.ServerPosition).LSTo2D())))
                         .To3D()*300f);
             }
             if (Program.sacMode == 1)
@@ -79,20 +79,20 @@ namespace SAutoCarry.Champions.Helpers
 
             if (checkTarget)
             {
-                if (target.ServerPosition.To2D().LSDistance(vec) <= target.AttackRange)
+                if (target.ServerPosition.LSTo2D().LSDistance(vec) <= target.AttackRange)
                 {
                     if (vec.CountEnemiesInRange(1000) > 1)
                         return Vector3.Zero;
-                    if (target.ServerPosition.To2D().LSDistance(vec) <= target.AttackRange/2f)
+                    if (target.ServerPosition.LSTo2D().LSDistance(vec) <= target.AttackRange/2f)
                         return
-                            SCommon.Maths.Geometry.Deviation(ObjectManager.Player.ServerPosition.To2D(),
-                                target.ServerPosition.To2D(), 60).To3D();
+                            SCommon.Maths.Geometry.Deviation(ObjectManager.Player.ServerPosition.LSTo2D(),
+                                target.ServerPosition.LSTo2D(), 60).To3D();
                 }
 
                 if (((Program.DontQIntoEnemies || target.IsMelee) &&
                      HeroManager.Enemies.Any(
                          p =>
-                             p.ServerPosition.To2D().LSDistance(vec) <=
+                             p.ServerPosition.LSTo2D().LSDistance(vec) <=
                              p.AttackRange + ObjectManager.Player.BoundingRadius + (p.IsMelee ? 100 : 0))) ||
                     Utility.UnderTurret(vec, true))
                     return Vector3.Zero;
@@ -101,7 +101,7 @@ namespace SAutoCarry.Champions.Helpers
                 HeroManager.Enemies.Any(
                     p =>
                         p.NetworkId != target.NetworkId &&
-                        p.ServerPosition.To2D().LSDistance(vec) <= p.AttackRange + (p.IsMelee ? 50 : 0)) ||
+                        p.ServerPosition.LSTo2D().LSDistance(vec) <= p.AttackRange + (p.IsMelee ? 50 : 0)) ||
                 Utility.UnderTurret(vec, true))
                 return Vector3.Zero;
 

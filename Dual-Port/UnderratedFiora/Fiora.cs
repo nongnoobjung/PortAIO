@@ -424,7 +424,7 @@ namespace UnderratedAIO.Champions
             var predEnemy = Prediction.GetPrediction(target, ObjectManager.Player.LSDistance(target)/1600).UnitPosition;
             for (var i = 2; i < 8; i++)
             {
-                ponts.Add(predEnemy.To2D().Extend(passive.To2D(), i*25).To3D());
+                ponts.Add(predEnemy.LSTo2D().Extend(passive.LSTo2D(), i*25).To3D());
             }
 
             return

@@ -53,7 +53,7 @@ namespace UnderratedAIO.Helpers.SkillShot
             if (sender.IsValid && sender.Team == ObjectManager.Player.Team && args.SData.Name == "YasuoWMovingWall")
             {
                 _wallCastT = System.Environment.TickCount;
-                _yasuoWallCastedPos = sender.ServerPosition.To2D();
+                _yasuoWallCastedPos = sender.ServerPosition.LSTo2D();
             }
         }
 
@@ -68,7 +68,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                 return new FastPredResult
                 {
                     IsMoving = true,
-                    CurrentPos = unit.ServerPosition.To2D(),
+                    CurrentPos = unit.ServerPosition.LSTo2D(),
                     PredictedPos = path.CutPath((int) d)[0]
                 };
             }
@@ -77,8 +77,8 @@ namespace UnderratedAIO.Helpers.SkillShot
                 return new FastPredResult
                 {
                     IsMoving = false,
-                    CurrentPos = unit.ServerPosition.To2D(),
-                    PredictedPos = unit.ServerPosition.To2D()
+                    CurrentPos = unit.ServerPosition.LSTo2D(),
+                    PredictedPos = unit.ServerPosition.LSTo2D()
                 };
             }
             return new FastPredResult
@@ -151,8 +151,8 @@ namespace UnderratedAIO.Helpers.SkillShot
                         var wallWidth = 300 + 50*Convert.ToInt32(level);
 
 
-                        var wallDirection = (wall.Position.To2D() - _yasuoWallCastedPos).Normalized().Perpendicular();
-                        var wallStart = wall.Position.To2D() + wallWidth/2*wallDirection;
+                        var wallDirection = (wall.Position.LSTo2D() - _yasuoWallCastedPos).Normalized().Perpendicular();
+                        var wallStart = wall.Position.LSTo2D() + wallWidth/2*wallDirection;
                         var wallEnd = wallStart - wallWidth*wallDirection;
                         var wallPolygon = new SkillshotGeometry.Rectangle(wallStart, wallEnd, 75).ToPolygon();
                         var intersection = new Vector2();

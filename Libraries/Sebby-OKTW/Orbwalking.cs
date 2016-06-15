@@ -138,8 +138,8 @@ namespace SebbyLib
             var myRange = GetRealAutoAttackRange(target);
             return
                 Vector2.DistanceSquared(
-                    target is Obj_AI_Base ? ((Obj_AI_Base) target).ServerPosition.To2D() : target.Position.To2D(),
-                    Player.ServerPosition.To2D()) <= myRange*myRange;
+                    target is Obj_AI_Base ? ((Obj_AI_Base) target).ServerPosition.LSTo2D() : target.Position.LSTo2D(),
+                    Player.ServerPosition.LSTo2D()) <= myRange*myRange;
         }
 
         public static float GetMyProjectileSpeed()
@@ -232,8 +232,8 @@ namespace SebbyLib
                 {
                     var v1 = currentPath[1] - currentPath[0];
                     var v2 = movePath[1] - movePath[0];
-                    angle = v1.AngleBetween(v2.To2D());
-                    var distance = movePath.Last().To2D().LSDistance(currentPath.Last(), true);
+                    angle = v1.AngleBetween(v2.LSTo2D());
+                    var distance = movePath.Last().LSTo2D().LSDistance(currentPath.Last(), true);
 
                     if ((angle < 10 && distance < 500*500) || distance < 50*50)
                     {

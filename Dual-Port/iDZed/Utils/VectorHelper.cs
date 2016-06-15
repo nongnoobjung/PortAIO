@@ -33,34 +33,34 @@ namespace iDZed.Utils
 
             if (forZhonyas)
             {
-                var vertex1 = ObjectManager.Player.ServerPosition.To2D() +
+                var vertex1 = ObjectManager.Player.ServerPosition.LSTo2D() +
                               Vector2.Normalize(
-                                  ObjectManager.Player.ServerPosition.To2D() +
-                                  Vector2.Normalize(target.ServerPosition.To2D() - ultShadow.Position.To2D())*
-                                  Zed._spells[SpellSlot.W].Range - ObjectManager.Player.ServerPosition.To2D() +
-                                  Vector2.Normalize(target.ServerPosition.To2D() - ultShadow.Position.To2D())
+                                  ObjectManager.Player.ServerPosition.LSTo2D() +
+                                  Vector2.Normalize(target.ServerPosition.LSTo2D() - ultShadow.Position.LSTo2D())*
+                                  Zed._spells[SpellSlot.W].Range - ObjectManager.Player.ServerPosition.LSTo2D() +
+                                  Vector2.Normalize(target.ServerPosition.LSTo2D() - ultShadow.Position.LSTo2D())
                                       .Perpendicular()*Zed._spells[SpellSlot.W].Range).Perpendicular()*
                               Zed._spells[SpellSlot.W].Range;
                 //
-                var vertex2 = ObjectManager.Player.ServerPosition.To2D() +
+                var vertex2 = ObjectManager.Player.ServerPosition.LSTo2D() +
                               Vector2.Normalize(
-                                  ObjectManager.Player.ServerPosition.To2D() +
-                                  Vector2.Normalize(target.ServerPosition.To2D() - ultShadow.Position.To2D())
+                                  ObjectManager.Player.ServerPosition.LSTo2D() +
+                                  Vector2.Normalize(target.ServerPosition.LSTo2D() - ultShadow.Position.LSTo2D())
                                       .Perpendicular()*Zed._spells[SpellSlot.W].Range -
-                                  ObjectManager.Player.ServerPosition.To2D() +
-                                  Vector2.Normalize(target.ServerPosition.To2D() - ultShadow.Position.To2D())*
+                                  ObjectManager.Player.ServerPosition.LSTo2D() +
+                                  Vector2.Normalize(target.ServerPosition.LSTo2D() - ultShadow.Position.LSTo2D())*
                                   Zed._spells[SpellSlot.W].Range).Perpendicular()*Zed._spells[SpellSlot.W].Range;
 
                 return new[] {vertex1.To3D(), vertex2.To3D()};
             }
 
-            var vertex3 = ObjectManager.Player.ServerPosition.To2D() +
+            var vertex3 = ObjectManager.Player.ServerPosition.LSTo2D() +
                           Vector2.Normalize(
-                              target.ServerPosition.To2D() - ultShadow.ShadowObject.ServerPosition.To2D())
+                              target.ServerPosition.LSTo2D() - ultShadow.ShadowObject.ServerPosition.LSTo2D())
                               .Perpendicular()*Zed._spells[SpellSlot.W].Range;
-            var vertex4 = ObjectManager.Player.ServerPosition.To2D() +
+            var vertex4 = ObjectManager.Player.ServerPosition.LSTo2D() +
                           Vector2.Normalize(
-                              ultShadow.ShadowObject.ServerPosition.To2D() - target.ServerPosition.To2D())
+                              ultShadow.ShadowObject.ServerPosition.LSTo2D() - target.ServerPosition.LSTo2D())
                               .Perpendicular()*Zed._spells[SpellSlot.W].Range;
             return new[] {vertex3.To3D(), vertex4.To3D()};
         }

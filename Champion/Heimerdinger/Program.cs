@@ -219,7 +219,7 @@ namespace Two_Girls_One_Donger
                     {
                         p = prediction.CastPosition -
                             100*
-                            (prediction.CastPosition.To2D() - ObjectManager.Player.ServerPosition.To2D()).Normalized()
+                            (prediction.CastPosition.LSTo2D() - ObjectManager.Player.ServerPosition.LSTo2D()).Normalized()
                                 .To3D();
                     }
                     else
@@ -232,8 +232,8 @@ namespace Two_Girls_One_Donger
                 else if (ObjectManager.Player.ServerPosition.LSDistance(prediction.CastPosition) <=
                          (E1.Range + E1.Range)/2)
                 {
-                    var p = ObjectManager.Player.ServerPosition.To2D()
-                        .Extend(prediction.CastPosition.To2D(), E1.Range - 100);
+                    var p = ObjectManager.Player.ServerPosition.LSTo2D()
+                        .Extend(prediction.CastPosition.LSTo2D(), E1.Range - 100);
                     {
                         R.Cast();
                         E1.Cast(p.To3D());
@@ -241,9 +241,9 @@ namespace Two_Girls_One_Donger
                 }
                 else
                 {
-                    var p = ObjectManager.Player.ServerPosition.To2D() +
+                    var p = ObjectManager.Player.ServerPosition.LSTo2D() +
                             E1.Range*
-                            (prediction.CastPosition.To2D() - ObjectManager.Player.ServerPosition.To2D()).Normalized
+                            (prediction.CastPosition.LSTo2D() - ObjectManager.Player.ServerPosition.LSTo2D()).Normalized
                                 ();
 
                     {

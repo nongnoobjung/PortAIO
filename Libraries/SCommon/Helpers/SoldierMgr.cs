@@ -64,7 +64,7 @@ namespace SAutoCarry.Champions.Helpers
 
         public static bool InAARange(Obj_AI_Base target)
         {
-            return ActiveSoldiers.Any(soldier => Vector2.DistanceSquared(target.Position.To2D(), soldier.Position.To2D()) <= SoldierAttackRange*SoldierAttackRange);
+            return ActiveSoldiers.Any(soldier => Vector2.DistanceSquared(target.Position.LSTo2D(), soldier.Position.LSTo2D()) <= SoldierAttackRange*SoldierAttackRange);
         }
 
         private static void AIHeroClient_OnCreate(GameObject sender, EventArgs args)

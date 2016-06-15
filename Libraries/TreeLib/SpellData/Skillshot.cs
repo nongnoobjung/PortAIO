@@ -284,11 +284,11 @@ namespace TreeLib.SpellData
             {
                 var missilePos = GetMissilePosition(0);
                 var missilePosAfterT = GetMissilePosition(time);
-                var projection = unit.ServerPosition.To2D().ProjectOn(missilePos, missilePosAfterT);
+                var projection = unit.ServerPosition.LSTo2D().ProjectOn(missilePos, missilePosAfterT);
                 return projection.IsOnSegment &&
                        projection.SegmentPoint.LSDistance(unit.ServerPosition) < SpellData.Radius;
             }
-            if (!IsSafe(unit.ServerPosition.To2D()))
+            if (!IsSafe(unit.ServerPosition.LSTo2D()))
             {
                 var timeToExplode = SpellData.ExtraDuration + SpellData.Delay +
                                     (int) (1000 * Start.LSDistance(End) / SpellData.MissileSpeed) -
@@ -458,7 +458,7 @@ namespace TreeLib.SpellData
             }
             if (SpellData.MissileFollowsUnit && Unit.IsVisible)
             {
-                End = Unit.ServerPosition.To2D();
+                End = Unit.ServerPosition.LSTo2D();
                 Direction = (End - Start).Normalized();
                 UpdatePolygon();
             }
@@ -478,8 +478,8 @@ namespace TreeLib.SpellData
                     else
                     {
                         StartTick = Utils.GameTimeTickCount - SpellData.Delay;
-                        Start = Unit.ServerPosition.To2D();
-                        End = Unit.ServerPosition.To2D() + 1000 * Unit.Direction.To2D().Perpendicular();
+                        Start = Unit.ServerPosition.LSTo2D();
+                        End = Unit.ServerPosition.LSTo2D() + 1000 * Unit.Direction.LSTo2D().Perpendicular();
                         Direction = (End - Start).Normalized();
                         UpdatePolygon();
                     }
@@ -491,7 +491,7 @@ namespace TreeLib.SpellData
             }
             if (SpellData.FollowCaster)
             {
-                Circle.Center = Unit.ServerPosition.To2D();
+                Circle.Center = Unit.ServerPosition.LSTo2D();
                 UpdatePolygon();
             }
         }

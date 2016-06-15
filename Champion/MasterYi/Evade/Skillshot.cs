@@ -241,7 +241,7 @@ namespace MasterSharp
             {
                 if (Unit.IsVisible)
                 {
-                    End = Unit.ServerPosition.To2D();
+                    End = Unit.ServerPosition.LSTo2D();
                     Direction = (End - Start).Normalized();
                     UpdatePolygon();
                 }
@@ -354,7 +354,7 @@ namespace MasterSharp
         {
             timeOffset /= 2;
 
-            if (IsSafe(ObjectManager.Player.ServerPosition.To2D()))
+            if (IsSafe(ObjectManager.Player.ServerPosition.LSTo2D()))
             {
                 return true;
             }
@@ -364,7 +364,7 @@ namespace MasterSharp
             {
                 var missilePositionAfterBlink = GetMissilePosition(delay + timeOffset);
                 var myPositionProjection =
-                    ObjectManager.Player.ServerPosition.To2D().ProjectOn(Start, End);
+                    ObjectManager.Player.ServerPosition.LSTo2D().ProjectOn(Start, End);
 
                 if (missilePositionAfterBlink.LSDistance(End) < myPositionProjection.SegmentPoint.LSDistance(End))
                 {
@@ -437,7 +437,7 @@ namespace MasterSharp
                 SpellData.Type == SkillShotType.SkillshotMissileCone)
             {
                 //Outside the skillshot
-                if (IsSafe(ObjectManager.Player.ServerPosition.To2D()))
+                if (IsSafe(ObjectManager.Player.ServerPosition.LSTo2D()))
                 {
                     //No intersections -> Safe
                     if (allIntersections.Count == 0)
@@ -502,7 +502,7 @@ namespace MasterSharp
             }
 
 
-            if (IsSafe(ObjectManager.Player.ServerPosition.To2D()))
+            if (IsSafe(ObjectManager.Player.ServerPosition.LSTo2D()))
             {
                 if (allIntersections.Count == 0)
                 {
@@ -558,7 +558,7 @@ namespace MasterSharp
                 var missilePosAfterT = GetMissilePosition(time);
 
                 //TODO: Check for minion collision etc.. in the future.
-                var projection = unit.ServerPosition.To2D()
+                var projection = unit.ServerPosition.LSTo2D()
                     .ProjectOn(missilePos, missilePosAfterT);
 
                 if (projection.IsOnSegment && projection.SegmentPoint.LSDistance(unit.ServerPosition) < SpellData.Radius)
@@ -569,7 +569,7 @@ namespace MasterSharp
                 return false;
             }
 
-            if (!IsSafe(unit.ServerPosition.To2D()))
+            if (!IsSafe(unit.ServerPosition.LSTo2D()))
             {
                 var timeToExplode = SpellData.ExtraDuration + SpellData.Delay +
                                     (int) (1000*Start.LSDistance(End)/SpellData.MissileSpeed) -

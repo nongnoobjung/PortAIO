@@ -418,7 +418,7 @@ namespace KurisuNidalee
         {
             var minionpositions =
                 MinionManager.GetMinions(Player.ServerPosition, 500f, MinionTypes.All, MinionTeam.NotAllyForEnemy)
-                    .Select(x => x.Position.To2D())
+                    .Select(x => x.Position.LSTo2D())
                     .ToList();
 
             var swipelocation = MinionManager.GetBestCircularFarmLocation(minionpositions, 275f, 375f);
@@ -583,7 +583,7 @@ namespace KurisuNidalee
 
         internal static Vector2? GetFirstWallPoint(Vector3 from, Vector3 to, float step = 25)
         {
-            return GetFirstWallPoint(from.To2D(), to.To2D(), step);
+            return GetFirstWallPoint(from.LSTo2D(), to.LSTo2D(), step);
         }
 
         internal static Vector2? GetFirstWallPoint(Vector2 from, Vector2 to, float step = 25)

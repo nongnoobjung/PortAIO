@@ -162,7 +162,7 @@ namespace SephKhazix
                         PredictionOutput pred = WE.GetPrediction(target);
                         if ((pred.Hitchance == HitChance.Immobile && autoWI) || (pred.Hitchance == HitChance.Dashing && autoWD) || pred.Hitchance >= hitchance)
                         {
-                            CastWE(target, pred.UnitPosition.To2D(), 0, hitchance);
+                            CastWE(target, pred.UnitPosition.LSTo2D(), 0, hitchance);
                         }
                     }
                 }
@@ -198,7 +198,7 @@ namespace SephKhazix
                   MinionManager.GetMinions(Khazix.ServerPosition, W.Range).Where(minion => HealthPrediction.GetHealthPrediction(
                                 minion, (int)(Khazix.LSDistance(minion) * 1000 / 1400)) <
                             0.75 * Khazix.GetSpellDamage(minion, SpellSlot.W))
-                      .Select(minion => minion.ServerPosition.To2D())
+                      .Select(minion => minion.ServerPosition.LSTo2D())
                       .ToList(), W.Width, W.Range);
                 if (farmLocation.MinionsHit >= 1)
                 {
@@ -228,7 +228,7 @@ namespace SephKhazix
                         MinionManager.GetMinions(Khazix.ServerPosition, E.Range).Where(minion => HealthPrediction.GetHealthPrediction(
                                 minion, (int)(Khazix.LSDistance(minion) * 1000 / 1400)) <
                             0.75 * Khazix.GetSpellDamage(minion, SpellSlot.W))
-                            .Select(minion => minion.ServerPosition.To2D())
+                            .Select(minion => minion.ServerPosition.LSTo2D())
                             .ToList(), E.Width, E.Range);
 
                 if (farmLocation.MinionsHit >= 1)
@@ -244,7 +244,7 @@ namespace SephKhazix
                 MinionManager.FarmLocation farmLocation =
                     MinionManager.GetBestCircularFarmLocation(
                         MinionManager.GetMinions(Khazix.ServerPosition, Hydra.Range)
-                            .Select(minion => minion.ServerPosition.To2D())
+                            .Select(minion => minion.ServerPosition.LSTo2D())
                             .ToList(), Hydra.Range, Hydra.Range);
 
                 if (Hydra.IsReady() && Khazix.LSDistance(farmLocation.Position) <= Hydra.Range && farmLocation.MinionsHit >= 2)
@@ -290,7 +290,7 @@ namespace SephKhazix
             {
                 var wmins = EvolvedW ? allMinions.Where(x => x.LSIsValidTarget(WE.Range)) : allMinions.Where(x => x.LSIsValidTarget(W.Range));
                 MinionManager.FarmLocation farmLocation = MinionManager.GetBestCircularFarmLocation(wmins
-                      .Select(minion => minion.ServerPosition.To2D())
+                      .Select(minion => minion.ServerPosition.LSTo2D())
                       .ToList(), EvolvedW ? WE.Width : W.Width, EvolvedW ? WE.Range : W.Range);
                 var distcheck = EvolvedW ? Khazix.LSDistance(farmLocation.Position) <= WE.Range : Khazix.LSDistance(farmLocation.Position) <= W.Range;
                 if (distcheck)
@@ -304,7 +304,7 @@ namespace SephKhazix
                 MinionManager.FarmLocation farmLocation =
                     MinionManager.GetBestCircularFarmLocation(
                         MinionManager.GetMinions(Khazix.ServerPosition, E.Range)
-                            .Select(minion => minion.ServerPosition.To2D())
+                            .Select(minion => minion.ServerPosition.LSTo2D())
                             .ToList(), E.Width, E.Range);
                 if (Khazix.LSDistance(farmLocation.Position) <= E.Range)
                 {
@@ -318,7 +318,7 @@ namespace SephKhazix
                 MinionManager.FarmLocation farmLocation =
                     MinionManager.GetBestCircularFarmLocation(
                         MinionManager.GetMinions(Khazix.ServerPosition, Hydra.Range)
-                            .Select(minion => minion.ServerPosition.To2D())
+                            .Select(minion => minion.ServerPosition.LSTo2D())
                             .ToList(), Hydra.Range, Hydra.Range);
 
                 if (Hydra.IsReady() && Khazix.LSDistance(farmLocation.Position) <= Hydra.Range && farmLocation.MinionsHit >= 2)
@@ -413,7 +413,7 @@ namespace SephKhazix
                     PredictionOutput pred = WE.GetPrediction(target);
                     if (pred.Hitchance >= Config.GetHitChance("WHitchance"))
                     {
-                        CastWE(target, pred.UnitPosition.To2D(), 0, Config.GetHitChance("WHitchance"));
+                        CastWE(target, pred.UnitPosition.LSTo2D(), 0, Config.GetHitChance("WHitchance"));
                     }
                     if (pred.Hitchance >= HitChance.Collision)
                     {
@@ -526,7 +526,7 @@ namespace SephKhazix
                     PredictionOutput pred = WE.GetPrediction(target);
                     if (target.Health <= WDmg && pred.Hitchance >= HitChance.Medium)
                     {
-                        CastWE(target, pred.UnitPosition.To2D(), 0, Config.GetHitChance("WHitchance"));
+                        CastWE(target, pred.UnitPosition.LSTo2D(), 0, Config.GetHitChance("WHitchance"));
                         return;
                     }
 
@@ -592,7 +592,7 @@ namespace SephKhazix
                 }
 
                 if (Tiamat.IsReady() &&
-                    Vector2.Distance(Khazix.ServerPosition.To2D(), target.ServerPosition.To2D()) <= Tiamat.Range &&
+                    Vector2.Distance(Khazix.ServerPosition.LSTo2D(), target.ServerPosition.LSTo2D()) <= Tiamat.Range &&
                     getCheckBoxItem(ks, "UseTiamatKs"))
                 {
                     double Tiamatdmg = Khazix.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Tiamat);
@@ -603,7 +603,7 @@ namespace SephKhazix
                     }
                 }
                 if (Hydra.IsReady() &&
-                    Vector2.Distance(Khazix.ServerPosition.To2D(), target.ServerPosition.To2D()) <= Hydra.Range &&
+                    Vector2.Distance(Khazix.ServerPosition.LSTo2D(), target.ServerPosition.LSTo2D()) <= Hydra.Range &&
                     getCheckBoxItem(ks, "UseTiamatKs"))
                 {
                     double hydradmg = Khazix.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Hydra);
@@ -659,7 +659,7 @@ namespace SephKhazix
             var points = new List<Vector2>();
             var hitBoxes = new List<int>();
 
-            Vector2 startPoint = Khazix.ServerPosition.To2D();
+            Vector2 startPoint = Khazix.ServerPosition.LSTo2D();
             Vector2 originalDirection = W.Range * (unitPosition - startPoint).Normalized();
 
             foreach (AIHeroClient enemy in HeroManager.Enemies)
@@ -669,7 +669,7 @@ namespace SephKhazix
                     PredictionOutput pos = WE.GetPrediction(enemy);
                     if (pos.Hitchance >= hc)
                     {
-                        points.Add(pos.UnitPosition.To2D());
+                        points.Add(pos.UnitPosition.LSTo2D());
                         hitBoxes.Add((int)enemy.BoundingRadius + 275);
                     }
                 }
@@ -723,7 +723,7 @@ namespace SephKhazix
         {
             int result = 0;
 
-            Vector2 startPoint = Khazix.ServerPosition.To2D();
+            Vector2 startPoint = Khazix.ServerPosition.LSTo2D();
             Vector2 originalDirection = W.Range * (position - startPoint).Normalized();
             Vector2 originalEndPoint = startPoint + originalDirection;
 
