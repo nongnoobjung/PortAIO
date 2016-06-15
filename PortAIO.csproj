@@ -551,6 +551,11 @@
     <Compile Include="Dual-Port\PrideStalker Rengar\Handlers\Mode.cs" />
     <Compile Include="Dual-Port\PrideStalker Rengar\Main\MenuConfig.cs" />
     <Compile Include="Dual-Port\PrideStalker Rengar\Program.cs" />
+    <Compile Include="Dual-Port\RyzeSergix\Menu.cs" />
+    <Compile Include="Dual-Port\RyzeSergix\Modes.cs" />
+    <Compile Include="Dual-Port\RyzeSergix\Program.cs" />
+    <Compile Include="Dual-Port\RyzeSergix\RyzeMain.cs" />
+    <Compile Include="Dual-Port\RyzeSergix\Spells.cs" />
     <Compile Include="Dual-Port\SephCassio\Cassiopeia.cs" />
     <Compile Include="Dual-Port\SephCassio\CassiopeiaMenu.cs" />
     <Compile Include="Dual-Port\SephCassio\CassioUtils.cs" />

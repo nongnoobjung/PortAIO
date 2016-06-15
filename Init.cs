@@ -634,6 +634,9 @@ namespace PortAIO
                             case 3:
                                 Arcane_Ryze.Program.Load();
                                 break;
+                            case 4:
+                                RyzeAssembly.Program.Init();
+                                break;
                             default:
                                 ExorAIO.Core.Bootstrap.BuildMenu();
                                 ExorAIO.Core.Bootstrap.LoadChampion();
