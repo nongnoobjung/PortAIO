@@ -412,6 +412,7 @@
     <Compile Include="Dual-Port\iTwitch\CustomDamageIndicator.cs" />
     <Compile Include="Dual-Port\iTwitch\Extensions.cs" />
     <Compile Include="Dual-Port\iTwitch\Twitch.cs" />
+    <Compile Include="Dual-Port\KappaSeries\Aatrox.cs" />
     <Compile Include="Dual-Port\KoratuSyndra\ManaBarIndicator.cs" />
     <Compile Include="Dual-Port\KoratuSyndra\OrbManager.cs" />
     <Compile Include="Dual-Port\KoratuSyndra\Program.cs" />

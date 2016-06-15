@@ -233,7 +233,18 @@ namespace PortAIO
                 switch (ObjectManager.Player.ChampionName.ToLower())
                 {
                     case "aatrox": // BrianSharp's Aatrox
-                        PortAIO.Champion.Aatrox.Program.Main();
+                        switch (Loader.aatrox)
+                        {
+                            case 0:
+                                PortAIO.Champion.Aatrox.Program.Main();
+                                break;
+                            case 1:
+                                new KappaSeries.Aatrox();
+                                break;
+                            default:
+                                PortAIO.Champion.Aatrox.Program.Main();
+                                break;
+                        }
                         break;
                     case "akali": // Akali by xQx
                         PortAIO.Champion.Akali.Program.Main();
