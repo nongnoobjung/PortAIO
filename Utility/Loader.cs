@@ -191,7 +191,9 @@ namespace PortAIO.Utility
         public static void Menu()
         {
             Miscc = MainMenu.AddMenu("PortAIO Misc", "berbsicmisc");
+            Miscc.AddGroupLabel("Options ");
             Miscc.Add("intro", new CheckBox("Load Intro?", true));
+            Miscc.Add("resetorb", new CheckBox("Reset Orbwalker", false)).OnValueChange += Loader_OnValueChange;
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("Champion Dual Port : ");
             if (Champion.Contains(ObjectManager.Player.ChampionName))
@@ -574,6 +576,13 @@ namespace PortAIO.Utility
             }
             */
         }
-    }
 
+        private static void Loader_OnValueChange(ValueBase<bool> sender, ValueBase<bool>.ValueChangeArgs args)
+        {
+            Orbwalker.DisableAttacking = false;
+            Orbwalker.DisableMovement = false;
+            Orbwalker.ForcedTarget = null;
+            Miscc["resetorb"].Cast<CheckBox>().CurrentValue = !Miscc["resetorb"].Cast<CheckBox>().CurrentValue;
+        }
+    }
 }
