@@ -108,6 +108,7 @@ namespace PortAIO.Utility
         public static int gnar { get { return Miscc["gnar"].Cast<ComboBox>().CurrentValue; } }
         public static int renekton { get { return Miscc["renekton"].Cast<ComboBox>().CurrentValue; } }
         public static int jinx { get { return Miscc["jinx"].Cast<ComboBox>().CurrentValue; } }
+        public static int syndra { get { return Miscc["syndra"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -184,6 +185,7 @@ namespace PortAIO.Utility
             "Gnar", //61
             "Renekton", //62
             "Jinx", //63
+            "Syndra", //64
         });
 
         public static void Menu()
@@ -449,6 +451,10 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[63]))
                 {
                     Miscc.Add("jinx", new ComboBox("Use addon for Jinx : ", 0, "OKTW", "Marksman II"));
+                }
+                if (Player.ChampionName.Equals(Champion[64]))
+                {
+                    Miscc.Add("syndra", new ComboBox("Use addon for Syndra : ", 0, "OKTW", "Kortatu Syndra"));
                 }
             }
             else

@@ -251,8 +251,6 @@ namespace ezEvade
 
             if (SpellDetector.channeledSpells.TryGetValue(sData.Name, out name))
             {
-                //Evade.isChanneling = true;
-                //Evade.channelPosition = ObjectCache.myHeroCache.serverPos2D;
                 lastStopEvadeTime = EvadeUtils.TickCount + ObjectCache.gamePing + 100;
             }
 
@@ -264,13 +262,6 @@ namespace ezEvade
 
             lastSpellCast = args.Slot;
             lastSpellCastTime = EvadeUtils.TickCount;
-
-            //moved from processPacket
-
-            /*if (args.Slot == SpellSlot.Recall)
-            {
-                lastStopPosition = myHero.ServerPosition.LSTo2D();
-            }*/
 
             if (Situation.ShouldDodge())
             {
@@ -291,24 +282,12 @@ namespace ezEvade
 
             foreach (var evadeSpell in EvadeSpell.evadeSpells)
             {
-                if (evadeSpell.isItem == false && evadeSpell.spellKey == args.Slot
-                    && evadeSpell.untargetable == false)
+                if (evadeSpell.isItem == false && evadeSpell.spellKey == args.Slot && evadeSpell.untargetable == false)
                 {
-                    if (//evadeSpell.evadeType == EvadeType.Blink || 
-                        evadeSpell.evadeType == EvadeType.Dash)
+                    if (evadeSpell.evadeType == EvadeType.Dash)
                     {
-                        //Block spell cast if flashing/blinking into spells
-                        /*if (args.EndPosition.LSTo2D().CheckDangerousPos(6, true)) //for blink + dash
-                        {
-                            args.Process = false;
-                            return;
-                        }*/
-
                         if (evadeSpell.evadeType == EvadeType.Dash)
                         {
-                            //var extraDelayBuffer = ObjectCache.menuCache.cache["ExtraPingBuffer"].Cast<Slider>().CurrentValue;
-                            //var extraDist = ObjectCache.menuCache.cache["ExtraCPADistance"].Cast<Slider>().CurrentValue;
-
                             var dashPos = args.StartPosition.LSTo2D(); //real pos?
 
                             if (args.Target != null)
@@ -316,17 +295,13 @@ namespace ezEvade
                                 dashPos = args.Target.Position.LSTo2D();
                             }
 
-                            if (evadeSpell.fixedRange
-                                || dashPos.LSDistance(myHero.ServerPosition.LSTo2D()) > evadeSpell.range)
+                            if (evadeSpell.fixedRange || dashPos.LSDistance(myHero.ServerPosition.LSTo2D()) > evadeSpell.range)
                             {
                                 var dir = (dashPos - myHero.ServerPosition.LSTo2D()).LSNormalized();
                                 dashPos = myHero.ServerPosition.LSTo2D() + dir * evadeSpell.range;
                             }
 
-                            //Draw.RenderObjects.Add(new Draw.RenderCircle(dashPos, 1000));
-
-                            var posInfo = EvadeHelper.CanHeroWalkToPos(dashPos, evadeSpell.speed,
-                                ObjectCache.gamePing, 0);
+                            var posInfo = EvadeHelper.CanHeroWalkToPos(dashPos, evadeSpell.speed, ObjectCache.gamePing, 0);
 
                             if (posInfo.posDangerLevel > 0)
                             {
@@ -335,19 +310,17 @@ namespace ezEvade
                             }
                         }
 
-                        lastPosInfo = PositionInfo.SetAllUndodgeable(); //really?
+                        lastPosInfo = PositionInfo.SetAllUndodgeable();
 
                         if (isDodging || EvadeUtils.TickCount < lastDodgingEndTime + 500)
                         {
-                            EvadeCommand.MoveTo(Game.CursorPos.LSTo2D()); //block moveto
+                            EvadeCommand.MoveTo(Game.CursorPos.LSTo2D());
                             lastStopEvadeTime = EvadeUtils.TickCount + ObjectCache.gamePing + 100;
                         }
                     }
                     return;
                 }
             }
-
-
         }
 
         private void Game_OnIssueOrder(Obj_AI_Base hero, PlayerIssueOrderEventArgs args)

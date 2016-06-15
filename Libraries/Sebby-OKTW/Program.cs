@@ -186,7 +186,7 @@ namespace SebbyLib
                         Twitch.LoadOKTW();
                         break;
                     case "Syndra":
-                        Syndra.LoadOKTW();
+                        OneKeyToWin_AIO_Sebby.Champions.Syndra.LoadOKTW();
                         break;
                     case "Velkoz":
                         Velkoz.LoadOKTW();

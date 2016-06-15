@@ -454,13 +454,26 @@ namespace PortAIO
                                 break;
                         }
                         break;
+                    case "syndra":
+                        switch (Loader.syndra)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                Syndra.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
                     case "thresh": // OKTW - Sebby - All Seeby champs go down here
                     case "annie":
                     case "karthus":
                     case "missfortune":
                     case "malzahar":
                     case "orianna":
-                    case "syndra":
                     case "velkoz":
                     case "swain":
                     case "urgot":

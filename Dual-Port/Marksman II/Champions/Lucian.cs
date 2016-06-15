@@ -220,6 +220,7 @@ namespace Marksman.Champions
             t = TargetSelector.GetTarget(W.Range, DamageType.Physical);
             if (!t.LSIsValidTarget())
             {
+                Orbwalker.ForcedTarget = null;
                 return;
             }
 
