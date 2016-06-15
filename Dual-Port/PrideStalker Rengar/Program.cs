@@ -22,8 +22,8 @@ namespace PrideStalker_Rengar
                 return;
             }
 
-            Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Nechrito Rengar</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Update 9 or smthn</font></b>");
-            Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Update</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> ProtoBelt Added</font></b>");
+            Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Nechrito Rengar</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Update 11</font></b>");
+            Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Update</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Range E</font></b>");
 
             Spells.Load();
             MenuConfig.Load();
@@ -92,9 +92,10 @@ namespace PrideStalker_Rengar
             {
                 if (MenuConfig.dind)
                 {
-                    var EasyKill = Spells.Q.IsReady() && Dmg.IsLethal(enemy)
+                    var EasyKill = Spells.Q.IsReady() && enemy.LSIsValidTarget(Player.AttackRange + 75) && Dmg.IsLethal(enemy)
                        ? new ColorBGRA(0, 255, 0, 120)
                        : new ColorBGRA(255, 255, 0, 120);
+
                     DRAW.DrawHpBar.unit = enemy;
                     DRAW.DrawHpBar.drawDmg(Dmg.ComboDmg(enemy), EasyKill);
                 }

@@ -12,57 +12,56 @@ using EloBuddy.SDK.Menu;
 
 namespace PrideStalker_Rengar.Handlers
 {
-    class Mode : Core
+    internal class Mode : Core
     {
         private static int _lastTick;
-        public static bool hasPassive => Player.Buffs.Any(x => x.Name.ToLower().Contains("rengarpassivebuff"));
+        public static bool HasPassive => Player.Buffs.Any(x => x.Name.ToLower().Contains("rengarpassivebuff"));
+
         #region Combo
         public static void Combo()
-        {   
-            var Target = TargetSelector.GetTarget(1000, DamageType.Physical);
-            
+        {
+            var target = TargetSelector.GetTarget(1000, DamageType.Physical);
 
-            if (Target != null && Target.LSIsValidTarget() && !Target.IsZombie)
+
+            if (target == null || !target.IsValidTarget() || target.IsZombie) return;
+            if (Player.Mana == 5)
             {
-                if(Player.Mana == 5)
+                if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady() && HasPassive)
                 {
-                    if(MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady() && hasPassive)
-                    {
-                        ITEM.CastYomu();
-                    }
-                    if(Spells.E.IsReady() && Target.Distance(Player) <= Spells.E.Range)
-                    {
-                       Spells.E.Cast(Target);
-                    }
-                    if (Spells.Q.IsReady() && Target.Distance(Player) <= Player.AttackRange && !Spells.E.IsReady())
-                    {
-                        Spells.Q.Cast(Target);
-                    }
+                    ITEM.CastYomu();
                 }
-                if(Player.Mana < 5)
+                if (Spells.E.IsReady() && target.Distance(Player) < Player.AttackRange)
                 {
-                    if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady() && hasPassive)
+                    Spells.E.Cast(target);
+                }
+                if (Spells.Q.IsReady() && target.Distance(Player) < Player.AttackRange && !Spells.E.IsReady())
+                {
+                    Spells.Q.Cast(target);
+                }
+            }
+            if (Player.Mana < 5)
+            {
+                if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady() && HasPassive)
+                {
+                    ITEM.CastYomu();
+                }
+                if (Spells.E.IsReady() && !HasPassive && target.Distance(Player) < Player.AttackRange)
+                {
+                    Spells.E.Cast(target);
+                }
+                if (target.Distance(Player) <= Spells.W.Range)
+                {
+                    if (Spells.Q.IsReady())
                     {
-                        ITEM.CastYomu();
+                        Spells.Q.Cast(target);
                     }
-                    if (Spells.E.IsReady() && !hasPassive && Target.Distance(Player) <= Spells.E.Range)
+                    if (MenuConfig.UseItem)
                     {
-                        Spells.E.Cast(Target);
+                        ITEM.CastHydra();
                     }
-                    if(Target.Distance(Player) <= Spells.W.Range)
+                    if (Spells.W.IsReady())
                     {
-                        if (Spells.Q.IsReady())
-                        {
-                            Spells.Q.Cast(Target);
-                        }
-                        if (MenuConfig.UseItem)
-                        {
-                            ITEM.CastHydra();
-                        }
-                        if (Spells.W.IsReady())
-                        {
-                            Spells.W.Cast(Target);
-                        }
+                        Spells.W.Cast(target);
                     }
                 }
             }
@@ -71,65 +70,60 @@ namespace PrideStalker_Rengar.Handlers
         #region ApCombo
         public static void ApCombo()
         {
-            var Target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
+            var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
 
-            if (Target != null && Target.LSIsValidTarget() && !Target.IsZombie)
+            if (target == null || !target.IsValidTarget() || target.IsZombie) return;
+
+            if (Player.Mana == 5)
             {
-                if (Player.Mana == 5)
+                if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady() && HasPassive)
                 {
-                    if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady() && hasPassive)
+                    ITEM.CastYomu();
+                }
+                if (target.Distance(Player) <= Spells.W.Range)
+                {
+                    if (MenuConfig.UseItem && Spells.W.IsReady())
                     {
-                        ITEM.CastYomu();
+                        ITEM.CastHydra();
                     }
-                    if(Target.Distance(Player) <= Spells.W.Range)
+                    if (Spells.W.IsReady())
                     {
-                        if (MenuConfig.UseItem && Spells.W.IsReady())
-                        {
-                            ITEM.CastHydra();
-                        }
-                        if (Spells.W.IsReady())
-                        {
-                            Spells.W.Cast(Target);
-                        }
+                        Spells.W.Cast(target);
                     }
                 }
-                if (Player.Mana < 5)
+            }
+            if (!(Player.Mana < 5)) return;
+            if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady() && HasPassive)
+            {
+                ITEM.CastYomu();
+            }
+            if (MenuConfig.UseItem && !HasPassive)
+            {
+                ITEM.CastProtobelt();
+            }
+            if (!(target.Distance(Player) <= Spells.W.Range)) return;
+            if (MenuConfig.UseItem && Spells.W.IsReady())
+            {
+                ITEM.CastHydra();
+            }
+            if (Spells.W.IsReady())
+            {
+                Spells.W.Cast(target);
+                Spells.W.Cast(target);
+            }
+            else if (Spells.Q.IsReady())
+            {
+                Spells.Q.Cast(target);
+            }
+            else if (Spells.E.IsReady() && target.Distance(Player) <= Spells.W.Range + 225)
+            {
+                if (MenuConfig.IgnoreE && HasPassive)
                 {
-                     if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady() && hasPassive)
-                    {
-                        ITEM.CastYomu();
-                    }
-                     if(MenuConfig.UseItem && !hasPassive)
-                    {
-                        ITEM.CastProtobelt();
-                    }
-                    if(Target.Distance(Player) <= Spells.W.Range)
-                    {
-                        if (MenuConfig.UseItem && Spells.W.IsReady())
-                        {
-                            ITEM.CastHydra();
-                        }
-                        if (Spells.W.IsReady())
-                        {
-                            Spells.W.Cast(Target);
-                            Spells.W.Cast(Target);
-                        }
-                        else if (Spells.Q.IsReady())
-                        {
-                            Spells.Q.Cast(Target);
-                        }
-                        else if (Spells.E.IsReady() && Target.Distance(Player) <= Spells.W.Range + 225)
-                        {
-                            if (MenuConfig.IgnoreE && hasPassive)
-                            {
-                                Spells.E.Cast(Game.CursorPos);
-                            }
-                            else
-                            {
-                                Spells.E.Cast(Target);
-                            }
-                        }
-                    }
+                    Spells.E.Cast(Game.CursorPos);
+                }
+                else
+                {
+                    Spells.E.Cast(target);
                 }
             }
         }
@@ -137,57 +131,55 @@ namespace PrideStalker_Rengar.Handlers
         #region TripleQ
         public static void TripleQ()
         {
-            var Target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
+            var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
 
-            if (Target != null && Target.LSIsValidTarget() && !Target.IsZombie)
+            if (target == null || !target.IsValidTarget() || target.IsZombie) return;
+            if (Player.Mana == 5)
             {
-                if (Player.Mana == 5)
+                if (MenuConfig.UseItem && Spells.Q.IsReady() && HasPassive)
                 {
-                    if (MenuConfig.UseItem && Spells.Q.IsReady() && hasPassive)
+                    ITEM.CastYomu();
+                }
+
+                if (Spells.Q.IsReady() && target.Distance(Player) <= Spells.W.Range)
+                {
+                    if (!MenuConfig.TripleQAAReset)
                     {
-                        ITEM.CastYomu();
-                    }
-                    
-                    if (Spells.Q.IsReady() && Target.Distance(Player) <= Spells.W.Range)
-                    {
-                        if(!MenuConfig.TripleQAAReset)
-                        {
-                            Spells.Q.Cast();
-                        }
+                        Spells.Q.Cast();
                     }
                 }
-                if (Player.Mana < 5)
+            }
+            if (Player.Mana < 5)
+            {
+                if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady())
                 {
-                    if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady())
+                    ITEM.CastYomu();
+                }
+                if (Spells.Q.IsReady() && target.Distance(Player) <= Spells.W.Range)
+                {
+                    if (!MenuConfig.TripleQAAReset)
                     {
-                        ITEM.CastYomu();
+                        Spells.Q.Cast();
                     }
-                    if (Spells.Q.IsReady() && Target.Distance(Player) <= Spells.W.Range)
+                }
+                if (Spells.E.IsReady() && !Spells.Q.IsReady() && target.Distance(Player) < Player.AttackRange)
+                {
+                    if (MenuConfig.IgnoreE && HasPassive)
                     {
-                        if (!MenuConfig.TripleQAAReset)
-                        {
-                            Spells.Q.Cast();
-                        }
+                        Spells.E.Cast(Game.CursorPos);
                     }
-                    if (Spells.E.IsReady() && !Spells.Q.IsReady() && Target.Distance(Player) <= Spells.W.Range)
+                    else
                     {
-                        if (MenuConfig.IgnoreE && hasPassive)
-                        {
-                            Spells.E.Cast(Game.CursorPos);
-                        }
-                        else
-                        {
-                            Spells.E.Cast(Target);
-                        }
+                        Spells.E.Cast(target);
                     }
-                   if (Spells.W.IsReady() && !Spells.Q.IsReady() && Player.Distance(Target) <= Spells.W.Range)
+                }
+                if (Spells.W.IsReady() && !Spells.Q.IsReady() && Player.Distance(target) <= Spells.W.Range)
+                {
+                    if (MenuConfig.UseItem)
                     {
-                        if (MenuConfig.UseItem)
-                        {
-                            ITEM.CastHydra();
-                        }
-                        Spells.W.Cast(Target);
+                        ITEM.CastHydra();
                     }
+                    Spells.W.Cast(target);
                 }
             }
         }
@@ -195,55 +187,53 @@ namespace PrideStalker_Rengar.Handlers
         #region OneShot
         public static void OneShot()
         {
-            var Target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
-            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.W.Range)).ToList();
+            var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
+            GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.IsValidTarget(Spells.W.Range)).ToList();
 
-            if (Target != null && Target.LSIsValidTarget() && !Target.IsZombie)
+            if (target == null || !target.IsValidTarget() || target.IsZombie) return;
+            if (Player.Mana == 5)
             {
-                if (Player.Mana == 5)
+                if (MenuConfig.UseItem && Spells.Q.IsReady() && HasPassive)
                 {
-                    if (MenuConfig.UseItem && Spells.Q.IsReady() && hasPassive)
-                    {
-                        ITEM.CastYomu();
-                    }
-                    if (Spells.Q.IsReady() && Target.Distance(Player) <= Spells.E.Range)
-                    {
-                        Spells.Q.Cast();   
-                    }
+                    ITEM.CastYomu();
                 }
-                if (Player.Mana < 5)
+                if (Spells.Q.IsReady() && target.Distance(Player) <= Spells.E.Range)
                 {
-                    if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady())
-                    {
-                        ITEM.CastYomu();
-                    }
-                    if (Spells.E.IsReady() && Target.Distance(Player) <= Spells.W.Range + 225)
-                    {
-                        if (MenuConfig.IgnoreE && hasPassive)
-                        {
-                            Spells.E.Cast(Game.CursorPos);
-                        }
-                        else
-                        {
-                            Spells.E.Cast(Target);
-                        }
-                    }
-                    if (Spells.Q.IsReady() && Target.Distance(Player) <= Spells.W.Range)
-                    {
-                        Spells.Q.Cast();
-                    }
-                    if (Spells.W.IsReady() && Player.Distance(Target) <= Spells.W.Range)
-                    {
-                        if (MenuConfig.UseItem)
-                        {
-                            ITEM.CastHydra();
-                        }
-                        Spells.W.Cast(Target);
-                    }
+                    Spells.Q.Cast();
                 }
             }
-         }
-        
+            if (Player.Mana < 5)
+            {
+                if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady())
+                {
+                    ITEM.CastYomu();
+                }
+                if (Spells.E.IsReady() && target.Distance(Player) <= Spells.W.Range + 225)
+                {
+                    if (MenuConfig.IgnoreE && HasPassive)
+                    {
+                        Spells.E.Cast(Game.CursorPos);
+                    }
+                    else
+                    {
+                        Spells.E.Cast(target);
+                    }
+                }
+                if (Spells.Q.IsReady() && target.Distance(Player) <= Spells.W.Range)
+                {
+                    Spells.Q.Cast();
+                }
+                if (Spells.W.IsReady() && Player.Distance(target) <= Spells.W.Range)
+                {
+                    if (MenuConfig.UseItem)
+                    {
+                        ITEM.CastHydra();
+                    }
+                    Spells.W.Cast(target);
+                }
+            }
+        }
+
         #endregion
 
         #region Lane
@@ -251,7 +241,7 @@ namespace PrideStalker_Rengar.Handlers
         {
             var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.W.Range)).ToList();
 
-            if (minions == null || Player.Mana == 5 && MenuConfig.Passive)
+            if (Player.Mana == 5 && MenuConfig.Passive)
             {
                 return;
             }
@@ -285,7 +275,7 @@ namespace PrideStalker_Rengar.Handlers
                     {
                         Spells.Q.Cast(m);
                     }
-                    if (Spells.E.IsReady() && !hasPassive)
+                    if (Spells.E.IsReady() && !HasPassive)
                     {
                         Spells.E.Cast(m);
                     }
@@ -307,7 +297,7 @@ namespace PrideStalker_Rengar.Handlers
         {
             var mob = ObjectManager.Get<Obj_AI_Minion>().Where(m => !m.IsDead && !m.IsZombie && m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.W.Range)).ToList();
 
-            if (mob == null || Player.Mana == 5 && MenuConfig.Passive)
+            if (Player.Mana == 5 && MenuConfig.Passive)
             {
                 return;
             }
@@ -325,7 +315,7 @@ namespace PrideStalker_Rengar.Handlers
                     }
                     else
                     {
-                        if (Spells.W.IsReady() && m.Distance(Player) <= Spells.W.Range && Player.HealthPercent < 80)
+                        if (Spells.W.IsReady() && m.Distance(Player) <= Spells.W.Range && Player.HealthPercent < 20)
                         {
                             if (MenuConfig.UseItem)
                             {
@@ -358,13 +348,13 @@ namespace PrideStalker_Rengar.Handlers
         public static void LastHit()
         {
             var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Player.AttackRange)).ToList();
-            
 
-            if (minions == null || Player.Mana == 5 && MenuConfig.Passive)
+
+            if (Player.Mana == 5 && MenuConfig.Passive)
             {
                 return;
             }
-            if(MenuConfig.StackLastHit)
+            if (!MenuConfig.StackLastHit) return;
             {
                 foreach (var m in minions)
                 {
