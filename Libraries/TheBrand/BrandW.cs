@@ -38,7 +38,7 @@ namespace TheBrand
                 var target = Provider.Target;
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || target == null) return;
                 var prediction = GetPrediction(target, true);
-                if (prediction.CastPosition.Distance(ObjectManager.Player.Position) < 900)
+                if (prediction.CastPosition.LSDistance(ObjectManager.Player.Position) < 900)
                     Render.Circle.DrawCircle(prediction.CastPosition, 240f, PredictedWColor);
             }
             catch
@@ -57,7 +57,7 @@ namespace TheBrand
         public override float GetDamage(AIHeroClient enemy)
         {
             var baseDamage = base.GetDamage(enemy);
-            return enemy.HasBuff("brandablaze") || _brandE.CanBeCast() && enemy.Distance(ObjectManager.Player) < 650
+            return enemy.HasBuff("brandablaze") || _brandE.CanBeCast() && enemy.LSDistance(ObjectManager.Player) < 650
                 ? baseDamage*1.25f
                 : baseDamage;
         }

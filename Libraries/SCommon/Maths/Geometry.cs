@@ -45,7 +45,7 @@ namespace SCommon.Maths
             {
                 var from = self[i];
                 var to = self[i + 1];
-                var d = (int) to.Distance(from);
+                var d = (int) to.LSDistance(from);
                 if (d > distance)
                 {
                     return from + distance*(to - from).Normalized();
@@ -98,7 +98,7 @@ namespace SCommon.Maths
         /// <returns><c>true</c> if the point is between given 2 points</returns>
         internal static bool IsBetween(this Vector2 b, Vector2 a, Vector2 c)
         {
-            return a.Distance(c) + c.Distance(b) - a.Distance(b) < float.Epsilon;
+            return a.LSDistance(c) + c.LSDistance(b) - a.LSDistance(b) < float.Epsilon;
         }
 
         //from Esk0r's evade's geometry class, orginal code: https://github.com/Esk0r/LeagueSharp/blob/master/Evade/Geometry.cs

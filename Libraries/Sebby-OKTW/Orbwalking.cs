@@ -203,7 +203,7 @@ namespace SebbyLib
         {
             var playerPosition = Player.ServerPosition;
 
-            if (playerPosition.Distance(position, true) < holdAreaRadius*holdAreaRadius)
+            if (playerPosition.LSDistance(position, true) < holdAreaRadius*holdAreaRadius)
             {
                 if (Player.Path.Length > 0)
                 {
@@ -216,7 +216,7 @@ namespace SebbyLib
 
             var point = position;
 
-            if (Player.Distance(point, true) < 150*150)
+            if (Player.LSDistance(point, true) < 150*150)
             {
                 point =
                     playerPosition.Extend(position,
@@ -233,7 +233,7 @@ namespace SebbyLib
                     var v1 = currentPath[1] - currentPath[0];
                     var v2 = movePath[1] - movePath[0];
                     angle = v1.AngleBetween(v2.To2D());
-                    var distance = movePath.Last().To2D().Distance(currentPath.Last(), true);
+                    var distance = movePath.Last().To2D().LSDistance(currentPath.Last(), true);
 
                     if ((angle < 10 && distance < 500*500) || distance < 50*50)
                     {

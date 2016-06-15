@@ -533,7 +533,7 @@ namespace SCommon.Damage
                     HeroManager.AllHeroes.Any(
                         h =>
                             h.NetworkId != hero.NetworkId && h.Team == hero.Team
-                            && h.Distance(minionTarget.Position) < 1100))
+                            && h.LSDistance(minionTarget.Position) < 1100))
                 {
                     var value = 0;
 
@@ -582,7 +582,7 @@ namespace SCommon.Damage
             {
                 var cnt =
                     ObjectManager.Get<GameObject>()
-                        .Count(p => p.IsAlly && p.Name == "AzirSoldier" && p.Position.Distance(target.Position) < 315);
+                        .Count(p => p.IsAlly && p.Name == "AzirSoldier" && p.Position.LSDistance(target.Position) < 315);
                 if (cnt > 0)
                 {
                     dmg =

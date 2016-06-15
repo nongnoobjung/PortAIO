@@ -4235,7 +4235,7 @@ namespace UnderratedAIO.Helpers.SkillShot
         {
             return
                 CcList.Any(
-                    cc => enemyTeam == cc.Champion.IsEnemy && cc.Champion.Distance(pos) < range && cc.IsReady(time));
+                    cc => enemyTeam == cc.Champion.IsEnemy && cc.Champion.LSDistance(pos) < range && cc.IsReady(time));
         }
     }
 

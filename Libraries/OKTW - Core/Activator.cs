@@ -249,7 +249,7 @@ namespace OneKeyToWin_AIO_Sebby
                 return;
 
 
-            if (sender.Distance(Player.Position) > 1600)
+            if (sender.LSDistance(Player.Position) > 1600)
                 return;
 
             if (Zhonya.IsReady() && getCheckBoxItem("Zhonya"))
@@ -262,9 +262,9 @@ namespace OneKeyToWin_AIO_Sebby
                     }
                     else
                     {
-                        var castArea = Player.Distance(args.End)*(args.End - Player.ServerPosition).Normalized() +
+                        var castArea = Player.LSDistance(args.End)*(args.End - Player.ServerPosition).Normalized() +
                                        Player.ServerPosition;
-                        if (castArea.Distance(Player.ServerPosition) < Player.BoundingRadius/2)
+                        if (castArea.LSDistance(Player.ServerPosition) < Player.BoundingRadius/2)
                             ZhonyaTryCast();
                     }
                 }
@@ -277,7 +277,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Program.Allies.Where(
                             ally =>
                                 ally.IsValid && !ally.IsDead && ally.HealthPercent < 51 &&
-                                Player.Distance(ally.ServerPosition) < 700))
+                                Player.LSDistance(ally.ServerPosition) < 700))
                 {
                     double dmg = 0;
                     if (args.Target != null && args.Target.NetworkId == ally.NetworkId)
@@ -286,9 +286,9 @@ namespace OneKeyToWin_AIO_Sebby
                     }
                     else
                     {
-                        var castArea = ally.Distance(args.End)*(args.End - ally.ServerPosition).Normalized() +
+                        var castArea = ally.LSDistance(args.End)*(args.End - ally.ServerPosition).Normalized() +
                                        ally.ServerPosition;
-                        if (castArea.Distance(ally.ServerPosition) < ally.BoundingRadius/2)
+                        if (castArea.LSDistance(ally.ServerPosition) < ally.BoundingRadius/2)
                             dmg = dmg + sender.LSGetSpellDamage(ally, args.SData.Name);
                         else
                             continue;
@@ -371,7 +371,7 @@ namespace OneKeyToWin_AIO_Sebby
                     Program.Allies.Where(
                         ally =>
                             ally.IsValid && !ally.IsDead && ally.HealthPercent < 50 &&
-                            Player.Distance(ally.ServerPosition) < 700))
+                            Player.LSDistance(ally.ServerPosition) < 700))
             {
                 var dmg = OktwCommon.GetIncomingDamage(ally, 1);
                 var enemys = ally.CountEnemiesInRange(700);
@@ -389,7 +389,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Player.Spellbook.CastSpell(heal, ally);
                 }
 
-                if (getCheckBoxItem("Solari") && Solari.IsReady() && Player.Distance(ally.ServerPosition) < Solari.Range)
+                if (getCheckBoxItem("Solari") && Solari.IsReady() && Player.LSDistance(ally.ServerPosition) < Solari.Range)
                 {
                     var value = 75 + 15*Player.Level;
                     if (dmg > value && Player.HealthPercent < 50)
@@ -401,7 +401,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
 
                 if (getCheckBoxItem("FaceOfTheMountain") && FaceOfTheMountain.IsReady() &&
-                    Player.Distance(ally.ServerPosition) < FaceOfTheMountain.Range)
+                    Player.LSDistance(ally.ServerPosition) < FaceOfTheMountain.Range)
                 {
                     var value = 0.1*Player.MaxHealth;
                     if (dmg > value && Player.HealthPercent < 50)
@@ -465,13 +465,13 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValid && !enemy.IsDead))
                     {
-                        var distanceEA = enemy.Distance(ally);
+                        var distanceEA = enemy.LSDistance(ally);
                         if (distanceEA < 1000)
                         {
                             foreach (
                                 var obj in
                                     ObjectManager.Get<Obj_AI_Minion>()
-                                        .Where(obj => obj.IsAlly && distanceEA < obj.Position.Distance(ally.Position)))
+                                        .Where(obj => obj.IsAlly && distanceEA < obj.Position.LSDistance(ally.Position)))
                             {
                                 Player.Spellbook.CastSpell(teleport, obj);
                             }
@@ -559,7 +559,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                     var IgnDmg = Player.GetSummonerSpellDamage(enemy, DamageLibrary.SummonerSpells.Ignite);
 
-                    if (pred <= IgnDmg && Player.ServerPosition.Distance(enemy.ServerPosition) > 500 &&
+                    if (pred <= IgnDmg && Player.ServerPosition.LSDistance(enemy.ServerPosition) > 500 &&
                         enemy.CountAlliesInRange(500) < 2)
                         Player.Spellbook.CastSpell(ignite, enemy);
 
@@ -624,7 +624,7 @@ namespace OneKeyToWin_AIO_Sebby
                 foreach (var ally in Program.Allies.Where(
                     ally =>
                         ally.IsValid && !ally.IsDead && getCheckBoxItem("MikaelsAlly" + ally.ChampionName) &&
-                        Player.Distance(ally.Position) < Mikaels.Range
+                        Player.LSDistance(ally.Position) < Mikaels.Range
                         && ally.HealthPercent < (float) getSliderItem("cleanHP")))
                 {
                     if (ally.HasBuff("zedrdeathmark") || ally.HasBuff("FizzMarinerDoom") ||

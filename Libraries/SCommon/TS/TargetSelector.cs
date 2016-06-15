@@ -185,11 +185,11 @@ namespace SCommon.TS
                     return
                         enemies.MinOrDefault(
                             hero =>
-                                (_from ?? ObjectManager.Player.ServerPosition).Distance(
+                                (_from ?? ObjectManager.Player.ServerPosition).LSDistance(
                                     hero.ServerPosition, true));
 
                 case 5:
-                    return enemies.Find(hero => hero.Distance(Game.CursorPos, true) < 22500); // 150 * 150
+                    return enemies.Find(hero => hero.LSDistance(Game.CursorPos, true) < 22500); // 150 * 150
 
                 case 6:
                     return
@@ -222,7 +222,7 @@ namespace SCommon.TS
                         if (killableTarget != null)
                             return killableTarget;
 
-                        var targets = possibleTargets.OrderBy(p => ObjectManager.Player.Distance(p.ServerPosition));
+                        var targets = possibleTargets.OrderBy(p => ObjectManager.Player.LSDistance(p.ServerPosition));
                         AIHeroClient mostImportant = null;
                         double mostImportantsDamage = 0;
                         foreach (var target in targets)
@@ -327,8 +327,8 @@ namespace SCommon.TS
             }
             SelectedTarget =
                 HeroManager.Enemies
-                    .FindAll(hero => hero.IsValidTarget() && hero.Distance(Game.CursorPos, true) < 40000) // 200 * 200
-                    .OrderBy(h => h.Distance(Game.CursorPos, true)).FirstOrDefault();
+                    .FindAll(hero => hero.IsValidTarget() && hero.LSDistance(Game.CursorPos, true) < 40000) // 200 * 200
+                    .OrderBy(h => h.LSDistance(Game.CursorPos, true)).FirstOrDefault();
         }
 
         private static void Drawing_OnDraw(EventArgs args)
