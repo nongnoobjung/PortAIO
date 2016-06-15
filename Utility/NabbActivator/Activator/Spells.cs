@@ -3,6 +3,7 @@ using System.Linq;
 using EloBuddy;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK;
 
 namespace NabbActivator
@@ -18,7 +19,7 @@ namespace NabbActivator
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Spells(EventArgs args)
         {
-            if (!Vars.getCheckBoxItem(Vars.TypesMenu, "spells"))
+            if (!Vars.TypesMenu["spells"].Cast<CheckBox>().CurrentValue)
             {
                 return;
             }
@@ -97,10 +98,9 @@ namespace NabbActivator
             if (SpellSlots.Heal.IsReady())
             {
                 if (GameObjects.Player.CountEnemyHeroesInRange(850f) > 0 &&
-                    Health.GetPrediction(GameObjects.Player, (int)(1000 + Game.Ping / 2f)) <= GameObjects.Player.MaxHealth / 6)
+                    Health.GetPrediction(GameObjects.Player, (int) (1000 + Game.Ping/2f)) <= GameObjects.Player.MaxHealth/6)
                 {
                     GameObjects.Player.Spellbook.CastSpell(SpellSlots.Heal);
-                }
                 }
                 else
                 {
@@ -108,11 +108,12 @@ namespace NabbActivator
                         a =>
                             a.LSIsValidTarget(850f, false) &&
                             a.CountEnemyHeroesInRange(850f) > 0 &&
-                            Health.GetPrediction(a, (int)(1000 + Game.Ping / 2f)) <= a.MaxHealth / 6))
+                            Health.GetPrediction(a, (int) (1000 + Game.Ping/2f)) <= a.MaxHealth/6))
                     {
                         GameObjects.Player.Spellbook.CastSpell(SpellSlots.Heal, ally);
                     }
                 }
+            }
 
 
             /// <summary>
@@ -121,7 +122,7 @@ namespace NabbActivator
             if (Vars.Smite.IsReady() &&
                 Vars.Smite.Slot != SpellSlot.Unknown)
             {
-                if (!Vars.getKeyBindItem(Vars.KeysMenu, "smite"))
+                if (!Vars.KeysMenu["smite"].Cast<KeyBind>().CurrentValue)
                 {
                     return;
                 }
@@ -129,7 +130,7 @@ namespace NabbActivator
                 /// <summary>
                 ///     The Combo Smite Logic.
                 /// </summary>
-                if (Vars.getCheckBoxItem(Vars.SmiteMiscMenu, "combo"))
+                if (Vars.SmiteMiscMenu["combo"].Cast<CheckBox>().CurrentValue)
                 {
                     if (Orbwalker.LastTarget as AIHeroClient != null) 
                     {
@@ -140,12 +141,12 @@ namespace NabbActivator
                 /// <summary>
                 ///     The Killsteal Smite Logic.
                 /// </summary>
-                if (Vars.getCheckBoxItem(Vars.SmiteMiscMenu, "killsteal"))
+                if (Vars.SmiteMiscMenu["killsteal"].Cast<CheckBox>().CurrentValue)
                 {
                     if (GameObjects.Player.HasBuff("smitedamagetrackerstalker") ||
                         GameObjects.Player.HasBuff("smitedamagetrackerskirmisher"))
                     {
-                        if (Vars.getCheckBoxItem(Vars.SmiteMiscMenu, "stacks"))
+                        if (Vars.SmiteMiscMenu["stacks"].Cast<CheckBox>().CurrentValue)
                         {
                             if (GameObjects.Player.Spellbook.GetSpell(Vars.Smite.Slot).Ammo == 1)
                             {
@@ -184,18 +185,17 @@ namespace NabbActivator
                         return;
                     }
 
-                    if (Vars.getCheckBoxItem(Vars.SmiteMiscMenu, "limit"))
+                    if (Vars.SmiteMiscMenu["limit"].Cast<CheckBox>().CurrentValue)
                     {
                         if (!minion.CharData.BaseSkinName.Equals("SRU_Baron") &&
                             !minion.CharData.BaseSkinName.Equals("SRU_RiftHerald") &&
-                            !minion.CharData.BaseSkinName.Contains("SRU_Dragon")) 
-
+                            !minion.CharData.BaseSkinName.Contains("SRU_Dragon"))
                         {
                             return;
                         }
                     }
 
-                    if (Vars.getCheckBoxItem(Vars.SmiteMiscMenu, "stacks"))
+                    if (Vars.SmiteMiscMenu["stacks"].Cast<CheckBox>().CurrentValue)
                     {
                         if (GameObjects.Player.Spellbook.GetSpell(Vars.Smite.Slot).Ammo == 1)
                         {

@@ -4,7 +4,6 @@ using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using Spell = LeagueSharp.SDK.Spell;
 
 namespace NabbActivator
 {
@@ -22,26 +21,6 @@ namespace NabbActivator
         ///     A list of the names of the champions who cast Invalid Stuns.
         /// </summary>
         public static readonly List<string> InvalidStunCasters = new List<string> {"Amumu", "LeeSin", "Alistar", "Hecarim", "Blitzcrank"};
-
-        public static bool getCheckBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(Menu m, string item)
-        {
-            return m[item].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool getKeyBindItem(Menu m, string item)
-        {
-            return m[item].Cast<KeyBind>().CurrentValue;
-        }
-
-        public static int getBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<ComboBox>().CurrentValue;
-        }
 
         /// <summary>
         ///     The jungle HP bar offset.
@@ -103,7 +82,7 @@ namespace NabbActivator
         /// <summary>
         ///     Gets the Delay.
         /// </summary>
-        public static int Delay => getCheckBoxItem(TypesMenu, "randomizer") 
+        public static int Delay => Vars.TypesMenu["randomizer"].Cast<CheckBox>().CurrentValue 
             ? WeightedRandom.Next(200, 300) 
             : 0;
 
@@ -121,11 +100,6 @@ namespace NabbActivator
         ///     Gets or sets the assembly menu.
         /// </summary>
         public static Menu Menu { internal get; set; }
-
-        /// <summary>
-        ///     Gets or sets the assembly menu.
-        /// </summary>
-        public static Menu TypesMenu { internal get; set; }
 
         /// <summary>
         ///     Gets or sets the slider menu.
@@ -156,5 +130,10 @@ namespace NabbActivator
         ///     Gets or sets the smite menu.
         /// </summary>
         public static Menu SmiteMenu { internal get; set; }
+
+        /// <summary>
+        ///     Gets or sets the types menu.
+        /// </summary>
+        public static Menu TypesMenu { internal get; set; }
     }
 }

@@ -2,6 +2,7 @@ using System.Drawing;
 using EloBuddy;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using EloBuddy.SDK.Menu.Values;
 
 namespace NabbActivator
 {
@@ -22,9 +23,9 @@ namespace NabbActivator
                 /// </summary>
                 if (Vars.Smite.IsReady() &&
                     Vars.Smite.Slot != SpellSlot.Unknown &&
-                    Vars.getKeyBindItem(Vars.KeysMenu, "smite"))
+                    Vars.KeysMenu["smite"].Cast<KeyBind>().CurrentValue)
                 {
-                    if (Vars.getCheckBoxItem(Vars.DrawingsMenu, "range"))
+                    if (Vars.DrawingsMenu["range"].Cast<CheckBox>().CurrentValue)
                     {
                         Render.Circle.DrawCircle(GameObjects.Player.Position, Vars.Smite.Range, Color.Orange, 1);
                     }

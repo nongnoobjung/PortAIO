@@ -2,7 +2,7 @@ using System.Linq;
 using System.Drawing;
 using EloBuddy;
 using LeagueSharp.SDK;
-using LeagueSharp.SDK.Core.Utils;
+using EloBuddy.SDK.Menu.Values;
 
 namespace NabbActivator
 {
@@ -21,15 +21,15 @@ namespace NabbActivator
                 if (Vars.Smite.IsReady() &&
                     Vars.Smite.Slot != SpellSlot.Unknown)
                 {
-                    if (!Vars.getCheckBoxItem(Vars.DrawingsMenu, "damage"))
+                    if (!Vars.DrawingsMenu["damage"].Cast<CheckBox>().CurrentValue)
                     {
                         return;
                     }
 
                     GameObjects.Jungle.Where(
-                    m =>
-                        m.LSIsValidTarget() &&
-                        !GameObjects.JungleSmall.Contains(m)).ToList().ForEach(unit =>
+                        m =>
+                            m.LSIsValidTarget() &&
+                            !GameObjects.JungleSmall.Contains(m)).ToList().ForEach(unit =>
                         {
                             /// <summary>
                             ///     Defines what HPBar Offsets it should display.

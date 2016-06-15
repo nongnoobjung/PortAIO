@@ -1,4 +1,4 @@
-﻿using EloBuddy.SDK.Menu;
+using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using ExorSDK.Utilities;
 
@@ -52,11 +52,7 @@ namespace NabbActivator
             /// </summary>
             Vars.KeysMenu = Vars.Menu.AddSubMenu("Keybinds Menu", "keys");
             {
-
-                Vars.KeysMenu.Add("combo", new KeyBind("Combo", false, KeyBind.BindTypes.HoldActive, 32));
-                Vars.KeysMenu.Add("laneclear", new KeyBind("LaneClear:", false, KeyBind.BindTypes.HoldActive, 'V'));
                 Vars.KeysMenu.Add("smite", new KeyBind("Use Smite(toggle)", false, KeyBind.BindTypes.PressToggle, 'Y'));
-
             }
 
             /// <summary>

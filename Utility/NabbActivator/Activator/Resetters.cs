@@ -2,6 +2,8 @@ using System.Linq;
 using EloBuddy;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK;
 
 namespace NabbActivator
 {
@@ -17,13 +19,13 @@ namespace NabbActivator
         /// <param name="args">The args.</param>
         public static void Resetters(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!Vars.getCheckBoxItem(Vars.TypesMenu, "resetters"))
+            if (!Vars.TypesMenu["resetters"].Cast<CheckBox>().CurrentValue)
             {
                 return;
             }
 
-            if (!Vars.getKeyBindItem(Vars.KeysMenu, "combo") &&
-                !Vars.getKeyBindItem(Vars.KeysMenu, "laneclear"))
+            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
                 return;
             }

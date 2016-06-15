@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using EloBuddy;
 using LeagueSharp.SDK;
+using EloBuddy.SDK.Menu.Values;
 
 namespace NabbActivator
 {
@@ -22,7 +23,7 @@ namespace NabbActivator
                 return;
             }
 
-            if (!Vars.getCheckBoxItem(Vars.TypesMenu, "potions"))
+            if (!Vars.TypesMenu["potions"].Cast<CheckBox>().CurrentValue)
             {
                 return;
             }

@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using EloBuddy;
 using LeagueSharp.SDK;
+using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK;
 
 namespace NabbActivator
 {
@@ -17,8 +19,8 @@ namespace NabbActivator
         public static void Offensives(EventArgs args)
         {
             if (!Targets.Target.LSIsValidTarget() ||
-                !Vars.getCheckBoxItem(Vars.TypesMenu, "offensives") ||
-                !Vars.getKeyBindItem(Vars.KeysMenu, "combo"))
+                !Vars.TypesMenu["offensives"].Cast<CheckBox>().CurrentValue ||
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 return;
             }

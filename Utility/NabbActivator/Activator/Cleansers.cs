@@ -3,6 +3,7 @@ using System.Linq;
 using EloBuddy;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using EloBuddy.SDK.Menu.Values;
 
 namespace NabbActivator
 {
@@ -17,7 +18,7 @@ namespace NabbActivator
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Cleansers(EventArgs args)
         {
-            if (!Vars.getCheckBoxItem(Vars.TypesMenu, "cleansers"))
+            if (!Vars.TypesMenu["cleansers"].Cast<CheckBox>().CurrentValue)
             {
                 return;
             }

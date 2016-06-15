@@ -1,5 +1,4 @@
 using EloBuddy;
-using LeagueSharp;
 using LeagueSharp.SDK;
 using Spell = LeagueSharp.SDK.Spell;
 

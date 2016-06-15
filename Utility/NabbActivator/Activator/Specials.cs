@@ -1,6 +1,7 @@
 using System.Linq;
 using EloBuddy;
 using LeagueSharp.SDK;
+using EloBuddy.SDK.Menu.Values;
 
 namespace NabbActivator
 {
@@ -16,7 +17,7 @@ namespace NabbActivator
         /// <param name="args">The args.</param>
         public static void Specials(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!Vars.getCheckBoxItem(Vars.TypesMenu, "defensives"))
+            if (!Vars.TypesMenu["defensives"].Cast<CheckBox>().CurrentValue)
             {
                 return;
             }

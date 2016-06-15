@@ -3,6 +3,7 @@ using System.Linq;
 using EloBuddy;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using EloBuddy.SDK.Menu.Values;
 
 namespace NabbActivator
 {
@@ -17,7 +18,7 @@ namespace NabbActivator
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Defensives(EventArgs args)
         {
-            if (!Vars.getCheckBoxItem(Vars.TypesMenu, "defensives"))
+            if (!Vars.TypesMenu["defensives"].Cast<CheckBox>().CurrentValue)
             {
                 return;
             }
