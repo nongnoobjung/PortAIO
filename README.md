@@ -11,7 +11,7 @@ If you are still recieve compile errors refer here : https://www.elobuddy.net/to
 ---
 
 ### - How to report Bugs/Suggestions/Requests/Comments
-1. Make a GitHub accounts if you don't have one already.
+1. Make a GitHub account if you don't have one already.
 2. Sign in and go to : https://github.com/berbb/PortAIO/issues
 3. Make a new issue and state the title and what you need/want to report.
 
