@@ -575,18 +575,6 @@ namespace Marksman.Champions
                         list.Remove(m);
                     }
                 }
-                var enemy = HeroManager.Enemies.Find(e => e.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65));
-                if (enemy == null)
-                {
-                    foreach (var l in objAiMinions.Except(list).ToList())
-                    {
-                        Orbwalker.ForcedTarget = l;
-                    }
-                }
-                else
-                {
-                    Orbwalker.ForcedTarget = enemy;
-                }
             }
 
             if (Q.IsReady())
