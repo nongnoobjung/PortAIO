@@ -425,7 +425,7 @@ namespace Kassawin
         {
             var target = TargetSelector.GetTarget(Q.Range + 500, DamageType.Magical);
             if (!target.LSIsValidTarget(Q.Range + 500)) return;
-            var extendedposition = Player.Position.Extend(target.ServerPosition, 500);
+            var extendedposition = Player.Position.LSExtend(target.ServerPosition, 500);
             var ks = getCheckBoxItem(ksMenu, "ks");
             if (!ks) return;
             var qks = getCheckBoxItem(ksMenu, "qks");
@@ -461,7 +461,7 @@ namespace Kassawin
         private static void fleeMode()
         {
             EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-            var extendedposition = Player.Position.Extend(Game.CursorPos, 500);
+            var extendedposition = Player.Position.LSExtend(Game.CursorPos, 500);
 
             if (R.IsReady())
             {

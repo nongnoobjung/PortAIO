@@ -955,7 +955,7 @@ namespace IKalista
                 for (var i = 0; i < difference; i += (int)target.BoundingRadius)
                 {
                     var point =
-                        minion.ServerPosition.LSTo2D().Extend(ObjectManager.Player.ServerPosition.LSTo2D(), -i).To3D();
+                        minion.ServerPosition.LSTo2D().LSExtend(ObjectManager.Player.ServerPosition.LSTo2D(), -i).To3D();
                     var time = spells[SpellSlot.Q].Delay
                                + (ObjectManager.Player.LSDistance(point) / spells[SpellSlot.Q].Speed * 1000f);
 

@@ -56,7 +56,7 @@ namespace iDZEzreal.Modules
                 if (target.LSIsValidTarget(Variables.Spells[SpellSlot.Q].Range))
                 {
                     var prediction = Variables.Spells[SpellSlot.Q].GetSPrediction(target);
-                    var castPosition = prediction.CastPosition.Extend((Vector2)ObjectManager.Player.Position, -140);
+                    var castPosition = prediction.CastPosition.LSExtend((Vector2)ObjectManager.Player.Position, -140);
                     if (prediction.HitChance >= MenuGenerator.GetHitchance())
                     {
                         Variables.Spells[SpellSlot.Q].Cast(castPosition);

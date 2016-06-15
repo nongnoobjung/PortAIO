@@ -122,7 +122,7 @@ namespace TreeLib.SpellData
                         let start = minion.ServerPosition.LSTo2D()
                         let end =
                             skillshot.Unit.ServerPosition.LSTo2D()
-                                .Extend(
+                                .LSExtend(
                                     minion.ServerPosition.LSTo2D(), skillshot.Unit.LSDistance(minion) > 200 ? 1300 : 1000)
                         select
                             new Skillshot(

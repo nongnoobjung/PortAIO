@@ -181,7 +181,7 @@ namespace SPrediction
             float step = from.LSDistance(to) / 20;
             for (var i = 0; i < 20; i++)
             {
-                var p = from.Extend(to, step * i);
+                var p = from.LSExtend(to, step * i);
                 if (NavMesh.GetCollisionFlags(p.X, p.Y).HasFlag(CollisionFlags.Wall))
                     return true;
             }
@@ -264,7 +264,7 @@ namespace SPrediction
         public static Result GetCollisions(Vector2 from, Vector2 to, float range, float width, float delay, float missileSpeed = 0, bool isArc = false)
         {
             List<Obj_AI_Base> collidedUnits = new List<Obj_AI_Base>();
-            var spellHitBox = ClipperWrapper.MakePaths(ClipperWrapper.DefineRectangle(from, to.Extend(from, -width), width));
+            var spellHitBox = ClipperWrapper.MakePaths(ClipperWrapper.DefineRectangle(from, to.LSExtend(from, -width), width));
             if (isArc)
             {
                 spellHitBox = ClipperWrapper.MakePaths(new SPrediction.Geometry.Polygon(

@@ -214,7 +214,7 @@ namespace Ziggs
                             {
                                 var cp =
                                     ObjectManager.Player.ServerPosition.LSTo2D()
-                                        .Extend(prediction.UnitPosition.LSTo2D(), W.Range)
+                                        .LSExtend(prediction.UnitPosition.LSTo2D(), W.Range)
                                         .To3D();
                                 W.Cast(cp);
                                 UseSecondWT = Utils.TickCount;
@@ -308,7 +308,7 @@ namespace Ziggs
             var castToMouse = getKeyBindItem(miscMenu, "WToMouse");
             if (castToMouse || Utils.TickCount - LastWToMouseT < 400)
             {
-                var pos = ObjectManager.Player.ServerPosition.LSTo2D().Extend(Game.CursorPos.LSTo2D(), -150).To3D();
+                var pos = ObjectManager.Player.ServerPosition.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), -150).To3D();
                 W.Cast(pos, true);
                 if (castToMouse)
                 {
@@ -386,7 +386,7 @@ namespace Ziggs
                          (Q1.Range + Q2.Range)/2)
                 {
                     var p = ObjectManager.Player.ServerPosition.LSTo2D()
-                        .Extend(prediction.CastPosition.LSTo2D(), Q1.Range - 100);
+                        .LSExtend(prediction.CastPosition.LSTo2D(), Q1.Range - 100);
 
                     if (!CheckQCollision(target, prediction.UnitPosition, p.To3D()))
                     {

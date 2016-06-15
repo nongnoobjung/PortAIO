@@ -120,7 +120,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
 
         private static void OnCastTumble(Obj_AI_Base target, Vector3 position)
         {
-            var afterTumblePosition = ObjectManager.Player.ServerPosition.Extend(position, 300f);
+            var afterTumblePosition = ObjectManager.Player.ServerPosition.LSExtend(position, 300f);
             var distanceToTarget = afterTumblePosition.LSDistance(target.ServerPosition, true);
             if ((distanceToTarget < Math.Pow(ObjectManager.Player.AttackRange + 65, 2) && distanceToTarget > 110 * 110)
                 || getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.tumble.qspam"))

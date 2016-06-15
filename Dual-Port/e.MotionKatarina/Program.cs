@@ -452,7 +452,7 @@ namespace e.Motion_Katarina
                     }
 
                     i += 50;
-                } while (i <= 300 || !Player.Position.Extend(turretToJump.Position, 650 - i).IsWall());
+                } while (i <= 300 || !Player.Position.LSExtend(turretToJump.Position, 650 - i).IsWall());
             }
 
         }

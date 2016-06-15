@@ -210,7 +210,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     var playerToCP = Player.LSDistance(ePred.CastPosition);
                     foreach (var ball in BallsList.Where(ball => Player.LSDistance(ball.Position) < E.Range))
                     {
-                        var ballFinalPos = Player.ServerPosition.Extend(ball.Position, playerToCP);
+                        var ballFinalPos = Player.ServerPosition.LSExtend(ball.Position, playerToCP);
                         if (ballFinalPos.LSDistance(ePred.CastPosition) < 50)
                             E.Cast(ball.Position);
                     }

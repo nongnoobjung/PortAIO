@@ -190,7 +190,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void LogicW()
         {
-            var dashPosition = Player.Position.Extend(Game.CursorPos, W.Range);
+            var dashPosition = Player.Position.LSExtend(Game.CursorPos, W.Range);
 
             if (Game.CursorPos.LSDistance(Player.Position) > Player.AttackRange + Player.BoundingRadius * 2 && Program.Combo && getCheckBoxItem(wMenu, "nktdE") && Player.Mana > RMANA + WMANA - 10)
             {

@@ -63,7 +63,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoPoppy
                             && BadaoPoppyHelper.UseECombo(x)))
                 {
                     var predPos = hero.Position.LSTo2D(); //BadaoMainVariables.E.GetPrediction(hero).UnitPosition.LSTo2D();
-                    if (BadaoMath.GetFirstWallPoint(predPos, predPos.Extend(ObjectManager.Player.Position.LSTo2D(), -300 - hero.BoundingRadius)) != null)
+                    if (BadaoMath.GetFirstWallPoint(predPos, predPos.LSExtend(ObjectManager.Player.Position.LSTo2D(), -300 - hero.BoundingRadius)) != null)
                     {
                         BadaoMainVariables.E.Cast(hero);
                         goto nextStep;

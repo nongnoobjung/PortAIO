@@ -271,7 +271,7 @@ namespace UnderratedAIO.Champions
                             target))
                     {
                         Q.Cast(
-                            target.Position.Extend(
+                            target.Position.LSExtend(
                                 Prediction.GetPrediction(target, player.LSDistance(target)/1600).UnitPosition, Qradius),
                             getCheckBoxItem(config, "packets"));
                     }
@@ -424,7 +424,7 @@ namespace UnderratedAIO.Champions
             var predEnemy = Prediction.GetPrediction(target, ObjectManager.Player.LSDistance(target)/1600).UnitPosition;
             for (var i = 2; i < 8; i++)
             {
-                ponts.Add(predEnemy.LSTo2D().Extend(passive.LSTo2D(), i*25).To3D());
+                ponts.Add(predEnemy.LSTo2D().LSExtend(passive.LSTo2D(), i*25).To3D());
             }
 
             return

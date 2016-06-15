@@ -285,7 +285,7 @@
             double count = Vector3.Distance(start, end);
             for (uint i = 0; i <= count; i += 25)
             {
-                var pos = start.LSTo2D().Extend(Player.ServerPosition.LSTo2D(), -i);
+                var pos = start.LSTo2D().LSExtend(Player.ServerPosition.LSTo2D(), -i);
                 if (IsWall(pos))
                 {
                     return true;

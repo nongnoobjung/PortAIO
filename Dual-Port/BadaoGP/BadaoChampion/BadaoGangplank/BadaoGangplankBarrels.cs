@@ -164,7 +164,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoGangplank
             //                if (nbarrels.Any(x => x.Bottle.LSDistance(hero.Position) <= 660 + hero.BoundingRadius)
             //                    && !nbarrels.Any(x => x.Bottle.LSDistance(hero.Position) <= 330 + hero.BoundingRadius))
             //                {
-            //                    var pos = barrel.Bottle.Position.Extend(hero.Position, 330);
+            //                    var pos = barrel.Bottle.Position.LSExtend(hero.Position, 330);
             //                    BadaoMainVariables.E.Cast(pos);
             //                    if (BadaoMainVariables.Q.Cast(barrel.Bottle) == Spell.CastStates.SuccessfullyCasted)
             //                    {
@@ -186,7 +186,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoGangplank
             //                if (nbarrels.Any(x => x.Bottle.LSDistance(hero.Position) <= 660 + hero.BoundingRadius)
             //                    && !nbarrels.Any(x => x.Bottle.LSDistance(hero.Position) <= 330 + hero.BoundingRadius))
             //                {
-            //                    var pos = barrel.Bottle.Position.Extend(hero.Position, 330);
+            //                    var pos = barrel.Bottle.Position.LSExtend(hero.Position, 330);
             //                    BadaoMainVariables.E.Cast(pos);
             //                    if (Player.IssueOrder(GameObjectOrder.AttackUnit, barrel.Bottle))
             //                    {

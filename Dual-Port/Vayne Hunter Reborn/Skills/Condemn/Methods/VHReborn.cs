@@ -61,7 +61,7 @@ namespace VayneHunter_Reborn.Skills.Condemn.Methods
                     return null;
                 }
 
-                var finalPosition = targetPosition.Extend(fromPosition, -pushDistance);
+                var finalPosition = targetPosition.LSExtend(fromPosition, -pushDistance);
                 var numberOfChecks = (float)Math.Ceiling(pushDistance / 30f);
 
 

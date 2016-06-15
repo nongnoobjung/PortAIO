@@ -149,7 +149,7 @@ namespace ElLeeSin
 
             rect = new Geometry.Polygon.Rectangle(
                 Player.Position.LSTo2D(),
-                Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), 1050),
+                Player.Position.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), 1050),
                 100);
 
             if (Program.QState && Program.spells[Program.Spells.Q].IsReady())

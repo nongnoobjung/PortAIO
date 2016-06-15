@@ -192,11 +192,11 @@ namespace OneKeyToWin_AIO_Sebby
                     CursorPosition = Game.CursorPos;
                     W.Cast(CursorPosition);
                 }
-                if (Esmart && Player.Position.Extend(Game.CursorPos, E.Range).CountEnemiesInRange(500) < 4)
-                    E.Cast(Player.Position.Extend(Game.CursorPos, E.Range), true);
+                if (Esmart && Player.Position.LSExtend(Game.CursorPos, E.Range).CountEnemiesInRange(500) < 4)
+                    E.Cast(Player.Position.LSExtend(Game.CursorPos, E.Range), true);
 
                 if (!CursorPosition.IsZero)
-                    E.Cast(Player.Position.Extend(CursorPosition, E.Range), true);
+                    E.Cast(Player.Position.LSExtend(CursorPosition, E.Range), true);
             }
             else
             {
@@ -260,7 +260,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
                 else if (getCheckBoxItem(miscMenu, "stack") && Utils.TickCount - Q.LastCastAttemptT > 4000 && !Player.HasBuff("Recall") && Player.Mana > Player.MaxMana*0.95 && Program.None && (Items.HasItem(Tear) || Items.HasItem(Manamune)))
                 {
-                    Q.Cast(Player.Position.Extend(Game.CursorPos, 500));
+                    Q.Cast(Player.Position.LSExtend(Game.CursorPos, 500));
                 }
             }
         }

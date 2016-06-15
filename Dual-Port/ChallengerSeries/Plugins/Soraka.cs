@@ -64,7 +64,7 @@ namespace Challenger_Series
                     sdata.SpellTags != null &&
                     sdata.SpellTags.Any(st => st == LeagueSharp.SDK.SpellTags.Dash || st == LeagueSharp.SDK.SpellTags.Blink || st == LeagueSharp.SDK.SpellTags.Interruptable))
                 {
-                    E.Cast(args.Start.Extend(args.End, sdata.Range - this._rand.Next(5, 50)));
+                    E.Cast(args.Start.LSExtend(args.End, sdata.Range - this._rand.Next(5, 50)));
                 }
             }
         }

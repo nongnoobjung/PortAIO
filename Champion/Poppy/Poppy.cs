@@ -305,7 +305,7 @@ namespace UnderratedAIO.Champions
             var distance = player.Position.LSDistance(enemy.Position);
             for (var i = 1; i < 6; i++)
             {
-                if (player.Position.Extend(enemy.Position, distance + 60*i).IsWall())
+                if (player.Position.LSExtend(enemy.Position, distance + 60*i).IsWall())
                 {
                     return true;
                 }

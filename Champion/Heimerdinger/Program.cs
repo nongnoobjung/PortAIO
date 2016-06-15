@@ -233,7 +233,7 @@ namespace Two_Girls_One_Donger
                          (E1.Range + E1.Range)/2)
                 {
                     var p = ObjectManager.Player.ServerPosition.LSTo2D()
-                        .Extend(prediction.CastPosition.LSTo2D(), E1.Range - 100);
+                        .LSExtend(prediction.CastPosition.LSTo2D(), E1.Range - 100);
                     {
                         R.Cast();
                         E1.Cast(p.To3D());
@@ -288,14 +288,14 @@ namespace Two_Girls_One_Donger
                     getSliderItem(comboMenu, "QRcount"))
                 {
                     R.Cast();
-                    Q.Cast(Player.Position.Extend(target.Position, +300));
+                    Q.Cast(Player.Position.LSExtend(target.Position, +300));
                 }
                 else
                 {
                     if (Q.IsReady() && getCheckBoxItem(comboMenu, "UseQCombo") && qtarget.LSIsValidTarget(650) &&
                         Player.Position.CountEnemiesInRange(650) >= 1)
                     {
-                        Q.Cast(Player.Position.Extend(target.Position, +300));
+                        Q.Cast(Player.Position.LSExtend(target.Position, +300));
                     }
                 }
                 if (E3.IsReady() && R.IsReady() && getCheckBoxItem(comboMenu, "UseERCombo") &&

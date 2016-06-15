@@ -265,7 +265,7 @@ namespace FreshBooster.Champion
                             if (cnt == 2)
                                 if (BardQTarget1 is AIHeroClient || BardQTarget2 is AIHeroClient)
                                     _Q.CastIfHitchanceEquals(BardQTarget1, Hitchance("Bard_CUse_Q_Hit"), true);
-                            if (cnt == 1 && BardQTarget1 is AIHeroClient && BardQTarget1.Position.Extend(Player.Position, -450).IsWall())
+                            if (cnt == 1 && BardQTarget1 is AIHeroClient && BardQTarget1.Position.LSExtend(Player.Position, -450).IsWall())
                                 _Q.CastIfHitchanceEquals(BardQTarget1, Hitchance("Bard_CUse_Q_Hit"), true);
                         }
                         else
@@ -293,7 +293,7 @@ namespace FreshBooster.Champion
                                     Console.WriteLine("1");
                                 }
 
-                            if (cnt == 1 && BardQTarget1 is AIHeroClient && BardQTarget1.Position.Extend(Player.Position, -400).IsWall())
+                            if (cnt == 1 && BardQTarget1 is AIHeroClient && BardQTarget1.Position.LSExtend(Player.Position, -400).IsWall())
                             {
                                 _Q.CastIfHitchanceEquals(BardQTarget1, Hitchance("Bard_CUse_Q_Hit"), true);
                                 Console.WriteLine("2");
@@ -459,8 +459,8 @@ namespace FreshBooster.Champion
                             if (cnt == 0 && Range1.IsInside(item.Position))
                             {
                                 BardQTarget1 = item;
-                                Range2 = new LeagueSharp.Common.Geometry.Polygon.Rectangle(Player.Position.Extend(BardQTarget1.Position, Player.LSDistance(BardQTarget1.Position)),
-                                    Player.Position.Extend(BardQTarget1.Position, Player.LSDistance(BardQTarget1.Position) + 450), _Q.Width);
+                                Range2 = new LeagueSharp.Common.Geometry.Polygon.Rectangle(Player.Position.LSExtend(BardQTarget1.Position, Player.LSDistance(BardQTarget1.Position)),
+                                    Player.Position.LSExtend(BardQTarget1.Position, Player.LSDistance(BardQTarget1.Position) + 450), _Q.Width);
                                 if (Draw)
                                     Range2.Draw(Color.Yellow);
                                 cnt++;

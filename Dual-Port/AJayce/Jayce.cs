@@ -176,14 +176,14 @@ namespace Jayce
             {
                 if (getKeyBindItem(MenuConfig.Config, "manualeq"))
                 {
-                    var pos = Player.Position.Extend(Game.CursorPos, Player.BoundingRadius + 150);
+                    var pos = Player.Position.LSExtend(Game.CursorPos, Player.BoundingRadius + 150);
                     E.Cast(pos);
                 }
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && getCheckBoxItem(MenuConfig.combo, "useecr"))
                 {
                     var target = TargetSelector.GetTarget(1470, DamageType.Physical);
                     if (target == null) return;
-                    var castposition = Player.Position.Extend(target.Position, Player.BoundingRadius + 150);
+                    var castposition = Player.Position.LSExtend(target.Position, Player.BoundingRadius + 150);
                     E.Cast(castposition);
                 }
             }

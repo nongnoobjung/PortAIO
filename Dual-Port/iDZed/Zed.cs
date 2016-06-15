@@ -272,7 +272,7 @@ namespace iDZed
                     && Environment.TickCount - _spells[SpellSlot.W].LastCastAttemptT > 0)
                 {
                     var position = Player.ServerPosition.LSTo2D()
-                        .Extend(target.ServerPosition.LSTo2D(), _spells[SpellSlot.W].Range);
+                        .LSExtend(target.ServerPosition.LSTo2D(), _spells[SpellSlot.W].Range);
                     if (position.LSDistance(target) <= _spells[SpellSlot.Q].Range)
                     {
                         if (IsPassWall(Player.ServerPosition, target.ServerPosition))
@@ -873,7 +873,7 @@ namespace iDZed
             double count = Vector3.Distance(start, end);
             for (uint i = 0; i <= count; i += 25)
             {
-                var pos = start.LSTo2D().Extend(Player.ServerPosition.LSTo2D(), -i);
+                var pos = start.LSTo2D().LSExtend(Player.ServerPosition.LSTo2D(), -i);
                 if (pos.IsWall())
                 {
                     return true;

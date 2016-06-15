@@ -442,7 +442,7 @@ namespace FioraProject
                 if (Fstwall != null)
                 {
                     var firstwall = ((Vector2)Fstwall);
-                    var pos = firstwall.Extend(Game.CursorPos.LSTo2D(), 100);
+                    var pos = firstwall.LSExtend(Game.CursorPos.LSTo2D(), 100);
                     var Lstwall = GetLastWallPoint(firstwall, Game.CursorPos.LSTo2D());
                     if (Lstwall != null)
                     {
@@ -452,7 +452,7 @@ namespace FioraProject
                             for (int i = 0; i <= 359; i++)
                             {
                                 var pos1 = pos.RotateAround(firstwall, i);
-                                var pos2 = firstwall.Extend(pos1, 400);
+                                var pos2 = firstwall.LSExtend(pos1, 400);
                                 if (pos1.InTheCone(firstwall, Game.CursorPos.LSTo2D(), 60) && pos1.IsWall() && !pos2.IsWall())
                                 {
                                     Render.Circle.DrawCircle(firstwall.To3D(), 50, Color.Green);
@@ -492,29 +492,29 @@ namespace FioraProject
                         var lastwall = ((Vector2)Lstwall);
                         if (InMiddileWall(firstwall, lastwall))
                         {
-                            var y = Player.Position.Extend(Game.CursorPos, 30);
+                            var y = Player.Position.LSExtend(Game.CursorPos, 30);
                             for (int i = 20; i <= 300; i = i + 20)
                             {
                                 if (Utils.GameTimeTickCount - movetick < (70 + Math.Min(60, Game.Ping)))
                                     break;
-                                if (Player.LSDistance(Game.CursorPos) <= 1200 && Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), i).IsWall())
+                                if (Player.LSDistance(Game.CursorPos) <= 1200 && Player.Position.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), i).IsWall())
                                 {
-                                    EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), i - 20).To3D());
+                                    EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), i - 20).To3D());
                                     movetick = Utils.GameTimeTickCount;
                                     break;
                                 }
                                 EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo,
                                     Player.LSDistance(Game.CursorPos) <= 1200 ?
-                                    Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), 200).To3D() :
+                                    Player.Position.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), 200).To3D() :
                                     Game.CursorPos);
                             }
                             if (y.IsWall() && LeagueSharp.Common.Prediction.GetPrediction(Player, 500).UnitPosition.LSDistance(Player.Position) <= 10 && Q.IsReady())
                             {
-                                var pos = Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), 100);
+                                var pos = Player.Position.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), 100);
                                 for (int i = 0; i <= 359; i++)
                                 {
                                     var pos1 = pos.RotateAround(Player.Position.LSTo2D(), i);
-                                    var pos2 = Player.Position.LSTo2D().Extend(pos1, 400);
+                                    var pos2 = Player.Position.LSTo2D().LSExtend(pos1, 400);
                                     if (pos1.InTheCone(Player.Position.LSTo2D(), Game.CursorPos.LSTo2D(), 60) && pos1.IsWall() && !pos2.IsWall())
                                     {
                                         Q.Cast(pos2);
@@ -582,7 +582,7 @@ namespace FioraProject
         public static bool InMiddileWall(Vector2 firstwall, Vector2 lastwall)
         {
             var midwall = new Vector2((firstwall.X + lastwall.X) / 2, (firstwall.Y + lastwall.Y) / 2);
-            var point = midwall.Extend(Game.CursorPos.LSTo2D(), 50);
+            var point = midwall.LSExtend(Game.CursorPos.LSTo2D(), 50);
             for (int i = 0; i <= 350; i = i + 10)
             {
                 var testpoint = point.RotateAround(midwall, i);

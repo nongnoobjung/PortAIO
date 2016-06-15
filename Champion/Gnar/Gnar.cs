@@ -280,7 +280,7 @@ namespace Slutty_Gnar_Reworked
                                                                         && !type.IsDead
                                                                         && type.LSDistance(edm, true) < 775*775))
                     {
-                        GnarSpells.EMini.Cast(edm.Extend(Game.CursorPos,
+                        GnarSpells.EMini.Cast(edm.LSExtend(Game.CursorPos,
                             Player.ServerPosition.LSDistance(minionPrediction.CastPosition) + GnarSpells.EMini.Range));
                     }
                 }
@@ -333,7 +333,7 @@ namespace Slutty_Gnar_Reworked
                 && Player.LSDistance(target) > 1400)
             {
                 var prediction = GnarSpells.EMini.GetPrediction(target);
-                var ed = Player.ServerPosition.Extend(prediction.CastPosition,
+                var ed = Player.ServerPosition.LSExtend(prediction.CastPosition,
                     Player.ServerPosition.LSDistance(prediction.CastPosition) + GnarSpells.EMini.Range);
 
                 if (!ObjectManager.Get<Obj_AI_Turret>().Any(type => type.Team != Player.Team
@@ -356,7 +356,7 @@ namespace Slutty_Gnar_Reworked
                             .OrderByDescending(x => x.LSDistance(Player))
                             .First();
 
-                    var edm = Player.ServerPosition.Extend(minionPrediction.CastPosition,
+                    var edm = Player.ServerPosition.LSExtend(minionPrediction.CastPosition,
                         Player.ServerPosition.LSDistance(minionPrediction.CastPosition) + GnarSpells.EMini.Range);
                     if (!ObjectManager.Get<Obj_AI_Turret>().Any(type => type.IsMinion != Player.IsMinion
                                                                         && !type.IsDead
@@ -549,7 +549,7 @@ namespace Slutty_Gnar_Reworked
 
                         if (prediction.Hitchance >= HitChance.High)
                         {
-                            var arrivalPoint = Player.ServerPosition.Extend(prediction.CastPosition, Player.ServerPosition.LSDistance(prediction.CastPosition) + GnarSpells.EMini.Range);
+                            var arrivalPoint = Player.ServerPosition.LSExtend(prediction.CastPosition, Player.ServerPosition.LSDistance(prediction.CastPosition) + GnarSpells.EMini.Range);
                             if (!ObjectManager.Get<Obj_AI_Turret>().Any(t => t.Team != Player.Team && !t.IsDead && t.LSDistance(arrivalPoint, true) < 775 * 775))
                             {
                                 if (GnarSpells.EMini.Cast(prediction.CastPosition))

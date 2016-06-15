@@ -403,7 +403,7 @@ namespace MasterSharp
                             {
                                 var start = minion.ServerPosition.LSTo2D();
                                 var end = skillshot.Unit.ServerPosition.LSTo2D()
-                                    .Extend(
+                                    .LSExtend(
                                         minion.ServerPosition.LSTo2D(),
                                         skillshot.Unit.LSDistance(minion) > 200 ? 1300 : 1000);
 

@@ -229,7 +229,7 @@ namespace HeavenStrikeReksaj
                         .LSDistance(Player.Position) > target.LSDistance(Player.Position))
                     {
                         var x = Prediction.GetPrediction(target, 500).UnitPosition;
-                        var y = Player.Position.Extend(x, _e2.Range);
+                        var y = Player.Position.LSExtend(x, _e2.Range);
                         _e2.Cast(x);
                     }
                 }

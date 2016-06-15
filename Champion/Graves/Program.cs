@@ -190,7 +190,7 @@ namespace OneKeyToWin_AIO_Sebby
                 var step = t.LSDistance(Player)/20;
                 for (var i = 0; i < 20; i++)
                 {
-                    var p = Player.Position.Extend(t.Position, step*i);
+                    var p = Player.Position.LSExtend(t.Position, step*i);
                     if (p.IsWall())
                     {
                         return;

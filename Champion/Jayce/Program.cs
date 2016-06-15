@@ -206,7 +206,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (W.IsReady() && !Range && Player.Mana > 80)
                     W.Cast();
                 if (E.IsReady() && Range && getCheckBoxItem(qMenu, "QEforce"))
-                    E.Cast(Player.ServerPosition.Extend(args.EndPosition, 120));
+                    E.Cast(Player.ServerPosition.LSExtend(args.EndPosition, 120));
             }
         }
 
@@ -286,7 +286,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                             else if (E.IsReady() && (Player.InFountain() || Player.IsMoving))
                                 E.Cast(Player.ServerPosition);
                             else if (Q.IsReady() && !E.IsReady())
-                                Q.Cast(Player.Position.Extend(Game.CursorPos, 500));
+                                Q.Cast(Player.Position.LSExtend(Game.CursorPos, 500));
                             else if (R.IsReady() && Player.InFountain())
                                 R.Cast();
                         }
@@ -314,7 +314,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Range)
             {
                 if (E.IsReady())
-                    E.Cast(Player.Position.Extend(Game.CursorPos, 150));
+                    E.Cast(Player.Position.LSExtend(Game.CursorPos, 150));
                 else if (R.IsReady())
                     R.Cast();
             }

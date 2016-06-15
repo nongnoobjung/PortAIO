@@ -107,7 +107,7 @@ namespace Sion
             {
                 if (getCheckBoxItem(rMenu, "MoveToMouse"))
                 {
-                    var p = ObjectManager.Player.Position.LSTo2D().Extend(Game.CursorPos.LSTo2D(), 500);
+                    var p = ObjectManager.Player.Position.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), 500);
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, p.To3D());
                 }
                 return;
@@ -125,7 +125,7 @@ namespace Sion
                     if (Q.IsCharging)
                     {
                         var start = ObjectManager.Player.ServerPosition.LSTo2D();
-                        var end = start.Extend(QCastPos, Q.Range);
+                        var end = start.LSExtend(QCastPos, Q.Range);
                         var direction = (end - start).Normalized();
                         var normal = direction.Perpendicular();
 

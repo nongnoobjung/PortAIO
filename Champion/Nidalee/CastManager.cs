@@ -174,7 +174,7 @@ namespace KurisuNidalee
                         if (getBoxItem(wHMenu, "ndhwforce") == 1)
                         {
                             var unitpos = KL.Spells["Bushwhack"].GetPrediction(target).UnitPosition;
-                            KL.Spells["Bushwhack"].Cast(unitpos.Extend(KL.Player.ServerPosition, -75f));
+                            KL.Spells["Bushwhack"].Cast(unitpos.LSExtend(KL.Player.ServerPosition, -75f));
                         }
                     }
                 }

@@ -172,7 +172,7 @@ namespace Marksman.Champions
         {
             
             var Qpredict = Q.GetPrediction(t);
-            var hithere = Qpredict.CastPosition.Extend(ObjectManager.Player.Position, -20);
+            var hithere = Qpredict.CastPosition.LSExtend(ObjectManager.Player.Position, -20);
 
             if (Qpredict.Hitchance >= HitChance.High)
             {

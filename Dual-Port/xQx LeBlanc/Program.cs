@@ -511,7 +511,7 @@ namespace LeblancOLD
             if (useW && W.IsReady() && t.LSIsValidTarget(W.Range))
             {
                 var wP = W.GetPrediction(t);
-                var hithere = wP.CastPosition.Extend(ObjectManager.Player.Position, -50);
+                var hithere = wP.CastPosition.LSExtend(ObjectManager.Player.Position, -50);
                 if (wP.Hitchance >= HitChance.High)
                 {
                     W.Cast(hithere);
@@ -827,7 +827,7 @@ namespace LeblancOLD
                 if (t.LSIsValidTarget() && W.IsReady() && ObjectManager.Player.ManaPercent >= getSliderItem(harassMenu, "HarassManaW"))
                 {
                     var wP = W.GetPrediction(t);
-                    var hithere = wP.CastPosition.Extend(ObjectManager.Player.Position, -50);
+                    var hithere = wP.CastPosition.LSExtend(ObjectManager.Player.Position, -50);
                     if (wP.Hitchance >= HitChance.High)
                     {
                         W.Cast(hithere);

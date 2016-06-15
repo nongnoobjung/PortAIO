@@ -810,7 +810,7 @@ namespace ElLeeSin
                 foreach (var enemy in HeroManager.Enemies)
                 {
                     var startPos = enemy.ServerPosition;
-                    var endPos = Player.ServerPosition.Extend(startPos, Player.LSDistance(enemy) + leeSinRKickDistance);
+                    var endPos = Player.ServerPosition.LSExtend(startPos, Player.LSDistance(enemy) + leeSinRKickDistance);
                     var rectangle = new Geometry.Polygon.Rectangle(startPos, endPos, leeSinRKickWidth);
 
                     if (HeroManager.Enemies.Count(x => rectangle.IsInside(x)) >= minREnemies)

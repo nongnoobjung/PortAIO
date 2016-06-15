@@ -260,7 +260,7 @@ namespace SAutoCarry.Champions
                     Spells[R].CastIfHitchanceEquals(t, HitChance.High);
 
                 if (ComboUseW && Spells[W].IsReady() && ShouldCast(SpellSlot.W, t))
-                    Spells[W].Cast(ObjectManager.Player.Position.LSTo2D().Extend(t.Position.LSTo2D(), 450));
+                    Spells[W].Cast(ObjectManager.Player.Position.LSTo2D().LSExtend(t.Position.LSTo2D(), 450));
 
                 if (ComboUseQ && Spells[Q].IsReady() && ShouldCast(SpellSlot.Q, t))
                 {
@@ -309,7 +309,7 @@ namespace SAutoCarry.Champions
                 return;
 
             if (HarassUseW && Spells[W].IsReady() && ShouldCast(SpellSlot.W, t))
-                Spells[W].Cast(ObjectManager.Player.Position.LSTo2D().Extend(t.Position.LSTo2D(), 450));
+                Spells[W].Cast(ObjectManager.Player.Position.LSTo2D().LSExtend(t.Position.LSTo2D(), 450));
 
             if (HarassUseQ && Spells[Q].IsReady() && ShouldCast(SpellSlot.Q, t))
             {
@@ -417,7 +417,7 @@ namespace SAutoCarry.Champions
                 if (ObjectManager.Player.GetSpellDamage(target, SpellSlot.Q) > target.Health + 20)
                 {
                     if (SoldierMgr.ActiveSoldiers.Count == 0)
-                        Spells[W].Cast(ObjectManager.Player.Position.LSTo2D().Extend(target.Position.LSTo2D(), 450));
+                        Spells[W].Cast(ObjectManager.Player.Position.LSTo2D().LSExtend(target.Position.LSTo2D(), 450));
                     else
                         Spells[Q].CastIfHitchanceEquals(target, HitChance.High);
                 }
@@ -429,7 +429,7 @@ namespace SAutoCarry.Champions
             Orbwalker.OrbwalkTo(pos);
             if (Math.Abs(Spells[E].Cooldown) < 0.00001)
             {
-                var extended = ObjectManager.Player.ServerPosition.LSTo2D().Extend(pos.LSTo2D(), 800f);
+                var extended = ObjectManager.Player.ServerPosition.LSTo2D().LSExtend(pos.LSTo2D(), 800f);
                 if (!JumpTo.IsValid())
                     JumpTo = pos.LSTo2D();
 
@@ -445,10 +445,10 @@ namespace SAutoCarry.Champions
                             var x = ObjectManager.Player.Position.X + outRadius*(float) Math.Cos(angle);
                             var y = ObjectManager.Player.Position.Y + outRadius*(float) Math.Sin(angle);
                             if (NavMesh.GetCollisionFlags(x, y).HasFlag(CollisionFlags.Wall) &&
-                                !ObjectManager.Player.ServerPosition.LSTo2D().Extend(new Vector2(x, y), 500f).IsWall())
+                                !ObjectManager.Player.ServerPosition.LSTo2D().LSExtend(new Vector2(x, y), 500f).IsWall())
                             {
                                 Spells[W].Cast(ObjectManager.Player.ServerPosition.LSTo2D()
-                                    .Extend(new Vector2(x, y), 800f));
+                                    .LSExtend(new Vector2(x, y), 800f));
                                 return;
                             }
                         }
@@ -461,7 +461,7 @@ namespace SAutoCarry.Champions
                     var closestSoldier =
                         SoldierMgr.ActiveSoldiers.MinOrDefault(s => s.Position.LSTo2D().LSDistance(extended, true));
                     CastELocation = closestSoldier.Position.LSTo2D();
-                    CastQLocation = closestSoldier.Position.LSTo2D().Extend(JumpTo, 800f);
+                    CastQLocation = closestSoldier.Position.LSTo2D().LSExtend(JumpTo, 800f);
 
                     if (CastELocation.LSDistance(JumpTo) > ObjectManager.Player.ServerPosition.LSTo2D().LSDistance(JumpTo) &&
                         !juke && castq)
@@ -576,7 +576,7 @@ namespace SAutoCarry.Champions
                     if (
                         IsWallStunable(target.ServerPosition.LSTo2D(),
                             ObjectManager.Player.ServerPosition.LSTo2D()
-                                .Extend(Spells[R].GetPrediction(target).UnitPosition, 200 - target.BoundingRadius)) &&
+                                .LSExtend(Spells[R].GetPrediction(target).UnitPosition, 200 - target.BoundingRadius)) &&
                         CalculateDamageR(target) >= target.Health/2f)
                         return true;
 
@@ -595,7 +595,7 @@ namespace SAutoCarry.Champions
             var count = from.LSDistance(to);
             for (uint i = 0; i <= count; i += 25)
             {
-                var pos = from.Extend(ObjectManager.Player.ServerPosition.LSTo2D(), -i);
+                var pos = from.LSExtend(ObjectManager.Player.ServerPosition.LSTo2D(), -i);
                 var colFlags = NavMesh.GetCollisionFlags(pos.X, pos.Y);
                 if (colFlags.HasFlag(CollisionFlags.Wall) || colFlags.HasFlag(CollisionFlags.Building))
                     return true;
@@ -636,7 +636,7 @@ namespace SAutoCarry.Champions
                     "SAutoCarry.Azir.Misc.AntiGapCloser." + gapcloser.Sender.Spellbook.GetSpell(gapcloser.Slot).Name))
                 {
                     if (gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition) < 200)
-                        Spells[R].Cast(gapcloser.End.Extend(gapcloser.Start, 100));
+                        Spells[R].Cast(gapcloser.End.LSExtend(gapcloser.Start, 100));
                 }
             }
         }

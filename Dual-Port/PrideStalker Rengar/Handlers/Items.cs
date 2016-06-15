@@ -19,7 +19,7 @@ namespace PrideStalker_Rengar.Handlers
             var Target = TargetSelector.GetTarget(1000, DamageType.Physical);
             if (Items.CanUseItem(3152) && Target.LSIsValidTarget())
             {
-                Items.UseItem(3152, Player.ServerPosition.Extend(Target.ServerPosition, Player.AttackRange));
+                Items.UseItem(3152, Player.ServerPosition.LSExtend(Target.ServerPosition, Player.AttackRange));
             }
         }
         public static void CastHydra()

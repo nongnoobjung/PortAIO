@@ -150,7 +150,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                                 {
                                     var start = minion.ServerPosition.LSTo2D();
                                     var end = skillshot.Caster.ServerPosition.LSTo2D()
-                                        .Extend(
+                                        .LSExtend(
                                             minion.ServerPosition.LSTo2D(),
                                             skillshot.Caster.LSDistance(minion) > 200 ? 1300 : 1000);
 

@@ -98,7 +98,7 @@ namespace LCS_Lucian
                 }
 
                 // no intersection or target to close
-                LucianSpells.E.Cast(ObjectManager.Player.ServerPosition.Extend(enemy.ServerPosition,
+                LucianSpells.E.Cast(ObjectManager.Player.ServerPosition.LSExtend(enemy.ServerPosition,
                     -LucianSpells.E.Range));
             }
         }

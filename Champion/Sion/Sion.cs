@@ -180,7 +180,7 @@ namespace UnderratedAIO.Champions
                     ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Q);
                 }
                 var start = ObjectManager.Player.ServerPosition.LSTo2D();
-                var end = start.Extend(QCastPos, Q.Range);
+                var end = start.LSExtend(QCastPos, Q.Range);
                 var direction = (end - start).Normalized();
                 var normal = direction.Perpendicular();
 
@@ -336,7 +336,7 @@ namespace UnderratedAIO.Champions
             if (Q.IsCharging)
             {
                 var start = ObjectManager.Player.ServerPosition.LSTo2D();
-                var end = start.Extend(QCastPos, Q.Range);
+                var end = start.LSExtend(QCastPos, Q.Range);
                 var direction = (end - start).Normalized();
                 var normal = direction.Perpendicular();
 

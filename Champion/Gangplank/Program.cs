@@ -170,7 +170,7 @@ namespace UnderratedAIO.Champions
                             {
                                 if (enemy.IsMoving)
                                 {
-                                    R.Cast(enemy.Position.Extend(pos.CastPosition, 450));
+                                    R.Cast(enemy.Position.LSExtend(pos.CastPosition, 450));
                                 }
                                 else
                                 {
@@ -216,7 +216,7 @@ namespace UnderratedAIO.Champions
                             {
                                 Player.IssueOrder(GameObjectOrder.Stop, player.Position);
                             }
-                            Utility.DelayAction.Add(801, () => E.Cast(middle.Extend(cp, BarrelConnectionRange)));
+                            Utility.DelayAction.Add(801, () => E.Cast(middle.LSExtend(cp, BarrelConnectionRange)));
                         }
                         else
                         {
@@ -712,7 +712,7 @@ namespace UnderratedAIO.Champions
         private static void CastEtarget(AIHeroClient target)
         {
             var ePred = Prediction.GetPrediction(target, 1);
-            var pos = target.Position.Extend(ePred.CastPosition, BarrelExplosionRange);
+            var pos = target.Position.LSExtend(ePred.CastPosition, BarrelExplosionRange);
             if (pos.LSDistance(ePos) > 400 && !justE)
             {
                 E.Cast(pos, getCheckBoxItem(config, "packets"));

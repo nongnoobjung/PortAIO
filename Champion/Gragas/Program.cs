@@ -291,12 +291,12 @@ namespace GragasTheDrunkCarry
                 {
                     if (pred.Hitchance >= HitChance.Medium && pred.CastPosition.LSDistance(Player.Position) < R.Range - 150)
                     {
-                        R.Cast(pred.CastPosition.Extend(Player.Position, -150));
+                        R.Cast(pred.CastPosition.LSExtend(Player.Position, -150));
                     }
                 }
                 if (justR && rPos.IsValid())
                 {
-                    Q.Cast(rPos.Extend(pred.UnitPosition, 550 + QExplosionRange / 2f));
+                    Q.Cast(rPos.LSExtend(pred.UnitPosition, 550 + QExplosionRange / 2f));
                 }
             }
         }
@@ -310,7 +310,7 @@ namespace GragasTheDrunkCarry
             var pred = LeagueSharp.Common.Prediction.GetPrediction(target, target.LSDistance(Player.ServerPosition) / R.Speed);
             if (pred.Hitchance >= HitChance.VeryHigh && !justE && !target.LSIsDashing())
             {
-                var cast = pred.UnitPosition.Extend(toVector3, -100);
+                var cast = pred.UnitPosition.LSExtend(toVector3, -100);
                 if (Player.LSDistance(cast) < R.Range && checkBuffs(target, Player.LSDistance(cast)) && pred.UnitPosition.LSDistance(target.Position) < 15 && ((!CombatHelper.CheckWalls(target.Position, toVector3)) || (toBarrel && savedQ.position.LSDistance(target.Position) < QExplosionRange)))
                 {
                     if (toBarrel && 4000 - savedQ.deltaT() > (Player.LSDistance(cast) + cast.LSDistance(savedQ.position)) / R.Speed)

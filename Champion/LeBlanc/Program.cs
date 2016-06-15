@@ -459,7 +459,7 @@ namespace PopBlanc
                 return false;
             }
 
-            var pos = Player.ServerPosition.Extend(chainable.ServerPosition, W.Range + 10);
+            var pos = Player.ServerPosition.LSExtend(chainable.ServerPosition, W.Range + 10);
             Console.WriteLine("2Chainz: Cast Gapclose W");
             return W.Cast(pos);
         }
@@ -523,7 +523,7 @@ namespace PopBlanc
 
             if (getCheckBoxItem(fleeMenu, "FleeW") && W.IsReady() && W.IsFirstW())
             {
-                var pos = Player.ServerPosition.Extend(Game.CursorPos, W.Range);
+                var pos = Player.ServerPosition.LSExtend(Game.CursorPos, W.Range);
                 if (W.Cast(pos))
                 {
                     return true;
@@ -533,7 +533,7 @@ namespace PopBlanc
             SpellManager.UpdateUltimate();
             if (getCheckBoxItem(fleeMenu, "FleeRW") && R.IsReady() && R.GetSpellSlot() == SpellSlot.W && R.IsFirstW())
             {
-                var pos = Player.ServerPosition.Extend(Game.CursorPos, W.Range);
+                var pos = Player.ServerPosition.LSExtend(Game.CursorPos, W.Range);
                 if (R.Cast(pos))
                 {
                     return true;

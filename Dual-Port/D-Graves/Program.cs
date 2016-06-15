@@ -318,7 +318,7 @@ namespace D_Graves
             if (_e.IsReady() && gapcloser.Sender.LSDistance(_player.ServerPosition) <= 200
                 && getCheckBoxItem(miscMenu, "Gap_E"))
             {
-                _e.Cast(ObjectManager.Player.Position.Extend(gapcloser.Sender.Position, -_e.Range));
+                _e.Cast(ObjectManager.Player.Position.LSExtend(gapcloser.Sender.Position, -_e.Range));
             }
         }
 
@@ -537,15 +537,15 @@ namespace D_Graves
                     var ta = TargetSelector.GetTarget(700, DamageType.Magical);
                     if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && _e.IsReady())
                     {
-                        if (ObjectManager.Player.Position.Extend(Game.CursorPos, 700).CountEnemiesInRange(700) <= 1
+                        if (ObjectManager.Player.Position.LSExtend(Game.CursorPos, 700).CountEnemiesInRange(700) <= 1
                             && useE)
                         {
-                            if (!ta.UnderTurret()) _e.Cast(ObjectManager.Player.Position.Extend(Game.CursorPos, 450));
+                            if (!ta.UnderTurret()) _e.Cast(ObjectManager.Player.Position.LSExtend(Game.CursorPos, 450));
                             else if (ta.UnderTurret() && _e.IsReady() && ta.LSIsValidTarget()
                                      && _q.ManaCost + _e.ManaCost < _player.Mana)
                                 if (ta.Health < _q.GetDamage(ta) && ta.LSIsValidTarget())
                                 {
-                                    _e.Cast(ObjectManager.Player.Position.Extend(Game.CursorPos, 450));
+                                    _e.Cast(ObjectManager.Player.Position.LSExtend(Game.CursorPos, 450));
                                     _q.CastIfHitchanceEquals(ta, HitChance.High, true);
                                 }
                         }

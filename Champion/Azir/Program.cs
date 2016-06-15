@@ -214,7 +214,7 @@ namespace HeavenStrikeAzir
                     {
                         if (Player.ServerPosition.LSDistance(turret.Position)+100 >= hero.LSDistance(turret.Position) && hero.LSDistance(turret.Position) <= 775 + 250)
                         {
-                            var pos = Player.Position.Extend(turret.Position, 250);
+                            var pos = Player.Position.LSExtend(turret.Position, 250);
                             _r.Cast(pos);
                         }
                     }

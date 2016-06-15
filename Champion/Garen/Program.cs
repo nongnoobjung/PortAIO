@@ -156,7 +156,7 @@ namespace UnderratedAIO.Champions
                 {
                     E.Cast(getCheckBoxItem(config, "packets"));
                 }
-                else if (!player.Position.Extend(target.Position, 425f).IsWall())
+                else if (!player.Position.LSExtend(target.Position, 425f).IsWall())
                 {
                 }
                 {

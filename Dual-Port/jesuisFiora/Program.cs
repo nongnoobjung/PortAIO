@@ -337,7 +337,7 @@ namespace jesuisFiora
 
             if (Q.IsReady())
             {
-                Q.Cast(Player.ServerPosition.Extend(Game.CursorPos, Q.Range + 10));
+                Q.Cast(Player.ServerPosition.LSExtend(Game.CursorPos, Q.Range + 10));
             }
 
             return true;
@@ -406,7 +406,7 @@ namespace jesuisFiora
                     break;
                 }
 
-                polygon.Add(Player.ServerPosition.Extend(destination, i));
+                polygon.Add(Player.ServerPosition.LSExtend(destination, i));
             }
 
             return polygon;

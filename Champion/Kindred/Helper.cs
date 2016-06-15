@@ -100,7 +100,7 @@ namespace Kindred___YinYang
         {
             if (gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition) <= 300)
             {
-                Program.Q.Cast(gapcloser.End.Extend(ObjectManager.Player.ServerPosition,
+                Program.Q.Cast(gapcloser.End.LSExtend(ObjectManager.Player.ServerPosition,
                     ObjectManager.Player.LSDistance(gapcloser.End) + Program.Q.Range));
             }
         }
@@ -191,7 +191,7 @@ namespace Kindred___YinYang
             }
             else
             {
-                spell.Cast(ObjectManager.Player.ServerPosition.Extend(hero.ServerPosition, -spell.Range));
+                spell.Cast(ObjectManager.Player.ServerPosition.LSExtend(hero.ServerPosition, -spell.Range));
             }
         }
 

@@ -209,7 +209,7 @@ namespace UnderratedAIO.Helpers
                 var distance = player.LSDistance(enemy);
                 for (var i = 1; i < 6; i++)
                 {
-                    if (player.Extend(enemy, distance + 55*i).IsWall())
+                    if (player.LSExtend(enemy, distance + 55*i).IsWall())
                     {
                         return true;
                     }

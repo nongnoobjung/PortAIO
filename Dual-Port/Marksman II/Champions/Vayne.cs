@@ -166,13 +166,13 @@ namespace Marksman.Champions
                         where
                             NavMesh.GetCollisionFlags(
                                 prediction.UnitPosition.LSTo2D()
-                                    .Extend(
+                                    .LSExtend(
                                         ObjectManager.Player.ServerPosition.LSTo2D(),
                                         -GetValue<Slider>("PushDistance").Value)
                                     .To3D()).HasFlag(CollisionFlags.Wall) ||
                             NavMesh.GetCollisionFlags(
                                 prediction.UnitPosition.LSTo2D()
-                                    .Extend(
+                                    .LSExtend(
                                         ObjectManager.Player.ServerPosition.LSTo2D(),
                                         -(GetValue<Slider>("PushDistance").Value/2))
                                     .To3D()).HasFlag(CollisionFlags.Wall)

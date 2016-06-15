@@ -122,10 +122,10 @@ namespace UnderratedAIO.Champions
                     }
                     if (Q.IsReady() && getCheckBoxItem(menuM, "ks") &&
                         ksTarget.LSDistance(player) < Q.Range + E.Range && ksTarget.LSDistance(player) > E.Range &&
-                        !player.Position.Extend(ksTarget.Position, Q.Range).IsWall() &&
+                        !player.Position.LSExtend(ksTarget.Position, Q.Range).IsWall() &&
                         player.Mana > Q.Instance.SData.Mana + E.Instance.SData.Mana)
                     {
-                        Q.Cast(player.Position.Extend(ksTarget.Position, Q.Range));
+                        Q.Cast(player.Position.LSExtend(ksTarget.Position, Q.Range));
                     }
                 }
             }
@@ -150,7 +150,7 @@ namespace UnderratedAIO.Champions
                     }
                     else
                     {
-                        W.Cast(player.Position.Extend(Game.CursorPos, W.Range));
+                        W.Cast(player.Position.LSExtend(Game.CursorPos, W.Range));
                     }
                 }
             }
@@ -198,7 +198,7 @@ namespace UnderratedAIO.Champions
                     if (!CheckWalls(target) || Helpers.Environment.Map.GetPath(player, target.Position) < dist)
                     {
                         Q.Cast(
-                            player.Position.Extend(target.Position, Q.Range), getCheckBoxItem(config, "packets"));
+                            player.Position.LSExtend(target.Position, Q.Range), getCheckBoxItem(config, "packets"));
                     }
                 }
             }
@@ -278,7 +278,7 @@ namespace UnderratedAIO.Champions
             var step = player.LSDistance(target)/15;
             for (var i = 1; i < 16; i++)
             {
-                if (player.Position.Extend(target.Position, step*i).IsWall())
+                if (player.Position.LSExtend(target.Position, step*i).IsWall())
                 {
                     return true;
                 }
@@ -308,7 +308,7 @@ namespace UnderratedAIO.Champions
                 }
                 else
                 {
-                    W.Cast(player.Position.Extend(target.Position, W.Range - player.LSDistance(target)));
+                    W.Cast(player.Position.LSExtend(target.Position, W.Range - player.LSDistance(target)));
                 }
             }
         }

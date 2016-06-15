@@ -211,7 +211,7 @@ namespace BrianSharp.Plugin
                 var predE = E.GetPrediction(unit);
                 if (predE.Hitchance >= E.MinHitChance &&
                     E.Cast(
-                        predE.UnitPosition.Extend(Player.ServerPosition, -E.Width/(unit.IsFacing(Player) ? 2 : 1)),
+                        predE.UnitPosition.LSExtend(Player.ServerPosition, -E.Width/(unit.IsFacing(Player) ? 2 : 1)),
                         getCheckBoxItem(miscMenu, "Packet")) &&
                     Q.Cast(predE.UnitPosition, getCheckBoxItem(miscMenu, "Packet")))
                 {
@@ -254,7 +254,7 @@ namespace BrianSharp.Plugin
                     if (predE.Hitchance >= E.MinHitChance)
                     {
                         E.Cast(
-                            predE.UnitPosition.Extend(Player.ServerPosition, -E.Width/(target.IsFacing(Player) ? 2 : 1)),
+                            predE.UnitPosition.LSExtend(Player.ServerPosition, -E.Width/(target.IsFacing(Player) ? 2 : 1)),
                             getCheckBoxItem(miscMenu, "Packet"));
                         if (getCheckBoxItem(mode, "Q") && Q.IsReady())
                         {
