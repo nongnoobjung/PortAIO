@@ -74,11 +74,11 @@ namespace ElUtilitySuite.Trackers
                                                                               },
                                                                               {
                                                                                   "azir_base_r_soldiercape.troy",
-                                                                                  new AbilityItem("azir", "R", 5f)
+                                                                                  new AbilityItem("azir", "R", 3f)
                                                                               },
                                                                               {
                                                                                   "azir_base_r_soldiercape_enemy.troy",
-                                                                                  new AbilityItem("azir", "R", 5f)
+                                                                                  new AbilityItem("azir", "R", 3f)
                                                                               },
                                                                               {
                                                                                   "bard_base_e_door.troy",

@@ -471,7 +471,7 @@ namespace ElUtilitySuite.Summoners
                              new CleanseSpell
                                  {
                                      Champion = "heimerdinger", Name = "stun", MenuName = "Heimerdinger Stun",
-                                     Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
+                                     Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 25,
                                      Slot = SpellSlot.W
                                  },
                              new CleanseSpell
@@ -487,8 +487,8 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "elise", Name = "buffelisecocoon", MenuName = "Elise E", Evade = false,
-                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
+                                     Champion = "Elise", Name = "buffelisecocoon", MenuName = "Elise E", Evade = false,
+                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 25, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
@@ -497,7 +497,7 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "irelia", Name = "Stun", MenuName = "Irelia Stun", Evade = false,
+                                     Champion = "Irelia", Name = "Stun", MenuName = "Irelia Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
@@ -778,6 +778,13 @@ namespace ElUtilitySuite.Summoners
         {
             this.Menu = rootMenu.AddSubMenu("Cleanse/QSS", "CleanseV3");
             {
+                this.Menu.AddGroupLabel("Cleanse Settings");
+                this.Menu.Add("CleanseActivated", new CheckBox("Use Cleanse"));
+                foreach (var x in HeroManager.Allies)
+                {
+                    this.Menu.Add("cleanseon" + x.ChampionName, new CheckBox("Use for " + x.ChampionName));
+                }
+                this.Menu.AddSeparator();
                 this.Menu.AddGroupLabel("Spells");
                 foreach (var spell in Spells)
                 {
@@ -785,14 +792,9 @@ namespace ElUtilitySuite.Summoners
                 }
                 this.Menu.AddSeparator();
                 this.Menu.AddGroupLabel("Humanizer Delay");
-                this.Menu.Add("CleanseMinDelay", new Slider("Minimum Delay (MS)", 500, 0, 1000));
-                this.Menu.Add("CleanseMaxDelay", new Slider("Maximum Delay (MS)", 800, 0, 1500));
-                this.Menu.AddSeparator();
-                this.Menu.Add("CleanseActivated", new CheckBox("Use Cleanse"));
-                foreach (var x in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly))
-                {
-                    this.Menu.Add("cleanseon" + x.ChampionName, new CheckBox("Use for " + x.ChampionName));
-                }
+                this.Menu.Add("CleanseMinDelay1", new Slider("Minimum Delay (MS)", 0, 0, 1000));
+                this.Menu.Add("CleanseMaxDelay1", new Slider("Maximum Delay (MS)", 0, 0, 1500));
+                this.Menu.Add("CleanseActivatedHumanize", new CheckBox("Use Humanizer"));
             }
         }
 
@@ -856,7 +858,7 @@ namespace ElUtilitySuite.Summoners
                 return;
             }
 
-            foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && x.LSIsValidTarget(800f, false) && !x.IsMinion))
+            foreach (var ally in HeroManager.Allies.Where(x => x.LSIsValidTarget(800f, false)))
             {
                 var ally1 = ally;
                 foreach (var spell in Spells.Where(x => ally1.HasBuff(x.Name)))
@@ -880,12 +882,15 @@ namespace ElUtilitySuite.Summoners
                         continue;
                     }
 
+                    var isHumanized = getCheckBoxItem(this.Menu, "CleanseActivatedHumanize")
+                        ? Random.Next(
+                            getSliderItem(this.Menu, "CleanseMinDelay1"),
+                            getSliderItem(this.Menu, "CleanseMaxDelay1"))
+                        : 0;
+
                     var ally2 = ally;
                     LeagueSharp.Common.Utility.DelayAction.Add(
-                        spell.CleanseTimer
-                        + Random.Next(
-                            getSliderItem(this.Menu, "CleanseMinDelay"),
-                            getSliderItem(this.Menu, "CleanseMaxDelay")),
+                        spell.CleanseTimer + isHumanized,
                         () =>
                             {
                                 if (!ally2.HasBuff(buff.Name) || ally2.IsInvulnerable || !getCheckBoxItem(this.Menu, string.Format($"cleanseon{ally2.ChampionName}")))
@@ -954,11 +959,11 @@ namespace ElUtilitySuite.Summoners
             /// <value>
             ///     The spell.
             /// </value>
-            public Spell Spell
+            public LeagueSharp.Common.Spell Spell
             {
                 get
                 {
-                    return new Spell(this.Slot(), this.Range);
+                    return new LeagueSharp.Common.Spell(this.Slot(), this.Range);
                 }
             }
 
