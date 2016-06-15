@@ -206,7 +206,7 @@ namespace SephLissandra
 
         private static void OnGapClose(ActiveGapcloser args)
         {
-            if (Player.IsDead)
+            if (Player.IsDead || args.Sender.IsAlly)
             {
                 return;
             }
@@ -232,7 +232,7 @@ namespace SephLissandra
 
         private static void OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (Player.IsDead)
+            if (Player.IsDead || sender.IsAlly)
             {
                 return;
             }
