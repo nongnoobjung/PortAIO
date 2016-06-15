@@ -154,7 +154,7 @@ namespace Sebby_Ban_War
                 return;
             }
 
-            //Console.WriteLine("DIS " + LastMousePos.Distance(screenPos) + " TIME " + (Utils.TickCount - LastMouseTime));
+            //Console.WriteLine("DIS " + LastMousePos.LSDistance(screenPos) + " TIME " + (Utils.TickCount - LastMouseTime));
             if (args.Order == EloBuddy.GameObjectOrder.AttackUnit)
             {
                 if (Config["blockOut"].Cast<CheckBox>().CurrentValue && !Render.OnScreen(screenPos))

@@ -50,7 +50,7 @@ namespace ezEvade
             {
                 var dashInfo = myHero.LSGetDashInfo();
 
-                //Console.WriteLine("" + dashInfo.EndPos.Distance(lastSpellEvadeCommand.targetPosition));
+                //Console.WriteLine("" + dashInfo.EndPos.LSDistance(lastSpellEvadeCommand.targetPosition));
                 lastSpellEvadeCommand.targetPosition = dashInfo.EndPos;
             }
         }
