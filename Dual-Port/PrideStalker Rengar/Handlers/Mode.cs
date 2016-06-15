@@ -23,7 +23,7 @@ namespace PrideStalker_Rengar.Handlers
             var target = TargetSelector.GetTarget(1000, DamageType.Physical);
 
 
-            if (target == null || !target.IsValidTarget() || target.IsZombie) return;
+            if (target == null || !target.LSIsValidTarget() || target.IsZombie) return;
             if (Player.Mana == 5)
             {
                 if (MenuConfig.UseItem && Spells.Q.IsReady() && Spells.W.IsReady() && HasPassive)
@@ -72,7 +72,7 @@ namespace PrideStalker_Rengar.Handlers
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
 
-            if (target == null || !target.IsValidTarget() || target.IsZombie) return;
+            if (target == null || !target.LSIsValidTarget() || target.IsZombie) return;
 
             if (Player.Mana == 5)
             {
@@ -133,7 +133,7 @@ namespace PrideStalker_Rengar.Handlers
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
 
-            if (target == null || !target.IsValidTarget() || target.IsZombie) return;
+            if (target == null || !target.LSIsValidTarget() || target.IsZombie) return;
             if (Player.Mana == 5)
             {
                 if (MenuConfig.UseItem && Spells.Q.IsReady() && HasPassive)
@@ -188,9 +188,9 @@ namespace PrideStalker_Rengar.Handlers
         public static void OneShot()
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
-            GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.IsValidTarget(Spells.W.Range)).ToList();
+            GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.W.Range)).ToList();
 
-            if (target == null || !target.IsValidTarget() || target.IsZombie) return;
+            if (target == null || !target.LSIsValidTarget() || target.IsZombie) return;
             if (Player.Mana == 5)
             {
                 if (MenuConfig.UseItem && Spells.Q.IsReady() && HasPassive)
