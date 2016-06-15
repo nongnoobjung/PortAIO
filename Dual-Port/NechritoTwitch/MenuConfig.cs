@@ -29,7 +29,7 @@ namespace Nechrito_Twitch
             lane.Add("laneW", new CheckBox("Use W"));
 
             steal = Config.AddSubMenu("Steal", "Steal");
-            steal.Add("StealEpic", new CheckBox("Dragon & Baron"));
+            steal.Add("StealEpic", new CheckBox("Dragons & Baron"));
             steal.Add("StealBuff", new CheckBox("Steal Redbuff"));
 
             draw = Config.AddSubMenu("Draw", "Draw");
@@ -38,7 +38,7 @@ namespace Nechrito_Twitch
             misc = Config.AddSubMenu("Misc", "Misc");
             misc.Add("QRecall", new KeyBind("QRecall", false, KeyBind.BindTypes.HoldActive, 'T'));
 
-            ExploitMenu = Config.AddSubMenu("ExploitMenu", "ExploitMenu");
+            ExploitMenu = Config.AddSubMenu("ExploitMenu", "Exploit");
             ExploitMenu.Add("Exploit", new CheckBox("Exploits", false));
             ExploitMenu.Add("EAA", new CheckBox("E AA Q", false));
 

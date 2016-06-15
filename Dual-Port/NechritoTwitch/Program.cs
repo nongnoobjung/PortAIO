@@ -79,27 +79,25 @@ namespace Nechrito_Twitch
             {
                 if (!target.IsFacing(Player) && target.Distance(Player) >= Player.AttackRange - 50)
                 {
-                    LeagueSharp.Common.Utility.DelayAction.Add(1000, ()=> Chat.Print("Exploit Will NOT Interrupt "));
+                    LeagueSharp.Common.Utility.DelayAction.Add(500, ()=> Chat.Print("Exploit Will NOT Interrupt "));
                     return;
                 }
 
-                if (target.Health <= Player.LSGetAutoAttackDamage(target) *1.33 + GetDamage(target))
+                if (target.Health <= Player.LSGetAutoAttackDamage(target) * 1.275 + GetDamage(target))
                 {
                     Spells._e.Cast();
-                    LeagueSharp.Common.Utility.DelayAction.Add(750, ()=> Chat.Print("Casting E to then cast AA Q"));
+                    LeagueSharp.Common.Utility.DelayAction.Add(500, ()=> Chat.Print("Casting E to then cast AA Q"));
                 }
             }
 
-            if (target.Health < Player.LSGetAutoAttackDamage(target, true) && Player.Spellbook.IsAutoAttacking)
+            if (!(target.Health < Player.GetAutoAttackDamage(target)) || !Player.Spellbook.IsAutoAttacking) return;
+
+            Spells._q.Cast();
+            do
             {
-                Spells._q.Cast();
-                do
-                {
-                    LeagueSharp.Common.Utility.DelayAction.Add(750, ()=> Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Exploit Active</font></b><b><font color=\"#FFFFFF\">]</font></b>"));
-                   // Chat.Print("Casting Q");
-                } while (Spells._q.Cast());
-            }
-           
+                LeagueSharp.Common.Utility.DelayAction.Add(500, () => Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Exploit Active</font></b><b><font color=\"#FFFFFF\">]</font></b>"));
+                // Game.PrintChat("Casting Q");
+            } while (Spells._q.Cast());
         }
 
         private static void Combo()
@@ -119,10 +117,11 @@ namespace Nechrito_Twitch
             }
         }
 
-        public static void Harass()
+        private static void Harass()
         {
             var target = TargetSelector.GetTarget(Spells._e.Range, DamageType.Physical);
 
+            if (target == null || target.IsDead || !target.LSIsValidTarget() || target.IsInvulnerable) return;
             if (!Orbwalking.InAutoAttackRange(target) && target.GetBuffCount("twitchdeadlyvenom") >= MenuConfig.ESlider && Player.ManaPercent >= 50 && Spells._e.IsReady())
             {
                 Spells._e.Cast();
@@ -137,7 +136,7 @@ namespace Nechrito_Twitch
             }
         }
 
-        public static void LaneClear()
+        private static void LaneClear()
         {
             if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) return;
 
@@ -149,14 +148,15 @@ namespace Nechrito_Twitch
 
             if (!MenuConfig.LaneW) return;
 
-            if (Spells._w.IsReady())
+            if (!Spells._w.IsReady()) return;
+
+            if (wPrediction.MinionsHit >= 4)
             {
-                if(wPrediction.MinionsHit >= 4)
                 Spells._w.Cast(wPrediction.Position);
             }
         }
 
-        public static void JungleClear()
+        private static void JungleClear()
         {
             if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) return;
 
@@ -165,7 +165,10 @@ namespace Nechrito_Twitch
             var wPrediction = Spells._w.GetCircularFarmLocation(mobs);
             if (mobs.Count == 0) return;
 
-            Spells._w.Cast(wPrediction.Position);
+            if (wPrediction.MinionsHit >= 3 && Player.ManaPercent >= 20)
+            {
+                Spells._w.Cast(wPrediction.Position);
+            }
 
             foreach (var m in ObjectManager.Get<Obj_AI_Base>().Where(x => Monsters.Contains(x.CharData.BaseSkinName) && !x.IsDead))
             {
@@ -185,8 +188,7 @@ namespace Nechrito_Twitch
                 if (eventArgs.Slot != SpellSlot.Recall) return;
 
                 Spells._q.Cast();
-                LeagueSharp.Common.Utility.DelayAction.Add((int) Spells._q.Delay + 300,
-                    () => ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall));
+                LeagueSharp.Common.Utility.DelayAction.Add((int)Spells._q.Delay + 300, () => ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall));
                 eventArgs.Process = false;
             };
         }
