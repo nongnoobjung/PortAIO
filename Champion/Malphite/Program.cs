@@ -186,7 +186,7 @@ namespace ElEasy.Plugins
                 return;
             }
 
-            if (sender.IsValidTarget(spells[Spells.R].Range) && args.DangerLevel == Interrupter2.DangerLevel.High
+            if (sender.LSIsValidTarget(spells[Spells.R].Range) && args.DangerLevel == Interrupter2.DangerLevel.High
                 && spells[Spells.R].IsReady())
             {
                 spells[Spells.R].Cast(sender);
@@ -212,12 +212,12 @@ namespace ElEasy.Plugins
                 return;
             }
 
-            if (useQ && spells[Spells.Q].IsReady() && qTarget.IsValidTarget(spells[Spells.Q].Range))
+            if (useQ && spells[Spells.Q].IsReady() && qTarget.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast(qTarget);
             }
 
-            if (useE && spells[Spells.E].IsReady() && eTarget.IsValidTarget(spells[Spells.E].Range))
+            if (useE && spells[Spells.E].IsReady() && eTarget.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast();
             }
@@ -226,7 +226,7 @@ namespace ElEasy.Plugins
         private void OnCombo()
         {
             var target = TargetSelector.GetTarget(spells[Spells.Q].Range, DamageType.Magical);
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -240,17 +240,17 @@ namespace ElEasy.Plugins
 
             var countEnemies = getSliderItem(rMenu, "ElEasy.Malphite.Combo.Count.R");
 
-            if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+            if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast(target);
             }
 
-            if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+            if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
             {
                 spells[Spells.W].Cast();
             }
 
-            if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+            if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast();
             }
@@ -258,7 +258,7 @@ namespace ElEasy.Plugins
             switch (ultType)
             {
                 case 0:
-                    if (useR && spells[Spells.R].IsReady() && target.IsValidTarget(spells[Spells.R].Range))
+                    if (useR && spells[Spells.R].IsReady() && target.LSIsValidTarget(spells[Spells.R].Range))
                     {
                         if (spells[Spells.R].GetDamage(target) > target.Health)
                         {
@@ -272,7 +272,7 @@ namespace ElEasy.Plugins
                     break;
 
                 case 1:
-                    if (useR && spells[Spells.R].IsReady() && target.IsValidTarget(spells[Spells.R].Range))
+                    if (useR && spells[Spells.R].IsReady() && target.LSIsValidTarget(spells[Spells.R].Range))
                     {
                         var pred = spells[Spells.R].GetPrediction(target);
                         if (pred.Hitchance >= HitChance.High)
@@ -303,7 +303,7 @@ namespace ElEasy.Plugins
             }
 
 
-            if (target.IsValidTarget(600) && IgniteDamage(target) >= target.Health && useI)
+            if (target.LSIsValidTarget(600) && IgniteDamage(target) >= target.Health && useI)
             {
                 Player.Spellbook.CastSpell(Ignite, target);
             }
@@ -426,7 +426,7 @@ namespace ElEasy.Plugins
                 spells[Spells.W].Cast(Player);
             }
 
-            if (useE && spells[Spells.E].IsReady() && minions.IsValidTarget(spells[Spells.E].Range))
+            if (useE && spells[Spells.E].IsReady() && minions.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast();
             }
@@ -457,7 +457,7 @@ namespace ElEasy.Plugins
                     foreach (var minion in
                         allMinions.Where(minion => minion.Health <= Player.GetSpellDamage(minion, SpellSlot.Q)))
                     {
-                        if (minion.IsValidTarget())
+                        if (minion.LSIsValidTarget())
                         {
                             spells[Spells.Q].CastOnUnit(minion);
                             return;
@@ -471,7 +471,7 @@ namespace ElEasy.Plugins
                 spells[Spells.W].Cast(Player);
             }
 
-            if (useE && spells[Spells.E].IsReady() && minions.IsValidTarget(spells[Spells.E].Range))
+            if (useE && spells[Spells.E].IsReady() && minions.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast();
             }

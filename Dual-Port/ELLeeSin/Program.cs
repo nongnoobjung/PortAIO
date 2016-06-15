@@ -462,7 +462,7 @@ namespace ElLeeSin
 
         private static void CastQ(Obj_AI_Base target)
         {
-            if (!spells[Spells.Q].IsReady() || !target.IsValidTarget(spells[Spells.Q].Range))
+            if (!spells[Spells.Q].IsReady() || !target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 return;
             }
@@ -474,7 +474,7 @@ namespace ElLeeSin
                 spells[Spells.Q].Cast(prediction.CastPosition);
             }
             else if (getCheckBoxItem(InitMenu.miscMenu, "ElLeeSin.Smite.Q") && spells[Spells.Q].IsReady()
-                     && target.IsValidTarget(spells[Spells.Q].Range)
+                     && target.LSIsValidTarget(spells[Spells.Q].Range)
                      && prediction.CollisionObjects.Count(a => a.NetworkId != target.NetworkId && a.IsMinion) == 1
                      && Player.GetSpellSlot(SmiteSpellName()).IsReady())
             {
@@ -505,7 +505,7 @@ namespace ElLeeSin
 
             if (!target.IsZombie && spells[Spells.R].IsReady() &&
                 getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.R")
-                && getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.Q") && target.IsValidTarget()
+                && getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.Q") && target.LSIsValidTarget()
                 && (spells[Spells.R].GetDamage(target) >= target.Health
                     || target.HasQBuff()
                     && target.Health
@@ -522,7 +522,7 @@ namespace ElLeeSin
                 return;
             }
 
-            if (target.HasQBuff() && getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.Q2") && target.IsValidTarget())
+            if (target.HasQBuff() && getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.Q2") && target.LSIsValidTarget())
             {
                 if (target.HasQBuff()
                     && target.Health
@@ -535,7 +535,7 @@ namespace ElLeeSin
                 }
             }
 
-            if (target.IsValidTarget(385f))
+            if (target.LSIsValidTarget(385f))
             {
                 UseItems();
             }
@@ -547,7 +547,7 @@ namespace ElLeeSin
                     target.HasQBuff() &&
                     (castQAgain || spells[Spells.Q].GetDamage(target, 1) > target.Health + target.AttackShield) ||
                     ReturnQBuff.LSDistance(target) < Player.LSDistance(target) &&
-                    !target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
+                    !target.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
                 {
                     spells[Spells.Q].Cast(target);
                 }
@@ -555,7 +555,7 @@ namespace ElLeeSin
 
             if (!target.IsZombie && spells[Spells.R].GetDamage(target) >= target.Health
                 && getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.KS.R") &&
-                target.IsValidTarget(spells[Spells.R].Range))
+                target.LSIsValidTarget(spells[Spells.R].Range))
             {
                 spells[Spells.R].CastOnUnit(target);
             }
@@ -634,7 +634,7 @@ namespace ElLeeSin
                     return;
                 }
 
-                if (WState && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
+                if (WState && target.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
                 {
                     spells[Spells.W].Cast();
                     LastW = Environment.TickCount;
@@ -796,7 +796,7 @@ namespace ElLeeSin
 
                 if (spells[Spells.R].IsReady() && !target.IsZombie
                     && Player.Spellbook.CanUseSpell(flashSlot) == SpellState.Ready
-                    && target.IsValidTarget(spells[Spells.R].Range))
+                    && target.LSIsValidTarget(spells[Spells.R].Range))
                 {
                     spells[Spells.R].CastOnUnit(target);
                 }
@@ -895,7 +895,7 @@ namespace ElLeeSin
             {
                 var hits =
                     HeroManager.Enemies.Where(
-                        e => e.IsValidTarget() && e.LSDistance(Player) < 430f || e.LSDistance(Player) < 430f).ToList();
+                        e => e.LSIsValidTarget() && e.LSDistance(Player) < 430f || e.LSDistance(Player) < 430f).ToList();
 
                 return new Tuple<int, List<AIHeroClient>>(hits.Count, hits);
             }
@@ -1028,11 +1028,11 @@ namespace ElLeeSin
 
                             var insecObjects =
                                 HeroManager.Enemies.Where(
-                                    x => x.IsValidTarget(spells[Spells.Q].Range) && x.LSDistance(target) < 550f)
+                                    x => x.LSIsValidTarget(spells[Spells.Q].Range) && x.LSDistance(target) < 550f)
                                     .Concat(MinionManager.GetMinions(Player.ServerPosition, spells[Spells.Q].Range))
                                     .Where(
                                         m =>
-                                            m.IsValidTarget(spells[Spells.Q].Range)
+                                            m.LSIsValidTarget(spells[Spells.Q].Range)
                                             && spells[Spells.Q].GetDamage(m) < m.Health + 15 &&
                                             m.LSDistance(target) < 400f)
                                     .ToList();
@@ -1156,7 +1156,7 @@ namespace ElLeeSin
                     return;
                 }
 
-                if (WState && minion.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
+                if (WState && minion.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
                 {
                     spells[Spells.W].Cast();
                     LastW = Environment.TickCount;
@@ -1321,10 +1321,10 @@ namespace ElLeeSin
         {
             get
             {
-                if (HeroManager.Enemies.Where(a => a.IsValidTarget(1300)).FirstOrDefault(unit => unit.HasQBuff()) !=
+                if (HeroManager.Enemies.Where(a => a.LSIsValidTarget(1300)).FirstOrDefault(unit => unit.HasQBuff()) !=
                     null)
                 {
-                    return HeroManager.Enemies.Where(a => a.IsValidTarget(1300)).FirstOrDefault(unit => unit.HasQBuff());
+                    return HeroManager.Enemies.Where(a => a.LSIsValidTarget(1300)).FirstOrDefault(unit => unit.HasQBuff());
                 }
                 return null;
             }
@@ -1400,9 +1400,9 @@ namespace ElLeeSin
             if (target.HasQBuff())
             {
                 if (castQAgain
-                    || target.HasBuffOfType(BuffType.Knockback) && !Player.IsValidTarget(300)
+                    || target.HasBuffOfType(BuffType.Knockback) && !Player.LSIsValidTarget(300)
                     && !spells[Spells.R].IsReady()
-                    || !target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)) && !spells[Spells.R].IsReady())
+                    || !target.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)) && !spells[Spells.R].IsReady())
                 {
                     spells[Spells.Q].Cast();
                 }
@@ -1413,7 +1413,7 @@ namespace ElLeeSin
                 WardJump(target.Position, false);
             }
 
-            if (spells[Spells.E].IsReady() && EState && target.IsValidTarget(spells[Spells.E].Range))
+            if (spells[Spells.E].IsReady() && EState && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast();
             }

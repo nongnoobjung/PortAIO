@@ -202,7 +202,7 @@ namespace KurisuNidalee
                 {
                     if (KL.CanUse(KL.Spells["Primalsurge"], true, "on"))
                     {
-                        if (ally.IsValidTarget(KL.Spells["Primalsurge"].Range) &&
+                        if (ally.LSIsValidTarget(KL.Spells["Primalsurge"].Range) &&
                             ally.Health/ally.MaxHealth*100 <= 90)
                         {
                             if (!Player.Spellbook.IsChanneling && !Player.IsRecalling())
@@ -270,7 +270,7 @@ namespace KurisuNidalee
             if (hero != null && hero.IsEnemy && KL.SpellTimer["Javelin"].IsReady() &&
                 getCheckBoxItem(autoMenu, "ndhqimm"))
             {
-                if (hero.IsValidTarget(KL.Spells["Javelin"].Range))
+                if (hero.LSIsValidTarget(KL.Spells["Javelin"].Range))
                 {
                     if (args.Buff.Type == BuffType.Stun || args.Buff.Type == BuffType.Snare ||
                         args.Buff.Type == BuffType.Taunt || args.Buff.Type == BuffType.Knockback)
@@ -293,7 +293,7 @@ namespace KurisuNidalee
             if (hero != null && hero.IsEnemy && KL.SpellTimer["Bushwhack"].IsReady() &&
                 getCheckBoxItem(autoMenu, "ndhwimm"))
             {
-                if (hero.IsValidTarget(KL.Spells["Bushwhack"].Range))
+                if (hero.LSIsValidTarget(KL.Spells["Bushwhack"].Range))
                 {
                     if (args.Buff.Type == BuffType.Stun || args.Buff.Type == BuffType.Snare ||
                         args.Buff.Type == BuffType.Taunt || args.Buff.Type == BuffType.Knockback)
@@ -317,7 +317,7 @@ namespace KurisuNidalee
             }
 
             foreach (
-                var unit in ObjectManager.Get<Obj_AI_Minion>().Where(x => x.IsValidTarget(900) && x.PassiveRooted()))
+                var unit in ObjectManager.Get<Obj_AI_Minion>().Where(x => x.LSIsValidTarget(900) && x.PassiveRooted()))
             {
                 var b = unit.GetBuff("NidaleePassiveMonsterRoot");
                 if (b.Caster.IsMe && b.EndTime - Game.Time > 0)
@@ -429,7 +429,7 @@ namespace KurisuNidalee
                         var hero in
                             Allies().Where(
                                 h => getCheckBoxItem(eHMenu, "xx" + h.NetworkId) &&
-                                     h.IsValidTarget(KL.Spells["Primalsurge"].Range) &&
+                                     h.LSIsValidTarget(KL.Spells["Primalsurge"].Range) &&
                                      h.Health/h.MaxHealth*100 <
                                      getSliderItem(eHMenu, "zz" + h.NetworkId)))
                     {
@@ -507,7 +507,7 @@ namespace KurisuNidalee
             {
                 if (!KL.CanUse(KL.Spells["Javelin"], true, "jg") && KL.CanUse(KL.Spells["Swipe"], false, "jg"))
                 {
-                    if (KL.CatForm() && target.IsValidTarget(KL.Spells["Swipe"].Range))
+                    if (KL.CatForm() && target.LSIsValidTarget(KL.Spells["Swipe"].Range))
                     {
                         KL.Spells["Swipe"].Cast(target.ServerPosition);
                     }
@@ -516,7 +516,7 @@ namespace KurisuNidalee
                 if (!KL.CanUse(KL.Spells["Javelin"], true, "jg") &&
                     KL.CanUse(KL.Spells["Bushwhack"], false, "jg"))
                 {
-                    if (!KL.CatForm() && target.IsValidTarget(KL.Spells["Bushwhack"].Range) &&
+                    if (!KL.CatForm() && target.LSIsValidTarget(KL.Spells["Bushwhack"].Range) &&
                         KL.Player.ManaPercent > 40)
                     {
                         KL.Spells["Bushwhack"].Cast(target.ServerPosition);
@@ -526,7 +526,7 @@ namespace KurisuNidalee
                 if (!KL.CanUse(KL.Spells["Javelin"], true, "jg") && KL.CanUse(KL.Spells["Pounce"], false, "jg"))
                 {
                     var r = target.IsHunted() ? KL.Spells["ExPounce"].Range : KL.Spells["Pounce"].Range;
-                    if (KL.CatForm() && target.IsValidTarget(r))
+                    if (KL.CatForm() && target.LSIsValidTarget(r))
                     {
                         KL.Spells["Pounce"].Cast(target.ServerPosition);
                     }

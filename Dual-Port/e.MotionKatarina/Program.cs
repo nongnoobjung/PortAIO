@@ -596,43 +596,43 @@ namespace e.Motion_Katarina
                 if (enemy == null || enemy.HasBuffOfType(BuffType.Invulnerability))
                     return;
 
-                if (CanKill(enemy, false, getCheckBoxItem(ksMenu, "motion.katarina.killsteal.usew"), false, false) == 1 && enemy.IsValidTarget(390))
+                if (CanKill(enemy, false, getCheckBoxItem(ksMenu, "motion.katarina.killsteal.usew"), false, false) == 1 && enemy.LSIsValidTarget(390))
                 {
                     W.Cast(enemy);
                     return;
                 }
-                if (CanKill(enemy, false, false, getCheckBoxItem(ksMenu, "motion.katarina.killsteal.usee"), false) == 1 && enemy.IsValidTarget(700))
+                if (CanKill(enemy, false, false, getCheckBoxItem(ksMenu, "motion.katarina.killsteal.usee"), false) == 1 && enemy.LSIsValidTarget(700))
                 {
                     E.Cast(enemy);
                     return;
                 }
-                if (CanKill(enemy, getCheckBoxItem(ksMenu, "motion.katarina.killsteal.useq"), false, false, false) == 1 && enemy.IsValidTarget(675))
+                if (CanKill(enemy, getCheckBoxItem(ksMenu, "motion.katarina.killsteal.useq"), false, false, false) == 1 && enemy.LSIsValidTarget(675))
                 {
                     Q.Cast(enemy);
                     qTarget = enemy;
                     return;
                 }
                 int cankill = CanKill(enemy, getCheckBoxItem(ksMenu, "motion.katarina.killsteal.useq"), getCheckBoxItem(ksMenu, "motion.katarina.killsteal.usew"), getCheckBoxItem(ksMenu, "motion.katarina.killsteal.usee"), getCheckBoxItem(ksMenu, "motion.katarina.killsteal.usef"));
-                if ((cankill == 1 || cankill == 2) && enemy.IsValidTarget(Q.Range))
+                if ((cankill == 1 || cankill == 2) && enemy.LSIsValidTarget(Q.Range))
                 {
-                    if (cankill == 2 && enemy.IsValidTarget(600))
+                    if (cankill == 2 && enemy.LSIsValidTarget(600))
                         Player.Spellbook.CastSpell(IgniteSpellSlot, enemy);
                     if (Q.IsReady())
                         Q.Cast(enemy);
                     if (E.IsReady() && (W.IsReady() || qTarget != enemy))
                         E.Cast(enemy);
-                    if (W.IsReady() && enemy.IsValidTarget(390) && qTarget != enemy)
+                    if (W.IsReady() && enemy.LSIsValidTarget(390) && qTarget != enemy)
                         W.Cast();
                     return;
                 }
                 //KS with Wardjump
                 cankill = CanKill(enemy, true, false, false, getCheckBoxItem(ksMenu, "motion.katarina.killsteal.usef"));
-                if (getCheckBoxItem(ksMenu, "motion.katarina.killsteal.wardjump") && (cankill == 1 || cankill == 2) && enemy.IsValidTarget(1300) && Q.IsReady() && E.IsReady())
+                if (getCheckBoxItem(ksMenu, "motion.katarina.killsteal.wardjump") && (cankill == 1 || cankill == 2) && enemy.LSIsValidTarget(1300) && Q.IsReady() && E.IsReady())
                 {
                     WardJump(enemy.Position, false);
-                    if (cankill == 2 && enemy.IsValidTarget(600))
+                    if (cankill == 2 && enemy.LSIsValidTarget(600))
                         Player.Spellbook.CastSpell(IgniteSpellSlot, enemy);
-                    if (enemy.IsValidTarget(675))
+                    if (enemy.LSIsValidTarget(675))
                         Q.Cast(enemy);
                     return;
                 }

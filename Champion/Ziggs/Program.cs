@@ -249,7 +249,7 @@ namespace Ziggs
                         var n = 0;
                         foreach (var ally in ObjectManager.Get<AIHeroClient>())
                         {
-                            if (ally.IsAlly && !ally.IsMe && ally.IsValidTarget(float.MaxValue) &&
+                            if (ally.IsAlly && !ally.IsMe && ally.LSIsValidTarget(float.MaxValue) &&
                                 ally.LSDistance(target) < 700)
                             {
                                 alliesarround++;
@@ -321,7 +321,7 @@ namespace Ziggs
             {
                 foreach (var pos in from enemy in ObjectManager.Get<AIHeroClient>()
                     where
-                        enemy.IsValidTarget() &&
+                        enemy.LSIsValidTarget() &&
                         enemy.LSDistance(ObjectManager.Player) <=
                         enemy.BoundingRadius + enemy.AttackRange + ObjectManager.Player.BoundingRadius &&
                         enemy.IsMelee()
@@ -423,7 +423,7 @@ namespace Ziggs
             if (thirdBouncePosition.LSDistance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius)
             {
                 //Check the second one.
-                if ((from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.IsValidTarget(3000) let predictedPos = Q2.GetPrediction(minion) where predictedPos.UnitPosition.To2D().LSDistance(secondBouncePosition) <
+                if ((from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.LSIsValidTarget(3000) let predictedPos = Q2.GetPrediction(minion) where predictedPos.UnitPosition.To2D().LSDistance(secondBouncePosition) <
                                                                                                                                                           Q2.Width + minion.BoundingRadius select minion).Any())
                 {
                     return true;
@@ -434,7 +434,7 @@ namespace Ziggs
                 thirdBouncePosition.LSDistance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius)
             {
                 //Check the first one
-                return (from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.IsValidTarget(3000) let predictedPos = Q1.GetPrediction(minion) where predictedPos.UnitPosition.To2D().LSDistance(firstBouncePosition) < Q1.Width + minion.BoundingRadius select minion).Any();
+                return (from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.LSIsValidTarget(3000) let predictedPos = Q1.GetPrediction(minion) where predictedPos.UnitPosition.To2D().LSDistance(firstBouncePosition) < Q1.Width + minion.BoundingRadius select minion).Any();
             }
 
             return true;

@@ -100,7 +100,7 @@ namespace Mordekaiser
         {
             var t = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
 
-            if (!t.IsValidTarget()) return;
+            if (!t.LSIsValidTarget()) return;
 
             if (IgniteSlot != SpellSlot.Unknown && Program.Player.Spellbook.CanUseSpell(IgniteSlot) == SpellState.Ready)
             {
@@ -137,7 +137,7 @@ namespace Mordekaiser
 
             var t = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
 
-            if (!t.IsValidTarget()) return;
+            if (!t.LSIsValidTarget()) return;
 
             var range = 700f;
 

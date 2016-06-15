@@ -33,12 +33,12 @@ namespace SoloVayne.Skills.Tumble
             var bestWeightedAvg = 0f;
 
             var highHealthEnemiesNear =
-                HeroManager.Enemies.Where(m => !m.IsMelee && m.IsValidTarget(1300f) && m.HealthPercent > 7).ToList();
+                HeroManager.Enemies.Where(m => !m.IsMelee && m.LSIsValidTarget(1300f) && m.HealthPercent > 7).ToList();
 
-            var alliesNear = HeroManager.Allies.Count(ally => !ally.IsMe && ally.IsValidTarget(1500f));
+            var alliesNear = HeroManager.Allies.Count(ally => !ally.IsMe && ally.LSIsValidTarget(1500f));
 
             var enemiesNear =
-                HeroManager.Enemies.Where(m => m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(m) + 300f + 65f))
+                HeroManager.Enemies.Where(m => m.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(m) + 300f + 65f))
                     .ToList();
 
             #endregion
@@ -166,7 +166,7 @@ namespace SoloVayne.Skills.Tumble
                 //Try to find another suitable position. This usually means we are already near too much enemies turrets so just gtfo and tumble
                 //to the closest ally ordered by most health.
                 var alliesClose =
-                    HeroManager.Allies.Where(ally => !ally.IsMe && ally.IsValidTarget(1500f)).ToList();
+                    HeroManager.Allies.Where(ally => !ally.IsMe && ally.LSIsValidTarget(1500f)).ToList();
                 if (alliesClose.Any() && enemiesNear.Any())
                 {
                     var closestMostHealth =
@@ -264,7 +264,7 @@ namespace SoloVayne.Skills.Tumble
             {
                 var angleRad = Geometry.DegreeToRadian(i);
                 var rotatedPosition = ObjectManager.Player.Position.To2D() + 300f*direction.LSRotated(angleRad);
-                if (Provider.GetTarget(rotatedPosition.To3D()).IsValidTarget() && rotatedPosition.To3D().IsSafe())
+                if (Provider.GetTarget(rotatedPosition.To3D()).LSIsValidTarget() && rotatedPosition.To3D().IsSafe())
                 {
                     return rotatedPosition.To3D();
                 }

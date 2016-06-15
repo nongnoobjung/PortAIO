@@ -181,7 +181,7 @@ namespace ElEasy.Plugins
                 return;
             }
 
-            if (sender.IsValidTarget(spells[Spells.R].Range) && args.DangerLevel == Interrupter2.DangerLevel.High
+            if (sender.LSIsValidTarget(spells[Spells.R].Range) && args.DangerLevel == Interrupter2.DangerLevel.High
                 && spells[Spells.R].IsReady())
             {
                 spells[Spells.R].Cast(sender);
@@ -213,12 +213,12 @@ namespace ElEasy.Plugins
                 }
             }
 
-            if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+            if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
             {
                 spells[Spells.W].Cast();
             }
 
-            if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+            if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 var pred = spells[Spells.E].GetPrediction(target).Hitchance;
                 if (pred >= HitChance.VeryHigh)
@@ -227,7 +227,7 @@ namespace ElEasy.Plugins
                 }
             }
 
-            if (useR && spells[Spells.R].IsReady() && target.IsValidTarget(spells[Spells.R].Range)
+            if (useR && spells[Spells.R].IsReady() && target.LSIsValidTarget(spells[Spells.R].Range)
                 && Player.CountEnemiesInRange(spells[Spells.R].Range) >= countEnemies)
             {
                 var pred = spells[Spells.R].GetPrediction(target);
@@ -237,7 +237,7 @@ namespace ElEasy.Plugins
                 }
             }
 
-            if (target.IsValidTarget(600) && IgniteDamage(target) >= target.Health && useI)
+            if (target.LSIsValidTarget(600) && IgniteDamage(target) >= target.Health && useI)
             {
                 Player.Spellbook.CastSpell(Ignite, target);
             }
@@ -311,7 +311,7 @@ namespace ElEasy.Plugins
                 spells[Spells.Q].Cast();
             }
 
-            if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+            if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast(target);
             }

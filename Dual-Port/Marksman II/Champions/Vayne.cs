@@ -49,13 +49,13 @@ namespace Marksman.Champions
 
         public void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (GetValue<bool>("UseEGapcloser") && E.IsReady() && gapcloser.Sender.IsValidTarget(E.Range))
+            if (GetValue<bool>("UseEGapcloser") && E.IsReady() && gapcloser.Sender.LSIsValidTarget(E.Range))
                 E.CastOnUnit(gapcloser.Sender);
         }
 
         private void Interrupter2_OnInterruptableTarget(Obj_AI_Hero unit, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (GetValue<bool>("UseEInterrupt") && unit.IsValidTarget(550f))
+            if (GetValue<bool>("UseEInterrupt") && unit.LSIsValidTarget(550f))
                 E.Cast(unit);
         }
 
@@ -65,7 +65,7 @@ namespace Marksman.Champions
             {
                 var targetBehind = t.Position + Vector3.Normalize(t.ServerPosition - ObjectManager.Player.Position)*i*50;
 
-                if (targetBehind.IsWall() && t.IsValidTarget(E.Range))
+                if (targetBehind.IsWall() && t.LSIsValidTarget(E.Range))
                 {
                     E.CastOnUnit(t);
                     return true;
@@ -103,7 +103,7 @@ namespace Marksman.Champions
                 var useQ = GetValue<StringList>("Combo.UseQ").SelectedIndex;
                 var t = TargetSelector.GetTarget(Q.Range + Orbwalking.GetRealAutoAttackRange(null),
                     TargetSelector.DamageType.Physical);
-                if (Q.IsReady() && t.IsValidTarget() && useQ != 0)
+                if (Q.IsReady() && t.LSIsValidTarget() && useQ != 0)
                 {
                     switch (useQ)
                     {
@@ -147,21 +147,21 @@ namespace Marksman.Champions
                     t = TargetSelector.GetTarget(E.Range + Q.Range, TargetSelector.DamageType.Physical);
                     if (useE == 1)
                     {
-                        if (t.IsValidTarget())
+                        if (t.LSIsValidTarget())
                         {
                             CastE(t);
                         }
                     }
                     else
                     {
-                        foreach (var e in HeroManager.Enemies.Where(e => e.IsValidTarget(E.Range) && !e.IsZombie))
+                        foreach (var e in HeroManager.Enemies.Where(e => e.LSIsValidTarget(E.Range) && !e.IsZombie))
                         {
                             CastE(e);
                         }
                     }
                     /*
                     foreach (var hero in
-                        from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
+                        from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.LSIsValidTarget(550f))
                         let prediction = E.GetPrediction(hero)
                         where
                             NavMesh.GetCollisionFlags(
@@ -214,9 +214,9 @@ namespace Marksman.Champions
                         if (!jungleMobs.SkinName.ToLower().Contains("baron") ||
                             !jungleMobs.SkinName.ToLower().Contains("dragon"))
                         {
-                            if (jungleMobs.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65))
+                            if (jungleMobs.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65))
                                 Q.Cast(
-                                    jungleMobs.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65)
+                                    jungleMobs.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65)
                                         ? Game.CursorPos
                                         : jungleMobs.Position);
                         }
@@ -234,7 +234,7 @@ namespace Marksman.Champions
                             if (jungleMobs != null)
                             {
                                 Q.Cast(
-                                    jungleMobs.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65)
+                                    jungleMobs.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65)
                                         ? Game.CursorPos
                                         : jungleMobs.Position);
                             }
@@ -247,7 +247,7 @@ namespace Marksman.Champions
                 {
                     case 1:
                     {
-                        if (jungleMobs.IsValidTarget(E.Range))
+                        if (jungleMobs.LSIsValidTarget(E.Range))
                             E.CastOnUnit(jungleMobs);
                         break;
                     }
@@ -356,7 +356,7 @@ namespace Marksman.Champions
                 if (drawE == 2 || drawE == 3)
                 {
                     var t = TargetSelector.GetTarget(E.Range + Q.Range, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                     {
                         var color = System.Drawing.Color.Red;
                         for (var i = 1; i < 8; i++)
@@ -443,7 +443,7 @@ namespace Marksman.Champions
                             .Where(
                                 enemy =>
                                     !enemy.IsDead &&
-                                    enemy.IsValidTarget(
+                                    enemy.LSIsValidTarget(
                                         (Q.IsReady() ? Q.Range : 0) +
                                         Orbwalking.GetRealAutoAttackRange(ObjectManager.Player)))
                             .FirstOrDefault(

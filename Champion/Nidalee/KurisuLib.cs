@@ -187,7 +187,7 @@ namespace KurisuNidalee
         internal static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var attacker = gapcloser.Sender;
-            if (attacker.IsValidTarget(275f) && !Player.UnderTurret(true))
+            if (attacker.LSIsValidTarget(275f) && !Player.UnderTurret(true))
             {
                 if (CatForm())
                 {
@@ -497,7 +497,7 @@ namespace KurisuNidalee
                             args.End.LSDistance(KN.Player.ServerPosition) <= KN.Player.BoundingRadius*2)
                         {
                             var hero = sender as AIHeroClient;
-                            if (hero == null || !hero.IsValidTarget(Spells["Bushwhack"].Range))
+                            if (hero == null || !hero.LSIsValidTarget(Spells["Bushwhack"].Range))
                             {
                                 return;
                             }

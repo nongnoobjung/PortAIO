@@ -113,7 +113,7 @@ namespace Marksman.Champions
             if (useE && E.IsReady())
             {
                 var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                     if (E.Cast(t, false, true) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)
                         return;
             }

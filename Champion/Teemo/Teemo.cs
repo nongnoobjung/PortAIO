@@ -88,7 +88,7 @@ namespace SharpShooter.Plugins
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
                     if (getCheckBoxItem(comboMenu, "qCombo"))
-                        if (target.IsValidTarget(_q.Range))
+                        if (target.LSIsValidTarget(_q.Range))
                             if (_q.IsReady())
                                 _q.CastOnUnit(target as Obj_AI_Base);
                 }
@@ -96,7 +96,7 @@ namespace SharpShooter.Plugins
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
                 {
                     if (getCheckBoxItem(harassMenu, "qHarass"))
-                        if (target.IsValidTarget(_q.Range))
+                        if (target.LSIsValidTarget(_q.Range))
                             if (_q.IsReady())
                                 _q.CastOnUnit(target as Obj_AI_Base);
                 }
@@ -131,7 +131,7 @@ namespace SharpShooter.Plugins
                             var target =
                                 HeroManager.Enemies.FirstOrDefault(
                                     x =>
-                                        x.IsValidTarget(_r.Range) && !x.IsFacing(ObjectManager.Player) &&
+                                        x.LSIsValidTarget(_r.Range) && !x.IsFacing(ObjectManager.Player) &&
                                         !x.HasBuff("bantamtraptarget") &&
                                         _r.GetPrediction(x).Hitchance >= _r.MinHitChance);
                             if (target != null && target.LSDistance(ObjectManager.Player) <= _r.Range - 50)
@@ -176,7 +176,7 @@ namespace SharpShooter.Plugins
                             {
                                 var target =
                                     MinionManager.GetMinions(600, MinionTypes.All, MinionTeam.Neutral,
-                                        MinionOrderTypes.MaxHealth).FirstOrDefault(x => x.IsValidTarget(600));
+                                        MinionOrderTypes.MaxHealth).FirstOrDefault(x => x.LSIsValidTarget(600));
                                 if (target != null)
                                     _q.CastOnUnit(target);
                             }
@@ -188,7 +188,7 @@ namespace SharpShooter.Plugins
         {
             if (getCheckBoxItem(gapCloser, "antiGap"))
             {
-                if (gapcloser.Sender.IsValidTarget(_q.Range))
+                if (gapcloser.Sender.LSIsValidTarget(_q.Range))
                     if (_q.IsReady())
                         _q.CastOnUnit(gapcloser.Sender);
 

@@ -268,7 +268,7 @@ namespace TwistedFate
 
             foreach (var enemy in ObjectManager.Get<AIHeroClient>())
             {
-                if (enemy.IsValidTarget() && enemy.NetworkId != unit.NetworkId)
+                if (enemy.LSIsValidTarget() && enemy.NetworkId != unit.NetworkId)
                 {
                     var pos = Q.GetPrediction(enemy);
                     if (pos.Hitchance >= HitChance.Medium)
@@ -343,7 +343,7 @@ namespace TwistedFate
                         ObjectManager.Get<AIHeroClient>()
                             .Where(
                                 h =>
-                                    ObjectManager.Player.Spellbook.CanUseSpell(SpellSlot.R) == SpellState.Ready && h.IsValidTarget() && h.IsEnemy && ComboDamage(h) > h.Health))
+                                    ObjectManager.Player.Spellbook.CanUseSpell(SpellSlot.R) == SpellState.Ready && h.LSIsValidTarget() && h.IsEnemy && ComboDamage(h) > h.Health))
                 {
                     Ping(enemy.Position.To2D());
                 }
@@ -394,7 +394,7 @@ namespace TwistedFate
             if (ObjectManager.Player.Spellbook.CanUseSpell(SpellSlot.Q) == SpellState.Ready && (autoQD || autoQI))
                 foreach (var enemy in ObjectManager.Get<AIHeroClient>())
                 {
-                    if (enemy.IsValidTarget(Q.Range * 2))
+                    if (enemy.LSIsValidTarget(Q.Range * 2))
                     {
                         var pred = Q.GetPrediction(enemy);
                         if ((pred.Hitchance == HitChance.Immobile && autoQI) ||

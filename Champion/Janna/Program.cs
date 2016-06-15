@@ -162,7 +162,7 @@ namespace LCS_Janna
         private static void OnGapcloser(ActiveGapcloser gapcloser)
         {
             if (gapcloser.Sender.IsEnemy && gapcloser.End.LSDistance(ObjectManager.Player.Position) < 200 &&
-                gapcloser.Sender.IsValidTarget(Q.Range) && getCheckBoxItem(qsettings, "q.antigapcloser"))
+                gapcloser.Sender.LSIsValidTarget(Q.Range) && getCheckBoxItem(qsettings, "q.antigapcloser"))
             {
                 Q.Cast(gapcloser.Sender);
             }
@@ -280,7 +280,7 @@ namespace LCS_Janna
                 switch (getBoxItem(qsettings, "q.settings"))
                 {
                     case 0:
-                        foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Q.Range)))
+                        foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Q.Range)))
                         {
                             Q.CastIfHitchanceEquals(enemy, HikiChance("q.normal.hit.chance"));
                         }
@@ -288,7 +288,7 @@ namespace LCS_Janna
                     case 1:
                         if (ObjectManager.Player.CountEnemiesInRange(Q.Range) >= getSliderItem(qsettings, "q.hit.count"))
                         {
-                            foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Q.Range) && Q.GetHitCount() >= getSliderItem(qsettings, "q.hit.count")))
+                            foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Q.Range) && Q.GetHitCount() >= getSliderItem(qsettings, "q.hit.count")))
                             {
                                 Q.CastIfWillHit(enemy, getSliderItem(qsettings, "q.hit.count"));
                             }
@@ -298,7 +298,7 @@ namespace LCS_Janna
             }
             if (getCheckBoxItem(comboMenu, "w.combo") && Q.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(W.Range)))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(W.Range)))
                 {
                     W.CastOnUnit(enemy);
                 }

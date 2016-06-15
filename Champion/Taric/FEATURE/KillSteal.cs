@@ -69,7 +69,7 @@
 
             foreach (var target in ObjectManager.Get<AIHeroClient>().Where(target => !target.IsMe && !target.IsDead && target.Team != ObjectManager.Player.Team && !target.IsZombie && (SkyLv_Taric.Ignite.Slot != SpellSlot.Unknown || !target.HasBuff("summonerdot"))))
             {
-                if (UseAAKS && Orbwalker.CanAutoAttack && Player.GetAutoAttackDamage(target) > target.Health && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
+                if (UseAAKS && Orbwalker.CanAutoAttack && Player.GetAutoAttackDamage(target) > target.Health && target.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
                 {
                     EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                 }

@@ -18,7 +18,7 @@ namespace Swiftly_Teemo.Handler
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
                 {
-                    if (Target == null || Target.IsDead || Target.IsInvulnerable || !Target.IsValidTarget(Spells.Q.Range)) return;
+                    if (Target == null || Target.IsDead || Target.IsInvulnerable || !Target.LSIsValidTarget(Spells.Q.Range)) return;
                     {
                         if (MenuConfig.TowerCheck && Target.IsUnderEnemyTurret()) return;
                         if (Spells.Q.IsReady())
@@ -29,7 +29,7 @@ namespace Swiftly_Teemo.Handler
 
                     if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)) return;
 
-                    var mob = GameObjects.Jungle.Where(m => m != null && m.IsValidTarget(Player.AttackRange) && !GameObjects.JungleSmall.Contains(m));
+                    var mob = GameObjects.Jungle.Where(m => m != null && m.LSIsValidTarget(Player.AttackRange) && !GameObjects.JungleSmall.Contains(m));
 
                     foreach (var m in mob)
                     {

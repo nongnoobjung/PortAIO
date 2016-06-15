@@ -321,7 +321,7 @@ namespace iKalistaReborn
                     HeroManager.Enemies.Where(
                         x =>
                             ObjectManager.Player.LSDistance(x) <= SpellManager.Spell[SpellSlot.E].Range * 2 &&
-                            x.IsValidTarget(SpellManager.Spell[SpellSlot.E].Range * 2));
+                            x.LSIsValidTarget(SpellManager.Spell[SpellSlot.E].Range * 2));
 
                 if (targets.Count(x => ObjectManager.Player.LSDistance(x) < Orbwalking.GetRealAutoAttackRange(x)) == 0)
                 {
@@ -352,7 +352,7 @@ namespace iKalistaReborn
 
             var prediction = SpellManager.Spell[SpellSlot.Q].GetPrediction(target);
 
-            if (prediction.Hitchance >= HitChance.High && target.IsValidTarget(SpellManager.Spell[SpellSlot.Q].Range) &&
+            if (prediction.Hitchance >= HitChance.High && target.LSIsValidTarget(SpellManager.Spell[SpellSlot.Q].Range) &&
                 !ObjectManager.Player.IsDashing() && !Orbwalker.IsAutoAttacking)
             {
                 SpellManager.Spell[SpellSlot.Q].Cast(target);
@@ -366,7 +366,7 @@ namespace iKalistaReborn
                 var target = TargetSelector.GetTarget(SpellManager.Spell[SpellSlot.Q].Range, DamageType.Physical);
                 var prediction = SpellManager.Spell[SpellSlot.Q].GetPrediction(target);
                 if (prediction.Hitchance >= HitChance.High &&
-                    target.IsValidTarget(SpellManager.Spell[SpellSlot.Q].Range))
+                    target.LSIsValidTarget(SpellManager.Spell[SpellSlot.Q].Range))
                 {
                     SpellManager.Spell[SpellSlot.Q].Cast(target);
                 }

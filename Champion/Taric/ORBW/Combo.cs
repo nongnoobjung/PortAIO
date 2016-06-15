@@ -90,7 +90,7 @@
             {
                var target = TargetSelector.GetTarget(E.Range, DamageType.Physical);
 
-                if (target.IsValidTarget(E.Range))
+                if (target.LSIsValidTarget(E.Range))
                 {
                     if (useE && E.IsReady() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Combo, "Taric.UseTaricAAPassiveCombo") || Player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(Player)))
                     {
@@ -101,7 +101,7 @@
                         }
                     }
 
-                    if (target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
+                    if (target.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
                     {
                         if (!getCheckBoxItem(SkyLv_Taric.Combo, "Taric.UseWIncomingDamageCombo") && useW && W.IsReady() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Combo, "Taric.UseTaricAAPassiveCombo")) && (!E.IsReady() || !useE))
                         {
@@ -124,7 +124,7 @@
                     {
                         var Allytarget = ObjectManager.Get<AIHeroClient>().Where(t => !t.IsDead && t.Team != ObjectManager.Player.Team && AllyHeroE.LSDistance(t) < E.Range).FirstOrDefault();
 
-                        if (Allytarget.IsValidTarget())
+                        if (Allytarget.LSIsValidTarget())
                         {
                             if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHeroE.NetworkId + "AllyCCEComboFromAlly") && (AllyHeroE.IsCharmed || AllyHeroE.IsStunned || AllyHeroE.IsRooted || !AllyHeroE.CanAttack))
                             {
@@ -157,7 +157,7 @@
                         Q.Instance.Ammo >= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumStacksQAlly") &&
                         x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpQAlly")))
                         {
-                            if (AllyHeroQ.IsValidTarget())
+                            if (AllyHeroQ.LSIsValidTarget())
                             {
                                 Q.Cast(PacketCast);
                                 return;
@@ -176,7 +176,7 @@
                         !getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") &&
                         x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")).MinOrDefault(t => t.HealthPercent);
 
-                        if (AllyHeroW.IsValidTarget())
+                        if (AllyHeroW.LSIsValidTarget())
                         {
                             W.Cast(AllyHeroW, PacketCast);
                             return;

@@ -37,13 +37,13 @@ namespace SoloVayne.Skills.Tumble
             }
             var range = 1000f;
             var lowHealthAllies =
-                HeroManager.Allies.Where(a => a.IsValidTarget(range) && a.HealthPercent < 10 && !a.IsMe);
+                HeroManager.Allies.Where(a => a.LSIsValidTarget(range) && a.HealthPercent < 10 && !a.IsMe);
             var lowHealthEnemies =
-                HeroManager.Allies.Where(a => a.IsValidTarget(range) && a.HealthPercent < 10);
+                HeroManager.Allies.Where(a => a.LSIsValidTarget(range) && a.HealthPercent < 10);
             var enemies = ObjectManager.Player.CountEnemiesInRange(range);
             var allies = ObjectManager.Player.CountAlliesInRange(range);
-            var enemyTurrets = GameObjects.EnemyTurrets.Where(m => m.IsValidTarget(975f));
-            var allyTurrets = GameObjects.AllyTurrets.Where(m => m.IsValidTarget(975f));
+            var enemyTurrets = GameObjects.EnemyTurrets.Where(m => m.LSIsValidTarget(975f));
+            var allyTurrets = GameObjects.AllyTurrets.Where(m => m.LSIsValidTarget(975f));
 
             return allies - lowHealthAllies.Count() + allyTurrets.Count()*2 + 1 >=
                    enemies - lowHealthEnemies.Count() +
@@ -72,7 +72,7 @@ namespace SoloVayne.Skills.Tumble
             var closeEnemies =
                 HeroManager.Enemies.FindAll(
                     en =>
-                        en.IsValidTarget(1500f) &&
+                        en.LSIsValidTarget(1500f) &&
                         !(en.LSDistance(ObjectManager.Player.ServerPosition) < en.AttackRange + 65f));
             if (
                 closeEnemies.All(

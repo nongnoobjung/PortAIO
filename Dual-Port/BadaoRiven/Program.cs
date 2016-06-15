@@ -445,7 +445,7 @@ namespace HeavenStrikeRiven
             var target = TargetSelector.SelectedTarget;
             Orbwalker.ForcedTarget = target;
             Orbwalker.OrbwalkTo(target.ServerPosition);
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.LSIsValidTarget() && !target.IsZombie)
             {
                 if (Orbwalking.InAutoAttackRange(target) && (!R.IsReady() || (R.IsReady() && R.Instance.Name == R1name)))
                 {

@@ -76,7 +76,7 @@ namespace ExorSDK.Champions.Sivir
                     if (GameObjects.EnemyHeroes.Any(
                         t =>
                             !Invulnerable.Check(t) &&
-                            t.IsValidTarget(Vars.Q.Range)))
+                            t.LSIsValidTarget(Vars.Q.Range)))
                     {
                         if (Vars.Q.GetLineFarmLocation(Targets.Minions, Vars.Q.Width).MinionsHit >= 3 &&
                             !new Geometry.Rectangle(
@@ -87,7 +87,7 @@ namespace ExorSDK.Champions.Sivir
                                         GameObjects.EnemyHeroes.FirstOrDefault(
                                             t =>
                                                 !Invulnerable.Check(t) &&
-                                                t.IsValidTarget(Vars.Q.Range))).UnitPosition))
+                                                t.LSIsValidTarget(Vars.Q.Range))).UnitPosition))
                         {
                             Vars.Q.Cast(Vars.Q.GetLineFarmLocation(Targets.Minions, Vars.Q.Width).Position);
                         }
@@ -99,7 +99,7 @@ namespace ExorSDK.Champions.Sivir
                     else if (!GameObjects.EnemyHeroes.Any(
                         t =>
                             !Invulnerable.Check(t) &&
-                            t.IsValidTarget(Vars.Q.Range + 100f)))
+                            t.LSIsValidTarget(Vars.Q.Range + 100f)))
                     {
                         if (Vars.Q.GetLineFarmLocation(Targets.Minions, Vars.Q.Width).MinionsHit >= 3)
                         {

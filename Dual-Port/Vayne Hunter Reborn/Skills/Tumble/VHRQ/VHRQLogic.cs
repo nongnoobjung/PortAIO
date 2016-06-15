@@ -88,13 +88,13 @@ namespace VayneHunter_Reborn.Skills.Tumble.VHRQ
 
             return null;
 
-            //return HeroManager.Enemies.FirstOrDefault(en => en.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null), true, from));
+            //return HeroManager.Enemies.FirstOrDefault(en => en.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null), true, from));
         }
 
         public static bool IsSafeEx(Vector3 position)
         {
             var closeEnemies =
-                    HeroManager.Enemies.FindAll(en => en.IsValidTarget(1500f) && !(en.LSDistance(ObjectManager.Player.ServerPosition) < en.AttackRange + 65f))
+                    HeroManager.Enemies.FindAll(en => en.LSIsValidTarget(1500f) && !(en.LSDistance(ObjectManager.Player.ServerPosition) < en.AttackRange + 65f))
                     .OrderBy(en => en.LSDistance(position));
 
             return closeEnemies.All(
@@ -110,13 +110,13 @@ namespace VayneHunter_Reborn.Skills.Tumble.VHRQ
             var numberOfEnemies = from.CountEnemiesInRange(1000f);
             if (numberOfEnemies != 0)
             {
-                var enemies = HeroManager.Enemies.Where(en => en.IsValidTarget(1000f, true, from)
+                var enemies = HeroManager.Enemies.Where(en => en.LSIsValidTarget(1000f, true, from)
                                                     &&
                                                     en.Health >
                                                     ObjectManager.Player.GetAutoAttackDamage(en)*3 +
                                                     Variables.spells[SpellSlot.W].GetDamage(en) +
                                                     Variables.spells[SpellSlot.Q].GetDamage(en)).ToList();
-                var enemiesEx = HeroManager.Enemies.Where(en => en.IsValidTarget(1000f, true, from)).ToList();
+                var enemiesEx = HeroManager.Enemies.Where(en => en.LSIsValidTarget(1000f, true, from)).ToList();
                 var LHEnemies = enemiesEx.Count() - enemies.Count();
                 var totalDistance = 0f;
 

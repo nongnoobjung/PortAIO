@@ -81,7 +81,7 @@ namespace Leblanc.Common
         {
             var t = TargetSelector.GetTarget(Champion.PlayerSpells.Q.Range, DamageType.Magical);
 
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
                 return;
 
             if (SmiteSlot != SpellSlot.Unknown &&

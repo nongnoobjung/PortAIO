@@ -91,7 +91,7 @@
 
             var MinionN = MinionManager.GetMinions(E.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth).FirstOrDefault();
 
-            if (MinionN.IsValidTarget() && (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)))
+            if (MinionN.LSIsValidTarget() && (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)))
             {
                 if (getCheckBoxItem(SkyLv_Taric.Misc, "Taric.SafeJungleClear") && Player.CountEnemiesInRange(1500) > 0) return;
 
@@ -101,11 +101,11 @@
                     {
                         foreach (var target in ObjectManager.Get<Obj_AI_Base>().Where(target => SkyLv_Taric.Monsters.Contains(target.BaseSkinName) && !target.IsDead))
                         {
-                            if (target.IsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
+                            if (target.LSIsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
                                 E.CastIfHitchanceEquals(target, HitChance.VeryHigh, PacketCast);
                         }
                     }
-                    else if(!getCheckBoxItem(SkyLv_Taric.Misc, "Taric.SpellOnlyBigMonster") && MinionN.IsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
+                    else if(!getCheckBoxItem(SkyLv_Taric.Misc, "Taric.SpellOnlyBigMonster") && MinionN.LSIsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
                         E.CastIfHitchanceEquals(MinionN, HitChance.VeryHigh, PacketCast);
                 }
 
@@ -115,11 +115,11 @@
                     {
                         foreach (var target in ObjectManager.Get<Obj_AI_Base>().Where(target => SkyLv_Taric.Monsters.Contains(target.BaseSkinName) && !target.IsDead))
                         {
-                            if (target.IsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
+                            if (target.LSIsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
                                 W.Cast(Player, PacketCast);
                         }
                     }
-                    else if (!getCheckBoxItem(SkyLv_Taric.Misc, "Taric.SpellOnlyBigMonster") && MinionN.IsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
+                    else if (!getCheckBoxItem(SkyLv_Taric.Misc, "Taric.SpellOnlyBigMonster") && MinionN.LSIsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
                         W.Cast(Player, PacketCast);
                 }
 
@@ -129,11 +129,11 @@
                     {
                         foreach (var target in ObjectManager.Get<Obj_AI_Base>().Where(target => SkyLv_Taric.Monsters.Contains(target.BaseSkinName) && !target.IsDead))
                         {
-                            if (target.IsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
+                            if (target.LSIsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
                                 Q.Cast(Player, PacketCast);
                         }
                     }
-                    else if (!getCheckBoxItem(SkyLv_Taric.Misc, "Taric.SpellOnlyBigMonster") && MinionN.IsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
+                    else if (!getCheckBoxItem(SkyLv_Taric.Misc, "Taric.SpellOnlyBigMonster") && MinionN.LSIsValidTarget() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Misc, "Taric.UseTaricAAPassiveJungleClear")))
                         Q.Cast(Player, PacketCast);
                 }
             }

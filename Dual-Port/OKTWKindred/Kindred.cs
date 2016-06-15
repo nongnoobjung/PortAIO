@@ -101,7 +101,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Program.Combo && Player.Mana > RMANA + QMANA && Q.IsReady() && getCheckBoxItem(qMenu, "autoQ"))
             {
                 var t = target as AIHeroClient;
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     var dashPos = Dash.CastDash();
                     if (!dashPos.IsZero && dashPos.CountEnemiesInRange(500) > 0)
@@ -156,7 +156,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicW()
         {
             var t = TargetSelector.GetTarget(650, DamageType.Physical);
-            if (t.IsValidTarget() && !Q.IsReady())
+            if (t.LSIsValidTarget() && !Q.IsReady())
             {
                 if (Program.Combo && Player.Mana > RMANA + WMANA)
                     W.Cast();
@@ -164,7 +164,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     W.Cast();
             }
             var tks = TargetSelector.GetTarget(1600, DamageType.Physical);
-            if (tks.IsValidTarget())
+            if (tks.LSIsValidTarget())
             {
                 if (W.GetDamage(tks) * 3 > tks.Health - OktwCommon.GetIncomingDamage(tks))
                     W.Cast();
@@ -187,7 +187,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = torb as AIHeroClient;
 
-                if (t.IsValidTarget(E.Range))
+                if (t.LSIsValidTarget(E.Range))
                 {
                     if (!getCheckBoxItem(eMenu, "Euse" + t.ChampionName))
                         return;

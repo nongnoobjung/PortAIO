@@ -104,7 +104,7 @@ namespace SKT_Series
         {
             // W 안티갭클로져
             var target = gapcloser.Sender;
-            if (_W.IsReady() && target.IsValidTarget(_W.Range) && getCheckBoxItem(autoMenu, "W_Gap"))
+            if (_W.IsReady() && target.LSIsValidTarget(_W.Range) && getCheckBoxItem(autoMenu, "W_Gap"))
             {
                 _W.Cast(target);
             }
@@ -114,14 +114,14 @@ namespace SKT_Series
             Interrupter2.InterruptableTargetEventArgs args)
         {
             // W 스킬끊기
-            if (_W.IsReady() && sender.IsValidTarget(_W.Range) && !sender.IsZombie && getCheckBoxItem(autoMenu, "W_InR"))
+            if (_W.IsReady() && sender.LSIsValidTarget(_W.Range) && !sender.IsZombie && getCheckBoxItem(autoMenu, "W_InR"))
             {
                 _W.Cast(sender);
             }
             // R 스킬끊기
-            if (_R.IsReady() && sender.IsValidTarget() && !sender.IsZombie && getCheckBoxItem(autoMenu, "R_InR"))
+            if (_R.IsReady() && sender.LSIsValidTarget() && !sender.IsZombie && getCheckBoxItem(autoMenu, "R_InR"))
             {
-                var target = HeroManager.Allies.Where(x => x.IsValidTarget(_R.Range))
+                var target = HeroManager.Allies.Where(x => x.LSIsValidTarget(_R.Range))
                     .OrderByDescending(x => 1 - x.LSDistance(sender.Position))
                     .Find(x => x.LSDistance(sender.Position) <= 350);
                 if (target != null)
@@ -191,7 +191,7 @@ namespace SKT_Series
                     foreach (
                         var hero in
                             HeroManager.Enemies.Where(
-                                x => x.IsValidTarget(_W.Range) && getCheckBoxItem(wMenu, "Combo_W" + x.ChampionName)))
+                                x => x.LSIsValidTarget(_W.Range) && getCheckBoxItem(wMenu, "Combo_W" + x.ChampionName)))
                     {
                         _W.Cast(hero);
                     }
@@ -201,13 +201,13 @@ namespace SKT_Series
                     getCheckBoxItem(comboMenu, "Combo_EQ") && getCheckBoxItem(comboMenu, "Combo_E"))
                 {
                     var hero = TargetSelector.GetTarget(_Q.Range + _E.Range, DamageType.Magical);
-                    if (hero != null && hero.IsValidTarget() && !hero.IsValidTarget(_Q.Range))
+                    if (hero != null && hero.LSIsValidTarget() && !hero.LSIsValidTarget(_Q.Range))
                     {
                         // E 타겟 = 챔피언
                         foreach (
                             var target in
                                 HeroManager.AllHeroes.Where(
-                                    x => x.IsValidTarget(_E.Range) && x.LSDistance(hero.Position) <= _Q.Range)
+                                    x => x.LSIsValidTarget(_E.Range) && x.LSDistance(hero.Position) <= _Q.Range)
                                     .OrderByDescending(y => 1 - y.LSDistance(hero.Position)))
                         {
                             _E.Cast(target);
@@ -220,7 +220,7 @@ namespace SKT_Series
                         foreach (
                             var target in
                                 MinionManager.GetMinions(_E.Range, MinionTypes.All, MinionTeam.All)
-                                    .Where(x => x.IsValidTarget(_E.Range)
+                                    .Where(x => x.LSIsValidTarget(_E.Range)
                                                 && !x.Name.ToLower().Contains("ward") &&
                                                 x.LSDistance(hero.Position) <= _Q.Range)
                                     .OrderByDescending(y => 1 - y.LSDistance(hero.Position)))
@@ -233,7 +233,7 @@ namespace SKT_Series
                     foreach (
                         var hero in
                             HeroManager.Enemies.Where(
-                                x => x.IsValidTarget(_W.Range) && getCheckBoxItem(wMenu, "Combo_W" + x.ChampionName)))
+                                x => x.LSIsValidTarget(_W.Range) && getCheckBoxItem(wMenu, "Combo_W" + x.ChampionName)))
                     {
                         _W.Cast(hero);
                     }

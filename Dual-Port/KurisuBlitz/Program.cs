@@ -132,9 +132,9 @@ namespace KurisuBlitzcrank
                     Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
                 {
                     var minion = args.Target as Obj_AI_Base;
-                    if (minion != null && minion.IsMinion && minion.IsValidTarget())
+                    if (minion != null && minion.IsMinion && minion.LSIsValidTarget())
                     {
-                        if (HeroManager.Allies.Any(x => x.IsValidTarget(1000, false) && !x.IsMe))
+                        if (HeroManager.Allies.Any(x => x.LSIsValidTarget(1000, false) && !x.IsMe))
                         {
                             if (Player.HasBuff("talentreaperdisplay"))
                             {
@@ -155,7 +155,7 @@ namespace KurisuBlitzcrank
 
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (sender.IsEnemy && sender.IsValidTarget() && getCheckBoxItem(exmenu, "int"))
+            if (sender.IsEnemy && sender.LSIsValidTarget() && getCheckBoxItem(exmenu, "int"))
             {
                 if (R.IsReady() && Player.LSDistance(sender.ServerPosition) <= R.Range)
                 {
@@ -196,7 +196,7 @@ namespace KurisuBlitzcrank
                     return;
                 }
 
-                if (hero.IsValidTarget(getSliderItem(qsmenu, "maxq")) && hero.Health > Q.GetDamage(hero))
+                if (hero.LSIsValidTarget(getSliderItem(qsmenu, "maxq")) && hero.Health > Q.GetDamage(hero))
                 {
                     if (!getCheckBoxItem(qsmenu, "blq" + hero.NetworkId) &&
                          getCheckBoxItem(qsmenu, "auq" + hero.NetworkId))
@@ -226,7 +226,7 @@ namespace KurisuBlitzcrank
             Secure(!getCheckBoxItem(exmenu, "supp"), !getCheckBoxItem(exmenu, "supp"));
 
 
-            foreach (var ene in HeroManager.Enemies.Where(x => x.IsValidTarget(getSliderItem(qsmenu, "maxq"))))
+            foreach (var ene in HeroManager.Enemies.Where(x => x.LSIsValidTarget(getSliderItem(qsmenu, "maxq"))))
             {
                 if (Player.HealthPercent < getSliderItem(qsmenu, "grabhp"))
                 {
@@ -258,7 +258,7 @@ namespace KurisuBlitzcrank
             }
 
             var ene = HeroManager.Enemies.FirstOrDefault(x => x.LSDistance(Player.ServerPosition) <= E.Range + 200);
-            if (E.IsReady() && ene.IsValidTarget())
+            if (E.IsReady() && ene.LSIsValidTarget())
             {
                 E.Cast();
             }
@@ -294,7 +294,7 @@ namespace KurisuBlitzcrank
 
                 if (!(Player.HealthPercent < getSliderItem(qsmenu, "grabhp")))
                 {
-                    if (QT.IsValidTarget() && QT.LSDistance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
+                    if (QT.LSIsValidTarget() && QT.LSDistance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
                     {
                         if (!QT.IsZombie && !QT.IsInvulnerable)
                         {
@@ -334,7 +334,7 @@ namespace KurisuBlitzcrank
             if (user && R.IsReady())
             {
                 var RT = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-                if (RT.IsValidTarget() && !RT.IsZombie)
+                if (RT.LSIsValidTarget() && !RT.IsZombie)
                 {
                     if (!RT.IsInvulnerable)
                     {
@@ -359,7 +359,7 @@ namespace KurisuBlitzcrank
 
                 if (!(Player.HealthPercent < getSliderItem(qsmenu, "grabhp")))
                 {
-                    if (QT.IsValidTarget() && QT.LSDistance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
+                    if (QT.LSIsValidTarget() && QT.LSDistance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
                     {
                         if (!QT.IsZombie && !QT.IsInvulnerable)
                         {
@@ -387,7 +387,7 @@ namespace KurisuBlitzcrank
             if (useq && Q.IsReady())
             {
                 var QT = HeroManager.Enemies.FirstOrDefault(x => Q.GetDamage(x) > x.Health);
-                if (QT.IsValidTarget(getSliderItem(qsmenu, "maxq")))
+                if (QT.LSIsValidTarget(getSliderItem(qsmenu, "maxq")))
                 {
                     var poutput = Q.GetPrediction(QT); // prediction output
                     if (poutput.Hitchance >= (HitChance)getSliderItem(qsmenu, "pred") + 2)
@@ -403,7 +403,7 @@ namespace KurisuBlitzcrank
             if (user && R.IsReady())
             {
                 var RT = HeroManager.Enemies.FirstOrDefault(x => R.GetDamage(x) > x.Health);
-                if (RT.IsValidTarget(R.Range) && !RT.IsZombie)
+                if (RT.LSIsValidTarget(R.Range) && !RT.IsZombie)
                 {
                     if (!RT.IsInvulnerable)
                     {

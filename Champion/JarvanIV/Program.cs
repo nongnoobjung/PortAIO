@@ -35,7 +35,7 @@ namespace BrianSharp.Plugin
             {
                 return
                     ObjectManager.Get<Obj_AI_Minion>()
-                        .Where(i => i.IsValidTarget(Q2.Range) && i.IsAlly && i.Name == "Beacon");
+                        .Where(i => i.LSIsValidTarget(Q2.Range) && i.IsAlly && i.Name == "Beacon");
             }
         }
 
@@ -293,7 +293,7 @@ namespace BrianSharp.Plugin
             }
             if (getCheckBoxItem(mode, "R") && R.IsReady() && !_rCasted)
             {
-                var obj = (from i in HeroManager.Enemies.Where(i => i.IsValidTarget(R.Range))
+                var obj = (from i in HeroManager.Enemies.Where(i => i.LSIsValidTarget(R.Range))
                     let enemy = GetRTarget(i.ServerPosition)
                     where
                         (enemy.Count > 1 && R.IsKillable(i)) ||
@@ -448,7 +448,7 @@ namespace BrianSharp.Plugin
         {
             return
                 HeroManager.Enemies.Where(
-                    i => i.IsValidTarget() && pos.LSDistance(Prediction.GetPrediction(i, 0.25f).UnitPosition) < RWidth)
+                    i => i.LSIsValidTarget() && pos.LSDistance(Prediction.GetPrediction(i, 0.25f).UnitPosition) < RWidth)
                     .ToList();
         }
     }

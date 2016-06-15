@@ -60,7 +60,7 @@ namespace Nechrito_Diana
         {
             if (Spells._q.IsReady() && MenuConfig.ksQ)
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._q.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._q.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.LSDistance(target.Position) <= Spells._q.Range))
@@ -71,7 +71,7 @@ namespace Nechrito_Diana
             }
             if (Spells._r.IsReady() && MenuConfig.ksR)
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._r.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._r.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.LSDistance(target.Position) <= Spells._q.Range))
@@ -82,7 +82,7 @@ namespace Nechrito_Diana
             }
             if (Spells._r.IsReady() && Spells._q.IsReady() && MenuConfig.ksR && MenuConfig.ksQ)
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._r.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._r.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Spells._r.GetDamage(target) + Spells._q.GetDamage(target) && !target.IsInvulnerable && (Player.LSDistance(target.Position) <= Spells._q.Range))
@@ -95,7 +95,7 @@ namespace Nechrito_Diana
             if (Spells.Ignite.IsReady() && MenuConfig.ignite)
             {
                 var target = TargetSelector.GetTarget(600f, DamageType.True);
-                if (target.IsValidTarget(600f) && Dmg.IgniteDamage(target) >= target.Health)
+                if (target.LSIsValidTarget(600f) && Dmg.IgniteDamage(target) >= target.Health)
                 {
                     Player.Spellbook.CastSpell(Spells.Ignite, target);
                 }
@@ -103,7 +103,7 @@ namespace Nechrito_Diana
             if (Logic.Smite.IsReady() && MenuConfig.ksSmite)
             {
                 var target = TargetSelector.GetTarget(600f, DamageType.True);
-                if (target.IsValidTarget(600f) && Dmg.SmiteDamage(target) >= target.Health)
+                if (target.LSIsValidTarget(600f) && Dmg.SmiteDamage(target) >= target.Health)
                 {
                     Player.Spellbook.CastSpell(Logic.Smite, target);
                 }
@@ -169,22 +169,22 @@ namespace Nechrito_Diana
 
         private static void interrupt(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (sender.IsEnemy && Spells._e.IsReady() && sender.IsValidTarget() && !sender.IsZombie && MenuConfig.Interrupt)
+            if (sender.IsEnemy && Spells._e.IsReady() && sender.LSIsValidTarget() && !sender.IsZombie && MenuConfig.Interrupt)
             {
-                if (sender.IsValidTarget(Spells._e.Range + sender.BoundingRadius)) Spells._e.Cast();
+                if (sender.LSIsValidTarget(Spells._e.Range + sender.BoundingRadius)) Spells._e.Cast();
             }
         }
         private static void gapcloser(ActiveGapcloser gapcloser)
         {
             var target = gapcloser.Sender;
-            if (target.IsEnemy && Spells._e.IsReady() && target.IsValidTarget() && !target.IsZombie && MenuConfig.Gapcloser)
+            if (target.IsEnemy && Spells._e.IsReady() && target.LSIsValidTarget() && !target.IsZombie && MenuConfig.Gapcloser)
             {
-                if (target.IsValidTarget(Spells._e.Range + Player.BoundingRadius + target.BoundingRadius)) Spells._e.Cast();
+                if (target.LSIsValidTarget(Spells._e.Range + Player.BoundingRadius + target.BoundingRadius)) Spells._e.Cast();
             }
         }
         private static void Drawing_OnEndScene(EventArgs args)
         {
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.IsValidTarget() && !ene.IsZombie))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.LSIsValidTarget() && !ene.IsZombie))
             {
                 var EasyKill = Spells._r.IsReady() && Spells._r.IsReady() && Dmg.IsLethal(enemy)
                        ? new ColorBGRA(0, 255, 0, 120)

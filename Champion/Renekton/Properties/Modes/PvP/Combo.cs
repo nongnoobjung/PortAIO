@@ -18,7 +18,7 @@ namespace ExorAIO.Champions.Renekton
         public static void Combo(EventArgs args)
         {
             if (Bools.HasSheenBuff() ||
-                !Targets.Target.IsValidTarget() ||
+                !Targets.Target.LSIsValidTarget() ||
                 Bools.IsSpellShielded(Targets.Target))
             {
                 return;
@@ -29,7 +29,7 @@ namespace ExorAIO.Champions.Renekton
             /// </summary>
             if (Variables.Q.IsReady() &&
                 !Variables.W.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.Q.Range) &&
+                Targets.Target.LSIsValidTarget(Variables.Q.Range) &&
                 !ObjectManager.Player.HasBuff("RenektonPreExecute") &&
                 Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
             {
@@ -40,7 +40,7 @@ namespace ExorAIO.Champions.Renekton
             ///     The E Combo Logic.
             /// </summary>
             if (Variables.E.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.E.Range) &&
+                Targets.Target.LSIsValidTarget(Variables.E.Range) &&
                 !ObjectManager.Player.HasBuff("renektonsliceanddicedelay") &&
                 (!Targets.Target.UnderTurret() || Targets.Target.HealthPercent < 10) &&
                 Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))

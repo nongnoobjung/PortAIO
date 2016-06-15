@@ -86,7 +86,7 @@ namespace Spirit_Karma.Event
         {
             foreach (var enemy in GameObjects.EnemyHeroes.Where(x => !x.IsDead && !x.IsZombie).OrderBy(hp => hp.Health))
             {
-                if (!enemy.IsValidTarget(Spells.Q.Range) || enemy.IsDead || enemy.IsInvulnerable) return;
+                if (!enemy.LSIsValidTarget(Spells.Q.Range) || enemy.IsDead || enemy.IsInvulnerable) return;
 
                 Usables.Locket();
                 //    Usables.Seraph();

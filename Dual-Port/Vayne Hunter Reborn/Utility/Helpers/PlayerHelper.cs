@@ -14,7 +14,7 @@ namespace VayneHunter_Reborn.Utility.Helpers
         public static float GetRealAutoAttackRange(AIHeroClient attacker, AttackableUnit target)
         {
             var result = attacker.AttackRange + attacker.BoundingRadius;
-            if (target.IsValidTarget())
+            if (target.LSIsValidTarget())
             {
                 return result + target.BoundingRadius;
             }

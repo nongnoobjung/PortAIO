@@ -876,7 +876,7 @@ namespace ElUtilitySuite.Summoners
                 return;
             }
 
-            foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && x.IsValidTarget(800f)))
+            foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && x.LSIsValidTarget(800f)))
             {
                 var ally1 = ally;
                 foreach (var spell in Spells.Where(x => ally1.HasBuff(x.Name)))

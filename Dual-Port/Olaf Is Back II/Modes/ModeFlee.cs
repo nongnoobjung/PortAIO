@@ -54,7 +54,7 @@ namespace OlafxQx.Modes
             
 
             var t = TargetSelector.GetTarget(Champion.PlayerSpells.Q.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (MenuLocal["Flee.UseQ"].Cast<ComboBox>().CurrentValue == 1 && Champion.PlayerSpells.Q.IsReady())
                 {

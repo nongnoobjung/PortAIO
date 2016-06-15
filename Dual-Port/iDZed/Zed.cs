@@ -148,7 +148,7 @@ namespace iDZed
             if (
                 HeroManager.Enemies.Count(
                     hero =>
-                        hero.IsValidTarget()
+                        hero.LSIsValidTarget()
                         && (hero.LSDistance(Player.ServerPosition) <= _spells[SpellSlot.E].Range
                             || (ShadowManager.WShadow.ShadowObject != null
                                 && hero.LSDistance(ShadowManager.WShadow.Position) <= _spells[SpellSlot.E].Range)
@@ -235,7 +235,7 @@ namespace iDZed
                         if (prediction.Hitchance >= GetHitchance())
                         {
                             if (Player.LSDistance(target) <= _spells[SpellSlot.Q].Range
-                                && target.IsValidTarget(_spells[SpellSlot.Q].Range))
+                                && target.LSIsValidTarget(_spells[SpellSlot.Q].Range))
                             {
                                 _spells[SpellSlot.Q].Cast(prediction.CastPosition);
                             }
@@ -244,7 +244,7 @@ namespace iDZed
                     else
                     {
                         if (Player.LSDistance(target) <= _spells[SpellSlot.Q].Range
-                            && target.IsValidTarget(_spells[SpellSlot.Q].Range))
+                            && target.LSIsValidTarget(_spells[SpellSlot.Q].Range))
                         {
                             _spells[SpellSlot.Q].Cast(target.ServerPosition);
                         }
@@ -656,7 +656,7 @@ namespace iDZed
             return
                 HeroManager.Enemies.FirstOrDefault(
                     x =>
-                        x.IsValidTarget(_spells[SpellSlot.W].Range + _spells[SpellSlot.Q].Range)
+                        x.LSIsValidTarget(_spells[SpellSlot.W].Range + _spells[SpellSlot.Q].Range)
                         && x.HasBuff("zedulttargetmark") && x.IsVisible);
         }
 
@@ -937,7 +937,7 @@ namespace iDZed
             {
                 var qMinion =
                     allMinions.FirstOrDefault(
-                        x => _spells[SpellSlot.Q].IsInRange(x) && x.IsValidTarget(_spells[SpellSlot.Q].Range));
+                        x => _spells[SpellSlot.Q].IsInRange(x) && x.LSIsValidTarget(_spells[SpellSlot.Q].Range));
 
                 if (qMinion != null && _spells[SpellSlot.Q].GetDamage(qMinion) > qMinion.Health
                     && !Orbwalking.InAutoAttackRange(qMinion))

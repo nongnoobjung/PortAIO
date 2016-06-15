@@ -30,7 +30,7 @@ namespace JaxQx
                 var x = 0;
                 var t = TargetSelector.GetTarget(Orbwalking.GetRealAutoAttackRange(null) + 800, DamageType.Physical);
                 {
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                     {
                         if (t.Health
                             < ObjectManager.Player.TotalAttackDamage
@@ -87,7 +87,7 @@ namespace JaxQx
             if (getCheckBoxItem(menu, "Extra.DrawKillableEnemy"))
             {
                 var t = KillableEnemyAA;
-                if (t.Item1 != null && t.Item1.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 800) &&
+                if (t.Item1 != null && t.Item1.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 800) &&
                     t.Item2 > 0)
                 {
                     Utils.DrawText(

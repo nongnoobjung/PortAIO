@@ -283,7 +283,7 @@ namespace Two_Girls_One_Donger
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 if (Q.IsReady() && R.IsReady() && getCheckBoxItem(comboMenu, "UseQRCombo") &&
-                    getCheckBoxItem(comboMenu, "UseQCombo") && qtarget.IsValidTarget(650) &&
+                    getCheckBoxItem(comboMenu, "UseQCombo") && qtarget.LSIsValidTarget(650) &&
                     Player.Position.CountEnemiesInRange(650) >=
                     getSliderItem(comboMenu, "QRcount"))
                 {
@@ -292,7 +292,7 @@ namespace Two_Girls_One_Donger
                 }
                 else
                 {
-                    if (Q.IsReady() && getCheckBoxItem(comboMenu, "UseQCombo") && qtarget.IsValidTarget(650) &&
+                    if (Q.IsReady() && getCheckBoxItem(comboMenu, "UseQCombo") && qtarget.LSIsValidTarget(650) &&
                         Player.Position.CountEnemiesInRange(650) >= 1)
                     {
                         Q.Cast(Player.Position.Extend(target.Position, +300));
@@ -307,13 +307,13 @@ namespace Two_Girls_One_Donger
                 }
                 else
                 {
-                    if (E.IsReady() && getCheckBoxItem(comboMenu, "UseECombo") && target.IsValidTarget(E.Range))
+                    if (E.IsReady() && getCheckBoxItem(comboMenu, "UseECombo") && target.LSIsValidTarget(E.Range))
                     {
                         E.CastIfHitchanceEquals(target, HitChance.High, true);
                     }
                     if (W.IsReady() && getCheckBoxItem(comboMenu, "UseWRCombo") &&
                         getCheckBoxItem(comboMenu, "UseRCombo") &&
-                        R.IsReady() && target.IsValidTarget(W.Range) &&
+                        R.IsReady() && target.LSIsValidTarget(W.Range) &&
                         wpred.Hitchance >= HitChance.High && CalcDamage(target) >= target.Health)
                     {
                         R.Cast();
@@ -323,7 +323,7 @@ namespace Two_Girls_One_Donger
                     }
                     else
                     {
-                        if (W.IsReady() && getCheckBoxItem(comboMenu, "UseWCombo") && target.IsValidTarget(W.Range))
+                        if (W.IsReady() && getCheckBoxItem(comboMenu, "UseWCombo") && target.LSIsValidTarget(W.Range))
                         {
                             W.CastIfHitchanceEquals(target, HitChance.High, true);
                         }
@@ -339,7 +339,7 @@ namespace Two_Girls_One_Donger
                 return;
             var harassmana = getSliderItem(miscMenu, "ManaW");
             var useW = getKeyBindItem(miscMenu, "AutoHarras");
-            if (W.IsReady() && target.IsValidTarget() && useW && Player.Mana/Player.MaxMana*100 > harassmana)
+            if (W.IsReady() && target.LSIsValidTarget() && useW && Player.Mana/Player.MaxMana*100 > harassmana)
             {
                 W.CastIfHitchanceEquals(target, HitChance.High, true);
             }
@@ -464,7 +464,7 @@ namespace Two_Girls_One_Donger
 
         private static void AntiGapCloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (E.IsReady() && gapcloser.Sender.IsValidTarget(E.Range) && getCheckBoxItem(miscMenu, "AntiGap"))
+            if (E.IsReady() && gapcloser.Sender.LSIsValidTarget(E.Range) && getCheckBoxItem(miscMenu, "AntiGap"))
                 E.Cast(gapcloser.End);
         }
 
@@ -472,7 +472,7 @@ namespace Two_Girls_One_Donger
         private static void Interrupter2_OnInterruptableTarget(Obj_AI_Base sender,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && sender.IsValidTarget(E.Range) && getCheckBoxItem(miscMenu, "Interrupt"))
+            if (E.IsReady() && sender.LSIsValidTarget(E.Range) && getCheckBoxItem(miscMenu, "Interrupt"))
                 E.Cast(sender.Position);
         }
 

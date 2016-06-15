@@ -25,7 +25,7 @@ namespace Jhin___The_Virtuoso.Modes
         /// <param name="spell">Spell</param>
         public static void Execute(this Spell spell)
         {
-            foreach (var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(spell.Range)))
+            foreach (var enemy in HeroManager.Enemies.Where(o => o.LSIsValidTarget(spell.Range)))
             {
                 spell.Cast(enemy);
             }
@@ -36,7 +36,7 @@ namespace Jhin___The_Virtuoso.Modes
         /// </summary>
         public static void ExecuteQ()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.Q.Range) && !x.IsReloading()))
+            foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.Q.Range) && !x.IsReloading()))
             {
                 Spells.Q.CastOnUnit(enemy);
             }
@@ -49,7 +49,7 @@ namespace Jhin___The_Virtuoso.Modes
         {
             if (Menus.getCheckBoxItem(Menus.wMenu, "w.passive.combo"))
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.W.Range) &&
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.W.Range) &&
                                                                      (x.IsStunnable() || x.IsEnemyImmobile())))
                 {
                     Spells.W.Cast(enemy);
@@ -74,7 +74,7 @@ namespace Jhin___The_Virtuoso.Modes
         /// </summary>
         public static void ExecuteE()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.E.Range) && x.IsEnemyImmobile())
+            foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.E.Range) && x.IsEnemyImmobile())
                 )
             {
                 var pred = Spells.E.GetPrediction(enemy);

@@ -806,7 +806,7 @@ namespace TreeLib.Core
             }
 
             foreach (var gapcloser in
-                ActiveGapclosers.Where(gapcloser => gapcloser.Sender.IsValidTarget())
+                ActiveGapclosers.Where(gapcloser => gapcloser.Sender.LSIsValidTarget())
                     .Where(
                         gapcloser =>
                             gapcloser.SkillType == GapcloserType.Targeted ||

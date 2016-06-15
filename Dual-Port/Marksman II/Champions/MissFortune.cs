@@ -73,7 +73,7 @@ namespace Marksman.Champions
                 return;
 
             var t = TargetSelector.GetTarget(Q.Range + 450, TargetSelector.DamageType.Physical);
-            if (t.IsValidTarget(Q.Range))
+            if (t.LSIsValidTarget(Q.Range))
             {
                 Q.CastOnUnit(t);
             }
@@ -95,7 +95,7 @@ namespace Marksman.Champions
             if (E.IsReady() && GetValue<KeyBind>("UseETH").Active)
             {
                 var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-                if (t.IsValidTarget() && (t.HasBuffOfType(BuffType.Stun) || t.HasBuffOfType(BuffType.Snare) ||
+                if (t.LSIsValidTarget() && (t.HasBuffOfType(BuffType.Stun) || t.HasBuffOfType(BuffType.Snare) ||
                                           t.HasBuffOfType(BuffType.Charm) || t.HasBuffOfType(BuffType.Fear) ||
                                           t.HasBuffOfType(BuffType.Taunt) || t.HasBuff("zhonyasringshield") ||
                                           t.HasBuff("Recall")))
@@ -117,7 +117,7 @@ namespace Marksman.Champions
                 if (E.IsReady() && useE)
                 {
                     var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                     {
                         if (ObjectManager.Player.LSDistance(t) > 600)
                             E.CastIfHitchanceEquals(t, t.Path.Count() > 1 ? HitChance.High : HitChance.Medium);
@@ -191,7 +191,7 @@ namespace Marksman.Champions
                                     .Where(
                                         m =>
                                             m.Team == GameObjectTeam.Neutral &&
-                                            m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 165))
+                                            m.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 165))
                                     .Sum(mob => (int) mob.Health);
 
                             totalAa = (int) (totalAa/ObjectManager.Player.TotalAttackDamage);
@@ -278,7 +278,7 @@ namespace Marksman.Champions
                             .Where(
                                 m =>
                                     m.IsEnemy && !m.IsDead &&
-                                    m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
+                                    m.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
                             .Sum(mob => (int) mob.Health);
 
                     totalAa = (int) (totalAa/ObjectManager.Player.TotalAttackDamage);

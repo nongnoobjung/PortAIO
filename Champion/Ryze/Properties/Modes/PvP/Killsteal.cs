@@ -25,7 +25,7 @@ namespace ExorAIO.Champions.Ryze
             if (Variables.Q.IsReady() &&
                 Variables.getCheckBoxItem(Variables.QMenu, "qspell.ks"))
             {
-                foreach (var target in GameObjects.EnemyHeroes.Where(t => !Invulnerable.Check(t) && t.Health < Variables.Q.GetDamage(t) && t.IsValidTarget(Variables.Q.Range - 100f)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(t => !Invulnerable.Check(t) && t.Health < Variables.Q.GetDamage(t) && t.LSIsValidTarget(Variables.Q.Range - 100f)))
                 {
                     if (!Variables.Q.GetPrediction(Targets.Target).CollisionObjects.Any(c => c.IsMinion))
                     {
@@ -44,7 +44,7 @@ namespace ExorAIO.Champions.Ryze
                 foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
                         !Invulnerable.Check(t) &&
-                        t.IsValidTarget(Variables.W.Range) &&
+                        t.LSIsValidTarget(Variables.W.Range) &&
                         t.Health < Variables.W.GetDamage(t)))
                 {
                     Variables.W.CastOnUnit(target);
@@ -61,7 +61,7 @@ namespace ExorAIO.Champions.Ryze
                 foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
                         !Invulnerable.Check(t) &&
-                        t.IsValidTarget(Variables.E.Range) &&
+                        t.LSIsValidTarget(Variables.E.Range) &&
                         t.Health < Variables.E.GetDamage(t)))
                 {
                     Variables.E.CastOnUnit(target);

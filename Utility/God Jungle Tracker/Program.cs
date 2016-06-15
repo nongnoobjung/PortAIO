@@ -375,7 +375,7 @@ namespace GodJungleTracker
         {
             if (Environment.TickCount > UpdateTick + getSliderItem("updatetick"))
             {
-                var enemy = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget());
+                var enemy = HeroManager.Enemies.FirstOrDefault(x => x.LSIsValidTarget());
         
                 foreach (var camp in Jungle.Camps.Where(camp => camp.MapType.ToString() == Game.MapId.ToString()))
                 {

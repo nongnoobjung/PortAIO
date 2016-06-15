@@ -57,7 +57,7 @@ namespace UnderratedAIO.Champions
         {
             if (getCheckBoxItem(miscMenu, "useQgc"))
             {
-                if (gapcloser.Sender.IsValidTarget(Qint.Range) && Q.IsReady())
+                if (gapcloser.Sender.LSIsValidTarget(Qint.Range) && Q.IsReady())
                 {
                     Q.Cast(gapcloser.End, getCheckBoxItem(config, "packets"));
                 }

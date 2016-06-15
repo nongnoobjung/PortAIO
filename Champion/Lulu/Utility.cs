@@ -29,13 +29,13 @@ namespace LuluLicious
     {
         public static AIHeroClient GetBestWETarget()
         {
-            var ally = HeroManager.Allies.Where(h => h.IsValidTarget(SpellManager.W.Range, false)).OrderByDescending(h => Lulu.getSliderItem(Lulu.superMMenu, h.NetworkId + "WEPriority")).FirstOrDefault();
+            var ally = HeroManager.Allies.Where(h => h.LSIsValidTarget(SpellManager.W.Range, false)).OrderByDescending(h => Lulu.getSliderItem(Lulu.superMMenu, h.NetworkId + "WEPriority")).FirstOrDefault();
             return ally == null || Lulu.getSliderItem(Lulu.superMMenu, ally.NetworkId + "WEPriority") == 0 ? null : ally;
         }
 
         public static AIHeroClient GetBestWTarget()
         {
-            var enemy = HeroManager.Enemies.Where(h => h.IsValidTarget(SpellManager.W.Range)).MaxOrDefault(o => Lulu.getSliderItem(Lulu.wMenu, o.NetworkId + "WPriority"));
+            var enemy = HeroManager.Enemies.Where(h => h.LSIsValidTarget(SpellManager.W.Range)).MaxOrDefault(o => Lulu.getSliderItem(Lulu.wMenu, o.NetworkId + "WPriority"));
             return enemy == null || Lulu.getSliderItem(Lulu.wMenu, enemy.NetworkId + "WPriority") == 0 ? null : enemy;
         }
 

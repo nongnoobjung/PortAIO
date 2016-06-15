@@ -133,7 +133,7 @@ namespace GFUELQuinn
             {
                 if (getCheckBoxItem(miscellaneousMenu, "GFUELQuinn.Misc.Antigapcloser") && E.IsReady())
                 {
-                    if (gapcloser.Sender.IsValidTarget(E.Range))
+                    if (gapcloser.Sender.LSIsValidTarget(E.Range))
                     {
                         E.CastOnUnit(gapcloser.Sender);
                     }
@@ -156,20 +156,20 @@ namespace GFUELQuinn
                 return;
             }
 
-            var passiveTarget = HeroManager.Enemies.Find(x => x.HasBuff("quinnw") && x.IsValidTarget(Q.Range));
+            var passiveTarget = HeroManager.Enemies.Find(x => x.HasBuff("quinnw") && x.LSIsValidTarget(Q.Range));
             Orbwalker.ForcedTarget = passiveTarget ?? null;
 
             if (getCheckBoxItem(comboMenu, "GFUELQuinn.Combo.Ghostblade"))
             {
                 var ghostBlade = ItemData.Youmuus_Ghostblade.GetItem();
                 if (ghostBlade.IsReady() && ghostBlade.IsOwned(Player)
-                    && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player) + 100))
+                    && target.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player) + 100))
                 {
                     ghostBlade.Cast();
                 }
             }
 
-            var enemy = HeroManager.Enemies.Find(e => e.Buffs.Any(b => b.Name.ToLower().Contains("quinnw") && e.IsValidTarget(E.Range)));
+            var enemy = HeroManager.Enemies.Find(e => e.Buffs.Any(b => b.Name.ToLower().Contains("quinnw") && e.LSIsValidTarget(E.Range)));
             if (enemy != null)
             {
                 if (!isBirdForm)
@@ -227,7 +227,7 @@ namespace GFUELQuinn
                     return;
                 }
 
-                var passiveTarget = HeroManager.Enemies.Find(x => x.HasBuff("quinnw") && x.IsValidTarget(Q.Range));
+                var passiveTarget = HeroManager.Enemies.Find(x => x.HasBuff("quinnw") && x.LSIsValidTarget(Q.Range));
                 Orbwalker.ForcedTarget = passiveTarget ?? null;
 
                 if (getCheckBoxItem(harassMenu, "GFUELQuinn.Harass.Q") && target.LSDistance(Player.Position) < Q.Range &&
@@ -270,7 +270,7 @@ namespace GFUELQuinn
 
                 var passiveTarget =
                     MinionManager.GetMinions(Player.Position, Q.Range + Q.Width)
-                        .Find(x => x.HasBuff("quinnw") && x.IsValidTarget(Q.Range));
+                        .Find(x => x.HasBuff("quinnw") && x.LSIsValidTarget(Q.Range));
                 Orbwalker.ForcedTarget = passiveTarget ?? null;
 
                 if (getCheckBoxItem(jungleclearMenu, "GFUELQuinn.jungleclear.Q"))
@@ -326,12 +326,12 @@ namespace GFUELQuinn
 
                 var passiveTarget =
                     MinionManager.GetMinions(Player.Position, Q.Range + Q.Width)
-                        .Find(x => x.HasBuff("quinnw") && x.IsValidTarget(Q.Range));
+                        .Find(x => x.HasBuff("quinnw") && x.LSIsValidTarget(Q.Range));
                 Orbwalker.ForcedTarget = passiveTarget ?? null;
 
                 if (getCheckBoxItem(laneclearMenu, "GFUELQuinn.laneclear.Q"))
                 {
-                    if (GetCenterMinion().IsValidTarget())
+                    if (GetCenterMinion().LSIsValidTarget())
                     {
                         Q.Cast(GetCenterMinion());
                     }
@@ -429,7 +429,7 @@ namespace GFUELQuinn
             {
                 if (getCheckBoxItem(miscellaneousMenu, "GFUELQuinn.Misc.Interrupter") && E.IsReady())
                 {
-                    if (sender.IsValidTarget(E.Range))
+                    if (sender.LSIsValidTarget(E.Range))
                     {
                         E.CastOnUnit(sender);
                     }
@@ -484,9 +484,9 @@ namespace GFUELQuinn
             try
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Q.Range) && !x.IsDead && !x.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Q.Range) && !x.IsDead && !x.IsZombie))
                 {
-                    if (enemy.IsValidTarget(Q.Range) && enemy.Health < Q.GetDamage(enemy))
+                    if (enemy.LSIsValidTarget(Q.Range) && enemy.Health < Q.GetDamage(enemy))
                     {
                         var prediction = Q.GetPrediction(enemy);
                         if (prediction.Hitchance >= HitChance.High)
@@ -570,7 +570,7 @@ namespace GFUELQuinn
                         return;
                     }
 
-                    var targeta = HeroManager.Enemies.Find(x => x.HasBuff("quinnw") && x.IsValidTarget(Q.Range));
+                    var targeta = HeroManager.Enemies.Find(x => x.HasBuff("quinnw") && x.LSIsValidTarget(Q.Range));
                     if (targeta == null)
                     {
                         return;

@@ -53,7 +53,7 @@ namespace Marksman.Champions
                 return;
             }
 
-            if (E.IsReady() && gapcloser.Sender.IsValidTarget(E.Range))
+            if (E.IsReady() && gapcloser.Sender.LSIsValidTarget(E.Range))
                 E.CastOnUnit(gapcloser.Sender);
         }
 
@@ -137,7 +137,7 @@ namespace Marksman.Champions
         {
             var enemy =
                 HeroManager.Enemies.Find(
-                    e => e.Buffs.Any(b => b.Name.ToLower() == "quinnw_cosmetic" && e.IsValidTarget(E.Range)));
+                    e => e.Buffs.Any(b => b.Name.ToLower() == "quinnw_cosmetic" && e.LSIsValidTarget(E.Range)));
             if (enemy != null)
             {
                 if (enemy.LSDistance(ObjectManager.Player.Position) > Orbwalking.GetRealAutoAttackRange(null) + 65)
@@ -166,7 +166,7 @@ namespace Marksman.Champions
                     if (E.IsReady() && useE)
                     {
                         var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-                        if (t.IsValidTarget() && !t.IsZombie && !isHePantheon(t) && !t.HasBuff("QuinnW_Cosmetic"))
+                        if (t.LSIsValidTarget() && !t.IsZombie && !isHePantheon(t) && !t.HasBuff("QuinnW_Cosmetic"))
                         {
                             E.CastOnUnit(t);
                         }
@@ -175,7 +175,7 @@ namespace Marksman.Champions
                     if (Q.IsReady() && useQ)
                     {
                         var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-                        if (t.IsValidTarget() && !t.IsZombie)
+                        if (t.LSIsValidTarget() && !t.IsZombie)
                             Q.Cast(t);
                     }
 

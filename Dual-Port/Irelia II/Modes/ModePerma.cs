@@ -29,7 +29,7 @@ namespace Irelia.Modes
                 //if (Modes.ModeSettings.MenuSettingE.Item("Settings.E.Auto").GetValue<StringList>().SelectedIndex == 1)
                 {
                     var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-                    if (t.IsValidTarget() && t.CanStun())
+                    if (t.LSIsValidTarget() && t.CanStun())
                     {
                         Champion.PlayerSpells.CastECombo(t);
                     }

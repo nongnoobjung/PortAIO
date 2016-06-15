@@ -15,7 +15,7 @@ namespace ElUtilitySuite.Items
 
         public static int CountHerosInRange(this AIHeroClient target, bool checkteam, float range = 1200f)
         {
-            var objListTeam = ObjectManager.Get<AIHeroClient>().Where(x => x.IsValidTarget(range));
+            var objListTeam = ObjectManager.Get<AIHeroClient>().Where(x => x.LSIsValidTarget(range));
             return objListTeam.Count(hero => checkteam ? hero.Team != target.Team : hero.Team == target.Team);
         }
 
@@ -56,7 +56,7 @@ namespace ElUtilitySuite.Items
             var target = Player;
             foreach (var unit in
                 ObjectManager.Get<AIHeroClient>()
-                    .Where(x => x.IsAlly && x.IsValidTarget(900))
+                    .Where(x => x.IsAlly && x.LSIsValidTarget(900))
                     .OrderByDescending(xe => xe.Health / xe.MaxHealth * 100))
             {
                 target = unit;
@@ -125,7 +125,7 @@ namespace ElUtilitySuite.Items
                     return;
                 }
 
-                if (HeroManager.Allies.OrderBy(t => t.FlatCritChanceMod).First().IsValidTarget(800f, false))
+                if (HeroManager.Allies.OrderBy(t => t.FlatCritChanceMod).First().LSIsValidTarget(800f, false))
                 {
                     EloBuddy.SDK.Item.UseItem(ItemId.Zekes_Harbinger, HeroManager.Allies.OrderBy(t => t.FlatCritChanceMod).First());
                 }
@@ -139,7 +139,7 @@ namespace ElUtilitySuite.Items
                 if (!getCheckBoxItem("2")) { return; }
                 if (GameObjects.AllyMinions.Any(m => m.CharData.BaseSkinName.Contains("MinionSuper")))
                 {
-                    foreach (Obj_AI_Minion super in GameObjects.AllyMinions.Where(m => m.IsValidTarget(1200f, false) && m.CharData.BaseSkinName.Contains("MinionSuper")))
+                    foreach (Obj_AI_Minion super in GameObjects.AllyMinions.Where(m => m.LSIsValidTarget(1200f, false) && m.CharData.BaseSkinName.Contains("MinionSuper")))
                     {
                         EloBuddy.SDK.Item.UseItem(ItemId.Banner_of_Command, super);
                     }
@@ -149,7 +149,7 @@ namespace ElUtilitySuite.Items
                     foreach (Obj_AI_Minion siege in
                         GameObjects.AllyMinions.Where(
                         m =>
-                            m.IsValidTarget(1200f, false) &&
+                            m.LSIsValidTarget(1200f, false) &&
                             m.CharData.BaseSkinName.Contains("MinionSiege")))
                     {
                         EloBuddy.SDK.Item.UseItem(ItemId.Banner_of_Command, siege);
@@ -165,7 +165,7 @@ namespace ElUtilitySuite.Items
                 if (!getCheckBoxItem("3")) { return; }
                 foreach (AIHeroClient ally in HeroManager.Allies.Where(
                     a =>
-                        a.IsValidTarget(500f, false) &&
+                        a.LSIsValidTarget(500f, false) &&
                         HealthPrediction.GetHealthPrediction(a, (int)(250 + Game.Ping / 2f)) <= a.MaxHealth / 4))
                 {
                     EloBuddy.SDK.Item.UseItem(ItemId.Face_of_the_Mountain);
@@ -181,7 +181,7 @@ namespace ElUtilitySuite.Items
                 if (!getCheckBoxItem("4")) { return; }
                 if (HeroManager.Allies.Count(
                     a =>
-                        a.IsValidTarget(600f, false) &&
+                        a.LSIsValidTarget(600f, false) &&
                         HealthPrediction.GetHealthPrediction(a, (int)(250 + Game.Ping / 2f)) <= a.MaxHealth / 1.5) >= 3)
                 {
                     EloBuddy.SDK.Item.UseItem(ItemId.Locket_of_the_Iron_Solari);
@@ -221,7 +221,7 @@ namespace ElUtilitySuite.Items
             if (EloBuddy.SDK.Item.CanUseItem(ItemId.Guardians_Horn))
             {
                 if (!getCheckBoxItem("7")) { return; }
-                if (HeroManager.Enemies.Count(t => t.IsValidTarget(1000f)) >= 3)
+                if (HeroManager.Enemies.Count(t => t.LSIsValidTarget(1000f)) >= 3)
                 {
                     EloBuddy.SDK.Item.UseItem(ItemId.Guardians_Horn);
                     return;
@@ -236,7 +236,7 @@ namespace ElUtilitySuite.Items
                 if (!getCheckBoxItem("8")) { return; }
                 if (HeroManager.Enemies.Count(
                     t =>
-                        t.IsValidTarget(2000f) &&
+                        t.LSIsValidTarget(2000f) &&
                         t.CountEnemiesInRange(1500f) <=
                             ObjectManager.Player.CountAlliesInRange(1500f) + t.CountAlliesInRange(1500f) - 1) > 1)
                 {
@@ -253,7 +253,7 @@ namespace ElUtilitySuite.Items
                 if (!getCheckBoxItem("9")) { return; }
                 if (!ObjectManager.Player.HasBuff("ItemRighteousGlory"))
                 {
-                    if (HeroManager.Enemies.Count(t => t.IsValidTarget(2000f) && t.CountEnemiesInRange(1500f) <= ObjectManager.Player.CountAlliesInRange(1500f) + t.CountAlliesInRange(1500f) - 1) > 1)
+                    if (HeroManager.Enemies.Count(t => t.LSIsValidTarget(2000f) && t.CountEnemiesInRange(1500f) <= ObjectManager.Player.CountAlliesInRange(1500f) + t.CountAlliesInRange(1500f) - 1) > 1)
                     {
                         EloBuddy.SDK.Item.UseItem(ItemId.Righteous_Glory);
                         return;

@@ -109,7 +109,7 @@ namespace OneKeyToWin_AIO_Sebby
                 var orbTarget = args.Target as AIHeroClient;
                 if (!orbTarget.HasBuff("quinnw"))
                 {
-                    var best = Program.Enemies.FirstOrDefault(enemy => enemy.IsValidTarget() && SebbyLib.Orbwalking.InAutoAttackRange(enemy) && enemy.HasBuff("quinnw"));
+                    var best = Program.Enemies.FirstOrDefault(enemy => enemy.LSIsValidTarget() && SebbyLib.Orbwalking.InAutoAttackRange(enemy) && enemy.HasBuff("quinnw"));
                     if (best != null)
                         Orbwalker.ForcedTarget = best;
                     else
@@ -118,7 +118,7 @@ namespace OneKeyToWin_AIO_Sebby
             }
             else if (Program.LaneClear && args.Target.Type == GameObjectType.obj_AI_Minion && getCheckBoxItem(farmMenu, "farmP"))
             {
-                var bestMinion = Cache.GetMinions(Player.Position, Player.AttackRange).FirstOrDefault(minion => minion.IsValidTarget() && SebbyLib.Orbwalking.InAutoAttackRange(minion) && minion.HasBuff("quinnw"));
+                var bestMinion = Cache.GetMinions(Player.Position, Player.AttackRange).FirstOrDefault(minion => minion.LSIsValidTarget() && SebbyLib.Orbwalking.InAutoAttackRange(minion) && minion.HasBuff("quinnw"));
 
                 if (bestMinion != null)
                     Orbwalker.ForcedTarget = bestMinion;
@@ -163,7 +163,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && getCheckBoxItem(eMenu, "Int") && sender.IsValidTarget(E.Range))
+            if (E.IsReady() && getCheckBoxItem(eMenu, "Int") && sender.LSIsValidTarget(E.Range))
                 E.CastOnUnit(sender);
         }
 
@@ -172,7 +172,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (target.Type == GameObjectType.AIHeroClient)
             {
                 var t = target as AIHeroClient;
-                if (E.IsReady() && getCheckBoxItem(eMenu, "autoE") && t.IsValidTarget(E.Range) && t.CountEnemiesInRange(800) < 3)
+                if (E.IsReady() && getCheckBoxItem(eMenu, "autoE") && t.LSIsValidTarget(E.Range) && t.CountEnemiesInRange(800) < 3)
                 {
                     if (Program.Combo && Player.Mana > RMANA + EMANA)
                         E.Cast(t);
@@ -183,7 +183,7 @@ namespace OneKeyToWin_AIO_Sebby
                     else if (OktwCommon.GetKsDamage(t, E) > t.Health)
                         E.Cast(t);
                 }
-                if (Q.IsReady() && t.IsValidTarget(Q.Range))
+                if (Q.IsReady() && t.LSIsValidTarget(Q.Range))
                 {
                     if (Program.Combo && Player.Mana > RMANA + QMANA)
                         Program.CastSpell(Q, t);
@@ -196,7 +196,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                     if (!Program.None && Player.Mana > RMANA + QMANA + EMANA)
                     {
-                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                             Q.Cast(enemy);
                     }
                 }
@@ -209,7 +209,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (E.IsReady() && getCheckBoxItem(eMenu, "AGC") && getCheckBoxItem(eMenu, "gap" + gapcloser.Sender.ChampionName))
             {
                 var t = gapcloser.Sender;
-                if (t.IsValidTarget(E.Range))
+                if (t.LSIsValidTarget(E.Range))
                 {
                     E.Cast(t);
                 }
@@ -227,7 +227,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (SebbyLib.Orbwalking.InAutoAttackRange(t) && t.HasBuff("quinnw"))
                     return;
@@ -242,7 +242,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (!Program.None && Player.Mana > RMANA + QMANA + EMANA)
                 {
-                    foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy);
                 }
             }

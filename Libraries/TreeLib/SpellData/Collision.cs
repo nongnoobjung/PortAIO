@@ -110,12 +110,12 @@ namespace TreeLib.SpellData
                         minions.AddRange(
                             ObjectManager.Get<Obj_AI_Minion>()
                                 .Where(x => x.Team == GameObjectTeam.Neutral)
-                                .Where(i => i.IsValidTarget(1200, true, from.To3D())));
+                                .Where(i => i.LSIsValidTarget(1200, true, from.To3D())));
                         minions.AddRange(
                             ObjectManager.Get<Obj_AI_Minion>()
                                 .Where(
                                     i =>
-                                        i.IsValidTarget(1200, false, @from.To3D()) &&
+                                        i.LSIsValidTarget(1200, false, @from.To3D()) &&
                                         (skillshot.Unit.Team == ObjectManager.Player.Team
                                             ? i.Team != ObjectManager.Player.Team
                                             : i.Team == ObjectManager.Player.Team) && MinionManager.IsMinion(i)));
@@ -146,7 +146,7 @@ namespace TreeLib.SpellData
                         break;
                     case CollisionObjectTypes.Champion:
                         collisions.AddRange(
-                            from hero in HeroManager.Allies.Where(i => i.IsValidTarget(1200, false) && !i.IsMe)
+                            from hero in HeroManager.Allies.Where(i => i.LSIsValidTarget(1200, false) && !i.IsMe)
                             let pred =
                                 FastPrediction(
                                     @from, hero,
@@ -171,7 +171,7 @@ namespace TreeLib.SpellData
                     case CollisionObjectTypes.YasuoWall:
                         if (
                             !HeroManager.Allies.Any(
-                                i => i.IsValidTarget(float.MaxValue, false) && i.ChampionName == "Yasuo"))
+                                i => i.LSIsValidTarget(float.MaxValue, false) && i.ChampionName == "Yasuo"))
                         {
                             break;
                         }

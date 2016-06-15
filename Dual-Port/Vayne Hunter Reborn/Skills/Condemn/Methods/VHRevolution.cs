@@ -43,7 +43,7 @@ namespace VayneHunter_Reborn.Skills.Condemn.Methods
             /*
             var HeroList = HeroManager.Enemies.Where(
                                     h =>
-                                        h.IsValidTarget(Variables.spells[SpellSlot.E].Range) &&
+                                        h.LSIsValidTarget(Variables.spells[SpellSlot.E].Range) &&
                                         !h.HasBuffOfType(BuffType.SpellShield) &&
                                         !h.HasBuffOfType(BuffType.SpellImmunity));
                     

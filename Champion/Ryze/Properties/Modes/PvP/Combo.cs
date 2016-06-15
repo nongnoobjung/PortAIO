@@ -16,14 +16,14 @@ namespace ExorAIO.Champions.Ryze
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Combo(EventArgs args)
         {
-            if (!Targets.Target.IsValidTarget() || Bools.IsSpellShielded(Targets.Target))
+            if (!Targets.Target.LSIsValidTarget() || Bools.IsSpellShielded(Targets.Target))
             {
                 return;
             }
 
             if (Bools.HasSheenBuff())
             {
-                if (Targets.Target.IsValidTarget(Variables.AARange))
+                if (Targets.Target.LSIsValidTarget(Variables.AARange))
                 {
                     return;
                 }
@@ -54,7 +54,7 @@ namespace ExorAIO.Champions.Ryze
             ///     The W Combo Logic.
             /// </summary>
             if (Variables.W.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.W.Range) &&
+                Targets.Target.LSIsValidTarget(Variables.W.Range) &&
                 Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
             {
                 if (!Variables.Q.IsReady() &&
@@ -74,7 +74,7 @@ namespace ExorAIO.Champions.Ryze
             ///     The Q Combo Logic.
             /// </summary>
             if (Variables.Q.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.Q.Range - 50f) &&
+                Targets.Target.LSIsValidTarget(Variables.Q.Range - 50f) &&
                 Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
             {
                 Variables.Q.Cast(Targets.Target);
@@ -84,7 +84,7 @@ namespace ExorAIO.Champions.Ryze
             ///     The E Combo Logic.
             /// </summary>
             if (Variables.E.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.E.Range) &&
+                Targets.Target.LSIsValidTarget(Variables.E.Range) &&
                 Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
             {
                 if (!Variables.Q.IsReady() &&

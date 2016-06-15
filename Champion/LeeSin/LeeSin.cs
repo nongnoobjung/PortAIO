@@ -319,7 +319,7 @@
                 {
                     return;
                 }
-                var count = minions.Count(i => i.IsValidTarget(E.Range));
+                var count = minions.Count(i => i.LSIsValidTarget(E.Range));
                 if (count > 0 && (Player.Mana >= 70 || count > 2))
                 {
                     E.Cast();
@@ -327,7 +327,7 @@
             }
             else
             {
-                var minion = minions.Where(i => i.IsValidTarget(E2.Range) && HaveE(i)).ToList();
+                var minion = minions.Where(i => i.LSIsValidTarget(E2.Range) && HaveE(i)).ToList();
                 if (minion.Count > 0 && (cPassive == 0 || minion.Any(CanE2)) && E2.Cast())
                 {
                     lastE2 = Variables.TickCount;
@@ -353,7 +353,7 @@
         private static void CastRFlash(Obj_AI_Base target)
         {
             var targetSelect = TargetSelector.SelectedTarget;
-            if (!targetSelect.IsValidTarget() || !targetSelect.Compare(target)
+            if (!targetSelect.LSIsValidTarget() || !targetSelect.Compare(target)
                 || target.Health + target.AttackShield <= R.GetDamage(target))
             {
                 return;
@@ -457,7 +457,7 @@
                         CastQSmite(target);
                     }
                 }
-                else if (getCheckBoxItem(comboMenu, "Q2") && !IsDashing && objQ.IsValidTarget(Q2.Range))
+                else if (getCheckBoxItem(comboMenu, "Q2") && !IsDashing && objQ.LSIsValidTarget(Q2.Range))
                 {
                     var target = objQ as AIHeroClient;
                     if (target != null)
@@ -516,7 +516,7 @@
                     i => i.IsMinion() || i.IsPet() || SpecialPet.Contains(i.CharData.BaseSkinName.ToLower())));
             var objJump =
                 objJumps.Where(
-                    i => i.IsValidTarget(W.Range, false) && i.Distance(posJump) < (isStar ? R.Range - 50 : 200))
+                    i => i.LSIsValidTarget(W.Range, false) && i.Distance(posJump) < (isStar ? R.Range - 50 : 200))
                     .MinOrDefault(i => i.Distance(posJump));
             if (objJump != null)
             {
@@ -538,7 +538,7 @@
             foreach (var targetKick in
                 GameObjects.EnemyHeroes.Where(
                     i =>
-                    i.IsValidTarget(R.Range, true, from) && i.Health + i.AttackShield > R.GetDamage(i)
+                    i.LSIsValidTarget(R.Range, true, from) && i.Health + i.AttackShield > R.GetDamage(i)
                     && !i.HasBuffOfType(BuffType.SpellShield) && !i.HasBuffOfType(BuffType.SpellImmunity))
                     .OrderByDescending(i => i.AllShield))
             {
@@ -548,7 +548,7 @@
                 R2.UpdateSourcePosition(posTarget, posTarget);
                 var targetHits =
                     GameObjects.EnemyHeroes.Where(
-                        i => i.IsValidTarget(R2.Range, true, R2.From) && !i.Compare(targetKick)).ToList();
+                        i => i.LSIsValidTarget(R2.Range, true, R2.From) && !i.Compare(targetKick)).ToList();
                 if (targetHits.Count == 0)
                 {
                     continue;
@@ -677,7 +677,7 @@
         private static void LaneClear()
         {
             var minions =
-                Common.ListMinions().Where(i => i.IsValidTarget(Q2.Range)).OrderByDescending(i => i.MaxHealth).ToList();
+                Common.ListMinions().Where(i => i.LSIsValidTarget(Q2.Range)).OrderByDescending(i => i.MaxHealth).ToList();
             if (minions.Count == 0)
             {
                 return;
@@ -754,7 +754,7 @@
                 else if (!IsDashing)
                 {
                     var q2Minion = objQ;
-                    if (q2Minion.IsValidTarget(Q2.Range)
+                    if (q2Minion.LSIsValidTarget(Q2.Range)
                         && (CanQ2(q2Minion) || q2Minion.Health <= Q.GetDamage(q2Minion, DamageStage.SecondCast)
                             || q2Minion.DistanceToPlayer() > q2Minion.GetRealAutoAttackRange() + 100 || cPassive == 0)
                         && Q2.Cast())
@@ -773,7 +773,7 @@
             }
             var minions =
                 GameObjects.EnemyMinions.Where(
-                    i => (i.IsMinion() || i.IsPet(false)) && i.IsValidTarget(Q.Range) && Q.CanLastHit(i, Q.GetDamage(i)))
+                    i => (i.IsMinion() || i.IsPet(false)) && i.LSIsValidTarget(Q.Range) && Q.CanLastHit(i, Q.GetDamage(i)))
                     .OrderByDescending(i => i.MaxHealth)
                     .ToList();
             if (minions.Count == 0)
@@ -1012,7 +1012,7 @@
                     else
                     {
                         target = Q.GetTarget(-100);
-                        if ((getCheckBoxItem(insecMenu, "Q") && Q.IsReady()) || objQ.IsValidTarget(Q2.Range))
+                        if ((getCheckBoxItem(insecMenu, "Q") && Q.IsReady()) || objQ.LSIsValidTarget(Q2.Range))
                         {
                             target = Q2.GetTarget(FlashRange);
                         }
@@ -1076,7 +1076,7 @@
                             var hero =
                                 GameObjects.AllyHeroes.Where(
                                     i =>
-                                    i.IsValidTarget(RKickRange + 700, false, target.ServerPosition) && !i.IsMe
+                                    i.LSIsValidTarget(RKickRange + 700, false, target.ServerPosition) && !i.IsMe
                                     && i.HealthPercent > 10 && i.Distance(target) > 350)
                                     .MaxOrDefault(i => new Priority().GetDefaultPriority(i));
                             if (hero != null)
@@ -1176,7 +1176,7 @@
                         }
                         lastFlashRTime = Variables.TickCount;
                         var target = TargetSelector.SelectedTarget;
-                        if (target.IsValidTarget())
+                        if (target.LSIsValidTarget())
                         {
                             DelayAction.Add(5, () => R.CastOnUnit(target));
                         }
@@ -1346,7 +1346,7 @@
                         Common.ListEnemies(true)
                             .Where(
                                 i =>
-                                !i.Compare(target) && i.IsValidTarget(Q.Range)
+                                !i.Compare(target) && i.LSIsValidTarget(Q.Range)
                                 && Q.GetHealthPrediction(i) > Q.GetDamage(i) && i.Distance(target) < minDist - 50)
                             .OrderBy(i => i.Distance(target))
                             .ThenByDescending(i => i.Health)
@@ -1358,7 +1358,7 @@
                     nearObj.ForEach(i => Q.Casting(i));
                 }
                 else if (target.DistanceToPlayer() > minDist
-                         && (HaveQ(target) || (objQ.IsValidTarget(Q2.Range) && target.Distance(objQ) < minDist - 50))
+                         && (HaveQ(target) || (objQ.LSIsValidTarget(Q2.Range) && target.Distance(objQ) < minDist - 50))
                          && ((WardManager.CanWardJump && Player.Mana >= 80)
                              || (getCheckBoxItem(insecMenu, "Flash") && Flash.IsReady())) && Q2.Cast())
                 {
@@ -1571,7 +1571,7 @@
                 }
                 var wardObj =
                     GameObjects.AllyWards.Where(
-                        i => i.IsValidTarget(W.Range, false) && i.IsWard() && i.Distance(pos) < 200)
+                        i => i.LSIsValidTarget(W.Range, false) && i.IsWard() && i.Distance(pos) < 200)
                         .MinOrDefault(i => i.Distance(pos));
                 if (wardObj != null && W.CastOnUnit(wardObj))
                 {

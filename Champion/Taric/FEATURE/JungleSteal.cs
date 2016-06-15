@@ -87,7 +87,7 @@
 
                 foreach (var target in ObjectManager.Get<Obj_AI_Base>().Where(target => SkyLv_Taric.Monsters.Contains(target.BaseSkinName) && !target.IsDead))
                 {
-                    if (UseAAJungleKS && Orbwalker.CanAutoAttack && Player.GetAutoAttackDamage(target) > target.Health && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
+                    if (UseAAJungleKS && Orbwalker.CanAutoAttack && Player.GetAutoAttackDamage(target) > target.Health && target.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
                     {
                         EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                     }

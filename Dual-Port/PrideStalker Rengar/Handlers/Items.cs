@@ -17,7 +17,7 @@ namespace PrideStalker_Rengar.Handlers
         public static void CastProtobelt()
         {
             var Target = TargetSelector.GetTarget(1000, DamageType.Physical);
-            if (Items.CanUseItem(3152) && Target.IsValidTarget())
+            if (Items.CanUseItem(3152) && Target.LSIsValidTarget())
             {
                 Items.UseItem(3152, Player.ServerPosition.Extend(Target.ServerPosition, Player.AttackRange));
             }

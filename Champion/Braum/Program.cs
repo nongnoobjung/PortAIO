@@ -146,7 +146,7 @@ namespace PortAIO.Champion.Braum
                 if (getKeyBindItem(rMenu, "useR"))
                 {
                     var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                         R.Cast(t, true, true);
                 }
             }
@@ -162,10 +162,10 @@ namespace PortAIO.Champion.Braum
         {
             var t = TargetSelector.GetTarget(500, DamageType.Physical);
 
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
                 t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (SebbyLib.Program.Combo && Player.Mana > RMANA + QMANA)
                     SebbyLib.Program.CastSpell(Q, t);
@@ -175,7 +175,7 @@ namespace PortAIO.Champion.Braum
                         var enemy in
                             SebbyLib.Program.Enemies.Where(
                                 enemy =>
-                                    enemy.IsValidTarget(Q.Range) &&
+                                    enemy.LSIsValidTarget(Q.Range) &&
                                     getCheckBoxItem(harassMenu, "haras" + enemy.NetworkId)))
                     {
                         SebbyLib.Program.CastSpell(Q, enemy);
@@ -186,7 +186,7 @@ namespace PortAIO.Champion.Braum
                     foreach (
                         var enemy in
                             SebbyLib.Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                                enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy, true);
                 }
             }
@@ -197,7 +197,7 @@ namespace PortAIO.Champion.Braum
             var rCount = getSliderItem(rMenu, "rCount");
             foreach (
                 var t in
-                    SebbyLib.Program.Enemies.Where(t => t.IsValidTarget(R.Range) && OktwCommon.ValidUlt(t))
+                    SebbyLib.Program.Enemies.Where(t => t.LSIsValidTarget(R.Range) && OktwCommon.ValidUlt(t))
                         .OrderBy(t => t.Health))
             {
                 var Rmode = getSliderItem(rMenu, "Rmode" + t.NetworkId);

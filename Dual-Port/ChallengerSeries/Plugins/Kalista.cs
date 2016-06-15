@@ -423,7 +423,7 @@ namespace Challenger_Series.Plugins
             }
             if (UseREngageBool)
             {
-                foreach (var enemy in ValidTargets.Where(en => en.IsValidTarget(1000) && en.LSIsFacing(ObjectManager.Player)))
+                foreach (var enemy in ValidTargets.Where(en => en.LSIsValidTarget(1000) && en.LSIsFacing(ObjectManager.Player)))
                 {
                     var waypoints = enemy.GetWaypoints();
                     if (waypoints.LastOrDefault().Distance(ObjectManager.Player.ServerPosition) < 400)

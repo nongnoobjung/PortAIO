@@ -29,7 +29,7 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Misc
 
         public void OnExecute()
         {
-            var target = HeroManager.Enemies.Find(en => en.IsValidTarget(ObjectManager.Player.AttackRange + 65f + 65f) && en.Has2WStacks());
+            var target = HeroManager.Enemies.Find(en => en.LSIsValidTarget(ObjectManager.Player.AttackRange + 65f + 65f) && en.Has2WStacks());
             if (target != null)
             {
                 Orbwalker.ForcedTarget = target;
@@ -41,7 +41,7 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Misc
 
             if (Game.Time < 25 * 60 * 1000)
             {
-                var ADC = HeroManager.Enemies.Where(m => TargetSelector.GetPriority(m) > 4 && m.IsValidTarget()).OrderBy(m => m.TotalAttackDamage).FirstOrDefault();
+                var ADC = HeroManager.Enemies.Where(m => TargetSelector.GetPriority(m) > 4 && m.LSIsValidTarget()).OrderBy(m => m.TotalAttackDamage).FirstOrDefault();
 
                 if (ADC != null && Orbwalking.InAutoAttackRange(ADC))
                 {

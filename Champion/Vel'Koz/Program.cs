@@ -117,7 +117,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var t = gapcloser.Sender;
-            if (E.IsReady() && t.IsValidTarget(E.Range) && getCheckBoxItem(eMenu, "EGCchampion" + t.NetworkId))
+            if (E.IsReady() && t.LSIsValidTarget(E.Range) && getCheckBoxItem(eMenu, "EGCchampion" + t.NetworkId))
             {
                 if (getBoxItem(eMenu, "EmodeGC") == 0)
                     E.Cast(gapcloser.End);
@@ -131,7 +131,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && sender.IsValidTarget(E.Range) && getCheckBoxItem(eMenu, "EInterrupter"))
+            if (E.IsReady() && sender.LSIsValidTarget(E.Range) && getCheckBoxItem(eMenu, "EInterrupter"))
             {
                 E.Cast(sender);
             }
@@ -154,7 +154,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (getCheckBoxItem(rMenu, "autoR"))
                 {
                     var t = TargetSelector.GetTarget(R.Range + 150, DamageType.Magical);
-                    if (t.IsValidTarget() && OktwCommon.ValidUlt(t))
+                    if (t.LSIsValidTarget() && OktwCommon.ValidUlt(t))
                     {
                         Player.Spellbook.UpdateChargeableSpell(SpellSlot.R, R.GetPrediction(t, true).CastPosition, false, false);
                     }
@@ -203,7 +203,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicR()
         {
             var t = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-            if (t.IsValidTarget() && Player.CountEnemiesInRange(400) == 0 && !Player.UnderTurret(true))
+            if (t.LSIsValidTarget() && Player.CountEnemiesInRange(400) == 0 && !Player.UnderTurret(true))
             {
                 //900 - 100%
                 //1500 - 10 %
@@ -226,7 +226,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicE()
         {
             var t = TargetSelector.GetTarget(E.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (Program.Combo && Player.Mana > RMANA + EMANA)
                     Program.CastSpell(E, t);
@@ -251,7 +251,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     foreach (
                         var enemy in
-                            Program.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                            Program.Enemies.Where(enemy => enemy.LSIsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
                         E.Cast(enemy);
                 }
             }
@@ -269,7 +269,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (Program.Combo && Player.Mana > RMANA + WMANA)
                     Program.CastSpell(W, t);
@@ -290,7 +290,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     foreach (
                         var enemy in
-                            Program.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                            Program.Enemies.Where(enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
                         W.Cast(enemy, true);
                 }
             }
@@ -308,7 +308,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(QDummy.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (Q.Instance.Name == "VelkozQ" && Utils.TickCount - Q.LastCastAttemptT > 150)
                 {
@@ -335,7 +335,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                             foreach (
                                 var enemy in
                                     Program.Enemies.Where(
-                                        enemy => enemy.IsValidTarget(QDummy.Range) && !OktwCommon.CanMove(enemy)))
+                                        enemy => enemy.LSIsValidTarget(QDummy.Range) && !OktwCommon.CanMove(enemy)))
                                 CastQ(t);
                         }
                     }

@@ -46,7 +46,7 @@ namespace iKalistaReborn.Utils
             {
                 foreach (
                     var hero in
-                        EntityManager.Heroes.Enemies.Where(x => x.IsValidTarget() && x.IsHPBarRendered && x.HasRendBuff()))
+                        EntityManager.Heroes.Enemies.Where(x => x.LSIsValidTarget() && x.IsHPBarRendered && x.HasRendBuff()))
                 {
                     height = 9;
                     width = 104;
@@ -64,7 +64,7 @@ namespace iKalistaReborn.Utils
                         EntityManager.MinionsAndMonsters.GetJungleMonsters().Where(
                             x =>
                             ObjectManager.Player.LSDistance(x) <= SpellManager.Spell[SpellSlot.E].Range
-                            && x.IsValidTarget() && x.IsHPBarRendered && x.HasRendBuff()))
+                            && x.LSIsValidTarget() && x.IsHPBarRendered && x.HasRendBuff()))
                 {
                     Render.Circle.DrawCircle(unit.Position, 500f, unit.IsMobKillable() ? Color.GreenYellow : Color.Red);
                 }

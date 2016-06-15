@@ -261,7 +261,7 @@ namespace Slutty_ryze
 
                 if (getCheckBoxItem(MenuManager.mixedMenu, "UseQauto") && target != null)
                 {
-                    if (Champion.Q.IsReady() && target.IsValidTarget(Champion.Q.Range))
+                    if (Champion.Q.IsReady() && target.LSIsValidTarget(Champion.Q.Range))
                         Champion.Q.Cast(target);
                 }
 

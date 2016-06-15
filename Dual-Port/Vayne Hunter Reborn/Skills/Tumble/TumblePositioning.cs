@@ -84,7 +84,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                     }
 
                     var closeEnemies =
-                    HeroManager.Enemies.FindAll(en => en.IsValidTarget(1500f) && !(en.LSDistance(ObjectManager.Player.ServerPosition) < en.AttackRange + 65f))
+                    HeroManager.Enemies.FindAll(en => en.LSIsValidTarget(1500f) && !(en.LSDistance(ObjectManager.Player.ServerPosition) < en.AttackRange + 65f))
                     .OrderBy(en => en.LSDistance(position));
 
                     if (
@@ -101,7 +101,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 else
                 {
                     var closeEnemies =
-                    HeroManager.Enemies.FindAll(en => en.IsValidTarget(1500f)).OrderBy(en => en.LSDistance(position));
+                    HeroManager.Enemies.FindAll(en => en.LSIsValidTarget(1500f)).OrderBy(en => en.LSDistance(position));
                     if (closeEnemies.Any())
                     {
                         QEnemiesCheck =
@@ -133,7 +133,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
             {
                 var angleRad = LeagueSharp.Common.Geometry.DegreeToRadian(i);
                 var rotatedPosition = ObjectManager.Player.Position.To2D() + (300f * direction.Rotated(angleRad));
-                if (CondemnLogic.GetCondemnTarget(rotatedPosition.To3D()).IsValidTarget() && rotatedPosition.To3D().IsSafe())
+                if (CondemnLogic.GetCondemnTarget(rotatedPosition.To3D()).LSIsValidTarget() && rotatedPosition.To3D().IsSafe())
                 {
                     return rotatedPosition.To3D();
                 }

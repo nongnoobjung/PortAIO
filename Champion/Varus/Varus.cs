@@ -167,7 +167,7 @@ namespace Elvarus
             }
 
             if (spells[Spells.R].IsReady() && !spells[Spells.Q].IsCharging
-                && target.IsValidTarget(spells[Spells.R].Range) && comboR)
+                && target.LSIsValidTarget(spells[Spells.R].Range) && comboR)
             {
                 var pred = spells[Spells.R].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.VeryHigh)
@@ -199,7 +199,7 @@ namespace Elvarus
         private static void Harass()
         {
             var target = TargetSelector.GetTarget(spells[Spells.Q].ChargedMaxRange, DamageType.Physical);
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -265,7 +265,7 @@ namespace Elvarus
                 cutlass.Cast(target);
             }
 
-            if (ghost.IsReady() && ghost.IsOwned(Player) && target.IsValidTarget(spells[Spells.Q].Range) && useYoumuu)
+            if (ghost.IsReady() && ghost.IsOwned(Player) && target.LSIsValidTarget(spells[Spells.Q].Range) && useYoumuu)
             {
                 ghost.Cast();
             }
@@ -315,7 +315,7 @@ namespace Elvarus
                     var target in
                         HeroManager.Enemies.Where(
                             enemy =>
-                                enemy.IsValidTarget() && spells[Spells.Q].IsKillable(enemy) &&
+                                enemy.LSIsValidTarget() && spells[Spells.Q].IsKillable(enemy) &&
                                 Player.LSDistance(enemy.Position) <= spells[Spells.Q].ChargedMaxRange))
                 {
                     if (!spells[Spells.Q].IsCharging)
@@ -377,7 +377,7 @@ namespace Elvarus
 
                         if (killcount >= countMinions)
                         {
-                            if (minion.IsValidTarget())
+                            if (minion.LSIsValidTarget())
                             {
                                 spells[Spells.Q].Cast(minion);
                                 return;
@@ -427,7 +427,7 @@ namespace Elvarus
 
             var target = TargetSelector.GetTarget(spells[Spells.R].Range, DamageType.Physical);
 
-            if (spells[Spells.R].IsReady() && target.IsValidTarget()
+            if (spells[Spells.R].IsReady() && target.LSIsValidTarget()
                 && getKeyBindItem(cMenu, "ElVarus.SemiR"))
             {
                 spells[Spells.R].CastOnUnit(target);

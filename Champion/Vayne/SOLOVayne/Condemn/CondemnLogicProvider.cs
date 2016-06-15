@@ -62,14 +62,14 @@ namespace SoloVayne.Skills.Condemn
                 //Condemn to turret logic
                 if (
                     GameObjects.AllyTurrets.Any(
-                        m => m.IsValidTarget(float.MaxValue) && m.LSDistance(finalPosition) <= 450f))
+                        m => m.LSIsValidTarget(float.MaxValue) && m.LSDistance(finalPosition) <= 450f))
                 {
                     var turret =
                         GameObjects.AllyTurrets.FirstOrDefault(
-                            m => m.IsValidTarget(float.MaxValue) && m.LSDistance(finalPosition) <= 450f);
+                            m => m.LSIsValidTarget(float.MaxValue) && m.LSDistance(finalPosition) <= 450f);
                     if (turret != null)
                     {
-                        var enemies = GameObjects.Enemy.Where(m => m.LSDistance(turret) < 775f && m.IsValidTarget());
+                        var enemies = GameObjects.Enemy.Where(m => m.LSDistance(turret) < 775f && m.LSIsValidTarget());
 
                         if (!enemies.Any())
                         {

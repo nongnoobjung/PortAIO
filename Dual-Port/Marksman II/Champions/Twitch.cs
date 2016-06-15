@@ -71,14 +71,14 @@ namespace Marksman.Champions
                 var useE = GetValue<bool>("UseE" + (ComboActive ? "C" : "H"));
 
                 var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-                if (!t.IsValidTarget() || t.HasKindredUltiBuff())
+                if (!t.LSIsValidTarget() || t.HasKindredUltiBuff())
                 {
                     return;
                 }
 
                 if (useW)
                 {
-                    if (W.IsReady() && t.IsValidTarget(W.Range))
+                    if (W.IsReady() && t.LSIsValidTarget(W.Range))
                         W.Cast(t, false, true);
                 }
 
@@ -87,7 +87,7 @@ namespace Marksman.Champions
                     E.Cast();
                 }
 
-                if (ObjectManager.Get<Obj_AI_Hero>().Find(e1 => e1.IsValidTarget(E.Range) && E.IsKillable(e1)) != null)
+                if (ObjectManager.Get<Obj_AI_Hero>().Find(e1 => e1.LSIsValidTarget(E.Range) && E.IsKillable(e1)) != null)
                 {
                     E.Cast();
                 }
@@ -100,7 +100,7 @@ namespace Marksman.Champions
                         ObjectManager.Get<Obj_AI_Hero>()
                             .Where(
                                 hero =>
-                                    hero.IsValidTarget(E.Range) &&
+                                    hero.LSIsValidTarget(E.Range) &&
                                     (ObjectManager.Player.GetSpellDamage(hero, SpellSlot.E) - 10 > hero.Health)))
                 {
                     E.Cast();
@@ -121,7 +121,7 @@ namespace Marksman.Champions
             //                .Where(
             //                    m =>
             //                        m.Health > ObjectManager.Player.TotalAttackDamage &&
-            //                        m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65))
+            //                        m.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65))
             //        select m;
 
             //    var objAiMinions = minions as Obj_AI_Minion[] ?? minions.ToArray();

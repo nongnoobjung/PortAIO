@@ -137,7 +137,7 @@ namespace Illaoi___Tentacle_Kitty
                 foreach (
                     var enemy in
                         HeroManager.Enemies.Where(
-                            x => x.IsValidTarget(1500) && x.IsValid && x.IsVisible && !x.IsDead && !x.IsZombie))
+                            x => x.LSIsValidTarget(1500) && x.IsValid && x.IsVisible && !x.IsDead && !x.IsZombie))
                 {
                     Drawing.DrawText(enemy.HPBarPosition.X, enemy.HPBarPosition.Y, Color.Gold,
                         string.Format("{0} Basic Attack = Kill", AaIndicator(enemy)));
@@ -145,7 +145,7 @@ namespace Illaoi___Tentacle_Kitty
             }
             if (menuItem5)
             {
-                var enemy = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(2000));
+                var enemy = HeroManager.Enemies.FirstOrDefault(x => x.LSIsValidTarget(2000));
                 foreach (var passive in ObjectManager.Get<Obj_AI_Minion>().Where(x => x.Name == "God"))
                 {
                     Render.Circle.DrawCircle(new Vector3(passive.Position.X, passive.Position.Y, passive.Position.Z),
@@ -192,7 +192,7 @@ namespace Illaoi___Tentacle_Kitty
         {
             if (Q.IsReady() && getCheckBoxItem(comboMenu, "q.combo"))
             {
-                var enemy = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(Q.Range));
+                var enemy = HeroManager.Enemies.FirstOrDefault(x => x.LSIsValidTarget(Q.Range));
                 var enemyGhost = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.Name == enemy.Name);
                 if (enemy != null && enemyGhost == null)
                 {
@@ -217,7 +217,7 @@ namespace Illaoi___Tentacle_Kitty
                 var tentacle = ObjectManager.Get<Obj_AI_Minion>().First(x => x.Name == "God");
                 if (tentacle != null)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(850)))
+                    foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(850)))
                     {
                         W.Cast();
                     }
@@ -226,7 +226,7 @@ namespace Illaoi___Tentacle_Kitty
             if (E.IsReady() && getCheckBoxItem(comboMenu, "e.combo"))
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(o => o.LSIsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
                 {
                     if (getCheckBoxItem(eMenu, "enemy." + enemy.NetworkId) &&
                         E.GetPrediction(enemy).Hitchance >= HitChance.High
@@ -239,7 +239,7 @@ namespace Illaoi___Tentacle_Kitty
             if (R.IsReady() && getCheckBoxItem(comboMenu, "r.combo"))
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(R.Range) && !o.IsDead && !o.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(o => o.LSIsValidTarget(R.Range) && !o.IsDead && !o.IsZombie))
                 {
                     if (Illaoi.CountEnemiesInRange(R.Range) >= getSliderItem(comboMenu, "r.min.hit"))
                     {
@@ -257,7 +257,7 @@ namespace Illaoi___Tentacle_Kitty
             }
             if (Q.IsReady() && getCheckBoxItem(harassMenu, "q.harass"))
             {
-                var enemy = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(Q.Range));
+                var enemy = HeroManager.Enemies.FirstOrDefault(x => x.LSIsValidTarget(Q.Range));
                 var enemyGhost = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.Name == enemy.Name);
                 if (enemy != null && enemyGhost == null)
                 {
@@ -281,7 +281,7 @@ namespace Illaoi___Tentacle_Kitty
                 var tentacle = ObjectManager.Get<Obj_AI_Minion>().First(x => x.Name == "God");
                 if (tentacle != null)
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(850)))
+                    foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(850)))
                     {
                         W.Cast();
                     }
@@ -290,7 +290,7 @@ namespace Illaoi___Tentacle_Kitty
             if (E.IsReady() && getCheckBoxItem(harassMenu, "e.harass"))
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(o => o.LSIsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
                 {
                     if (getCheckBoxItem(eMenu, "enemy." + enemy.NetworkId) &&
                         E.GetPrediction(enemy).Hitchance >= HitChance.High

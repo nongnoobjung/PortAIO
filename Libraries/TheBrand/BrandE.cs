@@ -38,7 +38,7 @@ namespace TheBrand
         {
             if (Program.getMiscMenuCB("eKS") &&
                 (mode == Orbwalker.ActiveModes.Combo || !Program.getMiscMenuCB("KSCombo")))
-                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(650)))
+                foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.LSIsValidTarget(650)))
                 {
                     if (!IsKillable(enemy)) continue;
                     Cast(enemy);

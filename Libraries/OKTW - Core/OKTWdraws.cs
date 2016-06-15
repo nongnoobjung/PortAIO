@@ -264,7 +264,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     }
                 }
 
-                if (enemy.IsValidTarget() && ShowClicks)
+                if (enemy.LSIsValidTarget() && ShowClicks)
                 {
                     var lastWaypoint = enemy.GetWaypoints().Last().To3D();
                     if (lastWaypoint.IsValid())

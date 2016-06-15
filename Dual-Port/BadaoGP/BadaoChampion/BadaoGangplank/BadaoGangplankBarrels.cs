@@ -154,7 +154,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoGangplank
             //}
             //if (Environment.TickCount - LastCondition >= 100 + Game.Ping)
             //{
-            //    foreach (var hero in HeroManager.Enemies.Where(x => x.IsValidTarget()))
+            //    foreach (var hero in HeroManager.Enemies.Where(x => x.LSIsValidTarget()))
             //    {
             //        if (BadaoMainVariables.Q.IsReady() && BadaoMainVariables.E.IsReady())
             //        {
@@ -176,7 +176,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoGangplank
             //            }
             //        }
             //    }
-            //    foreach (var hero in HeroManager.Enemies.Where(x => x.IsValidTarget()))
+            //    foreach (var hero in HeroManager.Enemies.Where(x => x.LSIsValidTarget()))
             //    {
             //        if (Orbwalking.CanAttack() && BadaoMainVariables.E.IsReady())
             //        {
@@ -197,7 +197,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoGangplank
             //            }
             //        }
             //    }
-            //    foreach (var hero in HeroManager.Enemies.Where(x => x.IsValidTarget()))
+            //    foreach (var hero in HeroManager.Enemies.Where(x => x.LSIsValidTarget()))
             //    {
             //        if (BadaoMainVariables.Q.IsReady())
             //        {
@@ -216,7 +216,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoGangplank
             //        }
             //    }
 
-            //    foreach (var hero in HeroManager.Enemies.Where(x => x.IsValidTarget()))
+            //    foreach (var hero in HeroManager.Enemies.Where(x => x.LSIsValidTarget()))
             //    {
             //        if (Orbwalking.CanAttack())
             //        {

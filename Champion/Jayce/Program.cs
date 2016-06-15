@@ -155,7 +155,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             var t = gapcloser.Sender;
 
-            if (t.IsValidTarget(400))
+            if (t.LSIsValidTarget(400))
             {
                 if (Range)
                 {
@@ -175,7 +175,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Range && !R.IsReady())
                 return;
 
-            if (t.IsValidTarget(300))
+            if (t.LSIsValidTarget(300))
             {
                 if (Range)
                 {
@@ -184,7 +184,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 else
                     E.Cast(t);
             }
-            else if (Q2cd < 0.2 && t.IsValidTarget(Q2.Range))
+            else if (Q2cd < 0.2 && t.LSIsValidTarget(Q2.Range))
             {
                 if (Range)
                 {
@@ -193,7 +193,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 else
                 {
                     Q.Cast(t);
-                    if (t.IsValidTarget(E2.Range))
+                    if (t.LSIsValidTarget(E2.Range))
                         E.Cast(t);
                 }
             }
@@ -329,7 +329,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     {
                         var best = mobs[0];
 
-                        foreach (var mob in mobs.Where(mob => mob.IsValidTarget(Q2.Range)))
+                        foreach (var mob in mobs.Where(mob => mob.LSIsValidTarget(Q2.Range)))
                         {
                             if (mob.LSDistance(Game.CursorPos) < best.LSDistance(Game.CursorPos))
                                 best = mob;
@@ -354,7 +354,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             var t = TargetSelector.GetTarget(qtype.Range, DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 var qDmg = OktwCommon.GetKsDamage(t, qtype);
 
@@ -370,7 +370,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 else if (Program.Farm && Player.ManaPercent > getSliderItem(harassMenu, "harassMana") &&
                          OktwCommon.CanHarras())
                 {
-                    foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(qtype.Range) && getCheckBoxItem(harassMenu, "haras" + enemy.NetworkId)))
+                    foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(qtype.Range) && getCheckBoxItem(harassMenu, "haras" + enemy.NetworkId)))
                     {
                         CastQ(enemy);
                     }
@@ -380,7 +380,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     foreach (
                         var enemy in
                             Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(qtype.Range) && !OktwCommon.CanMove(enemy)))
+                                enemy => enemy.LSIsValidTarget(qtype.Range) && !OktwCommon.CanMove(enemy)))
                         CastQ(t);
                 }
             }
@@ -388,7 +388,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void LogicW()
         {
-            if (Program.Combo && R.IsReady() && Range && Orbwalker.LastTarget.IsValidTarget() &&
+            if (Program.Combo && R.IsReady() && Range && Orbwalker.LastTarget.LSIsValidTarget() &&
                 Orbwalker.LastTarget is AIHeroClient)
             {
                 W.Cast();
@@ -399,7 +399,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             var t = TargetSelector.GetTarget(Q2.Range, DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (OktwCommon.GetKsDamage(t, Q2) > t.Health)
                     Q2.Cast(t);
@@ -417,7 +417,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicE2()
         {
             var t = TargetSelector.GetTarget(E2.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (OktwCommon.GetKsDamage(t, E2) > t.Health)
                     E2.Cast(t);
@@ -431,7 +431,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Range && getCheckBoxItem(rMenu, "autoRm"))
             {
                 var t = TargetSelector.GetTarget(Q2.Range + 200, DamageType.Physical);
-                if (Program.Combo && Qcd > 0.5 && t.IsValidTarget() &&
+                if (Program.Combo && Qcd > 0.5 && t.LSIsValidTarget() &&
                     ((!W.IsReady() && !t.IsMelee) ||
                      (!W.IsReady() && !Player.HasBuff("jaycehyperchargevfx") && t.IsMelee)))
                 {
@@ -444,7 +444,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             else if (Program.Combo && getCheckBoxItem(rMenu, "autoR"))
             {
                 var t = TargetSelector.GetTarget(1400, DamageType.Physical);
-                if (t.IsValidTarget() && !t.IsValidTarget(Q2.Range + 200) && Q.GetDamage(t)*1.4 > t.Health && Qcd < 0.5 &&
+                if (t.LSIsValidTarget() && !t.LSIsValidTarget(Q2.Range + 200) && Q.GetDamage(t)*1.4 > t.Health && Qcd < 0.5 &&
                     Ecd < 0.5)
                 {
                     R.Cast();
@@ -521,7 +521,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     }
                     else
                     {
-                        if (Q2.IsReady() && getCheckBoxItem(farmMenu, "jungleQm") && mob.IsValidTarget(Q2.Range))
+                        if (Q2.IsReady() && getCheckBoxItem(farmMenu, "jungleQm") && mob.LSIsValidTarget(Q2.Range))
                         {
                             Q2.Cast(mob);
                             return;
@@ -529,13 +529,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                         if (W2.IsReady() && getCheckBoxItem(farmMenu, "jungleWm"))
                         {
-                            if (mob.IsValidTarget(300))
+                            if (mob.LSIsValidTarget(300))
                                 W.Cast();
                             return;
                         }
-                        if (E2.IsReady() && getCheckBoxItem(farmMenu, "jungleEm") && mob.IsValidTarget(E2.Range))
+                        if (E2.IsReady() && getCheckBoxItem(farmMenu, "jungleEm") && mob.LSIsValidTarget(E2.Range))
                         {
-                            if (mob.IsValidTarget(E2.Range))
+                            if (mob.LSIsValidTarget(E2.Range))
                                 E2.Cast(mob);
                             return;
                         }
@@ -695,7 +695,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(1600, DamageType.Physical);
 
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     var damageCombo = GetComboDMG(t);
                     if (damageCombo > t.Health)

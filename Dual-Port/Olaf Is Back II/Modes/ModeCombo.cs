@@ -73,7 +73,7 @@ namespace OlafxQx.Modes
             }
 
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
             {
                 return;
             }
@@ -81,7 +81,7 @@ namespace OlafxQx.Modes
             if (IgniteSlot != SpellSlot.Unknown &&
                 ObjectManager.Player.Spellbook.CanUseSpell(IgniteSlot) == SpellState.Ready)
             {
-                if (t.IsValidTarget(650) && !t.HaveImmortalBuff() && ObjectManager.Player.GetSummonerSpellDamage(t, LeagueSharp.Common.Damage.SummonerSpell.Ignite) + 150 >= t.Health)
+                if (t.LSIsValidTarget(650) && !t.HaveImmortalBuff() && ObjectManager.Player.GetSummonerSpellDamage(t, LeagueSharp.Common.Damage.SummonerSpell.Ignite) + 150 >= t.Health)
                 {
                     ObjectManager.Player.Spellbook.CastSpell(IgniteSlot, t);
                 }

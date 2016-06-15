@@ -129,7 +129,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (R.IsReady() && getCheckBoxItem(rMenu, "inter") && sender.IsValidTarget(R.Range))
+            if (R.IsReady() && getCheckBoxItem(rMenu, "inter") && sender.LSIsValidTarget(R.Range))
                 R.Cast();
         }
 
@@ -164,7 +164,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (R.IsReady() && getCheckBoxItem(rMenu, "Gap") && gapcloser.Sender.IsValidTarget(R.Range))
+            if (R.IsReady() && getCheckBoxItem(rMenu, "Gap") && gapcloser.Sender.LSIsValidTarget(R.Range))
                 R.Cast();
         }
 
@@ -202,10 +202,10 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
 
-                if (t.IsValidTarget(Q.Range) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.ChampionName))
+                if (t.LSIsValidTarget(Q.Range) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.ChampionName))
                     Program.CastSpell(Q, t);
             }
-            foreach (var t in Program.Enemies.Where(t => t.IsValidTarget(Q.Range) && getCheckBoxItem(qMenu, "grab" + t.ChampionName)))
+            foreach (var t in Program.Enemies.Where(t => t.LSIsValidTarget(Q.Range) && getCheckBoxItem(qMenu, "grab" + t.ChampionName)))
             {
                 if (!t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield))
                 {
@@ -226,7 +226,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void LogicR()
         {
             bool rKs = getCheckBoxItem(rMenu, "rKs");
-            foreach (var target in Program.Enemies.Where(target => target.IsValidTarget(R.Range) && target.HasBuff("rocketgrab2")))
+            foreach (var target in Program.Enemies.Where(target => target.LSIsValidTarget(R.Range) && target.HasBuff("rocketgrab2")))
             {
                 if (rKs && R.GetDamage(target) > target.Health)
                     R.Cast();
@@ -237,7 +237,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (!getCheckBoxItem(wMenu, "autoWcc") && !Q.IsReady())
                 {
@@ -247,7 +247,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Program.CastSpell(W, t);
                 }
 
-                foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
                     W.Cast(enemy, true);
             }
             else if (Program.LaneClear && Player.ManaPercent > getSliderItem(farmMenu, "Mana") && getCheckBoxItem(farmMenu, "farmW") && Player.Mana > RMANA + WMANA)

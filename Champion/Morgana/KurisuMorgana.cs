@@ -142,9 +142,9 @@ namespace KurisuMorgana
                     Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
                 {
                     var minion = args.Target as Obj_AI_Base;
-                    if (minion != null && minion.IsMinion && minion.IsValidTarget())
+                    if (minion != null && minion.IsMinion && minion.LSIsValidTarget())
                     {
-                        if (HeroManager.Allies.Any(x => x.IsValidTarget(1000) && !x.IsMe))
+                        if (HeroManager.Allies.Any(x => x.LSIsValidTarget(1000) && !x.IsMe))
                         {
                             args.Process = false;
                         }
@@ -162,7 +162,7 @@ namespace KurisuMorgana
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (!Me.IsValidTarget(300))
+            if (!Me.LSIsValidTarget(300))
             {
                 return;
             }
@@ -212,7 +212,7 @@ namespace KurisuMorgana
             if (useq && _q.IsReady())
             {
                 var qtarget = TargetSelector.GetTarget(_q.Range, DamageType.Magical);
-                if (qtarget.IsValidTarget())
+                if (qtarget.LSIsValidTarget())
                 {
                     var poutput = _q.GetPrediction(qtarget);
                     if (poutput.Hitchance >= (HitChance) getSliderItem(menuQ, "hitchanceq") + 2)
@@ -225,7 +225,7 @@ namespace KurisuMorgana
             if (usew && _w.IsReady())
             {
                 var wtarget = TargetSelector.GetTarget(_w.Range + 10, DamageType.Magical);
-                if (wtarget.IsValidTarget())
+                if (wtarget.LSIsValidTarget())
                 {
                     if (!getCheckBoxItem(menuW, "waitfor") || _mw*1 >= wtarget.Health)
                     {
@@ -243,7 +243,7 @@ namespace KurisuMorgana
                 var ticks = getSliderItem(menuW, "calcw");
 
                 var rtarget = TargetSelector.GetTarget(_r.Range, DamageType.Magical);
-                if (rtarget.IsValidTarget() && getCheckBoxItem(menuR, "rkill"))
+                if (rtarget.LSIsValidTarget() && getCheckBoxItem(menuR, "rkill"))
                 {
                     if (_mr + _mq + _mw*ticks + _ma*3 + _mi + _guise >= rtarget.Health)
                     {
@@ -270,7 +270,7 @@ namespace KurisuMorgana
             if (useq && _q.IsReady())
             {
                 var qtarget = TargetSelector.GetTarget(_q.Range, DamageType.Magical);
-                if (qtarget.IsValidTarget())
+                if (qtarget.LSIsValidTarget())
                 {
                     if (Me.ManaPercent >= getSliderItem(miscMenu, "harassmana"))
                     {
@@ -286,7 +286,7 @@ namespace KurisuMorgana
             if (usew && _w.IsReady())
             {
                 var wtarget = TargetSelector.GetTarget(_w.Range + 200, DamageType.Magical);
-                if (wtarget.IsValidTarget())
+                if (wtarget.LSIsValidTarget())
                 {
                     if (Me.ManaPercent >= getSliderItem(miscMenu, "harassmana"))
                     {
@@ -307,7 +307,7 @@ namespace KurisuMorgana
         {
             if (_q.IsReady())
             {
-                foreach (var itarget in HeroManager.Enemies.Where(h => h.IsValidTarget(_q.Range)))
+                foreach (var itarget in HeroManager.Enemies.Where(h => h.LSIsValidTarget(_q.Range)))
                 {
                     if (immobile && Immobile(itarget))
                         _q.Cast(itarget);
@@ -322,7 +322,7 @@ namespace KurisuMorgana
 
             if (_w.IsReady() && soil)
             {
-                foreach (var itarget in HeroManager.Enemies.Where(h => h.IsValidTarget(_w.Range)))
+                foreach (var itarget in HeroManager.Enemies.Where(h => h.LSIsValidTarget(_w.Range)))
                     if (immobile && Immobile(itarget))
                         _w.Cast(itarget.ServerPosition);
             }
@@ -341,7 +341,7 @@ namespace KurisuMorgana
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (gapcloser.Sender.IsValidTarget(250f))
+            if (gapcloser.Sender.LSIsValidTarget(250f))
             {
                 if (getCheckBoxItem(menuQ, "useqanti"))
                     _q.Cast(gapcloser.Sender);
@@ -378,7 +378,7 @@ namespace KurisuMorgana
                 if (args.End.IsValid() && args.End.LSDistance(Me.ServerPosition) <= 200 + Me.BoundingRadius)
                 {
                     var hero = sender as AIHeroClient;
-                    if (!hero.IsValid<AIHeroClient>() || !hero.IsValidTarget(_q.Range - 50))
+                    if (!hero.IsValid<AIHeroClient>() || !hero.LSIsValidTarget(_q.Range - 50))
                     {
                         return;
                     }
@@ -394,7 +394,7 @@ namespace KurisuMorgana
                 return;
 
             var attacker = ObjectManager.Get<AIHeroClient>().First(x => x.NetworkId == sender.NetworkId);
-            foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(_e.Range)))
+            foreach (var ally in HeroManager.Allies.Where(x => x.LSIsValidTarget(_e.Range)))
             {
                 var detectRange = ally.ServerPosition +
                                   (args.End - ally.ServerPosition).Normalized()*ally.LSDistance(args.End);

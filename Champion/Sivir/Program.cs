@@ -133,7 +133,7 @@ namespace OneKeyToWin_AIO_Sebby
                 else
                 {
                     var t = TargetSelector.GetTarget(900, DamageType.Physical);
-                    if (t.IsValidTarget() && getCheckBoxItem(wMenu, "harasW") && getCheckBoxItem(wMenu, "haras" + t.NetworkId) && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && t.LSDistance(target.Position) < 500)
+                    if (t.LSIsValidTarget() && getCheckBoxItem(wMenu, "harasW") && getCheckBoxItem(wMenu, "haras" + t.NetworkId) && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && t.LSDistance(target.Position) < 500)
                     {
                         W.Cast();
                     }
@@ -171,7 +171,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var Target = gapcloser.Sender;
-            if (getCheckBoxItem(eMenu, "AGC") && E.IsReady() && Target.IsValidTarget(5000) && Target.IsEnemy)
+            if (getCheckBoxItem(eMenu, "AGC") && E.IsReady() && Target.LSIsValidTarget(5000) && Target.IsEnemy)
                 E.Cast();
         }
 
@@ -201,7 +201,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 missileManager.Target = t;
                 var qDmg = OktwCommon.GetKsDamage(t, Q)*1.9;
@@ -228,7 +228,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     foreach (
                         var enemy in
-                            Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                            Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy);
                 }
             }
@@ -246,7 +246,7 @@ namespace OneKeyToWin_AIO_Sebby
             var t = TargetSelector.GetTarget(800, DamageType.Physical);
             if (Player.CountEnemiesInRange(800f) > 2)
                 R.Cast();
-            else if (t.IsValidTarget() && Orbwalker.LastTarget == null && Program.Combo &&
+            else if (t.LSIsValidTarget() && Orbwalker.LastTarget == null && Program.Combo &&
                      Player.GetAutoAttackDamage(t)*2 > t.Health && !Q.IsReady() && t.CountEnemiesInRange(800) < 3)
                 R.Cast();
         }
@@ -343,7 +343,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (getCheckBoxItem(drawMenu, "noti"))
             {
                 var target = TargetSelector.GetTarget(1500, DamageType.Physical);
-                if (target.IsValidTarget())
+                if (target.LSIsValidTarget())
                 {
                     if (Q.GetDamage(target)*2 > target.Health)
                     {

@@ -219,7 +219,7 @@ namespace SephCassiopeia
                 var easycheck =
                     HeroManager.Enemies.FirstOrDefault(
                         x =>
-                            !x.IsInvulnerable && !x.IsZombie && x.IsValidTarget(Spells[SpellSlot.R].Range) &&
+                            !x.IsInvulnerable && !x.IsZombie && x.LSIsValidTarget(Spells[SpellSlot.R].Range) &&
                             x.IsFacing(Player) && x.isImmobile() && (Player.HealthPercent <= 20 || x.HealthPercent > 30));
 
                 if (easycheck != null)
@@ -229,7 +229,7 @@ namespace SephCassiopeia
                     Utility.DelayAction.Add(50, () => DontMove = false);
                     return;
                 }
-                var targs = HeroManager.Enemies.Where(h => h.IsValidTarget(Spells[SpellSlot.R].Range));
+                var targs = HeroManager.Enemies.Where(h => h.LSIsValidTarget(Spells[SpellSlot.R].Range));
                 Dictionary<Vector3, double> Hitatpos = new Dictionary<Vector3, double>();
                 Dictionary<Vector3, double> Hitatposfacing = new Dictionary<Vector3, double>();
                 foreach (var t in targs)

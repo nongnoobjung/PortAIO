@@ -211,8 +211,8 @@ namespace PopBlanc
 
             if (getCheckBoxItem(eMenu, "AutoEImmobile") && E.IsReady())
             {
-                var target = Enemies.FirstOrDefault(e => e.IsValidTarget(E.Range) && e.IsMovementImpaired());
-                if (target.IsValidTarget() && target != null)
+                var target = Enemies.FirstOrDefault(e => e.LSIsValidTarget(E.Range) && e.IsMovementImpaired());
+                if (target.LSIsValidTarget() && target != null)
                 {
                     E.Cast(target);
                     return;
@@ -282,7 +282,7 @@ namespace PopBlanc
 
             var target = targ ?? TargetSelector.GetTarget(EFirst && E.IsReady() ? E.Range : W.Range + WRadius - 10, DamageType.Magical);
 
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 //Console.WriteLine("BAD TARG");
                 return;
@@ -307,7 +307,7 @@ namespace PopBlanc
                 return;
             }
 
-            if (W.IsReady() && target.IsValidTarget(W.Range + WRadius - 10) && W.IsActive(force) && W.IsFirstW())
+            if (W.IsReady() && target.LSIsValidTarget(W.Range + WRadius - 10) && W.IsActive(force) && W.IsFirstW())
             {
                 if (!force ||
                     (target.CountEnemiesInRange(300) <= getSliderItem(ksMenu, "KSEnemies") &&
@@ -454,7 +454,7 @@ namespace PopBlanc
             chainable = TargetSelector.SelectedTarget ??
                         TargetSelector.GetTarget(W.Range + E.Range, DamageType.Magical);
 
-            if (!chainable.IsValidTarget(W.Range + E.Range) || chainable.HasEBuff())
+            if (!chainable.LSIsValidTarget(W.Range + E.Range) || chainable.HasEBuff())
             {
                 return false;
             }
@@ -470,7 +470,7 @@ namespace PopBlanc
             {
                 var killable = MinionManager.GetMinions(Q.Range, MinionTypes.All, MinionTeam.NotAlly) .FirstOrDefault(m => Q.IsKillable(m));
 
-                if (killable.IsValidTarget() && killable.Health > Player.GetAutoAttackDamage(killable, true) && Q.CastOnUnit(killable))
+                if (killable.LSIsValidTarget() && killable.Health > Player.GetAutoAttackDamage(killable, true) && Q.CastOnUnit(killable))
                 {
                     return;
                 }
@@ -555,7 +555,7 @@ namespace PopBlanc
             var enemies =
                 HeroManager.Enemies.Where(
                     enemy =>
-                        enemy.IsValidTarget(wRange + E.Range) && !enemy.IsZombie &&
+                        enemy.LSIsValidTarget(wRange + E.Range) && !enemy.IsZombie &&
                         enemy.Health < GetComboDamage(enemy, SpellSlot.Q, WCastTime)).ToList();
 
             if (!enemies.Any())
@@ -563,7 +563,7 @@ namespace PopBlanc
                 return false;
             }
 
-            if (!KSTarget.IsValidTarget(wRange + E.Range))
+            if (!KSTarget.LSIsValidTarget(wRange + E.Range))
             {
                 KSTarget = null;
             }
@@ -577,7 +577,7 @@ namespace PopBlanc
 
             var pos = Player.ServerPosition.LSExtend(KSTarget.ServerPosition, W.Range);
 
-            if (!E.IsInRange(KSTarget) && KSTarget.IsValidTarget(E.Range + W.Range) &&
+            if (!E.IsInRange(KSTarget) && KSTarget.LSIsValidTarget(E.Range + W.Range) &&
                 KSTarget.Health < GetKSDamage(KSTarget, false, pos))
             {
                 if (!pos.IsValidWPoint() || !W.IsFirstW() || !W.Cast(pos))
@@ -608,7 +608,7 @@ namespace PopBlanc
             Utility.DelayAction.Add(
                 150, () =>
                 {
-                    if (gapcloser.Sender.IsValidTarget(E.Range) && E.Cast(gapcloser.Sender).IsCasted() &&
+                    if (gapcloser.Sender.LSIsValidTarget(E.Range) && E.Cast(gapcloser.Sender).IsCasted() &&
                         getCheckBoxItem(rMenu, "AntiGapcloserR"))
                     {
                         Utility.DelayAction.Add(
@@ -687,7 +687,7 @@ namespace PopBlanc
         {
             var damage = 0d;
 
-            if (Q.IsReady() && enemy.IsValidTarget(Q.Range, true, position))
+            if (Q.IsReady() && enemy.LSIsValidTarget(Q.Range, true, position))
             {
                 var q = Q.GetDamage(enemy);
                 damage += q;
@@ -699,12 +699,12 @@ namespace PopBlanc
             }
 
             if (includeW && W.IsReady() && W.IsFirstW() &&
-                enemy.IsValidTarget(W.Range, true, position))
+                enemy.LSIsValidTarget(W.Range, true, position))
             {
                 damage += W.GetDamage(enemy);
             }
 
-            if (E.IsReady() && enemy.IsValidTarget(E.Range, true, position))
+            if (E.IsReady() && enemy.LSIsValidTarget(E.Range, true, position))
             {
                 SpellManager.EPrediction.UpdateSourcePosition(position, position);
                 var pred = SpellManager.EPrediction.GetPrediction(enemy);
@@ -714,7 +714,7 @@ namespace PopBlanc
                 }
             }
 
-            if (R.IsReady() && enemy.IsValidTarget(R.Range, true, position))
+            if (R.IsReady() && enemy.LSIsValidTarget(R.Range, true, position))
             {
                 var d = GetUltimateDamage(enemy, SpellSlot.Unknown);
                 if (enemy.HasQBuff() || enemy.HasQRBuff())

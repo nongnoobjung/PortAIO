@@ -87,7 +87,7 @@ namespace NechritoRiven
             foreach (
                 var enemy in
                     ObjectManager.Get<AIHeroClient>()
-                        .Where(ene => ene.IsValidTarget() && !ene.IsZombie))
+                        .Where(ene => ene.LSIsValidTarget() && !ene.IsZombie))
             {
                 if (MenuConfig.Dind)
                 {
@@ -258,9 +258,9 @@ namespace NechritoRiven
         }
         private static void Interrupt(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (sender.IsEnemy && Spells._w.IsReady() && sender.IsValidTarget() && !sender.IsZombie)
+            if (sender.IsEnemy && Spells._w.IsReady() && sender.LSIsValidTarget() && !sender.IsZombie)
             {
-                if (sender.IsValidTarget(125 + Player.BoundingRadius + sender.BoundingRadius)) Spells._w.Cast();
+                if (sender.LSIsValidTarget(125 + Player.BoundingRadius + sender.BoundingRadius)) Spells._w.Cast();
             }
         }
         private static void OnTick(EventArgs args)
@@ -318,7 +318,7 @@ namespace NechritoRiven
             if (Spells._q.IsReady())
             {
                 // R range because auto-gapclose! (Yes, i'm smart. Give Contrib pls)
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._r.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._r.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Spells._q.GetDamage(target) && Logic.InQRange(target))
@@ -327,7 +327,7 @@ namespace NechritoRiven
             }
             if (Spells._r.IsReady() && Spells._r.Instance.Name == IsSecondR)
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._r.Range + Spells._e.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._r.Range + Spells._e.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.LSDistance(target.Position) <= 1870) && (Player.LSDistance(target.Position) >= 1600))
@@ -340,7 +340,7 @@ namespace NechritoRiven
             }
             if (Spells._w.IsReady())
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._r.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._r.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Spells._w.GetDamage(target) && Logic.InWRange(target))
@@ -349,7 +349,7 @@ namespace NechritoRiven
             }
             if (Spells._r.IsReady() && Spells._r.Instance.Name == IsSecondR)
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._r.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._r.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Dmg.Rdame(target, target.Health) && !target.IsInvulnerable)
@@ -359,7 +359,7 @@ namespace NechritoRiven
             if (Spells.Ignite.IsReady() && MenuConfig.ignite)
             {
                 var target = TargetSelector.GetTarget(600f, DamageType.True);
-                if (target.IsValidTarget(600f) && Dmg.IgniteDamage(target) >= target.Health && !Spells._q.IsReady())
+                if (target.LSIsValidTarget(600f) && Dmg.IgniteDamage(target) >= target.Health && !Spells._q.IsReady())
                 {
                     Player.Spellbook.CastSpell(Spells.Ignite, target);
                 }
@@ -474,7 +474,7 @@ namespace NechritoRiven
                 case "Spell4b":
                     t = 150;
                     var target = TargetSelector.SelectedTarget;
-                    if (Spells._q.IsReady() && target.IsValidTarget()) Logic.ForceCastQ(target);
+                    if (Spells._q.IsReady() && target.LSIsValidTarget()) Logic.ForceCastQ(target);
                     break;
             }
 

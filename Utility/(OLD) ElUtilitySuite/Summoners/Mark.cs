@@ -129,7 +129,7 @@
                 return;
             }
 
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy && x.IsValidTarget(1500f)))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy && x.LSIsValidTarget(1500f)))
             {
                 if (getCheckBoxItem(string.Format("snowballon{0}", enemy.ChampionName)) && this.ComboModeActive)
                 {

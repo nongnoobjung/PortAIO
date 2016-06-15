@@ -46,7 +46,7 @@ namespace TreeLib.Managers
             var target =
                 HeroManager.Enemies.FirstOrDefault(
                     h =>
-                        h.IsValidTarget(SpellManager.Ignite.Range) &&
+                        h.LSIsValidTarget(SpellManager.Ignite.Range) &&
                         h.Health < ObjectManager.Player.GetSummonerSpellDamage(h, LeagueSharp.Common.Damage.SummonerSpell.Ignite));
             if (target != null)
             {

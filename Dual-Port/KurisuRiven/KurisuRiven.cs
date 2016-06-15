@@ -973,7 +973,7 @@ namespace KurisuRiven
             if (uo && Getcheckboxvalue(r2Menu, "usews") && r.IsReady())
             {
                 #region Killsteal
-                foreach (var t in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget(r.Range)))
+                foreach (var t in ObjectManager.Get<AIHeroClient>().Where(h => h.LSIsValidTarget(r.Range)))
                 {
                     if (t != null)
                     {

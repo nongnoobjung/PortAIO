@@ -38,7 +38,7 @@ namespace VayneHunter_Reborn.Skills.Condemn.Methods
 
         public static Obj_AI_Base GetTarget(Vector3 fromPosition)
         {
-            foreach (var target in HeroManager.Enemies.Where(h => h.IsValidTarget(Variables.spells[SpellSlot.E].Range)))
+            foreach (var target in HeroManager.Enemies.Where(h => h.LSIsValidTarget(Variables.spells[SpellSlot.E].Range)))
             {
                 var pushDistance = MenuGenerator.miscMenu["dz191.vhr.misc.condemn.pushdistance"].Cast<Slider>().CurrentValue;
                 var targetPosition = Vector3.Zero;

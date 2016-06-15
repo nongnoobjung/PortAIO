@@ -126,7 +126,7 @@ namespace PortAIO.Champion.Ekko
                         var t in
                             SebbyLib.Program.Enemies.Where(
                                 t =>
-                                    t.IsValidTarget() &&
+                                    t.LSIsValidTarget() &&
                                     RMissile.Position.LSDistance(Prediction.GetPrediction(t, R.Delay).CastPosition) <
                                     R.Range && RMissile.Position.LSDistance(t.ServerPosition) < R.Range))
                     {
@@ -194,13 +194,13 @@ namespace PortAIO.Champion.Ekko
                      && !Player.UnderTurret(true)
                      && Player.Position.LSExtend(Game.CursorPos, E.Range).CountEnemiesInRange(700) < 3)
             {
-                if (t.IsValidTarget() && Player.Mana > QMANA + EMANA + WMANA &&
+                if (t.LSIsValidTarget() && Player.Mana > QMANA + EMANA + WMANA &&
                     t.Position.LSDistance(Game.CursorPos) + 300 < t.Position.LSDistance(Player.Position))
                 {
                     E.Cast(Player.Position.LSExtend(Game.CursorPos, E.Range), true);
                 }
             }
-            else if (t.IsValidTarget() && SebbyLib.Program.Combo && E.GetDamage(t) + W.GetDamage(t) > t.Health)
+            else if (t.LSIsValidTarget() && SebbyLib.Program.Combo && E.GetDamage(t) + W.GetDamage(t) > t.Health)
             {
                 E.Cast(Player.Position.LSExtend(t.Position, E.Range), true);
             }
@@ -250,7 +250,7 @@ namespace PortAIO.Champion.Ekko
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
             var t1 = TargetSelector.GetTarget(Q1.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 missileManager.Target = t;
                 if (SebbyLib.Program.Combo && Player.Mana > RMANA + QMANA)
@@ -265,11 +265,11 @@ namespace PortAIO.Champion.Ekko
                     foreach (
                         var enemy in
                             SebbyLib.Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                                enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy, true, true);
                 }
             }
-            else if (t1.IsValidTarget())
+            else if (t1.LSIsValidTarget())
             {
                 missileManager.Target = t1;
                 if (SebbyLib.Program.Combo && Player.Mana > RMANA + QMANA)
@@ -284,7 +284,7 @@ namespace PortAIO.Champion.Ekko
                     foreach (
                         var enemy in
                             SebbyLib.Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(Q1.Range) && !OktwCommon.CanMove(enemy)))
+                                enemy => enemy.LSIsValidTarget(Q1.Range) && !OktwCommon.CanMove(enemy)))
                         Q1.Cast(enemy, true, true);
                 }
             }
@@ -301,7 +301,7 @@ namespace PortAIO.Champion.Ekko
         private static void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (getCheckBoxItem(wMenu, "Waoe"))
                 {
@@ -320,7 +320,7 @@ namespace PortAIO.Champion.Ekko
                 foreach (
                     var enemy in
                         SebbyLib.Program.Enemies.Where(
-                            enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                            enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
                     W.Cast(enemy, true, true);
             }
         }

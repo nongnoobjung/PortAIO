@@ -13,7 +13,7 @@ namespace Jhin___The_Virtuoso.Modes
         /// </summary>
         private static void ExecuteW()
         {
-            foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.W.Range)))
+            foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.W.Range)))
             {
                 var pred = Spells.W.GetPrediction(enemy);
                 if (pred.Hitchance >= Menus.wMenu.HikiChance("w.hit.chance"))

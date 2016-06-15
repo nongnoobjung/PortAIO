@@ -178,7 +178,7 @@ namespace SephKayle
             var target = ObjectManager.Get<AIHeroClient>()
                 .Where(
                     x =>
-                        x.IsInvulnerable && !x.IsDead && x.IsEnemy && !x.IsZombie && x.IsValidTarget() &&
+                        x.IsInvulnerable && !x.IsDead && x.IsEnemy && !x.IsZombie && x.LSIsValidTarget() &&
                         x.LSDistance(Player.Position) <= 800)
                 .OrderBy(x => x.Health).FirstOrDefault();
             if (target != null)
@@ -231,7 +231,7 @@ namespace SephKayle
                 var allMinions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q.Range);
                 var vminions = allMinions.Where(
                     minion =>
-                        minion.IsValidTarget() && Player.LSDistance(minion) >
+                        minion.LSIsValidTarget() && Player.LSDistance(minion) >
                         Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) && Player.LSDistance(minion) <= Q.Range &&
                         HealthPrediction.GetHealthPrediction(minion,
                             (int)(Player.LSDistance(minion) * 1000 / 1500) + 300 + Game.Ping / 2) <
@@ -465,7 +465,7 @@ namespace SephKayle
             var allMinions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q.Range);
             var vminions = allMinions.Where(
                 minion =>
-                    minion.IsValidTarget() && Player.LSDistance(minion) >
+                    minion.LSIsValidTarget() && Player.LSDistance(minion) >
                     Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) && Player.LSDistance(minion) <= Q.Range &&
                     HealthPrediction.GetHealthPrediction(minion,
                         (int)(Player.LSDistance(minion) * 1000 / 1500) + 300 + Game.Ping / 2) <
@@ -489,7 +489,7 @@ namespace SephKayle
                     ObjectManager.Get<Obj_AI_Base>()
                         .Where(
                             m =>
-                                m.IsValidTarget() && m.Team != Player.Team && Player.LSDistance(m) <= incrange &&
+                                m.LSIsValidTarget() && m.Team != Player.Team && Player.LSDistance(m) <= incrange &&
                                 HealthPrediction.GetHealthPrediction(m,
                                     (int)(Player.LSDistance(m) * 1000 / 1500) + 300 + Game.Ping / 2) <
                                 0.75 * Player.GetAutoAttackDamage(m));
@@ -524,7 +524,7 @@ namespace SephKayle
                 var allMinions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q.Range);
                 var vminions = allMinions.Where(
                     minion =>
-                        minion.IsValidTarget() && Player.LSDistance(minion) >
+                        minion.LSIsValidTarget() && Player.LSDistance(minion) >
                         Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) && Player.LSDistance(minion) <= Q.Range &&
                         HealthPrediction.GetHealthPrediction(minion,
                             (int)(Player.LSDistance(minion) * 1000 / 1500) + 300 + Game.Ping / 2) <

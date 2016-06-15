@@ -67,7 +67,7 @@ namespace Mordekaiser.Events
                 CastItems();
 
                 var t = TargetSelector.GetTarget(4500, DamageType.Physical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     if (HowToTrainYourDragon != null)
                     {
@@ -117,7 +117,7 @@ namespace Mordekaiser.Events
 
             var t = GetTarget;
 
-            if (!t.IsValidTarget(Utils.Player.AutoAttackRange))
+            if (!t.LSIsValidTarget(Utils.Player.AutoAttackRange))
             {
                 return;
             }
@@ -179,7 +179,7 @@ namespace Mordekaiser.Events
 
             var t = GetTarget;
 
-            if (!t.IsValidTarget(Spells.E.Range))
+            if (!t.LSIsValidTarget(Spells.E.Range))
             {
                 return;
             }
@@ -196,7 +196,7 @@ namespace Mordekaiser.Events
                 return;
 
             var t = TargetSelector.GetTarget(Spells.R.Range, DamageType.Magical);
-            if (t.IsValidTarget() && t.Health <= ObjectManager.Player.LSGetSpellDamage(t, SpellSlot.R))
+            if (t.LSIsValidTarget() && t.Health <= ObjectManager.Player.LSGetSpellDamage(t, SpellSlot.R))
             {
                 Spells.R.Cast(t);
             }
@@ -205,7 +205,7 @@ namespace Mordekaiser.Events
         private static void CastItems()
         {
             var t = TargetSelector.GetTarget(750, DamageType.Physical);
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
                 return;
 
             foreach (var item in Items.ItemDb)
@@ -213,13 +213,13 @@ namespace Mordekaiser.Events
                 if (item.Value.ItemType == Items.EnumItemType.AoE &&
                     item.Value.TargetingType == Items.EnumItemTargettingType.EnemyHero)
                 {
-                    if (t.IsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady())
+                    if (t.LSIsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady())
                         item.Value.Item.Cast();
                 }
                 if (item.Value.ItemType == Items.EnumItemType.Targeted &&
                     item.Value.TargetingType == Items.EnumItemTargettingType.EnemyHero)
                 {
-                    if (t.IsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady())
+                    if (t.LSIsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady())
                         item.Value.Item.Cast(t);
                 }
             }

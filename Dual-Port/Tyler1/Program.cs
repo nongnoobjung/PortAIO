@@ -309,7 +309,7 @@ namespace Tyler1
                 if (TotalAxesCount < 2) Q.Cast();
                 if (WCombo && W.IsReady() && !Player.HasBuff("dravenfurybuff")) W.Cast();
             }
-            if (ECombo && E.IsReady() && target.IsValidTarget(750))
+            if (ECombo && E.IsReady() && target.LSIsValidTarget(750))
             {
                 var pred = E.GetPrediction(target);
                 if (pred.Hitchance >= HitChance.High)

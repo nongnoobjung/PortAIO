@@ -21,7 +21,7 @@ namespace NechritoRiven
                 if (Spells._w.IsReady() && Logic.InWRange(targetR) && targetR != null) Spells._w.Cast();
                 if (Spells._r.IsReady() && Spells._r.Instance.Name == Program.IsFirstR && Spells._w.IsReady() && targetR != null &&
                     Spells._e.IsReady() &&
-                    targetR.IsValidTarget() && !targetR.IsZombie && (Dmg.IsKillableR(targetR) || MenuConfig.AlwaysR))
+                    targetR.LSIsValidTarget() && !targetR.IsZombie && (Dmg.IsKillableR(targetR) || MenuConfig.AlwaysR))
                 {
                     if (!Logic.InWRange(targetR))
                     {
@@ -34,7 +34,7 @@ namespace NechritoRiven
 
                 else if (Spells._w.IsReady() && Spells._e.IsReady())
                 {
-                    if (targetR.IsValidTarget() && targetR != null && !targetR.IsZombie && !Logic.InWRange(targetR))
+                    if (targetR.LSIsValidTarget() && targetR != null && !targetR.IsZombie && !Logic.InWRange(targetR))
                     {
                         Spells._e.Cast(targetR.Position);
                         if (Logic.InWRange(targetR))
@@ -44,7 +44,7 @@ namespace NechritoRiven
                 }
                 else if (Spells._e.IsReady())
                 {
-                    if (targetR != null && (targetR.IsValidTarget() && !targetR.IsZombie && !Logic.InWRange(targetR)))
+                    if (targetR != null && (targetR.LSIsValidTarget() && !targetR.IsZombie && !Logic.InWRange(targetR)))
                     {
                         Spells._e.Cast(targetR.Position);
                     }

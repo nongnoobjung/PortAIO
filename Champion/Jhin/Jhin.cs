@@ -97,7 +97,7 @@ namespace Jhin___The_Virtuoso
                 foreach (
                     var enemy in
                         HeroManager.Enemies.Where(
-                            x => x.IsValidTarget(1500) && x.IsValid && x.IsVisible && !x.IsDead && !x.IsZombie))
+                            x => x.LSIsValidTarget(1500) && x.IsValid && x.IsVisible && !x.IsDead && !x.IsZombie))
                 {
                     Drawing.DrawText(enemy.HPBarPosition.X, enemy.HPBarPosition.Y, Color.Gold,
                         string.Format("{0} Basic Attack = Kill", Provider.BasicAttackIndicator(enemy)));
@@ -105,7 +105,7 @@ namespace Jhin___The_Virtuoso
             }
             if (Menus.getCheckBoxItem(Menus.drawMenu, "sniper.text") && ObjectManager.Player.IsActive(Spells.R))
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.R.Range)))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.R.Range)))
                 {
                     var damage = Spells.R.GetDamage(enemy)*4;
                     if (enemy.Health <= damage)

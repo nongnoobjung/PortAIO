@@ -154,7 +154,7 @@ namespace XinZhao
                 return;
             }
 
-            if (unit.IsValidTarget(R.Range) && args.DangerLevel >= Interrupter2.DangerLevel.Medium &&
+            if (unit.LSIsValidTarget(R.Range) && args.DangerLevel >= Interrupter2.DangerLevel.Medium &&
                 !unit.HasBuff("xenzhaointimidate"))
             {
                 R.Cast();
@@ -225,12 +225,12 @@ namespace XinZhao
         {
             var t = TargetSelector.GetTarget(E.Range, DamageType.Magical);
 
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
             {
                 return;
             }
 
-            if (t.IsValidTarget(E.Range) && E.IsReady() && getCheckBoxItem(comboMenu, "useECombo"))
+            if (t.LSIsValidTarget(E.Range) && E.IsReady() && getCheckBoxItem(comboMenu, "useECombo"))
             {
                 var eMinRange = getSliderItem(comboMenu, "EMinRange");
                 if (ObjectManager.Player.LSDistance(t) >= eMinRange)

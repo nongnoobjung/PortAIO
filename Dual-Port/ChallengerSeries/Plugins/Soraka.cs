@@ -273,7 +273,7 @@ namespace Challenger_Series
                 EntityManager.Heroes.Allies.Any(
                     h => h.Position.Distance(ObjectManager.Player.Position) < 600 && !h.IsDead && !h.IsMe);
 
-            foreach (var hero in ValidTargets.Where(h => h.IsValidTarget(925)))
+            foreach (var hero in ValidTargets.Where(h => h.LSIsValidTarget(925)))
             {
                 if (shouldntKS && Q.GetDamage(hero) > hero.Health)
                 {
@@ -317,7 +317,7 @@ namespace Challenger_Series
             var goodTarget =
                 ValidTargets.OrderByDescending(GetPriority).FirstOrDefault(
                     e =>
-                        e.IsValidTarget(900) && e.HasBuffOfType(BuffType.Knockup) || e.HasBuffOfType(BuffType.Snare) ||
+                        e.LSIsValidTarget(900) && e.HasBuffOfType(BuffType.Knockup) || e.HasBuffOfType(BuffType.Snare) ||
                         e.HasBuffOfType(BuffType.Stun) || e.HasBuffOfType(BuffType.Suppression) || e.IsCharmed ||
                         e.IsCastingInterruptableSpell() || e.HasBuff("ChronoRevive") || e.HasBuff("ChronoShift"));
             if (goodTarget != null)

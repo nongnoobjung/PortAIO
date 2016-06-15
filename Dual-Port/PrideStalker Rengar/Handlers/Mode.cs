@@ -196,7 +196,7 @@ namespace PrideStalker_Rengar.Handlers
         public static void OneShot()
         {
             var Target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Physical);
-            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.IsValidTarget(Spells.W.Range)).ToList();
+            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.W.Range)).ToList();
 
             if (Target != null && Target.LSIsValidTarget() && !Target.IsZombie)
             {
@@ -249,7 +249,7 @@ namespace PrideStalker_Rengar.Handlers
         #region Lane
         public static void Lane()
         {
-            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.IsValidTarget(Spells.W.Range)).ToList();
+            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.W.Range)).ToList();
 
             if (minions == null || Player.Mana == 5 && MenuConfig.Passive)
             {
@@ -305,7 +305,7 @@ namespace PrideStalker_Rengar.Handlers
         #region Jungle
         public static void Jungle()
         {
-            var mob = ObjectManager.Get<Obj_AI_Minion>().Where(m => !m.IsDead && !m.IsZombie && m.Team == GameObjectTeam.Neutral && m.IsValidTarget(Spells.W.Range)).ToList();
+            var mob = ObjectManager.Get<Obj_AI_Minion>().Where(m => !m.IsDead && !m.IsZombie && m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.W.Range)).ToList();
 
             if (mob == null || Player.Mana == 5 && MenuConfig.Passive)
             {
@@ -357,7 +357,7 @@ namespace PrideStalker_Rengar.Handlers
         #region LastHit
         public static void LastHit()
         {
-            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.IsValidTarget(Player.AttackRange)).ToList();
+            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Player.AttackRange)).ToList();
             
 
             if (minions == null || Player.Mana == 5 && MenuConfig.Passive)

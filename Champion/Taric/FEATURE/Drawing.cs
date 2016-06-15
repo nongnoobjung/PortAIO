@@ -112,7 +112,7 @@
             if (getCheckBoxItem(SkyLv_Taric.Draw, "DrawOrbwalkTarget"))
             {
                 var orbT = Orbwalker.LastTarget;
-                if (orbT.IsValidTarget())
+                if (orbT.LSIsValidTarget())
                     Render.Circle.DrawCircle(orbT.Position, 100, System.Drawing.Color.Pink, getSliderItem(SkyLv_Taric.Draw, "OrbwalkDraw.Radius"));
             }
         }

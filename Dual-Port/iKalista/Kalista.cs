@@ -598,7 +598,7 @@ namespace IKalista
         {
             foreach (var source in EntityManager.Heroes.Enemies.Where(x => spells[SpellSlot.E].IsInRange(x) && Extensions.IsRendKillable(x)))
             {
-                if (source.IsValidTarget(spells[SpellSlot.E].Range) && !HasUndyingBuff(source) && Extensions.IsRendKillable(source))
+                if (source.LSIsValidTarget(spells[SpellSlot.E].Range) && !HasUndyingBuff(source) && Extensions.IsRendKillable(source))
                 {
                     spells[SpellSlot.E].Cast();
                     spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
@@ -613,7 +613,7 @@ namespace IKalista
         {
             if (getCheckBoxItem(miscMenu, "exploit") && ObjectManager.Player.AttackDelay / 1 > 1.70)
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(ObjectManager.Player.AttackRange)))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(ObjectManager.Player.AttackRange)))
                 {
                     if (Game.Time * 1000 >= Orbwalker.LastAutoAttack + 1)
                     {
@@ -629,7 +629,7 @@ namespace IKalista
             if (spells[SpellSlot.Q].IsReady() && getCheckBoxItem(comboMenu, "useQ") && !ObjectManager.Player.IsDashing()
                 && !Orbwalker.IsAutoAttacking)
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[SpellSlot.Q].Range)))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[SpellSlot.Q].Range)))
                 {
                     var prediction = spells[SpellSlot.Q].GetSPrediction(enemy);
                     if (prediction.HitChance >= LeagueSharp.Common.HitChance.High)
@@ -644,7 +644,7 @@ namespace IKalista
             }
             if (spells[SpellSlot.E].IsReady() && getCheckBoxItem(comboMenu, "useE"))
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[SpellSlot.E].Range) && x.HasBuff("KalistaExpungeMarker")))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[SpellSlot.E].Range) && x.HasBuff("KalistaExpungeMarker")))
                 {
                     var stacks = enemy.GetBuffCount("kalistaexpungemarker");
                     var damage = Math.Ceiling(Extensions.GetRendDamage(enemy) * 100 / enemy.GetTotalHealth());
@@ -697,7 +697,7 @@ namespace IKalista
                 }
 
                 foreach (var unit in
-                    HeroManager.Enemies.Where(x => x.IsValidTarget(spells[SpellSlot.Q].Range))
+                    HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[SpellSlot.Q].Range))
                         .Where(unit => spells[SpellSlot.Q].GetSPrediction(unit).HitChance == LeagueSharp.Common.HitChance.Immobile))
                 {
                     spells[SpellSlot.Q].Cast(unit);
@@ -724,7 +724,7 @@ namespace IKalista
                 var rendTarget =
                     HeroManager.Enemies.Where(
                         x =>
-                        x.IsValidTarget(spells[SpellSlot.E].Range) && Extensions.GetRendDamage(x) >= 1
+                        x.LSIsValidTarget(spells[SpellSlot.E].Range) && Extensions.GetRendDamage(x) >= 1
                         && !x.HasBuffOfType(BuffType.Invulnerability) && !x.HasBuffOfType(BuffType.SpellShield))
                         .OrderByDescending(x => Extensions.GetRendDamage(x))
                         .FirstOrDefault();
@@ -948,7 +948,7 @@ namespace IKalista
                 return;
             }
 
-            foreach (var minion in minions.Where(x => x.IsValidTarget(spells[SpellSlot.Q].Range)))
+            foreach (var minion in minions.Where(x => x.LSIsValidTarget(spells[SpellSlot.Q].Range)))
             {
                 var difference = ObjectManager.Player.LSDistance(target) - ObjectManager.Player.LSDistance(minion);
 

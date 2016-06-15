@@ -106,7 +106,7 @@ namespace SebbyLib
         public static float GetRealAutoAttackRange(AttackableUnit target)
         {
             var result = Player.AttackRange + Player.BoundingRadius;
-            if (target.IsValidTarget())
+            if (target.LSIsValidTarget())
             {
                 var aiBase = target as Obj_AI_Base;
                 if (aiBase != null && Player.ChampionName == "Caitlyn")
@@ -131,7 +131,7 @@ namespace SebbyLib
 
         public static bool InAutoAttackRange(AttackableUnit target)
         {
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return false;
             }

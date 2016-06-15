@@ -193,7 +193,7 @@ namespace D_Graves
             if (getKeyBindItem(comboMenu, "useRaim") && _r.IsReady())
             {
                 var t = TargetSelector.GetTarget(_r.Range + 300, DamageType.Physical);
-                if (t.IsValidTarget()) _r.Cast(t, true, true);
+                if (t.LSIsValidTarget()) _r.Cast(t, true, true);
             }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
@@ -313,7 +313,7 @@ namespace D_Graves
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (_w.IsReady() && gapcloser.Sender.IsValidTarget(_w.Range) && getCheckBoxItem(miscMenu, "Gap_W")) _w.Cast(gapcloser.Sender.IsMelee() ? _player : gapcloser.Sender);
+            if (_w.IsReady() && gapcloser.Sender.LSIsValidTarget(_w.Range) && getCheckBoxItem(miscMenu, "Gap_W")) _w.Cast(gapcloser.Sender.IsMelee() ? _player : gapcloser.Sender);
 
             if (_e.IsReady() && gapcloser.Sender.LSDistance(_player.ServerPosition) <= 200
                 && getCheckBoxItem(miscMenu, "Gap_E"))
@@ -440,7 +440,7 @@ namespace D_Graves
                 var usesmite = getCheckBoxItem(comboMenu, "smitecombo");
                 if (_player.GetSpell(_smiteSlot).Name.ToLower() == "s5_summonersmiteplayerganker" && usesmite
                     && ObjectManager.Player.Spellbook.CanUseSpell(_smiteSlot) == SpellState.Ready
-                    && hero.IsValidTarget(570))
+                    && hero.LSIsValidTarget(570))
                 {
                     if (!hero.HasBuffOfType(BuffType.Stun) || !hero.HasBuffOfType(BuffType.Slow))
                     {
@@ -454,7 +454,7 @@ namespace D_Graves
 
                 if (_player.GetSpell(_smiteSlot).Name.ToLower() == "s5_summonersmiteduel" && usesmite
                     && ObjectManager.Player.Spellbook.CanUseSpell(_smiteSlot) == SpellState.Ready
-                    && hero.IsValidTarget(570))
+                    && hero.LSIsValidTarget(570))
                 {
                     ObjectManager.Player.Spellbook.CastSpell(_smiteSlot, hero);
                 }
@@ -476,23 +476,23 @@ namespace D_Graves
             if (useQ && _q.IsReady())
             {
                 var t = TargetSelector.GetTarget(_q.Range, DamageType.Physical);
-                if (t.IsValidTarget(_q.Range - 70)) _q.CastIfHitchanceEquals(t, HitChance.High, true);
+                if (t.LSIsValidTarget(_q.Range - 70)) _q.CastIfHitchanceEquals(t, HitChance.High, true);
             }
 
             if (useW && _w.IsReady())
             {
                 var t = TargetSelector.GetTarget(_w.Range, DamageType.Magical);
-                if (t.IsValidTarget(_w.Range)) _w.CastIfHitchanceEquals(t, HitChance.High, true);
+                if (t.LSIsValidTarget(_w.Range)) _w.CastIfHitchanceEquals(t, HitChance.High, true);
             }
 
             if (_r.IsReady() && useR)
             {
                 var t = TargetSelector.GetTarget(_r.Range, DamageType.Physical);
                 if (t.IsInvulnerable) return;
-                if (_q.IsReady() && t.IsValidTarget(_q.Range)
+                if (_q.IsReady() && t.LSIsValidTarget(_q.Range)
                     && (_q.GetDamage(t) > t.Health || _player.GetAutoAttackDamage(t, true) > t.Health))
                     return;
-                if (_r.GetDamage(t) - 80 > t.Health && t.IsValidTarget(_r.Range))
+                if (_r.GetDamage(t) - 80 > t.Health && t.LSIsValidTarget(_r.Range))
                 {
                     _r.CastIfHitchanceEquals(t, HitChance.High, true);
                 }
@@ -501,7 +501,7 @@ namespace D_Graves
                 {
                     var fuckr = _r.GetPrediction(t, true);
                     if (fuckr.AoeTargetsHitCount >= getSliderItem(comboMenu, "MinTargets")
-                        && t.IsValidTarget(_r.Range))
+                        && t.LSIsValidTarget(_r.Range))
                         _r.CastIfHitchanceEquals(t, HitChance.High, true);
                 }
             }
@@ -523,13 +523,13 @@ namespace D_Graves
                         if (useQ && _q.IsReady())
                         {
                             var t = TargetSelector.GetTarget(_q.Range, DamageType.Physical);
-                            if (t.IsValidTarget(_q.Range - 70)) _q.CastIfHitchanceEquals(t, HitChance.High, true);
+                            if (t.LSIsValidTarget(_q.Range - 70)) _q.CastIfHitchanceEquals(t, HitChance.High, true);
                         }
 
                         if (useW && _w.IsReady())
                         {
                             var t = TargetSelector.GetTarget(_w.Range, DamageType.Magical);
-                            if (t.IsValidTarget(_w.Range)) _w.CastIfHitchanceEquals(t, HitChance.High, true);
+                            if (t.LSIsValidTarget(_w.Range)) _w.CastIfHitchanceEquals(t, HitChance.High, true);
                         }
                     }
 
@@ -541,9 +541,9 @@ namespace D_Graves
                             && useE)
                         {
                             if (!ta.UnderTurret()) _e.Cast(ObjectManager.Player.Position.Extend(Game.CursorPos, 450));
-                            else if (ta.UnderTurret() && _e.IsReady() && ta.IsValidTarget()
+                            else if (ta.UnderTurret() && _e.IsReady() && ta.LSIsValidTarget()
                                      && _q.ManaCost + _e.ManaCost < _player.Mana)
-                                if (ta.Health < _q.GetDamage(ta) && ta.IsValidTarget())
+                                if (ta.Health < _q.GetDamage(ta) && ta.LSIsValidTarget())
                                 {
                                     _e.Cast(ObjectManager.Player.Position.Extend(Game.CursorPos, 450));
                                     _q.CastIfHitchanceEquals(ta, HitChance.High, true);
@@ -582,13 +582,13 @@ namespace D_Graves
             if (useQ && _q.IsReady())
             {
                 var t = TargetSelector.GetTarget(_q.Range, DamageType.Physical);
-                if (t.IsValidTarget(_q.Range - 70)) _q.CastIfHitchanceEquals(t, HitChance.High, true);
+                if (t.LSIsValidTarget(_q.Range - 70)) _q.CastIfHitchanceEquals(t, HitChance.High, true);
             }
 
             if (useW && _w.IsReady())
             {
                 var t = TargetSelector.GetTarget(_w.Range, DamageType.Magical);
-                if (t.IsValidTarget(_w.Range)) _w.CastIfHitchanceEquals(t, HitChance.High, true);
+                if (t.LSIsValidTarget(_w.Range)) _w.CastIfHitchanceEquals(t, HitChance.High, true);
             }
         }
 
@@ -710,17 +710,17 @@ namespace D_Graves
                 var iBlademyhp = _player.Health
                                  <= (_player.MaxHealth * (getSliderItem(itemMenu, "Blademyhp")) / 100);
                 var iYoumuu = getCheckBoxItem(itemMenu, "Youmuu");
-                if (hero.IsValidTarget(450) && iBilge && (iBilgeEnemyhp || iBilgemyhp) && _bilge.IsReady())
+                if (hero.LSIsValidTarget(450) && iBilge && (iBilgeEnemyhp || iBilgemyhp) && _bilge.IsReady())
                 {
                     _bilge.Cast(hero);
                 }
 
-                if (hero.IsValidTarget(450) && iBlade && (iBladeEnemyhp || iBlademyhp) && _blade.IsReady())
+                if (hero.LSIsValidTarget(450) && iBlade && (iBladeEnemyhp || iBlademyhp) && _blade.IsReady())
                 {
                     _blade.Cast(hero);
                 }
 
-                if (hero.IsValidTarget(450) && iYoumuu && _youmuu.IsReady())
+                if (hero.LSIsValidTarget(450) && iYoumuu && _youmuu.IsReady())
                 {
                     _youmuu.Cast();
                 }
@@ -815,21 +815,21 @@ namespace D_Graves
             {
                 if (_q.IsReady() && getCheckBoxItem(miscMenu, "UseQM"))
                 {
-                    if (_q.GetDamage(hero) > hero.Health && hero.IsValidTarget(_q.Range - 30))
+                    if (_q.GetDamage(hero) > hero.Health && hero.LSIsValidTarget(_q.Range - 30))
                     {
                         _q.CastIfHitchanceEquals(hero, HitChance.High, true);
                     }
                 }
                 if (_w.IsReady() && getCheckBoxItem(miscMenu, "UseWM"))
                 {
-                    if (_w.GetDamage(hero) > hero.Health && hero.IsValidTarget(_w.Range))
+                    if (_w.GetDamage(hero) > hero.Health && hero.LSIsValidTarget(_w.Range))
                     {
                         _w.CastIfHitchanceEquals(hero, HitChance.High, true);
                     }
                 }
-                if (_r.IsReady() && getCheckBoxItem(miscMenu, "UseRM") && hero.IsValidTarget(_r.Range))
+                if (_r.IsReady() && getCheckBoxItem(miscMenu, "UseRM") && hero.LSIsValidTarget(_r.Range))
                 {
-                    if (_q.IsReady() && _q.GetDamage(hero) > hero.Health && hero.IsValidTarget(_q.Range)) return;
+                    if (_q.IsReady() && _q.GetDamage(hero) > hero.Health && hero.LSIsValidTarget(_q.Range)) return;
                     if (!hero.IsInvulnerable && _r.GetDamage(hero) - 80 > hero.Health)
                     {
                         _r.CastIfHitchanceEquals(hero, HitChance.High, true);

@@ -73,7 +73,7 @@ namespace TophSharp
         {
             var usee = getCheckBoxItem(MenuConfig.comboMenu, "usee");
             var target = TargetSelector.GetTarget(_q.Range, DamageType.Magical);
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
                 return;
 
             if (CanUse(_e, target) && (CanUse(_w, target) || SpellUpSoon(SpellSlot.W) < 0.5f) && usee)
@@ -237,7 +237,7 @@ namespace TophSharp
 
         private static bool CanUse(Spell spell, AttackableUnit target)
         {
-            return spell.IsReady() && Player.Mana >= spell.ManaCost && target.IsValidTarget(spell.Range);
+            return spell.IsReady() && Player.Mana >= spell.ManaCost && target.LSIsValidTarget(spell.Range);
         }
 
         public static float SpellUpSoon(SpellSlot slot)
@@ -257,7 +257,7 @@ namespace TophSharp
             var usew = getCheckBoxItem(MenuConfig.harassMenu, "usewh");
 
             var target = TargetSelector.GetTarget(_q.Range, DamageType.Magical);
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
                 return;
 
             var wpred = _w.GetPrediction(target);
@@ -282,7 +282,7 @@ namespace TophSharp
 
 
             var target = TargetSelector.GetTarget(_q.Range, DamageType.Magical);
-            if (!target.IsValidTarget()) return;
+            if (!target.LSIsValidTarget()) return;
 
             if (getCheckBoxItem(MenuConfig.comboMenu, "useignite"))
             {
@@ -305,7 +305,7 @@ namespace TophSharp
                 _q.Cast(qpred.CastPosition);
             }
 
-            if ((CanUse(_w, target) || SpellUpSoon(SpellSlot.W) < 0.5f) && usee && _e.IsReady() && target.IsValidTarget(_q.Range))
+            if ((CanUse(_w, target) || SpellUpSoon(SpellSlot.W) < 0.5f) && usee && _e.IsReady() && target.LSIsValidTarget(_q.Range))
             {         
                       
                 _e.Cast(target);              

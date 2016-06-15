@@ -164,7 +164,7 @@ namespace Wukong
             }
 
             var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-            if (args.Slot == SpellSlot.R && !t.IsValidTarget())
+            if (args.Slot == SpellSlot.R && !t.LSIsValidTarget())
             {
                 args.Process = false;
             }
@@ -178,7 +178,7 @@ namespace Wukong
             {
                 case 1:
                     t = TargetSelector.GetTarget(Q.Range - 20f, DamageType.Physical);
-                    if (t.IsValidTarget() && Q.IsReady())
+                    if (t.LSIsValidTarget() && Q.IsReady())
                     {
                         Q.CastOnUnit(t);
                         EloBuddy.Player.IssueOrder(GameObjectOrder.AttackTo, t);
@@ -188,7 +188,7 @@ namespace Wukong
                     if (!monkeykingdecoystealth)
                     {
                         t = TargetSelector.GetTarget(Q.Range - 20f, DamageType.Physical);
-                        if (t.IsValidTarget() && Q.IsReady())
+                        if (t.LSIsValidTarget() && Q.IsReady())
                         {
                             Q.CastOnUnit(t);
                             EloBuddy.Player.IssueOrder(GameObjectOrder.AttackTo, t);
@@ -229,20 +229,20 @@ namespace Wukong
         private static void Combo()
         {
             var t = GetTarget(E.Range);
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
                 return;
 
-            if (E.IsReady() && t.IsValidTarget(E.Range))
+            if (E.IsReady() && t.LSIsValidTarget(E.Range))
             {
                 E.CastOnUnit(t);
             }
 
-            if (Q.IsReady() && t.IsValidTarget(Q.Range))
+            if (Q.IsReady() && t.LSIsValidTarget(Q.Range))
             {
                 Q.Cast();
             }
 
-            if (E.IsReady() && t.IsValidTarget(E.Range))
+            if (E.IsReady() && t.LSIsValidTarget(E.Range))
             {
                 E.CastOnUnit(t);
             }
@@ -263,7 +263,7 @@ namespace Wukong
                 {
                     R.Cast();
                 }
-                else if (menuCombo["forceUlti" + t.NetworkId] != null && t.IsValidTarget(R.Range))
+                else if (menuCombo["forceUlti" + t.NetworkId] != null && t.LSIsValidTarget(R.Range))
                 {
                     switch (getBoxItem(menuCombo, "forceUlti" + t.NetworkId))
                     {
@@ -284,18 +284,18 @@ namespace Wukong
         private static void Harass()
         {
             var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
                 return;
 
             var useQ = getCheckBoxItem(menuHarass, "UseQHarass") && Q.IsReady();
             var useE = getCheckBoxItem(menuHarass, "UseEHarass") && E.IsReady();
 
-            if (useQ && t.IsValidTarget(Q.Range))
+            if (useQ && t.LSIsValidTarget(Q.Range))
             {
                 Q.Cast();
             }
 
-            if (useE && t.IsValidTarget(E.Range))
+            if (useE && t.LSIsValidTarget(E.Range))
             {
                 if (getCheckBoxItem(menuHarass, "UseEHarassTurret"))
                 {

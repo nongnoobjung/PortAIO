@@ -227,7 +227,7 @@ namespace Slutty_Gnar_Reworked
             #region force target
 
             var qSpell = getCheckBoxItem(comboMenu, "focust");
-            var target = HeroManager.Enemies.Find(en => en.IsValidTarget(ObjectManager.Player.AttackRange)
+            var target = HeroManager.Enemies.Find(en => en.LSIsValidTarget(ObjectManager.Player.AttackRange)
                                                         &&
                                                         en.Buffs.Any(buff => buff.Name == "gnarwproc" && buff.Count == 2));
             if (qSpell && target != null)
@@ -307,14 +307,14 @@ namespace Slutty_Gnar_Reworked
                 if (Player.IsMiniGnar())
                 {
                     if (GnarSpells.QMini.IsReady()
-                        && target.IsValidTarget(GnarSpells.QMini.Range - 30)
+                        && target.LSIsValidTarget(GnarSpells.QMini.Range - 30)
                         && target.Health <= GnarSpells.QMini.GetDamage(target))
                         GnarSpells.QMini.Cast(target);
                 }
                 if (Player.IsMegaGnar())
                 {
                     if (GnarSpells.QMega.IsReady()
-                        && target.IsValidTarget(GnarSpells.QMega.Range - 30)
+                        && target.LSIsValidTarget(GnarSpells.QMega.Range - 30)
                         && target.Health <= GnarSpells.QMega.GetDamage(target))
                         GnarSpells.QMega.Cast(target);
                 }
@@ -389,7 +389,7 @@ namespace Slutty_Gnar_Reworked
 
             foreach (var jungleminion in jungle)
             {
-                if (!jungleminion.IsValidTarget())
+                if (!jungleminion.LSIsValidTarget())
                     return;
 
                 if (Player.IsMiniGnar())
@@ -465,7 +465,7 @@ namespace Slutty_Gnar_Reworked
 
             if (Player.IsMiniGnar())
             {
-                if (qSpell && target.IsValidTarget(GnarSpells.QMini.Range)
+                if (qSpell && target.LSIsValidTarget(GnarSpells.QMini.Range)
                     && Player.LSDistance(target) > 450)
                 {
                     if (!qsSpell)
@@ -505,7 +505,7 @@ namespace Slutty_Gnar_Reworked
                     return;
                 var qpred = GnarSpells.QMini.GetPrediction(target);
                 var collision = GnarSpells.QMini.GetCollision(Player.Position.To2D(), new List<Vector2> {qpred.CastPosition.To2D()});
-                var mincol = collision.Where(obj => obj != null && obj.IsValidTarget() && !obj.IsDead && obj.IsMinion);
+                var mincol = collision.Where(obj => obj != null && obj.LSIsValidTarget() && !obj.IsDead && obj.IsMinion);
 
                 var aiBases = mincol as Obj_AI_Base[] ?? mincol.ToArray();
                 var objAiBases = mincol as IList<Obj_AI_Base> ?? aiBases.ToList();
@@ -513,7 +513,7 @@ namespace Slutty_Gnar_Reworked
 
                 var firstcol = objAiBases.OrderBy(m => m.LSDistance(Player.ServerPosition, true)).FirstOrDefault();
 
-                if (qSpell && target.IsValidTarget(GnarSpells.QMini.Range) && Player.LSDistance(target) > 450)
+                if (qSpell && target.LSIsValidTarget(GnarSpells.QMini.Range) && Player.LSDistance(target) > 450)
                 {
                     if (!aiBases.Any())
                     {

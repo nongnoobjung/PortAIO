@@ -179,7 +179,7 @@ namespace GFUELTalon
             {
                 if (getCheckBoxItem(miscellaneousMenu, "GFUELTalon.Misc.Antigapcloser") && E.IsReady())
                 {
-                    if (gapcloser.Sender.IsValidTarget(E.Range))
+                    if (gapcloser.Sender.LSIsValidTarget(E.Range))
                     {
                         E.CastOnUnit(gapcloser.Sender);
                     }
@@ -204,7 +204,7 @@ namespace GFUELTalon
                     return;
                 }
 
-                if (getCheckBoxItem(comboMenu, "GFUELTalon.Combo.E") && target.IsValidTarget(E.Range) && E.IsReady())
+                if (getCheckBoxItem(comboMenu, "GFUELTalon.Combo.E") && target.LSIsValidTarget(E.Range) && E.IsReady())
                 {
                     if (getCheckBoxItem(comboMenu, "GFUELTalon.Combo.Towercheck"))
                     {
@@ -231,7 +231,7 @@ namespace GFUELTalon
                             }
                         }
 
-                        if (GetComboDamage(target) > target.Health && target.IsValidTarget(R.Range - 50))
+                        if (GetComboDamage(target) > target.Health && target.LSIsValidTarget(R.Range - 50))
                         {
                             R.Cast();
                         }
@@ -239,7 +239,7 @@ namespace GFUELTalon
 
                     foreach (
                         var x in
-                            HeroManager.Enemies.Where(hero => !hero.IsDead && hero.IsValidTarget(R.Range - 50)))
+                            HeroManager.Enemies.Where(hero => !hero.IsDead && hero.LSIsValidTarget(R.Range - 50)))
                     {
                         var pred = R.GetPrediction(x);
                         if (pred.AoeTargetsHitCount >= getSliderItem(comboMenu, "GFUELTalon.Combo.Count"))
@@ -259,7 +259,7 @@ namespace GFUELTalon
                     }
                 }
 
-                if (getCheckBoxItem(comboMenu, "GFUELTalon.Combo.Q") && target.IsValidTarget(Q.Range) && Q.IsReady())
+                if (getCheckBoxItem(comboMenu, "GFUELTalon.Combo.Q") && target.LSIsValidTarget(Q.Range) && Q.IsReady())
                 {
                     Q.Cast();
                 }
@@ -336,13 +336,13 @@ namespace GFUELTalon
                 }
 
                 if (getCheckBoxItem(jungleclearMenu, "GFUELTalon.jungleclear.W") && W.IsReady() &&
-                    minion.IsValidTarget(W.Range))
+                    minion.LSIsValidTarget(W.Range))
                 {
                     W.Cast(minion);
                 }
 
                 if (getCheckBoxItem(jungleclearMenu, "GFUELTalon.jungleclear.Q") && Q.IsReady() &&
-                    minion.IsValidTarget(Q.Range))
+                    minion.LSIsValidTarget(Q.Range))
                 {
                     Q.Cast();
                 }
@@ -389,7 +389,7 @@ namespace GFUELTalon
 
                 if (getCheckBoxItem(laneclearMenu, "GFUELTalon.laneclear.W") && W.IsReady())
                 {
-                    if (GetCenterMinion().IsValidTarget())
+                    if (GetCenterMinion().LSIsValidTarget())
                     {
                         W.Cast(GetCenterMinion());
                     }
@@ -594,7 +594,7 @@ namespace GFUELTalon
                 {
                     var target = TargetSelector.GetTarget(W.Range, DamageType.Physical);
 
-                    if (target.IsValidTarget() == false)
+                    if (target.LSIsValidTarget() == false)
                     {
                         return;
                     }
@@ -622,9 +622,9 @@ namespace GFUELTalon
             try
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(W.Range) && !x.IsDead && !x.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(W.Range) && !x.IsDead && !x.IsZombie))
                 {
-                    if (enemy.IsValidTarget(W.Range) && enemy.Health < W.GetDamage(enemy))
+                    if (enemy.LSIsValidTarget(W.Range) && enemy.Health < W.GetDamage(enemy))
                     {
                         var prediction = W.GetPrediction(enemy);
                         if (prediction.Hitchance >= HitChance.High)
@@ -694,7 +694,7 @@ namespace GFUELTalon
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)
                     || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
                 {
-                    if (target.IsValidTarget(Q.Range))
+                    if (target.LSIsValidTarget(Q.Range))
                     {
                         Q.Cast();
                     }

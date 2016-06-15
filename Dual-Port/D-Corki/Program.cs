@@ -326,20 +326,20 @@ namespace D_Corki
             if (useQ && _q.IsReady() && Rdelay >= getSliderItem(miscMenu, "delaycombo"))
             {
                 var t = TargetSelector.GetTarget(_q.Range, DamageType.Magical);
-                if (t.IsValidTarget(_q.Range) && _q.GetPrediction(t).Hitchance >= HitChance.High) _q.Cast(t, false, true);
+                if (t.LSIsValidTarget(_q.Range) && _q.GetPrediction(t).Hitchance >= HitChance.High) _q.Cast(t, false, true);
                 Qcast = Environment.TickCount;
             }
 
             if (useE && _e.IsReady())
             {
                 var t = TargetSelector.GetTarget(_e.Range, DamageType.Magical);
-                if (t.IsValidTarget(_e.Range) && _e.GetPrediction(t).Hitchance >= HitChance.High) _e.Cast(t, false, true);
+                if (t.LSIsValidTarget(_e.Range) && _e.GetPrediction(t).Hitchance >= HitChance.High) _e.Cast(t, false, true);
             }
 
             if (useR && _r.IsReady() && Qdelay >= getSliderItem(miscMenu, "delaycombo"))
             {
                 var t = TargetSelector.GetTarget(_r.Range, DamageType.Magical);
-                if (t.IsValidTarget(_r.Range) && _r.GetPrediction(t).Hitchance >= HitChance.High) _r.Cast(t, false, true);
+                if (t.LSIsValidTarget(_r.Range) && _r.GetPrediction(t).Hitchance >= HitChance.High) _r.Cast(t, false, true);
                 Rcast = Environment.TickCount;
             }
 
@@ -357,20 +357,20 @@ namespace D_Corki
             if (useQ && _q.IsReady() && Rdelay >= getSliderItem(miscMenu, "delaycombo"))
             {
                 var t = TargetSelector.GetTarget(_q.Range, DamageType.Magical);
-                if (t.IsValidTarget(_q.Range) && _q.GetPrediction(t).Hitchance >= HitChance.High) _q.Cast(t, false, true);
+                if (t.LSIsValidTarget(_q.Range) && _q.GetPrediction(t).Hitchance >= HitChance.High) _q.Cast(t, false, true);
                 Qcast = Environment.TickCount;
             }
 
             if (useE && _e.IsReady())
             {
                 var t = TargetSelector.GetTarget(_e.Range, DamageType.Magical);
-                if (t.IsValidTarget(_e.Range) && _e.GetPrediction(t).Hitchance >= HitChance.High) _e.Cast(t, false, true);
+                if (t.LSIsValidTarget(_e.Range) && _e.GetPrediction(t).Hitchance >= HitChance.High) _e.Cast(t, false, true);
             }
 
             if (useR && _r.IsReady() && rlimH < UltiStucks() && Qdelay >= getSliderItem(miscMenu, "delaycombo"))
             {
                 var t = TargetSelector.GetTarget(_r.Range, DamageType.Magical);
-                if (t.IsValidTarget(_r.Range) && _r.GetPrediction(t).Hitchance >= HitChance.High) _r.Cast(t, false, true);
+                if (t.LSIsValidTarget(_r.Range) && _r.GetPrediction(t).Hitchance >= HitChance.High) _r.Cast(t, false, true);
                 Rcast = Environment.TickCount;
             }
         }
@@ -389,20 +389,20 @@ namespace D_Corki
                     if (useQ && _q.IsReady() && Rdelay >= getSliderItem(miscMenu, "delaycombo"))
                     {
                         var t = TargetSelector.GetTarget(_q.Range, DamageType.Magical);
-                        if (t.IsValidTarget(_q.Range) && _q.GetPrediction(t).Hitchance >= HitChance.High) _q.Cast(t, false, true);
+                        if (t.LSIsValidTarget(_q.Range) && _q.GetPrediction(t).Hitchance >= HitChance.High) _q.Cast(t, false, true);
                         Qcast = Environment.TickCount;
                     }
 
                     if (useE && _e.IsReady())
                     {
                         var t = TargetSelector.GetTarget(_e.Range, DamageType.Magical);
-                        if (t.IsValidTarget(_e.Range) && _e.GetPrediction(t).Hitchance >= HitChance.High) _e.Cast(t, false, true);
+                        if (t.LSIsValidTarget(_e.Range) && _e.GetPrediction(t).Hitchance >= HitChance.High) _e.Cast(t, false, true);
                     }
 
                     if (useR && _r.IsReady() && Qdelay >= getSliderItem(miscMenu, "delaycombo"))
                     {
                         var t = TargetSelector.GetTarget(_r.Range, DamageType.Magical);
-                        if (t.IsValidTarget(_r.Range) && _r.GetPrediction(t).Hitchance >= HitChance.High) _r.Cast(t, false, true);
+                        if (t.LSIsValidTarget(_r.Range) && _r.GetPrediction(t).Hitchance >= HitChance.High) _r.Cast(t, false, true);
                         Rcast = Environment.TickCount;
                     }
                 }
@@ -533,18 +533,18 @@ namespace D_Corki
                 return;
             }
 
-            if (useQ && _q.IsReady() && mob.IsValidTarget(_q.Range) && Rdelay >= getSliderItem(miscMenu, "delaycombo"))
+            if (useQ && _q.IsReady() && mob.LSIsValidTarget(_q.Range) && Rdelay >= getSliderItem(miscMenu, "delaycombo"))
             {
                 _q.Cast(mob);
                 Qcast = Environment.TickCount;
             }
 
-            if (_e.IsReady() && useE && mob.IsValidTarget(_e.Range))
+            if (_e.IsReady() && useE && mob.LSIsValidTarget(_e.Range))
             {
                 _e.Cast(mob);
             }
 
-            if (_r.IsReady() && useR && rlimJ < UltiStucks() && mob.IsValidTarget(_q.Range) && Qdelay >= getSliderItem(miscMenu, "delaycombo"))
+            if (_r.IsReady() && useR && rlimJ < UltiStucks() && mob.LSIsValidTarget(_q.Range) && Qdelay >= getSliderItem(miscMenu, "delaycombo"))
             {
                 _r.Cast(mob);
                 Rcast = Environment.TickCount;
@@ -564,7 +564,7 @@ namespace D_Corki
             {
                 if (_q.IsReady() && getCheckBoxItem(miscMenu, "UseQM") && Rdelay >= getSliderItem(miscMenu, "delaycombo"))
                 {
-                    if (_q.GetDamage(hero) > hero.Health && hero.IsValidTarget(_q.Range)
+                    if (_q.GetDamage(hero) > hero.Health && hero.LSIsValidTarget(_q.Range)
                         && _q.GetPrediction(hero).Hitchance >= HitChance.High)
                         _q.Cast(hero, false, true);
                     Qcast = Environment.TickCount;
@@ -572,7 +572,7 @@ namespace D_Corki
 
                 if (_e.IsReady() && getCheckBoxItem(miscMenu, "UseEM"))
                 {
-                    if (_e.GetDamage(hero) > hero.Health && hero.IsValidTarget(_e.Range)
+                    if (_e.GetDamage(hero) > hero.Health && hero.LSIsValidTarget(_e.Range)
                         && _e.GetPrediction(hero).Hitchance >= HitChance.High)
                         _e.Cast(hero, false, true);
                 }
@@ -581,7 +581,7 @@ namespace D_Corki
                 {
                     var t = TargetSelector.GetTarget(_r.Range, DamageType.Magical);
                     var bigRocket = HasBigRocket();
-                    if (hero.IsValidTarget(bigRocket ? _r2.Range : _r1.Range)
+                    if (hero.LSIsValidTarget(bigRocket ? _r2.Range : _r1.Range)
                         && _r1.GetDamage(hero) * (bigRocket ? 1.5f : 1f) > hero.Health)
                         if (_r.GetPrediction(t).Hitchance >= HitChance.High) _r.Cast(t, false, true);
                     Rcast = Environment.TickCount;
@@ -609,22 +609,22 @@ namespace D_Corki
                                       (hero.MaxHealth * (getSliderItem(itemMenu, "HextechEnemyhp")) / 100);
                 var iHextechmyhp = _player.Health <=
                                    (_player.MaxHealth * (getSliderItem(itemMenu, "Hextechmyhp")) / 100);
-                if (hero.IsValidTarget(450) && iBilge && (iBilgeEnemyhp || iBilgemyhp) && _bilge.IsReady())
+                if (hero.LSIsValidTarget(450) && iBilge && (iBilgeEnemyhp || iBilgemyhp) && _bilge.IsReady())
                 {
                     _bilge.Cast(hero);
                 }
 
-                if (hero.IsValidTarget(450) && iBlade && (iBladeEnemyhp || iBlademyhp) && _blade.IsReady())
+                if (hero.LSIsValidTarget(450) && iBlade && (iBladeEnemyhp || iBlademyhp) && _blade.IsReady())
                 {
                     _blade.Cast(hero);
                 }
 
-                if (hero.IsValidTarget(450) && iYoumuu && _youmuu.IsReady())
+                if (hero.LSIsValidTarget(450) && iYoumuu && _youmuu.IsReady())
                 {
                     _youmuu.Cast();
                 }
 
-                if (hero.IsValidTarget(700) && iHextech && (iHextechEnemyhp || iHextechmyhp) && _hextech.IsReady())
+                if (hero.LSIsValidTarget(700) && iHextech && (iHextechEnemyhp || iHextechmyhp) && _hextech.IsReady())
                 {
                     _hextech.Cast(hero);
                 }

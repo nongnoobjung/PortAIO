@@ -175,7 +175,7 @@ namespace Slutty_ryze
         public static void KillSteal()
         {
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-            if (target == null || !target.IsValidTarget(Q.Range) || target.IsInvulnerable)
+            if (target == null || !target.LSIsValidTarget(Q.Range) || target.IsInvulnerable)
                 return;
 
             var qSpell = getCheckBoxItem(MenuManager.ksMenu, "useQ2KS");
@@ -183,17 +183,17 @@ namespace Slutty_ryze
             var eSpell = getCheckBoxItem(MenuManager.ksMenu, "useE2KS");
             if (qSpell
                 && Q.GetDamage(target) > target.Health
-                && target.IsValidTarget(Q.Range))
+                && target.LSIsValidTarget(Q.Range))
                 Q.Cast(target);
 
             if (wSpell
                 && W.GetDamage(target) > target.Health
-                && target.IsValidTarget(W.Range))
+                && target.LSIsValidTarget(W.Range))
                 W.Cast(target);
 
             if (eSpell
                 && E.GetDamage(target) > target.Health
-                && target.IsValidTarget(E.Range))
+                && target.LSIsValidTarget(E.Range))
                 E.Cast(target);
         }
 

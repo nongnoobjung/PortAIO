@@ -57,7 +57,7 @@ namespace SCommon.Damage
             float dmg = 0.0f;
             foreach (var attack in ActiveAttacks.Values)
             {
-                if (attack.Source.IsValidTarget(float.MaxValue, false) && attack.Target.IsValidTarget(float.MaxValue, false))
+                if (attack.Source.LSIsValidTarget(float.MaxValue, false) && attack.Target.LSIsValidTarget(float.MaxValue, false))
                 {
                     if (attack.Target.NetworkId == unit.NetworkId)
                     {
@@ -146,7 +146,7 @@ namespace SCommon.Damage
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!sender.IsValidTarget(3000) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient ||
+            if (!sender.LSIsValidTarget(3000) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient ||
                 !Utility.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base) ||
                 sender.Type == GameObjectType.obj_AI_Turret)
                 return;

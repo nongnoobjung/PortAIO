@@ -18,7 +18,7 @@ namespace ExorAIO.Champions.Tryndamere
         public static void Combo(EventArgs args)
         {
             if (Bools.HasSheenBuff() ||
-                !Targets.Target.IsValidTarget() ||
+                !Targets.Target.LSIsValidTarget() ||
                 Bools.IsSpellShielded(Targets.Target))
             {
                 return;
@@ -29,7 +29,7 @@ namespace ExorAIO.Champions.Tryndamere
             /// </summary>
             if (Variables.W.IsReady() &&
                 !Targets.Target.IsFacing(ObjectManager.Player) &&
-                Targets.Target.IsValidTarget(Variables.W.Range) &&
+                Targets.Target.LSIsValidTarget(Variables.W.Range) &&
                 Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
             {
                 Variables.W.Cast();
@@ -39,8 +39,8 @@ namespace ExorAIO.Champions.Tryndamere
             ///     The E Combo Logic.
             /// </summary>
             if (Variables.E.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.E.Range) &&
-                !Targets.Target.IsValidTarget(Variables.AARange) &&
+                Targets.Target.LSIsValidTarget(Variables.E.Range) &&
+                !Targets.Target.LSIsValidTarget(Variables.AARange) &&
                 Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
             {
                 Variables.E.Cast(Targets.Target.Position);

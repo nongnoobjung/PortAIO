@@ -123,7 +123,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Player.Mana > RMANA + EMANA)
             {
                 var t = gapcloser.Sender;
-                if (t.IsValidTarget(E.Range))
+                if (t.LSIsValidTarget(E.Range))
                 {
                     if (W.IsReady() && getCheckBoxItem(wMenu, "AGCW"))
                     {
@@ -139,7 +139,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (getKeyBindItem(rMenu, "useR") && R.IsReady())
             {
                 var t = TargetSelector.GetTarget(1800, DamageType.Physical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                     R1.Cast(t, true);
             }
 
@@ -185,7 +185,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 var step = t.LSDistance(Player)/20;
                 for (var i = 0; i < 20; i++)
@@ -225,7 +225,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     foreach (
                         var enemy in
-                            Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                            Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy);
                 }
             }
@@ -242,7 +242,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 var wDmg = OktwCommon.GetKsDamage(t, W);
                 if (wDmg > t.Health)
@@ -263,7 +263,7 @@ namespace OneKeyToWin_AIO_Sebby
                         foreach (
                             var enemy in
                                 Program.Enemies.Where(
-                                    enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                                    enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
                             W.Cast(enemy, true, true);
                     }
                 }
@@ -272,7 +272,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void LogicE()
         {
-            if (Program.Enemies.Any(target => target.IsValidTarget(270) && target.IsMelee))
+            if (Program.Enemies.Any(target => target.LSIsValidTarget(270) && target.IsMelee))
             {
                 var dashPos = Dash.CastDash(true);
                 if (!dashPos.IsZero)
@@ -294,7 +294,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             foreach (
                 var target in
-                    Program.Enemies.Where(target => target.IsValidTarget(R1.Range) && OktwCommon.ValidUlt(target)))
+                    Program.Enemies.Where(target => target.LSIsValidTarget(R1.Range) && OktwCommon.ValidUlt(target)))
             {
                 double rDmg = OktwCommon.GetKsDamage(target, R);
 
@@ -311,7 +311,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                 var rDmg2 = rDmg*0.8;
 
-                if (target.IsValidTarget(R.Range) && !OktwCommon.IsSpellHeroCollision(target, R) && rDmg > target.Health)
+                if (target.LSIsValidTarget(R.Range) && !OktwCommon.IsSpellHeroCollision(target, R) && rDmg > target.Health)
                 {
                     Program.CastSpell(R, target);
                     Program.debug("Rdmg");
@@ -323,7 +323,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Program.CastSpell(R1, target);
                         Program.debug("Rdmg2");
                     }
-                    else if (target.IsValidTarget(1200))
+                    else if (target.LSIsValidTarget(1200))
                     {
                         Program.CastSpell(R1, target);
                         Program.debug("Rdmg2 collision");

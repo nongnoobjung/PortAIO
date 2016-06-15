@@ -226,7 +226,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 R.Range = 3500;
 
             var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 rPosLast = R.GetPrediction(t).CastPosition;
                 if (getKeyBindItem(rMenu, "useR") && !IsCastingR)
@@ -336,7 +336,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
 
             var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-            if (t.IsValidTarget() && getBoxItem(eMenu, "EmodeCombo") != 2)
+            if (t.LSIsValidTarget() && getBoxItem(eMenu, "EmodeCombo") != 2)
             {
                 if (Program.Combo && !Player.Spellbook.IsAutoAttacking)
                 {

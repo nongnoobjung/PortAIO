@@ -171,7 +171,7 @@ namespace NoobJaxReloaded
                 }
                 if (E.IsReady() && (getCheckBoxItem(comboMenu, "useE")))
                 {
-                    if ((!IsEUsed && Q.IsReady() && target.IsValidTarget(Q.Range)) || (!IsEUsed && Player.LSDistance(target.Position) < 250))
+                    if ((!IsEUsed && Q.IsReady() && target.LSIsValidTarget(Q.Range)) || (!IsEUsed && Player.LSDistance(target.Position) < 250))
                     {
                         E.Cast();
                     }
@@ -227,7 +227,7 @@ namespace NoobJaxReloaded
                                 {
                                     foreach (var minion in allJungleMinions)
                                     {
-                                        if (minion.IsValidTarget())
+                                        if (minion.LSIsValidTarget())
                                         {
                                             Q.CastOnUnit(minion);
                                         }
@@ -237,7 +237,7 @@ namespace NoobJaxReloaded
                                 {
                                     foreach (var minion in allJungleMinions)
                                     {
-                                        if (minion.IsValidTarget())
+                                        if (minion.LSIsValidTarget())
                                         {
                                             W.Cast(minion);
                                         }
@@ -258,7 +258,7 @@ namespace NoobJaxReloaded
                             {
                                 foreach (var minion in allLaneMinions)
                                 {
-                                    if (minion.IsValidTarget())
+                                    if (minion.LSIsValidTarget())
                                     {
                                         W.Cast(minion);
                                     }

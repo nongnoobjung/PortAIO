@@ -104,7 +104,7 @@ namespace Karma
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (sender.IsValidTarget(1000f) && args.DangerLevel == Interrupter2.DangerLevel.High && _e.IsReady())
+            if (sender.LSIsValidTarget(1000f) && args.DangerLevel == Interrupter2.DangerLevel.High && _e.IsReady())
             {
                 _r.Cast();
 
@@ -117,7 +117,7 @@ namespace Karma
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (gapcloser.Sender.IsValidTarget(300f))
+            if (gapcloser.Sender.LSIsValidTarget(300f))
             {
                 _e.Cast(ObjectManager.Player);
                 _q.Cast(gapcloser.Sender);
@@ -129,7 +129,7 @@ namespace Karma
             var menuItem = getCheckBoxItem(drawMenu, "WRootRange");
             if (menuItem)
             {
-                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget() && h.HasBuff("KarmaSpiritBind")))
+                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(h => h.LSIsValidTarget() && h.HasBuff("KarmaSpiritBind")))
                 {
                     var distance = 1 - Math.Min(Math.Max(850 - ObjectManager.Player.LSDistance(enemy), 0), 450)/450;
                     Render.Circle.DrawCircle(ObjectManager.Player.Position, 850, Color.FromArgb((int) (50*distance), Color.MintCream), -420, true);
@@ -162,9 +162,9 @@ namespace Karma
                         ObjectManager.Get<AIHeroClient>()
                             .Where(
                                 hero =>
-                                    hero.IsValidTarget(_e.Range) && hero.IsAlly &&
+                                    hero.LSIsValidTarget(_e.Range) && hero.IsAlly &&
                                     ObjectManager.Get<AIHeroClient>()
-                                        .Count(h => h.IsValidTarget() && h.LSDistance(hero) < 400) > 1))
+                                        .Count(h => h.LSIsValidTarget() && h.LSDistance(hero) < 400) > 1))
                 {
                     _e.Cast(hero);
                 }

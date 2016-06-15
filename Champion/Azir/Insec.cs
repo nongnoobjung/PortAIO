@@ -40,7 +40,7 @@ namespace HeavenStrikeAzir
             if (!Program.drawinsecLine)
                 return;
             var target = TargetSelector.SelectedTarget;
-            if (target.IsValidTarget() && !target.IsZombie)
+            if (target.LSIsValidTarget() && !target.IsZombie)
             {
                 Render.Circle.DrawCircle(target.Position, 100, Color.Yellow);
                 if (InsecPoint.IsValid())
@@ -94,7 +94,7 @@ namespace HeavenStrikeAzir
             if (!InsecPoint.IsValid())
                 return;
             var target = TargetSelector.SelectedTarget;
-            if (!target.IsValidTarget() || target.IsZombie)
+            if (!target.LSIsValidTarget() || target.IsZombie)
                 return;
             if (!Program._r2.IsReady())
                 return;

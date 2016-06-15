@@ -50,7 +50,7 @@ namespace ElRengarRevamped
             var unit2 =
                 ObjectManager.Get<Obj_AI_Base>()
                     .FirstOrDefault(
-                        a => (a.IsValid<AIHeroClient>()) && a.IsEnemy && a.LSDistance(Game.CursorPos) < a.BoundingRadius + 1000 && a.IsValidTarget());
+                        a => (a.IsValid<AIHeroClient>()) && a.IsEnemy && a.LSDistance(Game.CursorPos) < a.BoundingRadius + 1000 && a.LSIsValidTarget());
             if (unit2 != null)
             {
                 SelectedEnemy = unit2;
@@ -179,7 +179,7 @@ namespace ElRengarRevamped
                     return;
                 }
 
-                var target = Enemies.FirstOrDefault(x => x.IsValidTarget(spells[Spells.E].Range));
+                var target = Enemies.FirstOrDefault(x => x.LSIsValidTarget(spells[Spells.E].Range));
 
                 if (target == null)
                 {
@@ -256,7 +256,7 @@ namespace ElRengarRevamped
                             var targetE = TargetSelector.GetTarget(
                                 spells[Spells.E].Range,
                                 DamageType.Physical);
-                            if (targetE.IsValidTarget(spells[Spells.E].Range))
+                            if (targetE.LSIsValidTarget(spells[Spells.E].Range))
                             {
                                 var pred = spells[Spells.E].GetPrediction(targetE);
                                 if (pred.Hitchance >= HitChance.Medium)
@@ -470,7 +470,7 @@ namespace ElRengarRevamped
                         return;
                     }
 
-                    var target = HeroManager.Enemies.FirstOrDefault(h => h.IsValidTarget(spells[Spells.E].Range));
+                    var target = HeroManager.Enemies.FirstOrDefault(h => h.LSIsValidTarget(spells[Spells.E].Range));
 
                     if (target != null)
                     {

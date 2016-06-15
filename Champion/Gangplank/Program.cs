@@ -155,7 +155,7 @@ namespace UnderratedAIO.Champions
                                  (!e.UnderTurret(true) &&
                                   e.MaxHealth / 100 * getSliderItem(miscMenu, "Rhealt") >
                                   e.Health - IncDamages.GetEnemyData(e.NetworkId).DamageTaken)) &&
-                                e.HealthPercent > getSliderItem(miscMenu, "RhealtMin") && e.IsValidTarget() &&
+                                e.HealthPercent > getSliderItem(miscMenu, "RhealtMin") && e.LSIsValidTarget() &&
                                 e.LSDistance(player) > 1500))
                 {
                     var pred = IncDamages.GetEnemyData(enemy.NetworkId);
@@ -278,7 +278,7 @@ namespace UnderratedAIO.Champions
                                 (o.CountEnemiesInRange(BarrelExplosionRange - 50) > 0 ||
                                  HeroManager.Enemies.Count(
                                      e =>
-                                         e.IsValidTarget() &&
+                                         e.LSIsValidTarget() &&
                                          Prediction.GetPrediction(e, 0.1f).UnitPosition.LSDistance(o.Position) <
                                          BarrelExplosionRange - 20) > 0));
 
@@ -534,12 +534,12 @@ namespace UnderratedAIO.Champions
                         b.LSDistance(meleeRangeBarrel) < BarrelConnectionRange &&
                         HeroManager.Enemies.Count(
                             o =>
-                                o.IsValidTarget() && o.LSDistance(b) < BarrelExplosionRange &&
+                                o.LSIsValidTarget() && o.LSDistance(b) < BarrelExplosionRange &&
                                 b.LSDistance(Prediction.GetPrediction(o, 500).UnitPosition) < BarrelExplosionRange) > 0);
             if (meleeRangeBarrel != null &&
                 ((HeroManager.Enemies.Count(
                     o =>
-                        o.IsValidTarget() && o.LSDistance(meleeRangeBarrel) < BarrelExplosionRange &&
+                        o.LSIsValidTarget() && o.LSDistance(meleeRangeBarrel) < BarrelExplosionRange &&
                         meleeRangeBarrel.LSDistance(Prediction.GetPrediction(o, 500).UnitPosition) < BarrelExplosionRange) >
                   0) || secondb != null) && !Q.IsReady() && !justQ && Orbwalker.CanAutoAttack)
             {
@@ -592,10 +592,10 @@ namespace UnderratedAIO.Champions
                         if (getSliderItem(comboMenu, "detoneateTargets") > 1)
                         {
                             var enemies =
-                                HeroManager.Enemies.Where(e => e.IsValidTarget() && e.LSDistance(player) < 600)
+                                HeroManager.Enemies.Where(e => e.LSIsValidTarget() && e.LSDistance(player) < 600)
                                     .Select(e => Prediction.GetPrediction(e, 0.25f));
                             var enemies2 =
-                                HeroManager.Enemies.Where(e => e.IsValidTarget() && e.LSDistance(player) < 600)
+                                HeroManager.Enemies.Where(e => e.LSIsValidTarget() && e.LSDistance(player) < 600)
                                     .Select(e => Prediction.GetPrediction(e, 0.35f));
                             if (detoneateTargetBarrels.Any())
                             {
@@ -683,7 +683,7 @@ namespace UnderratedAIO.Champions
                 return;
             }
             var enemies =
-                HeroManager.Enemies.Where(e => e.IsValidTarget() && e.LSDistance(player) < E.Range)
+                HeroManager.Enemies.Where(e => e.LSIsValidTarget() && e.LSDistance(player) < E.Range)
                     .Select(e => Prediction.GetPrediction(e, 0.35f));
             var points = new List<Vector3>();
             foreach (var barrel in
@@ -771,7 +771,7 @@ namespace UnderratedAIO.Champions
             }
             if (getBoxItem(drawMenu, "drawKillableSL") != 0 && R.IsReady())
             {
-                var text = (from enemy in HeroManager.Enemies.Where(e => e.IsValidTarget()) where getRDamage(enemy) > enemy.Health select enemy.ChampionName + "(" + Math.Ceiling(enemy.Health / Rwave[R.Level - 1]) + " wave)").ToList();
+                var text = (from enemy in HeroManager.Enemies.Where(e => e.LSIsValidTarget()) where getRDamage(enemy) > enemy.Health select enemy.ChampionName + "(" + Math.Ceiling(enemy.Health / Rwave[R.Level - 1]) + " wave)").ToList();
                 if (text.Count > 0)
                 {
                     var result = string.Join(", ", text);

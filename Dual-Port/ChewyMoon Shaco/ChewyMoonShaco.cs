@@ -317,7 +317,7 @@ namespace ChewyMoonsShaco
             {
                 if (spell.Slot == SpellSlot.Q && useQ)
                 {
-                    if (!target.IsValidTarget(Q.Range))
+                    if (!target.LSIsValidTarget(Q.Range))
                     {
                         continue;
                     }
@@ -328,7 +328,7 @@ namespace ChewyMoonsShaco
 
 
                 if(target!=null)
-                if (spell.Slot == SpellSlot.R && target.IsValidTarget() && player.LSDistance(target) < 400 &&
+                if (spell.Slot == SpellSlot.R && target.LSIsValidTarget() && player.LSDistance(target) < 400 &&
                     player.HasBuff("Deceive") && getCheckBoxItem(comboMenu, "useR"))
                 {
                     R.Cast();
@@ -337,7 +337,7 @@ namespace ChewyMoonsShaco
                 if (spell.Slot == SpellSlot.W && useW)
                 {
                     //TODO: Make W based on waypoints
-                    if (!target.IsValidTarget(W.Range))
+                    if (!target.LSIsValidTarget(W.Range))
                     {
                         continue;
                     }
@@ -350,7 +350,7 @@ namespace ChewyMoonsShaco
                 {
                     continue;
                 }
-                if (!target.IsValidTarget(E.Range))
+                if (!target.LSIsValidTarget(E.Range))
                 {
                     continue;
                 }
@@ -384,7 +384,7 @@ namespace ChewyMoonsShaco
             var useE = getCheckBoxItem(harassMenu, "useEHarass");
             var target = TargetSelector.GetTarget(E.Range, DamageType.Magical);
 
-            if (!target.IsValidTarget(E.Range))
+            if (!target.LSIsValidTarget(E.Range))
             {
                 return;
             }

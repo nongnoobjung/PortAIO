@@ -125,7 +125,7 @@ namespace MasterSharp
                 spell = new MoveBuffData(
                     "Katarina W", SpellSlot.W, 100, 3,
                     () =>
-                        ObjectManager.Get<AIHeroClient>().Any(h => h.IsValidTarget(375))
+                        ObjectManager.Get<AIHeroClient>().Any(h => h.LSIsValidTarget(375))
                             ? ObjectManager.Player.MoveSpeed*
                               (1 + 0.10f + 0.05f*ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level)
                             : 0);

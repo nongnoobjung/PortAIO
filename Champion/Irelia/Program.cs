@@ -146,9 +146,9 @@ namespace Challenger_Series
                             ObjectManager.Get<AIHeroClient>()
                                 .FirstOrDefault(
                                     hero =>
-                                        hero.IsEnemy && hero.IsValidTarget() && hero.Health < Q.GetDamage(hero) &&
+                                        hero.IsEnemy && hero.LSIsValidTarget() && hero.Health < Q.GetDamage(hero) &&
                                         hero.ServerPosition.LSDistance(ObjectManager.Player.ServerPosition) < 650);
-                        if (killableEnemy != null && killableEnemy.IsValidTarget())
+                        if (killableEnemy != null && killableEnemy.LSIsValidTarget())
                         {
                             Q.Cast(killableEnemy);
                         }
@@ -177,7 +177,7 @@ namespace Challenger_Series
                                                         650 &&
                                                         m.IsEnemy &&
                                                         m.ServerPosition.LSDistance(target.ServerPosition) <
-                                                        distBetweenMeAndTarget && m.IsValidTarget() &&
+                                                        distBetweenMeAndTarget && m.LSIsValidTarget() &&
                                                         m.Health < Q.GetDamage(m))
                                                 .OrderBy(m => m.Position.LSDistance(target.ServerPosition))
                                                 .FirstOrDefault();
@@ -196,7 +196,7 @@ namespace Challenger_Series
                                                         650 && m.IsEnemy &&
                                                         m.ServerPosition.LSDistance(target.ServerPosition) <
                                                         distBetweenMeAndTarget &&
-                                                        m.IsValidTarget() && m.Health < Q.GetDamage(m))
+                                                        m.LSIsValidTarget() && m.Health < Q.GetDamage(m))
                                                 .OrderByDescending(m => m.Position.LSDistance(target.ServerPosition))
                                                 .FirstOrDefault();
                                         if (firstGapclosingMinion != null)
@@ -225,7 +225,7 @@ namespace Challenger_Series
                                                 650 && m.IsEnemy &&
                                                 m.ServerPosition.LSDistance(target.ServerPosition) <
                                                 distBetweenMeAndTarget &&
-                                                m.IsValidTarget() && m.Health < Q.GetDamage(m))
+                                                m.LSIsValidTarget() && m.Health < Q.GetDamage(m))
                                         .OrderByDescending(m => m.Position.LSDistance(target.ServerPosition))
                                         .FirstOrDefault();
                                 if (firstGapclosingMinion != null)
@@ -284,7 +284,7 @@ namespace Challenger_Series
                                     m =>
                                         m.IsEnemy && m.Position.LSDistance(ObjectManager.Player.ServerPosition) < 650 &&
                                         m.Position.LSDistance(ObjectManager.Player.Position) >
-                                        ObjectManager.Player.AttackRange && m.IsValidTarget() &&
+                                        ObjectManager.Player.AttackRange && m.LSIsValidTarget() &&
                                         m.Health < 25);
                         if (unkillableMinion != null)
                         {
@@ -299,7 +299,7 @@ namespace Challenger_Series
                                 .FirstOrDefault(
                                     m =>
                                         m.IsEnemy && m.Position.LSDistance(ObjectManager.Player.ServerPosition) < 650 &&
-                                        m.IsValidTarget() && m.Health < Q.GetDamage(m));
+                                        m.LSIsValidTarget() && m.Health < Q.GetDamage(m));
                         if (killableMinion != null)
                         {
                             Q.Cast(killableMinion);

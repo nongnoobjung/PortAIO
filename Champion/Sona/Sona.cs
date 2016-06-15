@@ -115,7 +115,7 @@ namespace vSupport_Series.Champions
             {
                 return;
             }
-            if (R.IsReady() && sender.IsValidTarget(R.Range) && getCheckBoxItem(misc, "sona.inter"))
+            if (R.IsReady() && sender.LSIsValidTarget(R.Range) && getCheckBoxItem(misc, "sona.inter"))
             {
                 R.CastIfHitchanceEquals(sender, HitChance.High);
             }
@@ -129,7 +129,7 @@ namespace vSupport_Series.Champions
             }
             if (R.IsReady() && getCheckBoxItem(misc, "sona.anti") &&
                 R.GetPrediction(gapcloser.Sender).Hitchance > HitChance.High
-                && gapcloser.Sender.IsValidTarget(1000))
+                && gapcloser.Sender.LSIsValidTarget(1000))
             {
                 R.Cast(gapcloser.Sender);
             }
@@ -201,7 +201,7 @@ namespace vSupport_Series.Champions
             if (getCheckBoxItem(rSettings, "sona.r.killsteal") && R.IsReady())
             {
                 foreach (
-                    var target in HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsDead && !x.IsZombie))
+                    var target in HeroManager.Enemies.Where(x => x.LSIsValidTarget(R.Range) && !x.IsDead && !x.IsZombie))
                 {
                     if (R.GetDamage(target) > target.Health && R.IsInRange(target))
                     {
@@ -216,7 +216,7 @@ namespace vSupport_Series.Champions
             if (getCheckBoxItem(comboMenu, "sona.q.combo") && Q.IsReady())
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Q.Range) && !x.IsDead && !x.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Q.Range) && !x.IsDead && !x.IsZombie))
                 {
                     Q.Cast(enemy);
                 }
@@ -225,7 +225,7 @@ namespace vSupport_Series.Champions
             if (getCheckBoxItem(comboMenu, "sona.r.combo") && R.IsReady())
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsDead && !x.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(R.Range) && !x.IsDead && !x.IsZombie))
                 {
                     if (R.IsInRange(enemy))
                     {
@@ -244,7 +244,7 @@ namespace vSupport_Series.Champions
 
             if (getCheckBoxItem(harass, "sona.q.harass") && Q.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Q.Range) && !x.IsDead
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Q.Range) && !x.IsDead
                                                                      && !x.IsZombie &&
                                                                      !x.HasBuffOfType(BuffType.SpellShield) &&
                                                                      !x.HasBuffOfType(BuffType.SpellImmunity)))

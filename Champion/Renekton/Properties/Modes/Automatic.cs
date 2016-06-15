@@ -39,8 +39,8 @@ namespace ExorAIO.Champions.Renekton
 
                 if (HeroManager.Enemies.Any(
                     t =>
-                        t.IsValidTarget(Variables.Q.Range) &&
-                        (!t.IsValidTarget(Variables.W.Range) || !Variables.W.IsReady())))
+                        t.LSIsValidTarget(Variables.Q.Range) &&
+                        (!t.LSIsValidTarget(Variables.W.Range) || !Variables.W.IsReady())))
                 {
                     Variables.Q.Cast();
                 }

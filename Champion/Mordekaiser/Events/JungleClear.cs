@@ -151,7 +151,7 @@ namespace Mordekaiser.Events
 
         public static void CastQ(Obj_AI_Base t)
         {
-            if (!t.IsValidTarget(Utils.Player.AutoAttackRange))
+            if (!t.LSIsValidTarget(Utils.Player.AutoAttackRange))
             {
                 return;
             }

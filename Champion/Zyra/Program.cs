@@ -137,7 +137,7 @@ namespace D_Zyra
             if (getKeyBindItem(comboMenu, "useRaim") && _r.IsReady())
             {
                 var t = TargetSelector.GetTarget(_r.Range, DamageType.Magical);
-                if (t.IsValidTarget(_r.Range)) _r.Cast(t.Position);
+                if (t.LSIsValidTarget(_r.Range)) _r.Cast(t.Position);
             }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
@@ -253,13 +253,13 @@ namespace D_Zyra
             var pos = _e.GetPrediction(gapcloser.Sender).CastPosition;
             if (getCheckBoxItem(miscMenu, "Gap_E"))
             {
-                if (_e.IsReady() && gapcloser.Sender.IsValidTarget(_e.Range) && _w.IsReady())
+                if (_e.IsReady() && gapcloser.Sender.LSIsValidTarget(_e.Range) && _w.IsReady())
                 {
                     _e.CastIfHitchanceEquals(gapcloser.Sender, Echange());
                     Utility.DelayAction.Add(50, () => _w.Cast(new Vector3(pos.X - 2, pos.Y - 2, pos.Z)));
                     Utility.DelayAction.Add(150, () => _w.Cast(new Vector3(pos.X + 2, pos.Y + 2, pos.Z)));
                 }
-                else if (_e.IsReady() && gapcloser.Sender.IsValidTarget(_e.Range))
+                else if (_e.IsReady() && gapcloser.Sender.LSIsValidTarget(_e.Range))
                 {
                     _e.CastIfHitchanceEquals(gapcloser.Sender, HitChance.High);
                 }
@@ -272,13 +272,13 @@ namespace D_Zyra
         {
             var pos = _e.GetPrediction(unit).CastPosition;
             if (!getCheckBoxItem(miscMenu, "Inter_E")) return;
-            if (_e.IsReady() && unit.IsValidTarget(_e.Range) && _w.IsReady())
+            if (_e.IsReady() && unit.LSIsValidTarget(_e.Range) && _w.IsReady())
             {
                 _e.CastIfHitchanceEquals(unit, Echange());
                 Utility.DelayAction.Add(50, () => _w.Cast(new Vector3(pos.X - 2, pos.Y - 2, pos.Z)));
                 Utility.DelayAction.Add(150, () => _w.Cast(new Vector3(pos.X + 2, pos.Y + 2, pos.Z)));
             }
-            else if (_e.IsReady() && unit.IsValidTarget(_e.Range))
+            else if (_e.IsReady() && unit.LSIsValidTarget(_e.Range))
             {
                 _e.CastIfHitchanceEquals(unit, HitChance.High);
             }
@@ -410,14 +410,14 @@ namespace D_Zyra
         {
             var target = TargetSelector.GetTarget(_r.Range, DamageType.Magical);
             var rpred = _r.GetPrediction(target, true);
-            if (!target.IsValidTarget(_r.Range) || !_r.IsReady()) return;
+            if (!target.LSIsValidTarget(_r.Range) || !_r.IsReady()) return;
 
             if (ComboDamage(target)*1.3 > target.Health && getCheckBoxItem(comboMenu, "use_ulti")
                 && _r.GetPrediction(target).Hitchance >= HitChance.High)
             {
                 _r.Cast(rpred.CastPosition);
             }
-            if (ObjectManager.Get<AIHeroClient>().Count(hero => hero.IsValidTarget(_r.Range))
+            if (ObjectManager.Get<AIHeroClient>().Count(hero => hero.LSIsValidTarget(_r.Range))
                 >= getSliderItem(comboMenu, "MinTargets")
                 && _r.GetPrediction(target).Hitchance >= HitChance.High)
             {
@@ -429,7 +429,7 @@ namespace D_Zyra
         {
             if (!_q.IsReady()) return;
             var target = TargetSelector.GetTarget(_q.Range + _q.Width/2, DamageType.Magical);
-            if (!target.IsValidTarget(_q.Range)) return;
+            if (!target.LSIsValidTarget(_q.Range)) return;
             _q.CastIfHitchanceEquals(target, HitChance.High);
             if (_w.IsReady() && getCheckBoxItem(comboMenu, "useW_Passive"))
             {
@@ -443,7 +443,7 @@ namespace D_Zyra
         {
             if (!_q.IsReady()) return;
             var target = TargetSelector.GetTarget(_q.Range + _q.Width/2, DamageType.Magical);
-            if (!target.IsValidTarget(_q.Range)) return;
+            if (!target.LSIsValidTarget(_q.Range)) return;
             _q.CastIfHitchanceEquals(target, HitChance.High);
             if (_w.IsReady() && getCheckBoxItem(harassMenu, "useW_Passiveh"))
             {
@@ -457,7 +457,7 @@ namespace D_Zyra
         {
             if (!_e.IsReady()) return;
             var target = TargetSelector.GetTarget(_e.Range, DamageType.Magical);
-            if (!target.IsValidTarget(_e.Range)) return;
+            if (!target.LSIsValidTarget(_e.Range)) return;
             _e.CastIfHitchanceEquals(target, Echange());
             if (_w.IsReady() && getCheckBoxItem(comboMenu, "useWE_Passive"))
             {
@@ -471,7 +471,7 @@ namespace D_Zyra
         {
             if (!_e.IsReady()) return;
             var target = TargetSelector.GetTarget(_e.Range, DamageType.Magical);
-            if (!target.IsValidTarget(_e.Range)) return;
+            if (!target.LSIsValidTarget(_e.Range)) return;
             _e.CastIfHitchanceEquals(target, Echange());
             if (_w.IsReady() && getCheckBoxItem(harassMenu, "useWE_Passiveh"))
             {
@@ -485,7 +485,7 @@ namespace D_Zyra
         {
             if (!_passive.IsReady()) return;
             var target = TargetSelector.GetTarget(_passive.Range, DamageType.Magical);
-            if (!target.IsValidTarget(_e.Range)) return;
+            if (!target.LSIsValidTarget(_e.Range)) return;
             _passive.CastIfHitchanceEquals(target, HitChance.High);
         }
 
@@ -500,7 +500,7 @@ namespace D_Zyra
                 var ehDmg = _player.GetSpellDamage(hero, SpellSlot.E);
                 var emana = _player.Spellbook.GetSpell(SpellSlot.E).SData.Mana;
                 var qmana = _player.Spellbook.GetSpell(SpellSlot.Q).SData.Mana;
-                if (useq && hero.IsValidTarget(_q.Range) && _q.IsReady())
+                if (useq && hero.LSIsValidTarget(_q.Range) && _q.IsReady())
                 {
                     if (qhDmg >= hero.Health && qmana < _player.Mana)
                     {
@@ -514,7 +514,7 @@ namespace D_Zyra
                         Utility.DelayAction.Add(150, () => _w.Cast(new Vector3(pos.X + 5, pos.Y + 5, pos.Z)));
                     }
                 }
-                if (usee && hero.IsValidTarget(_e.Range) && _e.IsReady())
+                if (usee && hero.LSIsValidTarget(_e.Range) && _e.IsReady())
                 {
                     if (ehDmg >= hero.Health && emana < _player.Mana)
                     {
@@ -554,7 +554,7 @@ namespace D_Zyra
             if (getCheckBoxItem(drawMenu, "damagetest"))
             {
                 foreach (var enemyVisible in
-                    ObjectManager.Get<AIHeroClient>().Where(enemyVisible => enemyVisible.IsValidTarget()))
+                    ObjectManager.Get<AIHeroClient>().Where(enemyVisible => enemyVisible.LSIsValidTarget()))
                 {
                     if (ComboDamage(enemyVisible) > enemyVisible.Health)
                     {

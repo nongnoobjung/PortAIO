@@ -84,7 +84,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
 
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     R.CastIfWillHit(t, 2, true);
                     R.Cast(t, true, true);
@@ -116,7 +116,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicE()
         {
             var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 E.CastOnUnit(t);
             }
@@ -133,7 +133,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicR()
         {
             var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 var poutput = R.GetPrediction(t, true);
 

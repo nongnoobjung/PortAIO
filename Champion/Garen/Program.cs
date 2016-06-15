@@ -130,7 +130,7 @@ namespace UnderratedAIO.Champions
                 E.Cast(getCheckBoxItem(config, "packets"));
             }
             var targHP = target.Health + 20 - CombatHelper.IgniteDamage(target);
-            var rLogic = getCheckBoxItem(comboMenu, "user") && R.IsReady() && target.IsValidTarget() &&
+            var rLogic = getCheckBoxItem(comboMenu, "user") && R.IsReady() && target.LSIsValidTarget() &&
                          (!getCheckBoxItem(miscMenu, "ult" + target.BaseSkinName) ||
                           player.CountEnemiesInRange(1500) == 1) && getRDamage(target) > targHP && targHP > 0;
             if (rLogic && target.LSDistance(player) < R.Range)
@@ -248,7 +248,7 @@ namespace UnderratedAIO.Champions
             }
             var dmg = (baseEDamage[E.Level - 1] + bonusEDamage[E.Level - 1]/100*player.TotalAttackDamage)*spins;
             var bonus = target.HasBuff("garenpassiveenemytarget") ? target.MaxHealth/100f*spins : 0;
-            if (ObjectManager.Get<Obj_AI_Base>().Count(o => o.IsValidTarget() && o.LSDistance(target) < 650) == 0)
+            if (ObjectManager.Get<Obj_AI_Base>().Count(o => o.LSIsValidTarget() && o.LSDistance(target) < 650) == 0)
             {
                 return player.CalcDamage(target, DamageType.Physical, dmg)*1.33 + bonus;
             }

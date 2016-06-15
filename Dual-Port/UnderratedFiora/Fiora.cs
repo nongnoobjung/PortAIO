@@ -44,7 +44,7 @@ namespace UnderratedAIO.Champions
             if (passiveType != PassiveType.NULL)
             {
                 var enemy =
-                    HeroManager.Enemies.Where(e => e.IsValidTarget() && e.LSDistance(sender.Position) < 50)
+                    HeroManager.Enemies.Where(e => e.LSIsValidTarget() && e.LSDistance(sender.Position) < 50)
                         .OrderBy(e => sender.Position.LSDistance(e.Position))
                         .FirstOrDefault();
                 if (enemy == null)

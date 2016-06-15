@@ -115,7 +115,7 @@ namespace SCommon.TS
             Vector3? _from = null)
         {
             var from = _from ?? ObjectManager.Player.ServerPosition;
-            //if (s_LastTarget == null || !s_LastTarget.IsValidTarget(range) || Utils.TickCount - s_LastTargetSent > 250)
+            //if (s_LastTarget == null || !s_LastTarget.LSIsValidTarget(range) || Utils.TickCount - s_LastTargetSent > 250)
             //{
             //    var t = GetNewTarget(range, dmgType, from);
             //    s_LastTarget = t;
@@ -144,9 +144,9 @@ namespace SCommon.TS
             {
                 if (SelectedTarget != null)
                 {
-                    if (SelectedTarget.IsValidTarget(range))
+                    if (SelectedTarget.LSIsValidTarget(range))
                         return SelectedTarget;
-                    if (SelectedTarget.IsValidTarget())
+                    if (SelectedTarget.LSIsValidTarget())
                         return null;
                 }
             }
@@ -155,10 +155,10 @@ namespace SCommon.TS
             {
                 if (SelectedTarget != null)
                 {
-                    if (SelectedTarget.IsValidTarget(range))
+                    if (SelectedTarget.LSIsValidTarget(range))
                         return SelectedTarget;
                     if (ConfigMenu.FocusExtraRange > 0 &&
-                        SelectedTarget.IsValidTarget(range + ConfigMenu.FocusExtraRange))
+                        SelectedTarget.LSIsValidTarget(range + ConfigMenu.FocusExtraRange))
                         return null;
                 }
             }
@@ -166,7 +166,7 @@ namespace SCommon.TS
 
             var enemies =
                 HeroManager.Enemies.Where(
-                    p => p.IsValidTarget(range + p.BoundingRadius, true, from) && !IsInvulnerable(p, dmgType));
+                    p => p.LSIsValidTarget(range + p.BoundingRadius, true, from) && !IsInvulnerable(p, dmgType));
             if (enemies.Count() == 0)
                 return null;
 
@@ -327,7 +327,7 @@ namespace SCommon.TS
             }
             SelectedTarget =
                 HeroManager.Enemies
-                    .FindAll(hero => hero.IsValidTarget() && hero.LSDistance(Game.CursorPos, true) < 40000) // 200 * 200
+                    .FindAll(hero => hero.LSIsValidTarget() && hero.LSDistance(Game.CursorPos, true) < 40000) // 200 * 200
                     .OrderBy(h => h.LSDistance(Game.CursorPos, true)).FirstOrDefault();
         }
 
@@ -335,7 +335,7 @@ namespace SCommon.TS
         {
             if (ConfigMenu.FocusSelected && ConfigMenu.SelectedTargetColor)
             {
-                if (SelectedTarget != null && SelectedTarget.IsValidTarget())
+                if (SelectedTarget != null && SelectedTarget.LSIsValidTarget())
                     Render.Circle.DrawCircle(SelectedTarget.Position, 150, Color.Red, 7, true);
             }
         }

@@ -138,7 +138,7 @@ namespace ExorAIO.Utilities
         public static bool IsPerfectRendTarget(Obj_AI_Base target)
         {
             if (target.HasBuff("KalistaExpungeMarker") &&
-                target.IsValidTarget(Variables.E.Range))
+                target.LSIsValidTarget(Variables.E.Range))
             {
                 if (target.IsValid<Obj_AI_Minion>())
                 {

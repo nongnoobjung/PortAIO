@@ -30,7 +30,7 @@ namespace Leblanc.Modes
                 if (Modes.ModeSettings.MenuSettingE["Settings.E.Auto"].Cast<ComboBox>().CurrentValue == 1)
                 {
                     var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-                    if (t.IsValidTarget() && t.CanStun())
+                    if (t.LSIsValidTarget() && t.CanStun())
                     {
                         //Champion.PlayerSpells.CastECombo(t);
                     }

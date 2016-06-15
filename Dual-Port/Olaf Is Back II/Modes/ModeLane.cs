@@ -111,7 +111,7 @@ namespace OlafxQx.Modes
                         .Where(
                             m =>
                                 m.IsEnemy && !m.IsDead &&
-                                m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
+                                m.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
                         .Sum(mob => (int)mob.Health);
 
                 totalAa = (int)(totalAa / ObjectManager.Player.TotalAttackDamage);

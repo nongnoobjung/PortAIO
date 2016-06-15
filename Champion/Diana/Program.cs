@@ -326,7 +326,7 @@ namespace ElDiana
                 spells[Spells.R].Cast(target);
             }
 
-            if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(ObjectManager.Player)))
+            if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(ObjectManager.Player)))
             {
                 spells[Spells.W].Cast();
             }
@@ -623,7 +623,7 @@ namespace ElDiana
                 spells[Spells.W].Cast();
             }
 
-            if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(400f))
+            if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(400f))
             {
                  spells[Spells.E].Cast();
             }

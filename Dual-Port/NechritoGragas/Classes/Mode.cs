@@ -24,7 +24,7 @@ namespace Nechrito_Gragas
                     }
                 }
                 var target = TargetSelector.GetTarget(700f, DamageType.Magical);
-                if (target != null && target.IsValidTarget() && !target.IsZombie)
+                if (target != null && target.LSIsValidTarget() && !target.IsZombie)
                 {
                     if (Spells._q.IsReady() && !Spells._r.IsReady())
                     {
@@ -79,7 +79,7 @@ namespace Nechrito_Gragas
         public static void HarassLogic()
         {
             var target = TargetSelector.GetTarget(Spells._r.Range - 50, DamageType.Magical);
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.LSIsValidTarget() && !target.IsZombie)
             {
                 if (Spells._e.IsReady())
                     Spells._e.Cast(target);

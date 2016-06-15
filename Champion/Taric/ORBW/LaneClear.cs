@@ -95,7 +95,7 @@
 
             var Minion = MinionManager.GetMinions(E.Range, MinionTypes.All, MinionTeam.Enemy).FirstOrDefault();
 
-            if (Minion.IsValidTarget() && (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)))
+            if (Minion.LSIsValidTarget() && (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)))
             {
                 if (getCheckBoxItem(SkyLv_Taric.LaneClear, "Taric.SafeLaneClear") && Player.CountEnemiesInRange(1500) > 0) return;
 

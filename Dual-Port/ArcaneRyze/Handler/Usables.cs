@@ -18,7 +18,7 @@ namespace Arcane_Ryze.Handler
                 return;
             }
             var Target = TargetSelector.SelectedTarget;
-            if (Items.CanUseItem(3152) && Target.IsValidTarget())
+            if (Items.CanUseItem(3152) && Target.LSIsValidTarget())
             {
                 Items.UseItem(3152, Target.ServerPosition);
             }

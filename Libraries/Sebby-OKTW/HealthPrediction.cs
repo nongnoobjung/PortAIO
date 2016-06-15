@@ -86,7 +86,7 @@ namespace SebbyLib
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private static void ObjAiBaseOnOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.Team != ObjectManager.Player.Team || !sender.IsValidTarget(3000) ||
+            if (sender.Team != ObjectManager.Player.Team || !sender.LSIsValidTarget(3000) ||
                 !Orbwalking.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base))
             {
                 return;
@@ -113,8 +113,8 @@ namespace SebbyLib
             foreach (var attack in ActiveAttacks.Values)
             {
                 var attackDamage = 0f;
-                if (!attack.Processed && attack.Source.IsValidTarget(float.MaxValue) &&
-                    attack.Target.IsValidTarget(float.MaxValue) && attack.Target.NetworkId == unit.NetworkId)
+                if (!attack.Processed && attack.Source.LSIsValidTarget(float.MaxValue) &&
+                    attack.Target.LSIsValidTarget(float.MaxValue) && attack.Target.NetworkId == unit.NetworkId)
                 {
                     var landTime = attack.StartTick + attack.Delay +
                                    1000*Math.Max(0, unit.LSDistance(attack.Source) - attack.Source.BoundingRadius)/
@@ -140,8 +140,8 @@ namespace SebbyLib
             {
                 var n = 0;
                 if (Utils.GameTimeTickCount - 100 <= attack.StartTick + attack.AnimationTime &&
-                    attack.Target.IsValidTarget(float.MaxValue) &&
-                    attack.Source.IsValidTarget(float.MaxValue) && attack.Target.NetworkId == unit.NetworkId)
+                    attack.Target.LSIsValidTarget(float.MaxValue) &&
+                    attack.Source.LSIsValidTarget(float.MaxValue) && attack.Target.NetworkId == unit.NetworkId)
                 {
                     var fromT = attack.StartTick;
                     var toT = Utils.GameTimeTickCount + time;

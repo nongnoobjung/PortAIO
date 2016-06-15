@@ -53,7 +53,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
 
         public static void PreCastTumble(Obj_AI_Base target)
         {
-            if (!target.IsValidTarget(ObjectManager.Player.AttackRange + 65f + 65f + 300f))
+            if (!target.LSIsValidTarget(ObjectManager.Player.AttackRange + 65f + 65f + 300f))
             {
                 Orbwalker.ForcedTarget = null;
                 return;

@@ -49,7 +49,7 @@ namespace Mundo
         {
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
-                if (getCheckBoxItem(comboMenu, "useE") && e.IsReady() && target is AIHeroClient && target.IsValidTarget(e.Range))
+                if (getCheckBoxItem(comboMenu, "useE") && e.IsReady() && target is AIHeroClient && target.LSIsValidTarget(e.Range))
                 {
                     e.Cast();
                 }
@@ -57,7 +57,7 @@ namespace Mundo
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
-                if (getCheckBoxItem(clearMenu, "useEj") && e.IsReady() && target is Obj_AI_Minion && target.IsValidTarget(e.Range))
+                if (getCheckBoxItem(clearMenu, "useEj") && e.IsReady() && target is Obj_AI_Minion && target.LSIsValidTarget(e.Range))
                 {
                     e.Cast();
                 }
@@ -68,7 +68,7 @@ namespace Mundo
             {
                 if ((getCheckBoxItem(miscMenu, "titanicC") || getCheckBoxItem(miscMenu, "ravenousC") ||
                      getCheckBoxItem(miscMenu, "tiamatC")) && !e.IsReady() && target is AIHeroClient &&
-                    target.IsValidTarget(e.Range) && CommonUtilities.CheckItem())
+                    target.LSIsValidTarget(e.Range) && CommonUtilities.CheckItem())
                 {
                     CommonUtilities.UseItem();
                 }
@@ -78,7 +78,7 @@ namespace Mundo
             {
                 if ((getCheckBoxItem(miscMenu, "titanicF") || getCheckBoxItem(miscMenu, "ravenousF") ||
                      getCheckBoxItem(miscMenu, "tiamatF")) && !e.IsReady() && target is Obj_AI_Minion &&
-                    target.IsValidTarget(e.Range) && CommonUtilities.CheckItem())
+                    target.LSIsValidTarget(e.Range) && CommonUtilities.CheckItem())
                 {
                     CommonUtilities.UseItem();
                 }
@@ -232,7 +232,7 @@ namespace Mundo
             var qHealth = getSliderItem(comboMenu, "QHealthCombo");
             var wHealth = getSliderItem(comboMenu, "WHealthCombo");
 
-            if (castQ && CommonUtilities.Player.HealthPercent >= qHealth && target.IsValidTarget(q.Range))
+            if (castQ && CommonUtilities.Player.HealthPercent >= qHealth && target.LSIsValidTarget(q.Range))
             {
                 if (q.GetPrediction(target).Hitchance >= CommonUtilities.GetHitChance("hitchanceQ"))
                 {
@@ -240,7 +240,7 @@ namespace Mundo
                 }
             }
 
-            if (castW && CommonUtilities.Player.HealthPercent >= wHealth && !IsBurning() && target.IsValidTarget(500))
+            if (castW && CommonUtilities.Player.HealthPercent >= wHealth && !IsBurning() && target.LSIsValidTarget(500))
             {
                 w.Cast();
             }
@@ -260,7 +260,7 @@ namespace Mundo
             var castQ = getCheckBoxItem(harassMenu, "useQHarass") && q.IsReady();
             var qHealth = getSliderItem(harassMenu, "useQHarassHP");
 
-            if (castQ && CommonUtilities.Player.HealthPercent >= qHealth && target.IsValidTarget(q.Range))
+            if (castQ && CommonUtilities.Player.HealthPercent >= qHealth && target.LSIsValidTarget(q.Range))
             {
                 if (q.GetPrediction(target).Hitchance >= CommonUtilities.GetHitChance("hitchanceQ"))
                 {
@@ -395,7 +395,7 @@ namespace Mundo
                 foreach (
                     var target in
                         HeroManager.Enemies.Where(
-                            enemy => enemy.IsValidTarget(q.Range) && !enemy.HasBuffOfType(BuffType.Invulnerability))
+                            enemy => enemy.LSIsValidTarget(q.Range) && !enemy.HasBuffOfType(BuffType.Invulnerability))
                             .Where(target => target.Health < CommonUtilities.Player.GetSpellDamage(target, SpellSlot.Q))
                     )
                 {
@@ -413,7 +413,7 @@ namespace Mundo
                     var target in
                         HeroManager.Enemies.Where(
                             enemy =>
-                                enemy.IsValidTarget(ignite.SData.CastRange) &&
+                                enemy.LSIsValidTarget(ignite.SData.CastRange) &&
                                 !enemy.HasBuffOfType(BuffType.Invulnerability))
                             .Where(
                                 target =>
@@ -436,7 +436,7 @@ namespace Mundo
 
             var target = TargetSelector.GetTarget(q.Range, DamageType.Magical);
 
-            if (autoQ && CommonUtilities.Player.HealthPercent >= qHealth && target.IsValidTarget(q.Range))
+            if (autoQ && CommonUtilities.Player.HealthPercent >= qHealth && target.LSIsValidTarget(q.Range))
             {
                 if (q.GetPrediction(target).Hitchance >= CommonUtilities.GetHitChance("hitchanceQ"))
                 {
@@ -477,7 +477,7 @@ namespace Mundo
 
         private static bool FoundEnemies(float range)
         {
-            return HeroManager.Enemies.Any(enemy => enemy.IsValidTarget(range));
+            return HeroManager.Enemies.Any(enemy => enemy.LSIsValidTarget(range));
         }
 
         private static void BurningManager()

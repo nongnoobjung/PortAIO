@@ -127,7 +127,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
 
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (Program.Combo)
                     Q.Cast(t);
@@ -165,7 +165,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (getCheckBoxItem(wMenu, "autoWspeed"))
                 {
                     var t = TargetSelector.GetTarget(1000, DamageType.Magical);
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                     {
                         if (Program.Combo && Player.Mana > WMANA + QMANA + EMANA && Player.LSDistance(t.Position) > Q.Range)
                             W.CastOnUnit(Player);

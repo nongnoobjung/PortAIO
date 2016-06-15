@@ -141,12 +141,12 @@ namespace ElVladimirReborn
             var countEnemy = getSliderItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.Count.R");
 
             if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.Q") && spells[Spells.Q].IsReady()
-                && target.IsValidTarget(spells[Spells.Q].Range))
+                && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].CastOnUnit(target);
             }
 
-            if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.E") && spells[Spells.E].IsReady() && target.IsValidTarget(800))
+            if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.E") && spells[Spells.E].IsReady() && target.LSIsValidTarget(800))
             {
                 Orbwalker.OrbwalkTo(Game.CursorPos);
                 if (Player.LSDistance(target) < 800)
@@ -163,7 +163,7 @@ namespace ElVladimirReborn
             }
 
             if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.W") && spells[Spells.W].IsReady()
-                && target.IsValidTarget(spells[Spells.W].Range))
+                && target.LSIsValidTarget(spells[Spells.W].Range))
             {
                 spells[Spells.W].Cast();
             }
@@ -172,7 +172,7 @@ namespace ElVladimirReborn
             {
                 if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.SmartUlt"))
                 {
-                    if (spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range)
+                    if (spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range)
                         && spells[Spells.Q].GetDamage(target) >= target.Health)
                     {
                         spells[Spells.Q].Cast();
@@ -204,12 +204,12 @@ namespace ElVladimirReborn
             }
 
             if (getCheckBoxItem(ElVladimirMenu.harassMenu, "ElVladimir.Harass.Q") && spells[Spells.Q].IsReady()
-                && target.IsValidTarget(spells[Spells.Q].Range))
+                && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].CastOnUnit(target);
             }
 
-            if (getCheckBoxItem(ElVladimirMenu.harassMenu, "ElVladimir.Harass.E") && spells[Spells.E].IsReady() && target.IsValidTarget(800))
+            if (getCheckBoxItem(ElVladimirMenu.harassMenu, "ElVladimir.Harass.E") && spells[Spells.E].IsReady() && target.LSIsValidTarget(800))
             {
                 if (Player.LSDistance(target) < 800)
                 {
@@ -234,7 +234,7 @@ namespace ElVladimirReborn
                     MinionOrderTypes.MaxHealth);
                 {
                     foreach (var minion in
-                        allMinions.Where(minion => minion.IsValidTarget()))
+                        allMinions.Where(minion => minion.LSIsValidTarget()))
                     {
                         spells[Spells.Q].CastOnUnit(minion);
                         return;
@@ -276,7 +276,7 @@ namespace ElVladimirReborn
                         allMinions.Where(
                             minion => minion.Health <= ObjectManager.Player.GetSpellDamage(minion, SpellSlot.Q)))
                     {
-                        if (minion.IsValidTarget())
+                        if (minion.LSIsValidTarget())
                         {
                             spells[Spells.Q].CastOnUnit(minion);
                             return;

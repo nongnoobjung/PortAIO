@@ -100,7 +100,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (getCheckBoxItem(wMenu, "AGC") && E.IsReady() && Player.Mana > RMANA + EMANA)
             {
                 var Target = (AIHeroClient)gapcloser.Sender;
-                if (Target.IsValidTarget(E.Range))
+                if (Target.LSIsValidTarget(E.Range))
                 {
                     E.Cast(Target, true);
                     Program.debug("E AGC");
@@ -148,7 +148,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 var target = TargetSelector.GetTarget(R.Range, DamageType.Magical);
 
-                if (target.IsValidTarget(R.Range) && target.HealthPercent < getSliderItem(rMenu, "RmaxHp") && OktwCommon.ValidUlt(target))
+                if (target.LSIsValidTarget(R.Range) && target.HealthPercent < getSliderItem(rMenu, "RmaxHp") && OktwCommon.ValidUlt(target))
                 {
 
 
@@ -168,7 +168,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Program.CastSpell(R, target);
                     else if (countR < comboStack + 2 && Player.Mana > RMANA * 3)
                     {
-                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(R.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(R.Range) && !OktwCommon.CanMove(enemy)))
                         {
                             R.Cast(enemy, true);
                         }
@@ -200,11 +200,11 @@ namespace OneKeyToWin_AIO_Sebby
             if (Sheen())
             {
                 var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     var qDmg = OktwCommon.GetKsDamage(t, Q);
                     var eDmg = E.GetDamage(t);
-                    if (t.IsValidTarget(W.Range) && qDmg + eDmg > t.Health)
+                    if (t.LSIsValidTarget(W.Range) && qDmg + eDmg > t.Health)
                         Program.CastSpell(Q, t);
                     else if (Program.Combo && Player.Mana > RMANA + QMANA * 2 + EMANA)
                         Program.CastSpell(Q, t);
@@ -212,7 +212,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Program.CastSpell(Q, t);
                     else if ((Program.Combo || Program.Farm) && Player.Mana > RMANA + QMANA + EMANA)
                     {
-                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                             Q.Cast(enemy, true);
 
                     }
@@ -225,7 +225,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Sheen())
             {
                 var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     var qDmg = Q.GetDamage(t);
                     var eDmg = OktwCommon.GetKsDamage(t, E);
@@ -239,7 +239,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Program.CastSpell(E, t);
                     else if ((Program.Combo || Program.Farm) && ObjectManager.Player.Mana > RMANA + WMANA + EMANA)
                     {
-                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
                             E.Cast(enemy, true);
                     }
                 }
@@ -251,12 +251,12 @@ namespace OneKeyToWin_AIO_Sebby
             var target = Orbwalker.LastTarget;
             if (!(target is AIHeroClient))
                 attackNow = true;
-            if (target.IsValidTarget() && Player.HasBuff("sheen") && getCheckBoxItem(miscMenu, "sheen") && target is AIHeroClient)
+            if (target.LSIsValidTarget() && Player.HasBuff("sheen") && getCheckBoxItem(miscMenu, "sheen") && target is AIHeroClient)
             {
                 Program.debug("shen true");
                 return false;
             }
-            else if (target.IsValidTarget() && getCheckBoxItem(miscMenu, "AApriority") && target is AIHeroClient && !attackNow)
+            else if (target.LSIsValidTarget() && getCheckBoxItem(miscMenu, "AApriority") && target is AIHeroClient && !attackNow)
             {
                 return false;
             }
@@ -309,7 +309,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (getCheckBoxItem(drawMenu, "ComboInfo"))
             {
                 var combo = "haras";
-                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsValidTarget()))
+                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.LSIsValidTarget()))
                 {
                     if (R.GetDamage(enemy) > enemy.Health)
                     {

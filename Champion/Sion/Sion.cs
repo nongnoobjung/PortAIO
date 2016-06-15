@@ -387,12 +387,12 @@ namespace UnderratedAIO.Champions
 
         private void checkCastedQ(Obj_AI_Base target)
         {
-            if ((justQ && target.LSDistance(player) > Q.Range) || !target.IsValidTarget() || target == null)
+            if ((justQ && target.LSDistance(player) > Q.Range) || !target.LSIsValidTarget() || target == null)
             {
                 return;
             }
             var poly = GetPoly(lastQPos);
-            var heroes = HeroManager.Enemies.Where(e => poly.IsInside(e.Position) && e.IsValidTarget());
+            var heroes = HeroManager.Enemies.Where(e => poly.IsInside(e.Position) && e.LSIsValidTarget());
             if (heroes == null) return;
             var objAiHeroes = heroes as IList<AIHeroClient> ?? heroes.ToList();
             if (objAiHeroes.Any())

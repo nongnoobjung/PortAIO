@@ -30,7 +30,7 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Tumble
         public void OnExecute()
         {
             var currentTarget = TargetSelector.GetTarget(Orbwalking.GetRealAutoAttackRange(null) + 240f, DamageType.Physical);
-            if (!currentTarget.IsValidTarget())
+            if (!currentTarget.LSIsValidTarget())
             {
                 Orbwalker.ForcedTarget = null;
                 return;

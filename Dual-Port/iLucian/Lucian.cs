@@ -567,7 +567,7 @@ namespace iLucian
                 var enemy in
                     HeroManager.Enemies.Where(
                         x =>
-                        x.IsValidTarget(Variables.Spell[Variables.Spells.R].Range)
+                        x.LSIsValidTarget(Variables.Spell[Variables.Spells.R].Range)
                         && Variables.Spell[Variables.Spells.R].GetPrediction(x).CollisionObjects.Count == 0))
             {
                 Variables.Spell[Variables.Spells.R].Cast(enemy);

@@ -229,7 +229,7 @@
         private static void CastR()
         {
             var target = TargetSelector.GetTarget(spells[Spells.R].Range, DamageType.Magical);
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -363,12 +363,12 @@
             var useI = getCheckBoxItem(ElRumbleMenu.comboMenu, "ElRumble.Combo.Ignite");
             var countEnemies = getSliderItem(ElRumbleMenu.comboMenu, "ElRumble.Combo.Count.Enemies");
 
-            if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+            if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast(target);
             }
 
-            if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+            if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 var pred = spells[Spells.E].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.High)
@@ -470,7 +470,7 @@
                         allMinions.Where(
                             minion => minion.Health <= ObjectManager.Player.GetSpellDamage(minion, SpellSlot.E)))
                     {
-                        if (minion.IsValidTarget())
+                        if (minion.LSIsValidTarget())
                         {
                             spells[Spells.E].Cast(minion);
                             return;

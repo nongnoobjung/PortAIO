@@ -109,7 +109,7 @@ using SebbyLib;
         private static void Exploit() // nechrito was here
         {
             var target = TargetSelector.GetTarget(ObjectManager.Player.AttackRange, DamageType.Physical);
-            if (target == null || !target.IsValidTarget() || target.IsInvulnerable) return;
+            if (target == null || !target.LSIsValidTarget() || target.IsInvulnerable) return;
 
             if (!getCheckBoxItem(miscOptions, "com.itwitch.misc.Exploit")) return;
             if (!Spells[SpellSlot.Q].IsReady()) return;

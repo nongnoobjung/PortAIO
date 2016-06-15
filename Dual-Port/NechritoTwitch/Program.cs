@@ -70,7 +70,7 @@ namespace Nechrito_Twitch
         private static void Exploit()
         {
             var target = TargetSelector.GetTarget(Player.AttackRange, DamageType.Physical);
-            if (target == null || !target.IsValidTarget() || target.IsInvulnerable) return;
+            if (target == null || !target.LSIsValidTarget() || target.IsInvulnerable) return;
 
             if (!MenuConfig.Exploit) return;
             if (!Spells._q.IsReady()) return;
@@ -103,7 +103,7 @@ namespace Nechrito_Twitch
         private static void Combo()
         {
             var target = TargetSelector.GetTarget(Spells._w.Range, DamageType.Physical);
-            if (target == null || !target.IsValidTarget() || target.IsInvulnerable) return;
+            if (target == null || !target.LSIsValidTarget() || target.IsInvulnerable) return;
 
             
 
@@ -130,7 +130,7 @@ namespace Nechrito_Twitch
             if (!MenuConfig.HarassW) return;
             var wPred = Spells._w.GetPrediction(target).CastPosition;
 
-            if (target.IsValidTarget(Spells._w.Range) && Spells._w.IsReady())
+            if (target.LSIsValidTarget(Spells._w.Range) && Spells._w.IsReady())
             {
                 Spells._w.Cast(wPred);
             }

@@ -424,7 +424,7 @@ namespace Kassawin
         private static void Killsteal()
         {
             var target = TargetSelector.GetTarget(Q.Range + 500, DamageType.Magical);
-            if (!target.IsValidTarget(Q.Range + 500)) return;
+            if (!target.LSIsValidTarget(Q.Range + 500)) return;
             var extendedposition = Player.Position.Extend(target.ServerPosition, 500);
             var ks = getCheckBoxItem(ksMenu, "ks");
             if (!ks) return;
@@ -439,7 +439,7 @@ namespace Kassawin
                     R.Cast(extendedposition);
             }
 
-            if (target.Health < Q.GetDamage(target) && target.IsValidTarget(Q.Range))
+            if (target.Health < Q.GetDamage(target) && target.LSIsValidTarget(Q.Range))
             {
                 if (qks)
                     Q.Cast(target);
@@ -451,7 +451,7 @@ namespace Kassawin
                     E.Cast(target.Position);
             }
 
-            if (target.Health < R.GetDamage(target) && R.IsReady() && target.IsValidTarget(700))
+            if (target.Health < R.GetDamage(target) && R.IsReady() && target.LSIsValidTarget(700))
             {
                 if (rks)
                     R.Cast(extendedposition);
@@ -526,12 +526,12 @@ namespace Kassawin
 
             if (ignite)
             {
-                if (target.IsValidTarget(Q.Range) &&
+                if (target.LSIsValidTarget(Q.Range) &&
                     (target.Health < IgniteDamage(target) + Q.GetDamage(target)))
                     Player.Spellbook.CastSpell(GetIgniteSlot(), target);
             }
 
-            if (Q.IsReady() && useq && target.IsValidTarget(Q.Range))
+            if (Q.IsReady() && useq && target.LSIsValidTarget(Q.Range))
             {
                 if (Player.LSDistance(target) < Orbwalking.GetRealAutoAttackRange(target) && !W.IsReady())
                     Q.Cast(target);

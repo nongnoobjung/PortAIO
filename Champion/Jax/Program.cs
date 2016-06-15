@@ -294,7 +294,7 @@ namespace JaxQx
                 return;
             }
 
-            if (t.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 95) && shenBuffActive)
+            if (t.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 95) && shenBuffActive)
             {
                 return;
             }
@@ -311,27 +311,27 @@ namespace JaxQx
                 switch (getBoxItem(comboMenu, "Combo.CastE"))
                 {
                     case 0:
-                        if (E.IsReady() && Q.IsReady() && t.IsValidTarget(Q.Range))
+                        if (E.IsReady() && Q.IsReady() && t.LSIsValidTarget(Q.Range))
                         {
-                            if (Player.LSDistance(t) >= minQRange && t.IsValidTarget(Q.Range)) Q.CastOnUnit(t);
+                            if (Player.LSDistance(t) >= minQRange && t.LSIsValidTarget(Q.Range)) Q.CastOnUnit(t);
                             E.Cast();
                         }
                         break;
                     case 1:
-                        if (E.IsReady() && t.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 95))
+                        if (E.IsReady() && t.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 95))
                         {
                             E.Cast();
                         }
                         break;
                 }
 
-                if (eCounterStrike && t.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65))
+                if (eCounterStrike && t.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65))
                 {
                     E.Cast();
                 }
             }
 
-            if (Q.IsReady() && Player.LSDistance(t) >= minQRange && t.IsValidTarget(Q.Range))
+            if (Q.IsReady() && Player.LSDistance(t) >= minQRange && t.LSIsValidTarget(Q.Range))
             {
                 Q.Cast(t);
             }
@@ -434,12 +434,12 @@ namespace JaxQx
                         UseItems(t);
                     }
 
-                    if (W.IsReady() && useW && t != null && t.IsValidTarget(E.Range))
+                    if (W.IsReady() && useW && t != null && t.LSIsValidTarget(E.Range))
                     {
                         W.Cast();
                     }
 
-                    if (E.IsReady() && useE && t != null && t.IsValidTarget(E.Range))
+                    if (E.IsReady() && useE && t != null && t.LSIsValidTarget(E.Range))
                     {
                         E.CastOnUnit(Player);
                     }
@@ -525,7 +525,7 @@ namespace JaxQx
                 targeted.Where(
                     itemId =>
                         LeagueSharp.Common.Items.HasItem(itemId) && LeagueSharp.Common.Items.CanUseItem(itemId)
-                        && GetInventorySlot(itemId) != null && t.IsValidTarget(450)))
+                        && GetInventorySlot(itemId) != null && t.LSIsValidTarget(450)))
             {
                 LeagueSharp.Common.Items.UseItem(itemId, t);
             }
@@ -535,7 +535,7 @@ namespace JaxQx
                 nonTarget.Where(
                     itemId =>
                         LeagueSharp.Common.Items.HasItem(itemId) && LeagueSharp.Common.Items.CanUseItem(itemId)
-                        && GetInventorySlot(itemId) != null && t.IsValidTarget(450)))
+                        && GetInventorySlot(itemId) != null && t.LSIsValidTarget(450)))
             {
                 LeagueSharp.Common.Items.UseItem(itemId);
             }
@@ -564,14 +564,14 @@ namespace JaxQx
         private static void CastItems()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (!t.IsValidTarget()) return;
+            if (!t.LSIsValidTarget()) return;
 
             foreach (var item in
                 Items.ItemDb.Where(
                     item =>
                         item.Value.ItemType == Items.EnumItemType.AoE
                         && item.Value.TargetingType == Items.EnumItemTargettingType.EnemyObjects)
-                    .Where(item => t.IsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
+                    .Where(item => t.LSIsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
             {
                 item.Value.Item.Cast();
             }
@@ -581,7 +581,7 @@ namespace JaxQx
                     item =>
                         item.Value.ItemType == Items.EnumItemType.Targeted
                         && item.Value.TargetingType == Items.EnumItemTargettingType.EnemyHero)
-                    .Where(item => t.IsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
+                    .Where(item => t.LSIsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
             {
                 item.Value.Item.Cast(t);
             }

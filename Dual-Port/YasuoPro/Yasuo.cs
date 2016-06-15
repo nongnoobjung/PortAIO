@@ -512,7 +512,7 @@ namespace YasuoPro
                     {
                         qtarg =
                             ObjectManager.Get<Obj_AI_Minion>()
-                                .Find(x => x.IsValidTarget(Spells[Q].Range) && MinionManager.IsMinion(x));
+                                .Find(x => x.LSIsValidTarget(Spells[Q].Range) && MinionManager.IsMinion(x));
 
                     }
                     else
@@ -520,12 +520,12 @@ namespace YasuoPro
                         var etargs =
                             ObjectManager.Get<Obj_AI_Minion>()
                                 .Where(
-                                    x => x.IsValidTarget(Spells[E].Range) && MinionManager.IsMinion(x) && x.IsDashable());
+                                    x => x.LSIsValidTarget(Spells[E].Range) && MinionManager.IsMinion(x) && x.IsDashable());
                         if (!etargs.Any())
                         {
                             qtarg =
                            ObjectManager.Get<Obj_AI_Minion>()
-                               .Find(x => x.IsValidTarget(Spells[Q].Range) && MinionManager.IsMinion(x));
+                               .Find(x => x.LSIsValidTarget(Spells[Q].Range) && MinionManager.IsMinion(x));
                         }
                     }
 

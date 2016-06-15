@@ -103,11 +103,11 @@ namespace iDZEzreal
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
-                if (getCheckBoxItem(Variables.comboMenu, "ezreal.combo.q") && Variables.Spells[SpellSlot.Q].IsReady() && target.IsValidTarget(Variables.Spells[SpellSlot.Q].Range))
+                if (getCheckBoxItem(Variables.comboMenu, "ezreal.combo.q") && Variables.Spells[SpellSlot.Q].IsReady() && target.LSIsValidTarget(Variables.Spells[SpellSlot.Q].Range))
                 {
                     Variables.Spells[SpellSlot.Q].SPredictionCast(target, HitChance.High);
                 }
-                if (getCheckBoxItem(Variables.comboMenu, "ezreal.combo.w") && Variables.Spells[SpellSlot.W].IsReady() && target.IsValidTarget(Variables.Spells[SpellSlot.W].Range) && ObjectManager.Player.ManaPercent > 45)
+                if (getCheckBoxItem(Variables.comboMenu, "ezreal.combo.w") && Variables.Spells[SpellSlot.W].IsReady() && target.LSIsValidTarget(Variables.Spells[SpellSlot.W].Range) && ObjectManager.Player.ManaPercent > 45)
                 {
                     Variables.Spells[SpellSlot.W].SPredictionCast(target, HitChance.High);
                 }
@@ -115,11 +115,11 @@ namespace iDZEzreal
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
-                if (getCheckBoxItem(Variables.mixedMenu, "ezreal.mixed.q") && Variables.Spells[SpellSlot.Q].IsReady() && target.IsValidTarget(Variables.Spells[SpellSlot.Q].Range))
+                if (getCheckBoxItem(Variables.mixedMenu, "ezreal.mixed.q") && Variables.Spells[SpellSlot.Q].IsReady() && target.LSIsValidTarget(Variables.Spells[SpellSlot.Q].Range))
                 {
                     Variables.Spells[SpellSlot.Q].SPredictionCast(target, HitChance.High);
                 }
-                if (getCheckBoxItem(Variables.mixedMenu, "ezreal.mixed.w") && Variables.Spells[SpellSlot.W].IsReady() && target.IsValidTarget(Variables.Spells[SpellSlot.W].Range) && ObjectManager.Player.ManaPercent > 45)
+                if (getCheckBoxItem(Variables.mixedMenu, "ezreal.mixed.w") && Variables.Spells[SpellSlot.W].IsReady() && target.LSIsValidTarget(Variables.Spells[SpellSlot.W].Range) && ObjectManager.Player.ManaPercent > 45)
                 {
                     Variables.Spells[SpellSlot.W].SPredictionCast(target, HitChance.High);
                 }
@@ -182,7 +182,7 @@ namespace iDZEzreal
             {
                 var target = TargetSelector.GetTarget(Variables.Spells[SpellSlot.Q].Range, DamageType.Physical);
 
-                if (target.IsValidTarget(Variables.Spells[SpellSlot.Q].Range) &&
+                if (target.LSIsValidTarget(Variables.Spells[SpellSlot.Q].Range) &&
                     ObjectManager.Player.LSDistance(target.ServerPosition) <= Variables.Spells[SpellSlot.Q].Range)
                 {
                     var prediction = Variables.Spells[SpellSlot.Q].GetSPrediction(target);
@@ -201,7 +201,7 @@ namespace iDZEzreal
                 && ObjectManager.Player.ManaPercent > 35)
             {
                 var target =
-                    HeroManager.Allies.Where(m => m.IsValidTarget(Variables.Spells[SpellSlot.W].Range, false)
+                    HeroManager.Allies.Where(m => m.LSIsValidTarget(Variables.Spells[SpellSlot.W].Range, false)
                         && m.TotalAttackDamage > m.TotalMagicalDamage)
                         .OrderBy(TargetSelector.GetPriority).FirstOrDefault();
 
@@ -213,7 +213,7 @@ namespace iDZEzreal
                 {
                     var wTarget = TargetSelector.GetTarget(Variables.Spells[SpellSlot.W].Range, DamageType.Physical);
 
-                    if (wTarget.IsValidTarget(Variables.Spells[SpellSlot.W].Range)
+                    if (wTarget.LSIsValidTarget(Variables.Spells[SpellSlot.W].Range)
                         && Variables.Spells[SpellSlot.W].GetSPrediction(wTarget).HitChance >= MenuGenerator.GetHitchance())
                     {
                         Variables.Spells[SpellSlot.W].Cast(Variables.Spells[SpellSlot.W].GetSPrediction(wTarget).CastPosition);
@@ -246,7 +246,7 @@ namespace iDZEzreal
             {
                 var target = TargetSelector.GetTarget(2300f, DamageType.Physical);
 
-                if (target.IsValidTarget(Variables.Spells[SpellSlot.R].Range)
+                if (target.LSIsValidTarget(Variables.Spells[SpellSlot.R].Range)
                     && CanExecuteTarget(target)
                     && ObjectManager.Player.LSDistance(target) >= Orbwalking.GetRealAutoAttackRange(null) * 0.80f
                     &&
@@ -276,7 +276,7 @@ namespace iDZEzreal
             {
                 var target = TargetSelector.GetTarget(Variables.Spells[SpellSlot.Q].Range, DamageType.Physical);
 
-                if (target.IsValidTarget(Variables.Spells[SpellSlot.Q].Range) &&
+                if (target.LSIsValidTarget(Variables.Spells[SpellSlot.Q].Range) &&
                     ObjectManager.Player.LSDistance(target.ServerPosition) <= Variables.Spells[SpellSlot.Q].Range)
                 {
                     var prediction = Variables.Spells[SpellSlot.Q].GetSPrediction(target);
@@ -293,7 +293,7 @@ namespace iDZEzreal
                  && ObjectManager.Player.CountAlliesInRange(800f) > 1)
             {
                 var target =
-                    HeroManager.Allies.Where(m => m.IsValidTarget(Variables.Spells[SpellSlot.W].Range, false)
+                    HeroManager.Allies.Where(m => m.LSIsValidTarget(Variables.Spells[SpellSlot.W].Range, false)
                         && m.TotalAttackDamage > m.TotalMagicalDamage)
                         .OrderBy(TargetSelector.GetPriority).FirstOrDefault();
 
@@ -305,7 +305,7 @@ namespace iDZEzreal
                 {
                     var wTarget = TargetSelector.GetTarget(Variables.Spells[SpellSlot.W].Range, DamageType.Physical);
 
-                    if (wTarget.IsValidTarget(Variables.Spells[SpellSlot.W].Range)
+                    if (wTarget.LSIsValidTarget(Variables.Spells[SpellSlot.W].Range)
                         && Variables.Spells[SpellSlot.W].GetSPrediction(wTarget).HitChance >= MenuGenerator.GetHitchance())
                     {
                         Variables.Spells[SpellSlot.W].Cast(Variables.Spells[SpellSlot.W].GetSPrediction(wTarget).CastPosition);
@@ -323,7 +323,7 @@ namespace iDZEzreal
 
             var allMinions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition,
                 Variables.Spells[SpellSlot.Q].Range);
-            var qMinion = allMinions.FirstOrDefault(x => x.IsValidTarget(Variables.Spells[SpellSlot.Q].Range));
+            var qMinion = allMinions.FirstOrDefault(x => x.LSIsValidTarget(Variables.Spells[SpellSlot.Q].Range));
             var minionHealth = HealthPrediction.GetHealthPrediction(qMinion,
                 ((int)
                     (Variables.Spells[SpellSlot.Q].Delay +

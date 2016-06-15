@@ -141,7 +141,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     if (Player.HasBuff("destiny_marker"))
                     {
                         var t = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-                        if (t.IsValidTarget())
+                        if (t.LSIsValidTarget())
                         {
                             R.Cast(t);
                         }
@@ -318,7 +318,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Player.CountEnemiesInRange(getSliderItem(rMenu, "Renemy")) == 0)
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-                if (t.IsValidTarget() && t.LSDistance(Player.Position) > Q.Range && t.CountAlliesInRange(getSliderItem(rMenu, "RenemyA")) == 0)
+                if (t.LSIsValidTarget() && t.LSDistance(Player.Position) > Q.Range && t.CountAlliesInRange(getSliderItem(rMenu, "RenemyA")) == 0)
                 {
                     if (Q.GetDamage(t) + W.GetDamage(t) + Player.GetAutoAttackDamage(t) * 3 > t.Health && t.CountEnemiesInRange(1000) < 3)
                     {
@@ -340,7 +340,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (OktwCommon.GetKsDamage(t, Q) > t.Health && !SebbyLib.Orbwalking.InAutoAttackRange(t))
                     Program.CastSpell(Q, t);
@@ -353,7 +353,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         Program.CastSpell(Q, t);
                 }
 
-                foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                     Q.Cast(enemy, true, true);
 
             }
@@ -429,7 +429,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (R.IsReady() && getCheckBoxItem(drawMenu, "notR"))
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     var comboDMG = Q.GetDamage(t) + W.GetDamage(t) + Player.GetAutoAttackDamage(t) * 3;
                     if (Player.HasBuff("destiny_marker"))

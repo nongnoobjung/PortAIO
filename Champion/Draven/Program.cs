@@ -299,7 +299,7 @@ namespace RevampedDraven
             {
                 if (E.IsReady())
                 {
-                    if (sender.IsValidTarget(E.Range))
+                    if (sender.LSIsValidTarget(E.Range))
                     {
                         E.Cast(sender);
                     }
@@ -317,7 +317,7 @@ namespace RevampedDraven
             {
                 if (E.IsReady())
                 {
-                    if (e.Sender.IsValidTarget(E.Range))
+                    if (e.Sender.LSIsValidTarget(E.Range))
                     {
                         E.Cast(e.Sender);
                     }
@@ -528,7 +528,7 @@ namespace RevampedDraven
                             ObjectManager.Get<Obj_AI_Minion>()
                                 .Where(
                                     o =>
-                                        o.IsValidTarget(E.Range) && o.Team == GameObjectTeam.Neutral && o.IsVisible &&
+                                        o.LSIsValidTarget(E.Range) && o.Team == GameObjectTeam.Neutral && o.IsVisible &&
                                         !o.IsDead))
                     {
                         if (useEJG)
@@ -562,7 +562,7 @@ namespace RevampedDraven
         public static bool IsKillableAndValidTarget(this AIHeroClient target, double calculatedDamage,
             DamageType damageType, float distance = float.MaxValue)
         {
-            if (target == null || !target.IsValidTarget(distance) || target.CharData.BaseSkinName == "gangplankbarrel")
+            if (target == null || !target.LSIsValidTarget(distance) || target.CharData.BaseSkinName == "gangplankbarrel")
             {
                 return false;
             }

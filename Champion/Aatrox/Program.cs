@@ -221,14 +221,14 @@ namespace PortAIO.Champion.Aatrox
 
         public static bool CastIgnite(AIHeroClient target)
         {
-            return Ignite.IsReady() && target.IsValidTarget(600) &&
+            return Ignite.IsReady() && target.LSIsValidTarget(600) &&
                    target.Health + 5 < myHero.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite) &&
                    myHero.Spellbook.CastSpell(Ignite, target);
         }
 
         public static bool CastSmite(Obj_AI_Base target, bool killable = true)
         {
-            return Smite.IsReady() && target.IsValidTarget(760) &&
+            return Smite.IsReady() && target.LSIsValidTarget(760) &&
                    (!killable ||
                     target.Health < myHero.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Smite)) &&
                    myHero.Spellbook.CastSpell(Smite, target);

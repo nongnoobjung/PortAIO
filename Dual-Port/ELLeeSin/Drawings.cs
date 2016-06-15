@@ -52,7 +52,7 @@ namespace ElLeeSin
 
             if (getCheckBoxItem(InitMenu.drawMenu, "Draw.Insec.Lines")) //&& Program.spells[Program.Spells.R].IsReady()
             {
-                if (newTarget != null && newTarget.IsVisible && newTarget.IsValidTarget() && !newTarget.IsDead &&
+                if (newTarget != null && newTarget.IsVisible && newTarget.LSIsValidTarget() && !newTarget.IsDead &&
                     Program.Player.LSDistance(newTarget) < 3000)
                 {
                     var targetPos = Drawing.WorldToScreen(newTarget.Position);

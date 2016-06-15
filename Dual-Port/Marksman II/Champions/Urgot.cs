@@ -59,7 +59,7 @@ namespace Marksman.Champions
 
         public void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (W.IsReady() && gapcloser.Sender.IsValidTarget(250f))
+            if (W.IsReady() && gapcloser.Sender.LSIsValidTarget(250f))
                 W.Cast();
         }
 
@@ -200,7 +200,7 @@ namespace Marksman.Champions
             if (!ComboActive)
             {
                 var t = TargetSelector.GetTarget(QEx.Range, TargetSelector.DamageType.Physical);
-                if (!t.IsValidTarget())
+                if (!t.LSIsValidTarget())
                     return;
 
                 if (HarassActive && GetValue<bool>("UseQH"))
@@ -216,7 +216,7 @@ namespace Marksman.Champions
 
                 if (E.IsReady() && GetValue<bool>("UseEC"))
                 {
-                    if (t.IsValidTarget(E.Range))
+                    if (t.LSIsValidTarget(E.Range))
                     {
                         E.CastIfHitchanceEquals(t, HitChance.Medium);
                     }
@@ -232,7 +232,7 @@ namespace Marksman.Champions
                     }
                     else
                     {
-                        if (t.IsValidTarget(Q.Range))
+                        if (t.LSIsValidTarget(Q.Range))
                             CastQ(t);
                     }
                 }

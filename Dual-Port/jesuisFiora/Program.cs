@@ -129,7 +129,7 @@ namespace jesuisFiora
 
         public static bool CastQ(AIHeroClient target, FioraPassive passive, bool force = false)
         {
-            if (!Q.IsReady() || !target.IsValidTarget(Q.Range))
+            if (!Q.IsReady() || !target.LSIsValidTarget(Q.Range))
             {
                 return false;
             }
@@ -192,12 +192,12 @@ namespace jesuisFiora
 
         public static bool CastR(Obj_AI_Base target)
         {
-            return R.IsReady() && target.IsValidTarget(R.Range) && R.Cast(target).IsCasted();
+            return R.IsReady() && target.LSIsValidTarget(R.Range) && R.Cast(target).IsCasted();
         }
 
         public static bool CastW(Obj_AI_Base target)
         {
-            if (target == null || !target.IsValidTarget(W.Range))
+            if (target == null || !target.LSIsValidTarget(W.Range))
             {
                 Console.WriteLine("CAST W");
                 return W.Cast(Game.CursorPos);
@@ -244,7 +244,7 @@ namespace jesuisFiora
             foreach (var obj in
                 Enemies.Where(
                     enemy =>
-                        getCheckBoxItem(rMenu, "Duelist" + enemy.ChampionName) && enemy.IsValidTarget(R.Range) &&
+                        getCheckBoxItem(rMenu, "Duelist" + enemy.ChampionName) && enemy.LSIsValidTarget(R.Range) &&
                         GetComboDamage(enemy, vitalCalc) >= enemy.Health &&
                         enemy.Health > Player.GetSpellDamage(enemy, SpellSlot.Q) + enemy.GetPassiveDamage(1)))
             {
@@ -308,7 +308,7 @@ namespace jesuisFiora
 
             var killable = laneMinions.FirstOrDefault(obj => obj.Health < Player.GetSpellDamage(obj, SpellSlot.Q));
 
-            if (getCheckBoxItem(farm, "QFarmAA") && killable != null && killable.IsValidTarget(FioraAutoAttackRange) &&
+            if (getCheckBoxItem(farm, "QFarmAA") && killable != null && killable.LSIsValidTarget(FioraAutoAttackRange) &&
                 !Player.UnderTurret(false))
             {
                 return;
@@ -421,7 +421,7 @@ namespace jesuisFiora
 
             var unit =
                 Enemies.FirstOrDefault(
-                    o => o.IsValidTarget(Q.Range) && o.Health < Q.GetDamage(o) + o.GetPassiveDamage());
+                    o => o.LSIsValidTarget(Q.Range) && o.Health < Q.GetDamage(o) + o.GetPassiveDamage());
             if (unit != null)
             {
                 CastQ(unit, unit.GetNearestPassive(), true);
@@ -442,7 +442,7 @@ namespace jesuisFiora
 
             var unit =
                 Enemies.FirstOrDefault(
-                    o => o.IsValidTarget(W.Range) && o.Health < W.GetDamage(o) && !o.IsValidTarget(FioraAutoAttackRange));
+                    o => o.LSIsValidTarget(W.Range) && o.Health < W.GetDamage(o) && !o.LSIsValidTarget(FioraAutoAttackRange));
             if (unit != null)
             {
                 W.Cast(unit);
@@ -456,7 +456,7 @@ namespace jesuisFiora
                 return;
             }
 
-            if (getCheckBoxItem(passiveM, "OrbwalkAA") && Orbwalker.CanAutoAttack && target.IsValidTarget(FioraAutoAttackRange))
+            if (getCheckBoxItem(passiveM, "OrbwalkAA") && Orbwalker.CanAutoAttack && target.LSIsValidTarget(FioraAutoAttackRange))
             {
                 Console.WriteLine("RETURN");
                 return;
@@ -497,7 +497,7 @@ namespace jesuisFiora
         {
             if (aaTarget)
             {
-                if (UltTarget.Target.IsValidTarget(1000))
+                if (UltTarget.Target.LSIsValidTarget(1000))
                 {
                     return UltTarget.Target;
                 }
@@ -505,7 +505,7 @@ namespace jesuisFiora
                 return TargetSelector.GetTarget(FioraAutoAttackRange, DamageType.Physical);
             }
 
-            if (UltTarget.Target.IsValidTarget(Q.Range))
+            if (UltTarget.Target.LSIsValidTarget(Q.Range))
             {
                 return UltTarget.Target;
             }
@@ -783,7 +783,7 @@ namespace jesuisFiora
                 s = "Harass";
             }
 
-            if (aaTarget.IsValidTarget())
+            if (aaTarget.LSIsValidTarget())
             {
                 passive = aaTarget.GetNearestPassive();
                 if (getKeyBindItem(passiveM, "OrbwalkPassive") && getCheckBoxItem(passiveM, "Orbwalk" + s))
@@ -798,7 +798,7 @@ namespace jesuisFiora
             }
 
             var target = GetTarget();
-            if (!target.IsValidTarget(W.Range))
+            if (!target.LSIsValidTarget(W.Range))
             {
                 return;
             }
@@ -817,7 +817,7 @@ namespace jesuisFiora
 
             if (Q.IsActive()) // && !Q.HasManaCondition())
             {
-                if (target.IsValidTarget(FioraAutoAttackRange) && !Orbwalking.IsAutoAttack(Player.LastCastedSpellName()))
+                if (target.LSIsValidTarget(FioraAutoAttackRange) && !Orbwalking.IsAutoAttack(Player.LastCastedSpellName()))
                 {
                     return;
                 }
@@ -893,15 +893,15 @@ namespace jesuisFiora
                 "PassiveType: {0} Range: {1} Radius: {2}", type, args.SData.CastRange, args.SData.CastRadius);
             Console.WriteLine("Distance: " + args.End.DistanceToPlayer());
 
-            if (!unit.IsValidTarget() || getBoxItem(wSpells, "WMode") == 1)
+            if (!unit.LSIsValidTarget() || getBoxItem(wSpells, "WMode") == 1)
             {
                 var target = TargetSelector.SelectedTarget;
-                if (target == null || !target.IsValidTarget(W.Range))
+                if (target == null || !target.LSIsValidTarget(W.Range))
                 {
                     target = TargetSelector.GetTarget(W.Range, DamageType.Physical);
                 }
 
-                if (target != null && target.IsValidTarget(W.Range))
+                if (target != null && target.LSIsValidTarget(W.Range))
                 {
                     castUnit = target;
                 }

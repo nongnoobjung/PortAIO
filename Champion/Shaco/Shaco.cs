@@ -112,7 +112,7 @@ namespace UnderratedAIO.Champions
             {
                 var ksTarget =
                     HeroManager.Enemies.FirstOrDefault(
-                        h => h.IsValidTarget() && !CombatHelper.IsInvulnerable2(h) && h.Health < E.GetDamage(h));
+                        h => h.LSIsValidTarget() && !CombatHelper.IsInvulnerable2(h) && h.Health < E.GetDamage(h));
                 if (ksTarget != null)
                 {
                     if ((getCheckBoxItem(menuM, "ks") || getCheckBoxItem(menuM, "ksq")) &&

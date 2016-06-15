@@ -28,7 +28,7 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Condemn
         public void OnExecute()
         {
             var target = Orbwalker.LastTarget;
-            if (target.IsValidTarget(Variables.spells[SpellSlot.E].Range) && (target is AIHeroClient))
+            if (target.LSIsValidTarget(Variables.spells[SpellSlot.E].Range) && (target is AIHeroClient))
             {
                 var menuKey = MenuGenerator.miscMenu["dz191.vhr.misc.condemn.enextauto"].Cast<KeyBind>().CurrentValue;
                 //Variables.spells[SpellSlot.E].CastOnUnit(target as AIHeroClient);

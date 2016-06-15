@@ -43,7 +43,7 @@ namespace Mordekaiser.Events
 
             var t = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
 
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
             {
                 return;
             }

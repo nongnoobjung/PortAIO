@@ -126,7 +126,7 @@ namespace ElTrundle
                 return;
             }
 
-            if (gapcloser.Sender.IsValidTarget(spells[Spells.E].Range))
+            if (gapcloser.Sender.LSIsValidTarget(spells[Spells.E].Range))
             {
                 if (spells[Spells.E].IsReady())
                 {
@@ -192,14 +192,14 @@ namespace ElTrundle
             }
 
             if (getCheckBoxItem(jungleClearMenu, "ElTrundle.JungleClear.Q") && spells[Spells.Q].IsReady()
-                && minion.IsValidTarget(spells[Spells.Q].Range))
+                && minion.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast();
                 return;
             }
 
             if (getCheckBoxItem(jungleClearMenu, "ElTrundle.JungleClear.W") && spells[Spells.W].IsReady()
-                && minion.IsValidTarget(700))
+                && minion.LSIsValidTarget(700))
             {
                 spells[Spells.W].Cast(minion.Position);
             }
@@ -219,7 +219,7 @@ namespace ElTrundle
             }
 
             if (getCheckBoxItem(laneClearMenu, "ElTrundle.LaneClear.Q") && spells[Spells.Q].IsReady()
-                && minion.IsValidTarget(spells[Spells.Q].Range))
+                && minion.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 if (getCheckBoxItem(laneClearMenu, "ElTrundle.LaneClear.Q.Lasthit") &&
                     minion.Health < spells[Spells.Q].GetDamage(minion))
@@ -233,7 +233,7 @@ namespace ElTrundle
             }
 
             if (getCheckBoxItem(laneClearMenu, "ElTrundle.LaneClear.W") && spells[Spells.W].IsReady() &&
-                minion.IsValidTarget(700))
+                minion.LSIsValidTarget(700))
             {
                 spells[Spells.W].Cast(minion.Position);
             }
@@ -242,24 +242,24 @@ namespace ElTrundle
         private static void OnCombo()
         {
             var target = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
 
             if (getCheckBoxItem(comboMenu, "ElTrundle.Combo.E") && spells[Spells.E].IsReady()
-                && target.IsValidTarget(spells[Spells.E].Range))
+                && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast(GetPillarPosition(target));
             }
 
             if (getCheckBoxItem(comboMenu, "ElTrundle.Combo.W") && spells[Spells.W].IsReady()
-                && target.IsValidTarget(spells[Spells.W].Range))
+                && target.LSIsValidTarget(spells[Spells.W].Range))
             {
                 spells[Spells.W].Cast(target.Position);
             }
 
-            if (getCheckBoxItem(comboMenu, "ElTrundle.Combo.Q") && target.IsValidTarget(spells[Spells.Q].Range))
+            if (getCheckBoxItem(comboMenu, "ElTrundle.Combo.Q") && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast();
             }
@@ -300,7 +300,7 @@ namespace ElTrundle
             var drawE = getCheckBoxItem(miscMenu, "ElTrundle.Draw.E");
             var drawR = getCheckBoxItem(miscMenu, "ElTrundle.Draw.R");
 
-            if (newTarget != null && newTarget.IsVisible && newTarget.IsValidTarget() && !newTarget.IsDead
+            if (newTarget != null && newTarget.IsVisible && newTarget.LSIsValidTarget() && !newTarget.IsDead
                 && Player.LSDistance(newTarget) < 3000)
             {
                 Drawing.DrawCircle(GetPillarPosition(newTarget), 188, Color.DeepPink);
@@ -347,7 +347,7 @@ namespace ElTrundle
         private static void OnHarass()
         {
             var target = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -357,19 +357,19 @@ namespace ElTrundle
                 return;
             }
 
-            if (getCheckBoxItem(harassMenu, "ElTrundle.Harass.Q") && target.IsValidTarget(spells[Spells.Q].Range))
+            if (getCheckBoxItem(harassMenu, "ElTrundle.Harass.Q") && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast();
             }
 
             if (getCheckBoxItem(harassMenu, "ElTrundle.Harass.E") && spells[Spells.E].IsReady()
-                && target.IsValidTarget(spells[Spells.E].Range))
+                && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast(GetPillarPosition(target));
             }
 
             if (getCheckBoxItem(harassMenu, "ElTrundle.Harass.W") && spells[Spells.W].IsReady() &&
-                target.IsValidTarget(spells[Spells.W].Range))
+                target.LSIsValidTarget(spells[Spells.W].Range))
             {
                 spells[Spells.W].Cast(target.Position);
             }

@@ -26,12 +26,12 @@ namespace JustHecarim
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && sender.IsValidTarget(E.Range) && getCheckBoxItem(miscMenu, "interrupte"))
+            if (E.IsReady() && sender.LSIsValidTarget(E.Range) && getCheckBoxItem(miscMenu, "interrupte"))
             {
                 E.Cast();
             }
 
-            if (R.IsReady() && sender.IsValidTarget(R.Range) && getCheckBoxItem(miscMenu, "interruptr"))
+            if (R.IsReady() && sender.LSIsValidTarget(R.Range) && getCheckBoxItem(miscMenu, "interruptr"))
             {
                 var pred = R.GetPrediction(sender).Hitchance;
                 if (pred >= HitChance.High)
@@ -41,7 +41,7 @@ namespace JustHecarim
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (E.IsReady() && gapcloser.Sender.IsValidTarget(player.AttackRange) &&
+            if (E.IsReady() && gapcloser.Sender.LSIsValidTarget(player.AttackRange) &&
                 getCheckBoxItem(miscMenu, "antigap"))
                 E.Cast();
         }
@@ -54,7 +54,7 @@ namespace JustHecarim
             var target = TargetSelector.GetTarget(R.Range, DamageType.Physical);
 
             var enemys = target.CountEnemiesInRange(R.Range);
-            if (R.IsReady() && getCheckBoxItem(comboMenu, "UseR") && target.IsValidTarget(R.Range))
+            if (R.IsReady() && getCheckBoxItem(comboMenu, "UseR") && target.LSIsValidTarget(R.Range))
             {
                 var pred = R.GetPrediction(target).Hitchance;
                 if (pred >= HitChance.High)
@@ -65,23 +65,23 @@ namespace JustHecarim
         private static void combo()
         {
             var target = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
                 return;
 
             var enemys = target.CountEnemiesInRange(R.Range);
 
-            if (E.IsReady() && target.IsValidTarget(2000) && getCheckBoxItem(comboMenu, "UseE"))
+            if (E.IsReady() && target.LSIsValidTarget(2000) && getCheckBoxItem(comboMenu, "UseE"))
                 E.Cast();
 
-            if (W.IsReady() && target.IsValidTarget(W.Range) && getCheckBoxItem(comboMenu, "UseW"))
+            if (W.IsReady() && target.LSIsValidTarget(W.Range) && getCheckBoxItem(comboMenu, "UseW"))
                 W.Cast();
 
-            if (Q.IsReady() && getCheckBoxItem(comboMenu, "UseQ") && target.IsValidTarget(Q.Range))
+            if (Q.IsReady() && getCheckBoxItem(comboMenu, "UseQ") && target.LSIsValidTarget(Q.Range))
             {
                 Q.Cast();
             }
 
-            if (R.IsReady() && getCheckBoxItem(comboMenu, "UseR") && target.IsValidTarget(R.Range))
+            if (R.IsReady() && getCheckBoxItem(comboMenu, "UseR") && target.LSIsValidTarget(R.Range))
                 if (getSliderItem(comboMenu, "Rene") <= enemys)
                     R.CastIfHitchanceEquals(target, HitChance.High);
         }
@@ -126,8 +126,8 @@ namespace JustHecarim
                     ObjectManager.Get<AIHeroClient>()
                         .FirstOrDefault(
                             enemy =>
-                                enemy.IsValidTarget(Q.Range) && enemy.Health < player.GetSpellDamage(enemy, SpellSlot.Q));
-                if (target.IsValidTarget(Q.Range) && target.IsEnemy)
+                                enemy.LSIsValidTarget(Q.Range) && enemy.Health < player.GetSpellDamage(enemy, SpellSlot.Q));
+                if (target.LSIsValidTarget(Q.Range) && target.IsEnemy)
                 {
                     Q.Cast();
                 }
@@ -139,8 +139,8 @@ namespace JustHecarim
                     ObjectManager.Get<AIHeroClient>()
                         .FirstOrDefault(
                             enemy =>
-                                enemy.IsValidTarget(R.Range) && enemy.Health < player.GetSpellDamage(enemy, SpellSlot.R));
-                if (target.IsValidTarget(R.Range) && target.IsEnemy)
+                                enemy.LSIsValidTarget(R.Range) && enemy.Health < player.GetSpellDamage(enemy, SpellSlot.R));
+                if (target.LSIsValidTarget(R.Range) && target.IsEnemy)
                 {
                     R.CastIfHitchanceEquals(target, HitChance.High);
                 }
@@ -205,10 +205,10 @@ namespace JustHecarim
         {
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
             if (!Q.IsReady() || !getCheckBoxItem(harassMenu, "hQA") || player.IsRecalling() || target == null ||
-                !target.IsValidTarget())
+                !target.LSIsValidTarget())
                 return;
 
-            if (Q.IsReady() && getCheckBoxItem(harassMenu, "hQA") && target.IsValidTarget(Q.Range - 10))
+            if (Q.IsReady() && getCheckBoxItem(harassMenu, "hQA") && target.LSIsValidTarget(Q.Range - 10))
             {
                 Q.Cast();
             }
@@ -219,18 +219,18 @@ namespace JustHecarim
         {
             var target = TargetSelector.GetTarget(E.Range, DamageType.Physical);
             var harassmana = getSliderItem(harassMenu, "harassmana");
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
                 return;
 
             if (E.IsReady() && player.ManaPercent >= harassmana &&
                 getCheckBoxItem(harassMenu, "hE"))
                 E.Cast();
 
-            if (W.IsReady() && target.IsValidTarget(W.Range) && player.ManaPercent >= harassmana &&
+            if (W.IsReady() && target.LSIsValidTarget(W.Range) && player.ManaPercent >= harassmana &&
                 getCheckBoxItem(harassMenu, "hW"))
                 W.Cast();
 
-            if (getCheckBoxItem(harassMenu, "hQ") && target.IsValidTarget(Q.Range) &&
+            if (getCheckBoxItem(harassMenu, "hQ") && target.LSIsValidTarget(Q.Range) &&
                 player.ManaPercent >= harassmana)
                 Q.Cast();
         }

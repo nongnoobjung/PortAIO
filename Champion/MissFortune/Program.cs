@@ -112,7 +112,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (E.IsReady() && getCheckBoxItem(eMenu, "AGC") && Player.Mana > RMANA + EMANA)
             {
                 var Target = gapcloser.Sender;
-                if (Target.IsValidTarget(E.Range))
+                if (Target.LSIsValidTarget(E.Range))
                 {
                     E.Cast(gapcloser.End);
                 }
@@ -147,7 +147,7 @@ namespace OneKeyToWin_AIO_Sebby
                 return;
             var t = target as AIHeroClient;
 
-            if (Q.IsReady() && t.IsValidTarget(Q.Range))
+            if (Q.IsReady() && t.LSIsValidTarget(Q.Range))
             {
                 if (Q.GetDamage(t) + Player.GetAutoAttackDamage(t)*3 > t.Health)
                     Q.Cast(t);
@@ -257,7 +257,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
             var t1 = TargetSelector.GetTarget(Q1.Range, DamageType.Physical);
-            if (t.IsValidTarget(Q.Range) && Player.LSDistance(t.ServerPosition) > 500)
+            if (t.LSIsValidTarget(Q.Range) && Player.LSDistance(t.ServerPosition) > 500)
             {
                 var qDmg = OktwCommon.GetKsDamage(t, Q);
                 if (qDmg + Player.GetAutoAttackDamage(t) > t.Health)
@@ -269,7 +269,7 @@ namespace OneKeyToWin_AIO_Sebby
                 else if (Program.Farm && Player.Mana > RMANA + QMANA + EMANA + WMANA)
                     Q.Cast(t);
             }
-            else if (t1.IsValidTarget(Q1.Range) && getCheckBoxItem(qMenu, "harasQ") &&
+            else if (t1.LSIsValidTarget(Q1.Range) && getCheckBoxItem(qMenu, "harasQ") &&
                      Player.LSDistance(t1.ServerPosition) > Q.Range + 50)
             {
                 if (getCheckBoxItem(qMenu, "qMinionMove"))
@@ -288,7 +288,7 @@ namespace OneKeyToWin_AIO_Sebby
                     return;
 
                 var minionQ = col.Last();
-                if (minionQ.IsValidTarget(Q.Range))
+                if (minionQ.LSIsValidTarget(Q.Range))
                 {
                     if (getCheckBoxItem(qMenu, "killQ") && Q.GetDamage(minionQ) < minionQ.Health)
                         return;
@@ -310,7 +310,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void LogicE()
         {
             var t = TargetSelector.GetTarget(E.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 var eDmg = OktwCommon.GetKsDamage(t, E);
                 if (eDmg > t.Health)
@@ -323,7 +323,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Program.CastSpell(E, t);
                     else
                     {
-                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
                             E.Cast(enemy, true, true);
                     }
                 }
@@ -419,7 +419,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
 
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     var rDamage = R.GetDamage(t) + W.GetDamage(t)*10;
                     if (rDamage*8 > t.Health)

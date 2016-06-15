@@ -46,7 +46,7 @@ namespace HeavenStrikeAzir
             if (Program._w.IsReady() && Orbwalker.CanMove && !Soldiers.enemies.Any() && Program.wharass)
             {
                 var target = TargetSelector.GetTarget(Program._w.Range + 300, DamageType.Magical);
-                if (target.IsValidTarget() && !target.IsZombie && !Soldiers.enemies.Contains(target))
+                if (target.LSIsValidTarget() && !target.IsZombie && !Soldiers.enemies.Contains(target))
                 {
                     var x = Player.LSDistance(target.Position) > Program._w.Range ? Player.Position.LSExtend(target.Position, Program._w.Range)
                         : target.Position;
@@ -56,10 +56,10 @@ namespace HeavenStrikeAzir
             if (Program._w.IsReady() && Orbwalker.CanMove && !Soldiers.enemies.Any() && !Soldiers.soldier.Any() && Program.wharass && Program.Qisready())
             {
                 var target = TargetSelector.GetTarget(Program._w.Range + 300, DamageType.Magical);
-                if (target == null || !target.IsValidTarget() || target.IsZombie)
+                if (target == null || !target.LSIsValidTarget() || target.IsZombie)
                 {
-                    var tar = HeroManager.Enemies.Where(x => x.IsValidTarget(Program._q.Range) && !x.IsZombie).OrderByDescending(x => Player.LSDistance(x.Position)).LastOrDefault();
-                    if (tar.IsValidTarget() && !tar.IsZombie)
+                    var tar = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Program._q.Range) && !x.IsZombie).OrderByDescending(x => Player.LSDistance(x.Position)).LastOrDefault();
+                    if (tar.LSIsValidTarget() && !tar.IsZombie)
                     {
                         var x = Player.LSDistance(tar.Position) > Program._w.Range ? Player.Position.LSExtend(tar.Position, Program._w.Range)
                             : tar.Position;

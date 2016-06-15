@@ -115,7 +115,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void OnInterruptableSpell(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (getCheckBoxItem(r, "inter") && R.IsReady() && sender.IsValidTarget(R.Range))
+            if (getCheckBoxItem(r, "inter") && R.IsReady() && sender.LSIsValidTarget(R.Range))
                 R.Cast(sender);
         }
 
@@ -124,7 +124,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (R.IsReady())
             {
                 var t = gapcloser.Sender;
-                if (getCheckBoxItem(r, "GapCloser" + t.NetworkId) && t.IsValidTarget(R.Range))
+                if (getCheckBoxItem(r, "GapCloser" + t.NetworkId) && t.LSIsValidTarget(R.Range))
                 {
                     R.Cast(t);
                 }
@@ -132,7 +132,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (getCheckBoxItem(w, "AGC") && W.IsReady() && Player.Mana > RMANA + WMANA)
             {
                 var Target = gapcloser.Sender;
-                if (Target.IsValidTarget(E.Range))
+                if (Target.LSIsValidTarget(E.Range))
                     W.Cast();
             }
         }
@@ -161,7 +161,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (getKeyBindItem(r, "useR"))
             {
                 var tr = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                if (tr.IsValidTarget())
+                if (tr.LSIsValidTarget())
                     R.Cast(tr);
             }
 
@@ -225,7 +225,7 @@ namespace OneKeyToWin_AIO_Sebby
                 foreach (
                     var enemy in
                         Program.Enemies.Where(
-                            enemy => enemy.IsValidTarget(Q2.Range) && enemy.HasBuff("urgotcorrosivedebuff")))
+                            enemy => enemy.LSIsValidTarget(Q2.Range) && enemy.HasBuff("urgotcorrosivedebuff")))
                 {
                     if (W.IsReady() && (Player.Mana > WMANA + QMANA*4 || Q.GetDamage(enemy)*3 > enemy.Health) &&
                         getCheckBoxItem(w, "autoW"))
@@ -244,7 +244,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Player.CountEnemiesInRange(Q.Range - 200) > 0)
                 t = TargetSelector.GetTarget(Q.Range - 200, DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (Program.Combo && Player.Mana > RMANA + QMANA)
                     Program.CastSpell(Q, t);
@@ -254,7 +254,7 @@ namespace OneKeyToWin_AIO_Sebby
                         var enemy in
                             Program.Enemies.Where(
                                 enemy =>
-                                    enemy.IsValidTarget(Q.Range) && getCheckBoxItem(harass, "harras" + t.NetworkId)))
+                                    enemy.LSIsValidTarget(Q.Range) && getCheckBoxItem(harass, "harras" + t.NetworkId)))
                         Program.CastSpell(Q, enemy);
                 }
                 else if (OktwCommon.GetKsDamage(t, Q)*2 > t.Health)
@@ -265,7 +265,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     foreach (
                         var enemy in
-                            Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                            Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy, true);
                 }
             }
@@ -279,7 +279,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 foreach (
                     var target in
-                        Program.Enemies.Where(target => target.IsValidTarget(R.Range) && OktwCommon.ValidUlt(target)))
+                        Program.Enemies.Where(target => target.LSIsValidTarget(R.Range) && OktwCommon.ValidUlt(target)))
                 {
                     if (target.CountEnemiesInRange(700) < 2 + Player.CountAlliesInRange(700))
                     {
@@ -294,7 +294,7 @@ namespace OneKeyToWin_AIO_Sebby
             var qCd = Q.Instance.CooldownExpires - Game.Time;
 
             var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 var qDmg = Q.GetDamage(t);
                 var eDmg = E.GetDamage(t);
@@ -314,7 +314,7 @@ namespace OneKeyToWin_AIO_Sebby
                     foreach (
                         var enemy in
                             Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                                enemy => enemy.LSIsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
                         E.Cast(enemy, true, true);
                 }
             }

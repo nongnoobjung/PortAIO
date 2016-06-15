@@ -113,7 +113,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                         break;
 
                     case CollisionObjectTypes.Champions:
-                        collisions.AddRange(from hero in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget(1200) && h.Team == ObjectManager.Player.Team && !h.IsMe || h.Team != ObjectManager.Player.Team)
+                        collisions.AddRange(from hero in ObjectManager.Get<AIHeroClient>().Where(h => h.LSIsValidTarget(1200) && h.Team == ObjectManager.Player.Team && !h.IsMe || h.Team != ObjectManager.Player.Team)
                             let pred = FastPrediction(@from, hero, Math.Max(0, skillshot.SkillshotData.Delay - (System.Environment.TickCount - skillshot.StartTick)), skillshot.SkillshotData.MissileSpeed)
                             let pos = pred.PredictedPos
                             let w = skillshot.SkillshotData.RawRadius + 30 - pos.LSDistance(@from, skillshot.EndPosition, true)
@@ -129,7 +129,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                             !ObjectManager.Get<AIHeroClient>()
                                 .Any(
                                     hero =>
-                                        hero.IsValidTarget(float.MaxValue) &&
+                                        hero.LSIsValidTarget(float.MaxValue) &&
                                         hero.Team == ObjectManager.Player.Team && hero.ChampionName == "Yasuo"))
                         {
                             break;

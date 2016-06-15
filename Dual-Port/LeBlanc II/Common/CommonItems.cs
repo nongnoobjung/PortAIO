@@ -173,7 +173,7 @@ namespace Leblanc.Common
             {
                 
                 var t = TargetSelector.GetTarget(Champion.PlayerSpells.Q.Range, DamageType.Magical);
-                if (!t.IsValidTarget())
+                if (!t.LSIsValidTarget())
                 {
                     return;
                 }
@@ -184,7 +184,7 @@ namespace Leblanc.Common
                             item =>
                                 item.Value.ItemType == EnumItemType.AoE &&
                                 (item.Value.TargetingType == EnumItemTargettingType.EnemyObjects || item.Value.TargetingType == EnumItemTargettingType.EnemyHero))
-                            .Where(item => t.IsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
+                            .Where(item => t.LSIsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
                 {
                     item.Value.Item.Cast();
                 }
@@ -195,7 +195,7 @@ namespace Leblanc.Common
                             item =>
                                 item.Value.ItemType == EnumItemType.Targeted &&
                                 (item.Value.TargetingType == EnumItemTargettingType.EnemyHero))
-                            .Where(item => t.IsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
+                            .Where(item => t.LSIsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
                 {
                     item.Value.Item.Cast(t);
                 }
@@ -207,7 +207,7 @@ namespace Leblanc.Common
                 //            item =>
                 //                item.Value.ItemType == EnumItemType.Targeted &&
                 //                item.Value.TargetingType == EnumItemTargettingType.EnemyHero)
-                //            .Where(item => t.IsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
+                //            .Where(item => t.LSIsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady()))
                 //{
                 //    item.Value.Item.Cast(t);
                 //}

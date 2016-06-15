@@ -351,7 +351,7 @@ namespace Jayce
         {
             if (!getCheckBoxItem(MenuConfig.combo, "usercf")) return;
             var target = TargetSelector.GetTarget(1470, DamageType.Physical);
-            if (!target.IsValidTarget()) return;
+            if (!target.LSIsValidTarget()) return;
             if (!R.IsReady()) return;
 
             if (Ismelee())
@@ -377,7 +377,7 @@ namespace Jayce
                 var getpred = Q.GetPrediction(target);
                 var spellbook = Player.Spellbook.GetSpell(SpellSlot.W);
                 var spellbookq = Player.Spellbook.GetSpell(SpellSlot.Q);
-                if (target.IsValidTarget(Qm.Range - 20) && Player.Mana >= spellbookq.SData.Mana)
+                if (target.LSIsValidTarget(Qm.Range - 20) && Player.Mana >= spellbookq.SData.Mana)
                 {
                     if (getpred.Hitchance == HitChance.Collision || !Q.IsReady())
                     {
@@ -441,7 +441,7 @@ namespace Jayce
                     Wm.Cast();
             }
 
-            foreach (var x in HeroManager.Enemies.Where(z => z.IsValidTarget(Em.Range)))
+            foreach (var x in HeroManager.Enemies.Where(z => z.LSIsValidTarget(Em.Range)))
             {
                 if (x.Health < EMeleeDamage(target) + 100)
                 {
@@ -505,7 +505,7 @@ namespace Jayce
                     Qe.Cast(qpred.From);
                 }
 
-                if (Q.IsReady() && target.IsValidTarget(Q.Range) && (!E.IsReady() || Player.Mana <
+                if (Q.IsReady() && target.LSIsValidTarget(Q.Range) && (!E.IsReady() || Player.Mana <
                                     Player.Spellbook.GetSpell(SpellSlot.E).SData.Mana +
                                     Player.Spellbook.GetSpell(SpellSlot.Q).SData.Mana)
                     && getCheckBoxItem(MenuConfig.harass, "useqhr"))

@@ -82,7 +82,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void OnInterruptableSpell(AIHeroClient unit, InterruptableSpell spell)
         {
-            if (E.IsReady() && unit.IsValidTarget(E.Range))
+            if (E.IsReady() && unit.LSIsValidTarget(E.Range))
                 E.Cast(unit);
         }
 
@@ -94,7 +94,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             var t = target as AIHeroClient;
 
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
                 W.Cast();
 
         }
@@ -104,7 +104,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (R.IsReady() && getKeyBindItem(rMenu, "useR"))
             {
                 var targetR = TargetSelector.GetTarget(R.Range, DamageType.True);
-                if (targetR.IsValidTarget())
+                if (targetR.LSIsValidTarget())
                     R.Cast(targetR, true);
             }
 
@@ -146,7 +146,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Player.Mana > RMANA + EMANA)
             {
                 var target = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-                if (target.IsValidTarget() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo))
+                if (target.LSIsValidTarget() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo))
                 {
                     if (!SebbyLib.Orbwalking.InAutoAttackRange(target))
                     {
@@ -159,7 +159,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (!getCheckBoxItem(qMenu, "qOutRange") || SebbyLib.Orbwalking.InAutoAttackRange(t))
                 {
@@ -186,14 +186,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicR()
         {
             var targetR = TargetSelector.GetTarget(R.Range, DamageType.True);
-            if (targetR.IsValidTarget() && OktwCommon.ValidUlt(targetR) && getCheckBoxItem(rMenu, "autoRbuff"))
+            if (targetR.LSIsValidTarget() && OktwCommon.ValidUlt(targetR) && getCheckBoxItem(rMenu, "autoRbuff"))
             {
                 var buffTime = OktwCommon.GetPassiveTime(Player, "dariusexecutemulticast");
                 if ((buffTime < 2 || (Player.HealthPercent < 10 && getCheckBoxItem(rMenu, "autoRdeath"))) && buffTime > 0)
                     R.Cast(targetR, true);
             }
 
-            foreach (var target in Program.Enemies.Where(target => target.IsValidTarget(R.Range) && OktwCommon.ValidUlt(target)))
+            foreach (var target in Program.Enemies.Where(target => target.LSIsValidTarget(R.Range) && OktwCommon.ValidUlt(target)))
             {
 
                 var dmgR = OktwCommon.GetKsDamage(target, R);

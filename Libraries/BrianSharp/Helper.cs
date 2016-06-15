@@ -66,7 +66,7 @@ namespace PortAIO.Utility.BrianSharp
             MinionTeam team = MinionTeam.Enemy, MinionOrderTypes order = MinionOrderTypes.Health)
         {
             var result = from minion in ObjectManager.Get<Obj_AI_Minion>()
-                where minion.IsValidTarget(range, false, @from)
+                where minion.LSIsValidTarget(range, false, @from)
                 let minionTeam = minion.Team
                 where
                     (team == MinionTeam.Neutral && minionTeam == GameObjectTeam.Neutral)

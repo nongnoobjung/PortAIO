@@ -91,7 +91,7 @@ namespace UnderratedAIO.Champions
                 !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                 !player.UnderTurret(true))
             {
-                if (target != null && Q.CanCast(target) && target.IsValidTarget())
+                if (target != null && Q.CanCast(target) && target.LSIsValidTarget())
                 {
                     Q.CastIfHitchanceEquals(target, CombatHelper.GetHitChance(getSliderItem(autoHarassMenu, "qHit")), getCheckBoxItem(config, "packets"));
                 }
@@ -251,7 +251,7 @@ namespace UnderratedAIO.Champions
                   player.LSDistance(target) < getSliderItem(comboMenu, "userrange"))) ||
                 (getSliderItem(comboMenu, "userLow") <=
                  HeroManager.Enemies.Count(
-                     e => e.IsValidTarget(getSliderItem(comboMenu, "userrange")) && e.HealthPercent < 75)))
+                     e => e.LSIsValidTarget(getSliderItem(comboMenu, "userrange")) && e.HealthPercent < 75)))
             {
                 R.Cast(getCheckBoxItem(config, "packets"));
             }

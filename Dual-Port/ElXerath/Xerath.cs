@@ -128,13 +128,13 @@
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (!gapcloser.Sender.IsValidTarget(spells[Spells.E].Range)
+            if (!gapcloser.Sender.LSIsValidTarget(spells[Spells.E].Range)
                 || gapcloser.Sender.LSDistance(ObjectManager.Player) > spells[Spells.E].Range)
             {
                 return;
             }
 
-            if (gapcloser.Sender.IsValidTarget(spells[Spells.E].Range)
+            if (gapcloser.Sender.LSIsValidTarget(spells[Spells.E].Range)
                 && (getCheckBoxItem(ElXerathMenu.miscMenu, "ElXerath.misc.Antigapcloser") && spells[Spells.E].IsReady()))
             {
                 spells[Spells.E].Cast(gapcloser.Sender);
@@ -148,7 +148,7 @@
                 spells[Spells.W].Range + spells[Spells.W].Width * 0.5f,
                 DamageType.Magical);
 
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -164,7 +164,7 @@
                     return;
                 }
 
-                if (q && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].ChargedMaxRange))
+                if (q && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].ChargedMaxRange))
                 {
                     if (!spells[Spells.Q].IsCharging)
                     {
@@ -204,7 +204,7 @@
                 return;
             }
 
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -277,7 +277,7 @@
         private static void Combo()
         {
             var target = TargetSelector.GetTarget(spells[Spells.Q].ChargedMaxRange, DamageType.Magical);
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return;
             }
@@ -300,7 +300,7 @@
                 }
             }
 
-            if (comboQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].ChargedMaxRange))
+            if (comboQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].ChargedMaxRange))
             {
                 if (!spells[Spells.Q].IsCharging)
                 {
@@ -357,7 +357,7 @@
                 spells[Spells.W].Range + spells[Spells.W].Width * 0.5f,
                 DamageType.Magical);
 
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -371,7 +371,7 @@
             }
 
             if (harassQ && spells[Spells.Q].IsReady() && spells[Spells.Q].IsInRange(target)
-                && target.IsValidTarget(spells[Spells.Q].ChargedMaxRange))
+                && target.LSIsValidTarget(spells[Spells.Q].ChargedMaxRange))
             {
                 if (!spells[Spells.Q].IsCharging)
                 {
@@ -584,7 +584,7 @@
 
             if (spells[Spells.R].IsReady() && showNotifications && Environment.TickCount - lastNotification > 5000)
             {
-                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget() && !h.IsAlly && (float)Player.GetSpellDamage(h, SpellSlot.R) * 3 > h.Health))
+                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(h => h.LSIsValidTarget() && !h.IsAlly && (float)Player.GetSpellDamage(h, SpellSlot.R) * 3 > h.Health))
                 {
                     Chat.Print(enemy.ChampionName + ": is killable", Color.White, 4000);
                     lastNotification = Environment.TickCount;

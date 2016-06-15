@@ -94,7 +94,7 @@ namespace SPrediction
         public static Prediction.AoeResult GetAoePrediction(float width, float delay, float missileSpeed, float range, Vector2 from, Vector2 rangeCheckFrom)
         {
             Prediction.AoeResult result = new Prediction.AoeResult();
-            var enemies = HeroManager.Enemies.Where(p => p.IsValidTarget() && Prediction.GetFastUnitPosition(p, delay, 0, from).LSDistance(rangeCheckFrom) < range);
+            var enemies = HeroManager.Enemies.Where(p => p.LSIsValidTarget() && Prediction.GetFastUnitPosition(p, delay, 0, from).LSDistance(rangeCheckFrom) < range);
 
             foreach (AIHeroClient enemy in enemies)
             {

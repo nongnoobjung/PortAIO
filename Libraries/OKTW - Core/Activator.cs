@@ -491,7 +491,7 @@ namespace OneKeyToWin_AIO_Sebby
                      Player.GetSpellSlot("s5_summonersmiteduel") != SpellSlot.Unknown))
                 {
                     var enemy = TargetSelector.GetTarget(500, DamageType.True);
-                    if (enemy.IsValidTarget())
+                    if (enemy.LSIsValidTarget())
                     {
                         if (enemy.HealthPercent < 50 && getCheckBoxItem("SmiteEnemy"))
                             Player.Spellbook.CastSpell(smite, enemy);
@@ -531,7 +531,7 @@ namespace OneKeyToWin_AIO_Sebby
                     foreach (
                         var enemy in
                             Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(650) && enemy.IsChannelingImportantSpell()))
+                                enemy => enemy.LSIsValidTarget(650) && enemy.IsChannelingImportantSpell()))
                     {
                         Player.Spellbook.CastSpell(exhaust, enemy);
                     }
@@ -540,7 +540,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (getCheckBoxItem("Exhaust2") && Program.Combo)
                 {
                     var t = TargetSelector.GetTarget(650, DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                     {
                         Player.Spellbook.CastSpell(exhaust, t);
                     }
@@ -553,7 +553,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (CanUse(ignite) && getCheckBoxItem("Ignite"))
             {
                 var enemy = TargetSelector.GetTarget(600, DamageType.True);
-                if (enemy.IsValidTarget() && OktwCommon.ValidUlt(enemy))
+                if (enemy.LSIsValidTarget() && OktwCommon.ValidUlt(enemy))
                 {
                     var pred = enemy.Health - OktwCommon.GetIncomingDamage(enemy);
 
@@ -694,7 +694,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Botrk.IsReady() && getCheckBoxItem("Botrk"))
             {
                 var t = TargetSelector.GetTarget(Botrk.Range, DamageType.Physical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     if (getCheckBoxItem("BotrkKS") &&
                         Player.CalcDamage(t, DamageType.Physical, t.MaxHealth*0.1) >
@@ -711,7 +711,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Hextech.IsReady() && getCheckBoxItem("Hextech"))
             {
                 var t = TargetSelector.GetTarget(Hextech.Range, DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     if (getCheckBoxItem("HextechKS") &&
                         Player.CalcDamage(t, DamageType.Magical, 150 + Player.FlatMagicDamageMod*0.4) >
@@ -731,7 +731,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Cutlass.IsReady() && getCheckBoxItem("Cutlass"))
             {
                 var t = TargetSelector.GetTarget(Cutlass.Range, DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     if (getCheckBoxItem("CutlassKS") &&
                         Player.CalcDamage(t, DamageType.Magical, 100) > t.Health - OktwCommon.GetIncomingDamage(t))
@@ -745,7 +745,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 var t = Orbwalker.LastTarget;
 
-                if (t.IsValidTarget() && t is AIHeroClient)
+                if (t.LSIsValidTarget() && t is AIHeroClient)
                 {
                     if (getCheckBoxItem("YoumuusKS") && t.Health < Player.MaxHealth)
                         Youmuus.Cast();

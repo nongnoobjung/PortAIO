@@ -463,7 +463,7 @@
                 {
                     if (this.Player.LSGetSpellDamage(mob, spell.Slot, spell.Stage) + damage >= mob.Health)
                     {
-                        if (mob.IsValidTarget(this.SmiteSpell.Range))
+                        if (mob.LSIsValidTarget(this.SmiteSpell.Range))
                         {
                             if (spell.TargetType == SpellDataTargetType.Unit)
                             {
@@ -507,7 +507,7 @@
                 {
                     if (this.SmiteSpell.IsReady())
                     {
-                        if (Minion.IsValidTarget(570f))
+                        if (Minion.LSIsValidTarget(570f))
                         {
                             if (this.Player.GetSummonerSpellDamage(Minion, LeagueSharp.Common.Damage.SummonerSpell.Smite) >= Minion.Health && this.SmiteSpell.CanCast(Minion))
                             {
@@ -560,7 +560,7 @@
                             ObjectManager.Get<Obj_AI_Minion>()
                                 .Where(
                                     m =>
-                                    m.Team == GameObjectTeam.Neutral && m.IsValidTarget()
+                                    m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget()
                                     && BuffsThatActuallyMakeSenseToSmite.Contains(m.CharData.BaseSkinName));
 
                         foreach (var minion in minions.Where(m => m.IsHPBarRendered))
@@ -800,7 +800,7 @@
                     && this.ComboModeActive)
                 {
                     var smiteComboEnemy =
-                        HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.IsValidTarget(570));
+                        HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(570));
                     if (smiteComboEnemy != null)
                     {
                         this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, smiteComboEnemy);
@@ -817,7 +817,7 @@
                     var kSableEnemy =
                         HeroManager.Enemies.FirstOrDefault(
                             hero =>
-                            !hero.IsZombie && hero.IsValidTarget(500) && 20 + 8 * this.Player.Level >= hero.Health);
+                            !hero.IsZombie && hero.LSIsValidTarget(500) && 20 + 8 * this.Player.Level >= hero.Health);
                     if (kSableEnemy != null)
                     {
                         this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, kSableEnemy);

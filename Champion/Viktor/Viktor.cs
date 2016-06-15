@@ -105,13 +105,13 @@ namespace Viktor
                 var useW = getCheckBoxItem(misc, "wInterrupt");
                 var useR = getCheckBoxItem(misc, "rInterrupt");
 
-                if (useW && W.IsReady() && sender.IsValidTarget(W.Range) &&
+                if (useW && W.IsReady() && sender.LSIsValidTarget(W.Range) &&
                     (Game.Time + 1.5 + W.Delay) >= e.EndTime)
                 {
                     if (W.Cast(sender) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)
                         return;
                 }
-                else if (useR && sender.IsValidTarget(R.Range) && R.Instance.Name == "ViktorChaosStorm")
+                else if (useR && sender.LSIsValidTarget(R.Range) && R.Instance.Name == "ViktorChaosStorm")
                 {
                     R.Cast(sender);
                 }
@@ -274,7 +274,7 @@ namespace Viktor
             if (useR && R.Instance.Name == "ViktorChaosStorm" && player.CanCast && !player.Spellbook.IsCastingSpell)
             {
 
-                foreach (var unit in HeroManager.Enemies.Where(h => h.IsValidTarget(R.Range)))
+                foreach (var unit in HeroManager.Enemies.Where(h => h.LSIsValidTarget(R.Range)))
                 {
                     R.CastIfWillHit(unit, getSliderItem(comboMenu, "HitR"));
 
@@ -492,14 +492,14 @@ namespace Viktor
             if (!W.IsReady() || !getCheckBoxItem(misc, "autoW"))
                 return;
 
-            var tPanth = HeroManager.Enemies.Find(h => h.IsValidTarget(W.Range) && h.HasBuff("Pantheon_GrandSkyfall_Jump"));
+            var tPanth = HeroManager.Enemies.Find(h => h.LSIsValidTarget(W.Range) && h.HasBuff("Pantheon_GrandSkyfall_Jump"));
             if (tPanth != null)
             {
                 if (W.Cast(tPanth) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)
                     return;
             }
 
-            foreach (var enemy in HeroManager.Enemies.Where(h => h.IsValidTarget(W.Range)))
+            foreach (var enemy in HeroManager.Enemies.Where(h => h.LSIsValidTarget(W.Range)))
             {
                 if (enemy.HasBuff("rocketgrab2"))
                 {

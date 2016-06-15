@@ -160,7 +160,7 @@ namespace vSupport_Series.Champions
                     var enemy in
                         HeroManager.Enemies.Where(
                             x =>
-                                x.IsValidTarget(Q.Range) && !x.IsDead && !x.IsZombie &&
+                                x.LSIsValidTarget(Q.Range) && !x.IsDead && !x.IsZombie &&
                                 !x.HasBuffOfType(BuffType.SpellShield) && !x.HasBuffOfType(BuffType.SpellImmunity)))
                 {
                     Q.CastIfHitchanceEquals(enemy, SpellHitChance(miscMenu, "nami.q.hitchance"));
@@ -169,7 +169,7 @@ namespace vSupport_Series.Champions
             if (getCheckBoxItem(comboMenu, "nami.w.combo") && W.IsReady())
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(W.Range) && !x.IsDead && !x.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(W.Range) && !x.IsDead && !x.IsZombie))
                 {
                     if (getCheckBoxItem(wsettings, "wwhite." + enemy.NetworkId))
                     {
@@ -179,7 +179,7 @@ namespace vSupport_Series.Champions
             }
             if (getCheckBoxItem(comboMenu, "nami.r.combo") && R.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range)))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(R.Range)))
                 {
                     if (Player.CountEnemiesInRange(R.Range) >= getSliderItem(comboMenu, "nami.min.enemy.count"))
                     {
@@ -202,7 +202,7 @@ namespace vSupport_Series.Champions
                     var enemy in
                         HeroManager.Enemies.Where(
                             x =>
-                                x.IsValidTarget(Q.Range) && !x.IsDead && !x.IsZombie &&
+                                x.LSIsValidTarget(Q.Range) && !x.IsDead && !x.IsZombie &&
                                 !x.HasBuffOfType(BuffType.SpellShield) && !x.HasBuffOfType(BuffType.SpellImmunity)))
                 {
                     Q.CastIfHitchanceEquals(enemy, SpellHitChance(miscMenu, "nami.q.hitchance"));
@@ -211,7 +211,7 @@ namespace vSupport_Series.Champions
             if (getCheckBoxItem(harass, "nami.w.harass") && W.IsReady())
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(W.Range) && !x.IsDead && !x.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(W.Range) && !x.IsDead && !x.IsZombie))
                 {
                     if (getCheckBoxItem(wsettings, "wwhite." + enemy.NetworkId))
                     {

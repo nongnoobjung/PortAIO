@@ -127,7 +127,7 @@ namespace Irelia.Champion
                 //getBoxItem(Modes.ModeSettings.MenuSettingQ, "Settings.Q.CastDelay")
                 {
                     var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                     {
                         CastECombo(t);
                     }

@@ -121,7 +121,7 @@
                 var kSableEnemy =
                     HeroManager.Enemies.FirstOrDefault(
                         hero =>
-                        hero.IsValidTarget(550) && hero.IgniteCheck() && !hero.IsZombie
+                        hero.LSIsValidTarget(550) && hero.IgniteCheck() && !hero.IsZombie
                         && this.Player.GetSummonerSpellDamage(hero, LeagueSharp.Common.Damage.SummonerSpell.Ignite) >= hero.Health);
 
                 if (kSableEnemy != null)

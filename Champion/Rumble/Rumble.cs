@@ -296,7 +296,7 @@ namespace UnderratedAIO.Champions
         {
             var otherHeroes =
                 HeroManager.Enemies.Where(
-                    e => e.IsValidTarget() && e.NetworkId != target.NetworkId && player.LSDistance(e) < 1000)
+                    e => e.LSIsValidTarget() && e.NetworkId != target.NetworkId && player.LSDistance(e) < 1000)
                     .Select(e => R.GetPrediction(e))
                     .Where(o => o.Hitchance > HitChance.High && o.CastPosition.LSDistance(targE.UnitPosition) < 1000);
             if (otherHeroes.Any())

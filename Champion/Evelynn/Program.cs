@@ -163,7 +163,7 @@ namespace Evelynn
         {
             var minions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q.Range);
 
-            foreach (var minion in minions.FindAll(minion => minion.IsValidTarget(Q.Range)))
+            foreach (var minion in minions.FindAll(minion => minion.LSIsValidTarget(Q.Range)))
             {
                 if (getCheckBoxItem(laneClearMenu, "UseQLaneClear") && Q.IsReady())
                     Q.Cast();

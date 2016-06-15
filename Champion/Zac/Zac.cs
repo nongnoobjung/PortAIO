@@ -179,7 +179,7 @@ namespace UnderratedAIO.Champions
             }
             if (getCheckBoxItem(menuLC, "useeLC") && E.IsReady())
             {
-                if (target != null && target.IsValidTarget())
+                if (target != null && target.LSIsValidTarget())
                 {
                     CastE(target);
                 }
@@ -238,7 +238,7 @@ namespace UnderratedAIO.Champions
             {
                 CastE(target);
             }
-            if (getCheckBoxItem(menuC, "useq") && Q.CanCast(target) && target.IsValidTarget() &&
+            if (getCheckBoxItem(menuC, "useq") && Q.CanCast(target) && target.LSIsValidTarget() &&
                 !E.IsCharging)
             {
                 Q.CastIfHitchanceEquals(target, HitChance.Medium, getCheckBoxItem(config, "packets"));

@@ -55,7 +55,7 @@ namespace iDZEzreal.Modules
             {
                 var target = TargetSelector.GetTarget(2300f, DamageType.Physical);
 
-                if (target.IsValidTarget(Variables.Spells[SpellSlot.R].Range)
+                if (target.LSIsValidTarget(Variables.Spells[SpellSlot.R].Range)
                     && Ezreal.CanExecuteTarget(target)
                     && ObjectManager.Player.LSDistance(target) >= Orbwalking.GetRealAutoAttackRange(null) * 0.80f
                     &&

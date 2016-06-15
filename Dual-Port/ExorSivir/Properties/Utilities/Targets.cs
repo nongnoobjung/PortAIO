@@ -26,7 +26,7 @@ namespace ExorSDK.Champions.Sivir
                 GameObjects.EnemyMinions.Where(
                     m =>
                         m.IsMinion() && 
-                        m.IsValidTarget(Vars.Q.Range)).ToList();
+                        m.LSIsValidTarget(Vars.Q.Range)).ToList();
 
         /// <summary>
         ///     The jungle minion targets.
@@ -35,7 +35,7 @@ namespace ExorSDK.Champions.Sivir
             =>
                 GameObjects.Jungle.Where(
                     m =>
-                        m.IsValidTarget(Vars.Q.Range) &&
+                        m.LSIsValidTarget(Vars.Q.Range) &&
                         !GameObjects.JungleSmall.Contains(m)).ToList();
     }
 }

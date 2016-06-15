@@ -27,8 +27,8 @@ namespace ExorAIO.Champions.Renekton
                     HeroManager.Enemies.Where(
                         t =>
                             !Bools.IsSpellShielded(t) &&
-                            t.IsValidTarget(Variables.Q.Range) &&
-                            !t.IsValidTarget(Variables.AARange) &&
+                            t.LSIsValidTarget(Variables.Q.Range) &&
+                            !t.LSIsValidTarget(Variables.AARange) &&
                             t.Health < Variables.Q.GetDamage(t)))
                 {
                     Variables.Q.Cast();

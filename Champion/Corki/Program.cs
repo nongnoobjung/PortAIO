@@ -214,7 +214,7 @@ namespace ElCorki
             var target = TargetSelector.GetTarget(spells[Spells.Q].Range, DamageType.Physical);
             var rTarget = TargetSelector.GetTarget(spells[Spells.R1].Range, DamageType.Magical);
 
-            if (target == null || !target.IsValidTarget() || rTarget == null || !rTarget.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget() || rTarget == null || !rTarget.LSIsValidTarget())
             {
                 return;
             }
@@ -250,7 +250,7 @@ namespace ElCorki
                     }
                 }
 
-                if (q && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                if (q && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                 {
                     spells[Spells.Q].Cast(target);
                 }
@@ -264,7 +264,7 @@ namespace ElCorki
 
         private static void Combo(Obj_AI_Base target)
         {
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -299,14 +299,14 @@ namespace ElCorki
             {
                 if (!bigR)
                 {
-                    if (target.IsValidTarget(spells[Spells.R1].Range))
+                    if (target.LSIsValidTarget(spells[Spells.R1].Range))
                     {
                         spells[Spells.R1].Cast(target);
                     }
                 }
                 else
                 {
-                    if (target.IsValidTarget(spells[Spells.R2].Range))
+                    if (target.LSIsValidTarget(spells[Spells.R2].Range))
                     {
                         spells[Spells.R2].Cast(target);
                     }
@@ -338,7 +338,7 @@ namespace ElCorki
 
         private static void Harass(Obj_AI_Base target)
         {
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }

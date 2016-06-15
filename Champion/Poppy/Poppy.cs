@@ -94,7 +94,7 @@ namespace UnderratedAIO.Champions
                 foreach (var dashingEnemy in
                     HeroManager.Enemies.Where(
                         e =>
-                            e.IsValidTarget() && e.LSDistance(player) < 1600 &&
+                            e.LSIsValidTarget() && e.LSDistance(player) < 1600 &&
                             getSliderItem(menuM, "useAutoW" + e.BaseSkinName) > 0)
                         .OrderByDescending(e => getSliderItem(menuM, "useAutoW" + e.BaseSkinName))
                         .ThenBy(e => e.LSDistance(player)))
@@ -191,7 +191,7 @@ namespace UnderratedAIO.Champions
                 var targ =
                     HeroManager.Enemies.Where(
                         e =>
-                            e.IsValidTarget() && R.CanCast(e) &&
+                            e.LSIsValidTarget() && R.CanCast(e) &&
                             (player.HealthPercent < 60 || e.CountEnemiesInRange(300) > 2) &&
                             HeroManager.Enemies.Count(h => h.LSDistance(e) < 400 && e.HealthPercent < 35) == 0 &&
                             R.GetPrediction(e).CastPosition.LSDistance(player.Position) < R.ChargedMaxRange)
@@ -203,7 +203,7 @@ namespace UnderratedAIO.Champions
                     targ =
                         HeroManager.Enemies.Where(
                             e =>
-                                e.IsValidTarget() && R.CanCast(e) &&
+                                e.LSIsValidTarget() && R.CanCast(e) &&
                                 R.GetPrediction(e).CastPosition.LSDistance(player.Position) < R.ChargedMaxRange)
                             .OrderByDescending(e => R.GetPrediction(e).CastPosition.CountEnemiesInRange(400))
                             .ThenByDescending(e => e.LSDistance(target))

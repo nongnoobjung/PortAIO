@@ -229,7 +229,7 @@ namespace D_Shyvana
 
             if (_r.IsReady() && autoR)
             {
-                if (ObjectManager.Get<AIHeroClient>().Count(hero => hero.IsValidTarget(_r.Range)) >=
+                if (ObjectManager.Get<AIHeroClient>().Count(hero => hero.LSIsValidTarget(_r.Range)) >=
                     getSliderItem(comboMenu, "MinTargets")
                     && _r.GetPrediction(t).Hitchance >= Rchange())
                     _r.Cast(t);
@@ -402,7 +402,7 @@ namespace D_Shyvana
             {
                 if (_e.IsReady() && getCheckBoxItem(miscMenu, "UseEM"))
                 {
-                    if (_e.GetDamage(hero) > hero.Health && hero.IsValidTarget(_e.Range))
+                    if (_e.GetDamage(hero) > hero.Health && hero.LSIsValidTarget(_e.Range))
                     {
                         _e.CastIfHitchanceEquals(hero, Echange());
                     }
@@ -420,7 +420,7 @@ namespace D_Shyvana
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (_r.IsReady() && gapcloser.Sender.IsValidTarget(_r.Range) && getCheckBoxItem(miscMenu, "Gap_E"))
+            if (_r.IsReady() && gapcloser.Sender.LSIsValidTarget(_r.Range) && getCheckBoxItem(miscMenu, "Gap_E"))
                 if (!gapcloser.End.UnderTurret(true) && gapcloser.End.CountEnemiesInRange(700) < 1)
                 {
                     _r.Cast(gapcloser.End);
@@ -430,7 +430,7 @@ namespace D_Shyvana
         private static void Interrupter_OnPosibleToInterrupt(Obj_AI_Base target, InterruptableSpell spell)
         {
             if (!getCheckBoxItem(miscMenu, "UseRInt")) return;
-            if (target.IsValidTarget(_r.Range) && spell.DangerLevel == InterruptableDangerLevel.High)
+            if (target.LSIsValidTarget(_r.Range) && spell.DangerLevel == InterruptableDangerLevel.High)
             {
                 _r.Cast(target);
             }

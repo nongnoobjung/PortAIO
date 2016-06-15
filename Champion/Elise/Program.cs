@@ -225,7 +225,7 @@ namespace GFUELElise
             {
                 if (E.IsReady() && getCheckBoxItem(miscMenu, "GFUELElise.Auto.E"))
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(E.Range) && !x.IsDead))
+                    foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(E.Range) && !x.IsDead))
                     {
                         if (E.IsInRange(enemy))
                         {
@@ -255,7 +255,7 @@ namespace GFUELElise
 
                 if (IsHuman)
                 {
-                    if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.Q") && Q.IsReady() && target.IsValidTarget(Q.Range))
+                    if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.Q") && Q.IsReady() && target.LSIsValidTarget(Q.Range))
                     {
                         Q.CastOnUnit(target);
                     }
@@ -269,12 +269,12 @@ namespace GFUELElise
                         }
                     }
 
-                    if (target.HasBuff("buffelisecocoon") && SpiderQ.IsReady() && target.IsValidTarget(SpiderQ.Range))
+                    if (target.HasBuff("buffelisecocoon") && SpiderQ.IsReady() && target.LSIsValidTarget(SpiderQ.Range))
                     {
                         R.Cast();
                     }
 
-                    if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.W") && W.IsReady() && target.IsValidTarget(W.Range))
+                    if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.W") && W.IsReady() && target.LSIsValidTarget(W.Range))
                     {
                         var prediction = W.GetPrediction(target);
                         if (prediction.CollisionObjects.Count == 0)
@@ -295,7 +295,7 @@ namespace GFUELElise
                             R.Cast();
                         }
 
-                        if (SpiderQ.IsReady() && target.IsValidTarget(SpiderQ.Range) && target.IsValidTarget(SpiderQ.Range))
+                        if (SpiderQ.IsReady() && target.LSIsValidTarget(SpiderQ.Range) && target.LSIsValidTarget(SpiderQ.Range))
                         {
                             R.Cast();
                         }
@@ -306,7 +306,7 @@ namespace GFUELElise
                 {
                     if (getCheckBoxItem(comboMenu, "GFUELElise.ComboSpider.Q") && SpiderQ.IsReady())
                     {
-                        if (target.IsValidTarget(SpiderQ.Range))
+                        if (target.LSIsValidTarget(SpiderQ.Range))
                         {
                             SpiderQ.Cast(target);
                         }
@@ -315,7 +315,7 @@ namespace GFUELElise
                     if (getCheckBoxItem(comboMenu, "GFUELElise.ComboSpider.W") && Player.LSDistance(target) <= 140 &&
                         SpiderW.IsReady())
                     {
-                        if (target.IsValidTarget(SpiderW.Range))
+                        if (target.LSIsValidTarget(SpiderW.Range))
                         {
                             SpiderW.Cast();
                         }
@@ -324,7 +324,7 @@ namespace GFUELElise
                     if (getCheckBoxItem(comboMenu, "GFUELElise.ComboSpider.E") && Player.LSDistance(target) <= SpiderE.Range
                         && Player.LSDistance(target) > SpiderQ.Range && SpiderE.IsReady())
                     {
-                        if (target.IsValidTarget(SpiderQ.Range))
+                        if (target.LSIsValidTarget(SpiderQ.Range))
                         {
                             return;
                         }
@@ -333,7 +333,7 @@ namespace GFUELElise
 
                     if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.R"))
                     {
-                        if (target.IsValidTarget(SpiderQ.Range) || (E.IsReady() && target.IsValidTarget(E.Range)))
+                        if (target.LSIsValidTarget(SpiderQ.Range) || (E.IsReady() && target.LSIsValidTarget(E.Range)))
                         {
                             return;
                         }
@@ -343,7 +343,7 @@ namespace GFUELElise
                             return;
                         }
 
-                        if (R.IsReady() && !target.IsValidTarget(SpiderQ.Range) && !SpiderE.IsReady())
+                        if (R.IsReady() && !target.LSIsValidTarget(SpiderQ.Range) && !SpiderE.IsReady())
                         {
                             R.Cast();
                         }
@@ -373,7 +373,7 @@ namespace GFUELElise
                         || (Q.IsReady() && Q.GetDamage(target) >= target.Health)
                         || W.IsReady() && W.GetDamage(target) >= target.Health)
                     {
-                        if (SpiderQ.IsReady() && target.IsValidTarget(SpiderQ.Range))
+                        if (SpiderQ.IsReady() && target.LSIsValidTarget(SpiderQ.Range))
                         {
                             return;
                         }
@@ -404,13 +404,13 @@ namespace GFUELElise
                 if (!IsSpider)
                 {
                     if (getCheckBoxItem(harassMenu, "GFUELElise.Harass.Q") && Q.IsReady() &&
-                        target.IsValidTarget(Q.Range))
+                        target.LSIsValidTarget(Q.Range))
                     {
                         Q.Cast(target);
                     }
 
                     if (getCheckBoxItem(harassMenu, "GFUELElise.Harass.W") && W.IsReady() &&
-                        target.IsValidTarget(W.Range))
+                        target.LSIsValidTarget(W.Range))
                     {
                         var prediction = W.GetPrediction(target);
                         if (prediction.CollisionObjects.Count == 0)
@@ -452,7 +452,7 @@ namespace GFUELElise
                     }
 
                     if (getCheckBoxItem(laneClearMenu, "GFUELElise.laneclear.W") && W.IsReady() &&
-                        minion.IsValidTarget(W.Range))
+                        minion.LSIsValidTarget(W.Range))
                     {
                         W.Cast(minion.Position);
                     }
@@ -471,7 +471,7 @@ namespace GFUELElise
                     }
 
                     if (getCheckBoxItem(laneClearMenu, "GFUELElise.laneclear.SpiderW") && W.IsReady() &&
-                        minion.IsValidTarget(SpiderW.Range))
+                        minion.LSIsValidTarget(SpiderW.Range))
                     {
                         SpiderW.Cast();
                     }
@@ -515,7 +515,7 @@ namespace GFUELElise
                     }
 
                     if (getCheckBoxItem(jungleClearMenu, "GFUELElise.jungleclear.W") && W.IsReady() &&
-                        minion.IsValidTarget(W.Range))
+                        minion.LSIsValidTarget(W.Range))
                     {
                         W.Cast(minion.Position);
                     }
@@ -536,7 +536,7 @@ namespace GFUELElise
                     }
 
                     if (getCheckBoxItem(jungleClearMenu, "GFUELElise.jungleclear.SpiderW") && W.IsReady() &&
-                        minion.IsValidTarget(SpiderW.Range))
+                        minion.LSIsValidTarget(SpiderW.Range))
                     {
                         SpiderW.Cast();
                     }
@@ -641,7 +641,7 @@ namespace GFUELElise
             {
                 if (getCheckBoxItem(miscMenu, "GFUELElise.Misc.Interrupter") && E.IsReady())
                 {
-                    if (sender.IsValidTarget(E.Range))
+                    if (sender.LSIsValidTarget(E.Range))
                     {
                         E.Cast(sender);
                     }
@@ -749,7 +749,7 @@ namespace GFUELElise
             Orbwalker.OrbwalkTo(Game.CursorPos);
 
             var target = TargetSelector.GetTarget(E.Range, DamageType.Magical);
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }

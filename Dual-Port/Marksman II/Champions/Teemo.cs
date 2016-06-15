@@ -85,7 +85,7 @@ namespace Marksman.Champions
                 if (ObjectManager.Player.HasBuff("Recall"))
                     return;
                 var qTarget = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-                if (Q.IsReady() && qTarget.IsValidTarget())
+                if (Q.IsReady() && qTarget.LSIsValidTarget())
                     Q.CastOnUnit(qTarget);
             }
 
@@ -95,14 +95,14 @@ namespace Marksman.Champions
                 if (useQ)
                 {
                     var qTarget = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-                    if (Q.IsReady() && qTarget.IsValidTarget())
+                    if (Q.IsReady() && qTarget.LSIsValidTarget())
                         Q.CastOnUnit(qTarget);
                 }
             }
 
             if (R.IsReady() && ComboActive)
             {
-                foreach (var t in HeroManager.Enemies.Where(hero => hero.IsValidTarget(R.Range) && !hero.IsDead))
+                foreach (var t in HeroManager.Enemies.Where(hero => hero.LSIsValidTarget(R.Range) && !hero.IsDead))
                 {
                     if (GetValue<bool>("UseRC"))
                     {
@@ -111,7 +111,7 @@ namespace Marksman.Champions
 
                     if (GetValue<bool>("AutoRI"))
                     {
-                        if (t.IsValidTarget(R.Range) &&
+                        if (t.LSIsValidTarget(R.Range) &&
                             (t.HasBuffOfType(BuffType.Stun) || t.HasBuffOfType(BuffType.Snare) ||
                              t.HasBuffOfType(BuffType.Taunt) || t.HasBuff("zhonyasringshield") ||
                              t.HasBuff("Recall")))

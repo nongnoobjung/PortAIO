@@ -39,7 +39,7 @@ namespace Warwick
             get
             {
                 var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-                return t.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65);
+                return t.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65);
             }
         }
 
@@ -282,7 +282,7 @@ namespace Warwick
 
                     if (Q.IsReady())
                     {
-                        var enemy = HeroManager.Enemies.Where(obj => obj.IsValidTarget(Q.Range) && !obj.IsDead && !obj.IsZombie).FirstOrDefault();
+                        var enemy = HeroManager.Enemies.Where(obj => obj.LSIsValidTarget(Q.Range) && !obj.IsDead && !obj.IsZombie).FirstOrDefault();
                         if (enemy != null)
                         {
                             Q.CastOnUnit(enemy);
@@ -308,7 +308,7 @@ namespace Warwick
             if (!getCheckBoxItem(menuInterrupt, "Interrupt.R"))
                 return;
 
-            if (R.IsReady() && unit.IsValidTarget(R.Range) && !unit.HasBuff("bansheeveil"))
+            if (R.IsReady() && unit.LSIsValidTarget(R.Range) && !unit.HasBuff("bansheeveil"))
                 R.Cast(unit);
         }
 
@@ -330,7 +330,7 @@ namespace Warwick
 
         public static int GetClosesAlliesToEnemy(AIHeroClient t)
         {
-            if (!t.IsValidTarget(R.Range))
+            if (!t.LSIsValidTarget(R.Range))
                 return 0;
 
             return (from ally in
@@ -367,7 +367,7 @@ namespace Warwick
                     return;
                 }
 
-                if (tR.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65) && tR.Health < Player.TotalAttackDamage)
+                if (tR.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 65) && tR.Health < Player.TotalAttackDamage)
                 {
                     return;
                 }
@@ -380,7 +380,7 @@ namespace Warwick
                 {
                     case 1:
                         {
-                            if (tR.IsValidTarget(R.Range))
+                            if (tR.LSIsValidTarget(R.Range))
                             {
                                 R.Cast(tR);
                             }
@@ -388,7 +388,7 @@ namespace Warwick
                         }
                     case 2:
                         {
-                            if (tR.IsValidTarget(R.Range) &&
+                            if (tR.LSIsValidTarget(R.Range) &&
                                 tR.Health <
                                 GetComboDamage(tR) + Player.TotalAttackDamage +
                                 (Q.IsReady() ||
@@ -403,7 +403,7 @@ namespace Warwick
                         }
                     case 3:
                         {
-                            if (tR.IsValidTarget(R.Range) &&
+                            if (tR.LSIsValidTarget(R.Range) &&
                                 ((tR.Health <
                                   GetComboDamage(tR) + Player.TotalAttackDamage +
                                   (Q.IsReady() ||
@@ -420,7 +420,7 @@ namespace Warwick
                 }
             }
 
-            if (Q.IsReady() && t.IsValidTarget(Q.Range))
+            if (Q.IsReady() && t.LSIsValidTarget(Q.Range))
             {
                 Q.CastOnUnit(t);
             }
@@ -458,7 +458,7 @@ namespace Warwick
         private static void Harass()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
                 return;
 
             if (getCheckBoxItem(menuHarass, "Harass.Q.UseTEnemyUn") && t.UnderTurret())
@@ -567,7 +567,7 @@ namespace Warwick
 
                 if (xMobs != null)
                 {
-                    if (qMobs[0].IsValidTarget(Q.Range))
+                    if (qMobs[0].LSIsValidTarget(Q.Range))
                     {
                         Q.CastOnUnit(qMobs[0]);
                     }
@@ -578,7 +578,7 @@ namespace Warwick
                 }
             }
 
-            if (useW && qMobs[0].IsValidTarget(Q.Range))
+            if (useW && qMobs[0].LSIsValidTarget(Q.Range))
             {
                 W.Cast();
             }
@@ -606,13 +606,13 @@ namespace Warwick
                 if (item.Value.ItemType == EnumItemType.AoE &&
                     item.Value.TargetingType == EnumItemTargettingType.EnemyHero)
                 {
-                    if (t.IsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady())
+                    if (t.LSIsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady())
                         item.Value.Item.Cast();
                 }
                 if (item.Value.ItemType == EnumItemType.Targeted &&
                     item.Value.TargetingType == EnumItemTargettingType.EnemyHero)
                 {
-                    if (t.IsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady())
+                    if (t.LSIsValidTarget(item.Value.Item.Range) && item.Value.Item.IsReady())
                         item.Value.Item.Cast(t);
                 }
             }
@@ -628,7 +628,7 @@ namespace Warwick
 
             if (getCheckBoxItem(menuDraw, "Draw.E.Show") && E.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(e => e.IsValidTarget(E.Range) && !e.IsDead))
+                foreach (var enemy in HeroManager.Enemies.Where(e => e.LSIsValidTarget(E.Range) && !e.IsDead))
                 {
                     foreach (var d in from buff in enemy.Buffs
                                       where buff.Name == "bloodscent_target"

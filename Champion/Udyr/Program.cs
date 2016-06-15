@@ -242,25 +242,25 @@ namespace D_Udyr
 
             foreach (var minion in minions)
             {
-                if (getCheckBoxItem(farm, "Use-Q-Jungle") && _q.IsReady() && minion.IsValidTarget())
+                if (getCheckBoxItem(farm, "Use-Q-Jungle") && _q.IsReady() && minion.LSIsValidTarget())
                 {
                     Utility.DelayAction.Add(delay, () => _q.Cast());
                     return;
                 }
 
-                if (getCheckBoxItem(farm, "Use-R-Jungle") && _r.IsReady() && minion.IsValidTarget())
+                if (getCheckBoxItem(farm, "Use-R-Jungle") && _r.IsReady() && minion.LSIsValidTarget())
                 {
                     Utility.DelayAction.Add(delay, () => _r.Cast());
                     return;
                 }
 
-                if (getCheckBoxItem(farm, "Use-W-Jungle") && _w.IsReady() && minion.IsValidTarget())
+                if (getCheckBoxItem(farm, "Use-W-Jungle") && _w.IsReady() && minion.LSIsValidTarget())
                 {
                     Utility.DelayAction.Add(delay, () => _w.Cast());
                     return;
                 }
 
-                if (getCheckBoxItem(farm, "Use-E-Jungle") && _e.IsReady() && minion.IsValidTarget())
+                if (getCheckBoxItem(farm, "Use-E-Jungle") && _e.IsReady() && minion.LSIsValidTarget())
                 {
                     Utility.DelayAction.Add(delay, () => _e.Cast());
                     return;
@@ -312,7 +312,7 @@ namespace D_Udyr
 
             foreach (var enemy in ObjectManager.Get<AIHeroClient>())
             {
-                if (enemy.IsValidTarget(800) && !enemy.HasBuff("udyrbearstuncheck"))
+                if (enemy.LSIsValidTarget(800) && !enemy.HasBuff("udyrbearstuncheck"))
                 {
                     if (_e.IsReady())
                     {

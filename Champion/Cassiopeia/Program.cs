@@ -307,7 +307,7 @@ namespace SAutoCarry.Champions
                 var target in
                     HeroManager.Enemies.Where(
                         x =>
-                            x.IsValidTarget(Spells[E].Range) && !x.HasBuffOfType(BuffType.Invulnerability) &&
+                            x.LSIsValidTarget(Spells[E].Range) && !x.HasBuffOfType(BuffType.Invulnerability) &&
                             (!KillStealOnlyPoison || x.HasBuffOfType(BuffType.Poison))))
             {
                 if (ObjectManager.Player.GetSpellDamage(target, SpellSlot.E) > target.Health + 20)

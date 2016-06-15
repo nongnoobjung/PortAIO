@@ -602,7 +602,7 @@ namespace FioraProject
             if (OrbwalkerPassive)
             {
                 var target = GetTarget(OrbwalkToPassiveRange);
-                if (target.IsValidTarget(OrbwalkToPassiveRange) && !target.IsZombie)
+                if (target.LSIsValidTarget(OrbwalkToPassiveRange) && !target.IsZombie)
                 {
                     var status = target.GetPassiveStatus(0);
                     if (Player.Position.To2D().LSDistance(target.Position.To2D()) <= OrbwalkToPassiveRange && status.HasPassive

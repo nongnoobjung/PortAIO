@@ -153,7 +153,7 @@
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             if (getCheckBoxItem(miscellaneousMenu, "ElEasy.Sona.GapCloser.Activated") && spells[Spells.R].IsReady()
-                && gapcloser.Sender.IsValidTarget(spells[Spells.R].Range))
+                && gapcloser.Sender.LSIsValidTarget(spells[Spells.R].Range))
             {
                 spells[Spells.R].Cast(gapcloser.Sender);
             }
@@ -162,13 +162,13 @@
         private void AutoHarass()
         {
             var target = TargetSelector.GetTarget(spells[Spells.Q].Range, DamageType.Magical);
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
 
             if (getKeyBindItem(harassMenu, "ElEasy.Sona.Autoharass.Activated")
-                && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast(target);
             }
@@ -220,7 +220,7 @@
                 return;
             }
 
-            if (sender.IsValidTarget(spells[Spells.R].Range) && args.DangerLevel == Interrupter2.DangerLevel.High
+            if (sender.LSIsValidTarget(spells[Spells.R].Range) && args.DangerLevel == Interrupter2.DangerLevel.High
                 && spells[Spells.R].IsReady())
             {
                 spells[Spells.R].Cast(sender.Position);
@@ -232,7 +232,7 @@
             var target = TargetSelector.GetTarget(spells[Spells.Q].Range, DamageType.Magical);
             var rTarget = TargetSelector.GetTarget(spells[Spells.R].Range, DamageType.Magical);
 
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -244,22 +244,22 @@
             var useI = getCheckBoxItem(comboMenu, "ElEasy.Sona.Combo.Ignite");
             var hitByR = getSliderItem(comboMenu, "ElEasy.Sona.Combo.Count.R");
 
-            if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+            if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast(target);
             }
 
-            if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+            if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast();
             }
 
-            if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+            if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
             {
                 spells[Spells.W].Cast();
             }
 
-            if (useR && spells[Spells.R].IsReady() && rTarget.IsValidTarget(spells[Spells.R].Range))
+            if (useR && spells[Spells.R].IsReady() && rTarget.LSIsValidTarget(spells[Spells.R].Range))
             {
                 var pred = spells[Spells.R].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.High)
@@ -339,7 +339,7 @@
             }
 
             if (getCheckBoxItem(harassMenu, "ElEasy.Sona.Harass.Q") && spells[Spells.Q].IsReady()
-                && target.IsValidTarget(spells[Spells.Q].Range))
+                && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast(target);
             }

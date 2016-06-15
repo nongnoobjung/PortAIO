@@ -38,7 +38,7 @@ namespace ExorSDK.Champions.Darius
             {
                 return;
             }
-            if (Vars.getCheckBoxItem(Vars.RMenu, "killsteal") && Vars.R.IsReady() && target.IsValidTarget(Vars.R.Range))
+            if (Vars.getCheckBoxItem(Vars.RMenu, "killsteal") && Vars.R.IsReady() && target.LSIsValidTarget(Vars.R.Range))
             {
                 foreach (var hero in
                     ObjectManager.Get<AIHeroClient>().Where(hero => hero.LSIsValidTarget(Vars.R.Range) && !Invulnerable.Check(hero) && !hero.HasBuffOfType(BuffType.SpellShield) && !hero.HasBuff("kindredrnodeathbuff")))

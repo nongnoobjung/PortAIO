@@ -14,7 +14,7 @@ namespace Nechrito_Diana
             var t = TargetSelector.GetTarget(Spells._q.Range, DamageType.Magical);
             var test = Spells._q.GetArcSPrediction(t).CastPosition;
             var target = TargetSelector.GetTarget(900, DamageType.Magical);
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.LSIsValidTarget() && !target.IsZombie)
             {
                 if (target.Health < Dmg.ComboDmg(target) || MenuConfig.Misaya)
                 {
@@ -64,7 +64,7 @@ namespace Nechrito_Diana
         public static void HarassLogic()
         {
             var target = TargetSelector.GetTarget(800, DamageType.Magical);
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.LSIsValidTarget() && !target.IsZombie)
             {
                 if (Spells._q.IsReady() && (Program.Player.LSDistance(target.Position) <= 700f))
                 {

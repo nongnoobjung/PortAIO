@@ -132,7 +132,7 @@ namespace Feedlesticks
         {
             if (getCheckBoxItem(Menus.qMenu, "auto.q.immobile") && Spells.Q.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.Q.Range) && getCheckBoxItem(Menus.qMenu, "q.enemy." + x.NetworkId) && Helper.IsEnemyImmobile(x)))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.Q.Range) && getCheckBoxItem(Menus.qMenu, "q.enemy." + x.NetworkId) && Helper.IsEnemyImmobile(x)))
                 {
                     if (!IsWActive)
                         Spells.Q.Cast(enemy);
@@ -140,7 +140,7 @@ namespace Feedlesticks
             }
             if (getCheckBoxItem(Menus.qMenu, "auto.q.channeling") && Spells.Q.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.Q.Range) && getCheckBoxItem(Menus.qMenu, "q.enemy." + x.NetworkId) && x.IsChannelingImportantSpell()))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.Q.Range) && getCheckBoxItem(Menus.qMenu, "q.enemy." + x.NetworkId) && x.IsChannelingImportantSpell()))
                 {
                     if (!IsWActive)
                         Spells.Q.Cast(enemy);
@@ -148,7 +148,7 @@ namespace Feedlesticks
             }
             if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.immobile") && Spells.E.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.E.Range) && !IsWActive && getCheckBoxItem(Menus.eMenu, "e.enemy." + x.NetworkId) && Helper.IsEnemyImmobile(x)))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.E.Range) && !IsWActive && getCheckBoxItem(Menus.eMenu, "e.enemy." + x.NetworkId) && Helper.IsEnemyImmobile(x)))
                 {
                     if (!IsWActive)
                         Spells.E.Cast(enemy);
@@ -156,7 +156,7 @@ namespace Feedlesticks
             }
             if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.channeling") && Spells.E.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.E.Range) && !IsWActive && getCheckBoxItem(Menus.eMenu, "e.enemy." + x.NetworkId) && x.IsChannelingImportantSpell()))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.E.Range) && !IsWActive && getCheckBoxItem(Menus.eMenu, "e.enemy." + x.NetworkId) && x.IsChannelingImportantSpell()))
                 {
                     if (!IsWActive)
                         Spells.E.Cast(enemy);
@@ -175,7 +175,7 @@ namespace Feedlesticks
             {
                 foreach (
                     var enemy in
-                        HeroManager.Enemies.Where(o => o.IsValidTarget(Spells.Q.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
+                        HeroManager.Enemies.Where(o => o.LSIsValidTarget(Spells.Q.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
                 {
                     if (getCheckBoxItem(Menus.qMenu, "q.enemy." + enemy.NetworkId))
                     {
@@ -187,7 +187,7 @@ namespace Feedlesticks
             {
                 foreach (
                     var enemy in
-                        HeroManager.Enemies.Where(o => o.IsValidTarget(Spells.E.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
+                        HeroManager.Enemies.Where(o => o.LSIsValidTarget(Spells.E.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
                 {
                     if (getCheckBoxItem(Menus.eMenu, "e.enemy." + enemy.NetworkId))
                     {
@@ -237,7 +237,7 @@ namespace Feedlesticks
             {
                 foreach (
                     var enemy in
-                        HeroManager.Enemies.Where(o => o.IsValidTarget(Spells.Q.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
+                        HeroManager.Enemies.Where(o => o.LSIsValidTarget(Spells.Q.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
                 {
                     if (getCheckBoxItem(Menus.qMenu, "q.enemy." + enemy.NetworkId))
                     {
@@ -247,7 +247,7 @@ namespace Feedlesticks
             }
             if (Spells.W.IsReady() && getCheckBoxItem(Menus.comboMenu, "w.combo") && !IsWActive)
             {
-                foreach (var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(Spells.W.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
+                foreach (var enemy in HeroManager.Enemies.Where(o => o.LSIsValidTarget(Spells.W.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
                 {
                     if (getCheckBoxItem(Menus.wMenu, "w.enemy." + enemy.NetworkId) && !IsWActive)
                     {
@@ -257,7 +257,7 @@ namespace Feedlesticks
             }
             if (Spells.E.IsReady() && getCheckBoxItem(Menus.comboMenu, "e.combo") && !IsWActive)
             {
-                foreach (var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(Spells.E.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
+                foreach (var enemy in HeroManager.Enemies.Where(o => o.LSIsValidTarget(Spells.E.Range) && !o.IsDead && !o.IsZombie && !IsWActive))
                 {
                     if (getCheckBoxItem(Menus.eMenu, "e.enemy." + enemy.NetworkId) && enemy.CountEnemiesInRange(Spells.E.Range) >= getSliderItem(Menus.eMenu, "e.enemy.count") && !IsWActive)
                     {

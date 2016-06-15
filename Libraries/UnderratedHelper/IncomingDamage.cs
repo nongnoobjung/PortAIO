@@ -117,7 +117,7 @@ namespace UnderratedAIO.Helpers
                             SkillshotDetector.ActiveSkillshots[i].Caster.Team != Hero.Team &&
                             !SkillshotDetector.ActiveSkillshots[i].IsSafePath(
                                 0, -1, SkillshotDetector.ActiveSkillshots[i].SkillshotData.Delay, Hero).IsSafe &&
-                            Hero.IsValidTarget(1500, false, Hero.Position) &&
+                            Hero.LSIsValidTarget(1500, false, Hero.Position) &&
                             SkillshotDetector.ActiveSkillshots[i].IsAboutToHit(
                                 510, Hero, SkillshotDetector.ActiveSkillshots[i].Caster))
                         {

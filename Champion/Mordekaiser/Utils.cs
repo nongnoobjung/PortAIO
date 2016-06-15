@@ -221,7 +221,7 @@ namespace Mordekaiser
 
                     if (oMob != null)
                     {
-                        if (oMob.IsValidTarget(range))
+                        if (oMob.LSIsValidTarget(range))
                         {
                             oneMinion = (Obj_AI_Minion) oMob;
                         }
@@ -272,7 +272,7 @@ namespace Mordekaiser
 
                     if (oMob != null)
                     {
-                        if (oMob.IsValidTarget(spellRange))
+                        if (oMob.LSIsValidTarget(spellRange))
                         {
                             return oMob;
                         }

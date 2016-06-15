@@ -26,7 +26,7 @@ namespace TheBrand
                 base.Update();
 
             var target = TargetSelector.GetTarget(600, DamageType.True);
-            if (target.IsValidTarget())
+            if (target.LSIsValidTarget())
             {
                 var passiveBuff = target.GetBuff("brandablaze");
                 if (passiveBuff != null)

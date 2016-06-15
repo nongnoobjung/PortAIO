@@ -46,7 +46,7 @@ namespace Kindred___YinYang
                 foreach (
                     var enemy in
                         ObjectManager.Get<AIHeroClient>()
-                            .Where(x => x.IsValidTarget(1000) && x.ChampionName == "Rengar"))
+                            .Where(x => x.LSIsValidTarget(1000) && x.ChampionName == "Rengar"))
                 {
                     Program.R.Cast();
                 }
@@ -62,7 +62,7 @@ namespace Kindred___YinYang
                     var enemy in
                         HeroManager.Enemies.Where(
                             x =>
-                                x.ChampionName == "Katarina" && x.IsValidTarget(Program.R.Range) &&
+                                x.ChampionName == "Katarina" && x.LSIsValidTarget(Program.R.Range) &&
                                 x.HasBuff("katarinarsound") && !Kindred.IsDead && !x.IsDead && !x.IsZombie))
                 {
                     Program.R.Cast();
@@ -75,7 +75,7 @@ namespace Kindred___YinYang
                     var enemy in
                         HeroManager.Enemies.Where(
                             x =>
-                                x.ChampionName == "Lucian" && x.IsValidTarget(Program.R.Range) && x.HasBuff("lucianr") &&
+                                x.ChampionName == "Lucian" && x.LSIsValidTarget(Program.R.Range) && x.HasBuff("lucianr") &&
                                 !Kindred.IsDead && !x.IsDead && !x.IsZombie))
                 {
                     Program.R.Cast();
@@ -88,7 +88,7 @@ namespace Kindred___YinYang
                     var enemy in
                         HeroManager.Enemies.Where(
                             x =>
-                                x.ChampionName == "MissFortune" && x.IsValidTarget(Program.R.Range) &&
+                                x.ChampionName == "MissFortune" && x.LSIsValidTarget(Program.R.Range) &&
                                 x.HasBuff("missfortunebulletsound") && !Kindred.IsDead && !x.IsDead && !x.IsZombie))
                 {
                     Program.R.Cast();
@@ -121,7 +121,7 @@ namespace Kindred___YinYang
                 return;
             }
             if (sender is AIHeroClient && Program.R.IsReady() && sender.IsEnemy && !spell.SData.IsAutoAttack()
-                && !sender.IsDead && !sender.IsZombie && sender.IsValidTarget(1000))
+                && !sender.IsDead && !sender.IsZombie && sender.LSIsValidTarget(1000))
             {
                 foreach (var protector in SpellDatabase.Spells.Where(x => x.spellName == spell.SData.Name
                                                                           &&

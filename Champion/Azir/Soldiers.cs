@@ -68,8 +68,8 @@ namespace HeavenStrikeAzir
         private static void Game_OnUpdate(EventArgs args)
         {
             var soldierandtargetminion = new List<SoldierAndTargetMinion>();
-            var minions = GameObjects.EnemyMinions.Where(x => x.IsValidTarget()).ToList();
-            minions.AddRange(GameObjects.Jungle.Where(x=> x.IsValidTarget()));
+            var minions = GameObjects.EnemyMinions.Where(x => x.LSIsValidTarget()).ToList();
+            minions.AddRange(GameObjects.Jungle.Where(x=> x.LSIsValidTarget()));
             var minionspredictedposition = new List<MinionPredictedPosition>();
             foreach (var x in minions)
             {
@@ -78,14 +78,14 @@ namespace HeavenStrikeAzir
                         (x, LeagueSharp.Common.Prediction.GetPrediction(x, Player.AttackCastDelay + Game.Ping / 1000).UnitPosition));
             }
             var championpredictedposition = new List<ChampionPredictedPosition>();
-            foreach (var x in HeroManager.Enemies.Where(x => x.IsValidTarget()))
+            foreach (var x in HeroManager.Enemies.Where(x => x.LSIsValidTarget()))
             {
                 championpredictedposition
                     .Add(new ChampionPredictedPosition
                         (x, LeagueSharp.Common.Prediction.GetPrediction(x, Player.AttackCastDelay + Game.Ping / 1000).UnitPosition));
             }
             enemies = new List<AIHeroClient>();
-            foreach (var hero in HeroManager.Enemies.Where(x => x.IsValidTarget() && !x.IsZombie))
+            foreach (var hero in HeroManager.Enemies.Where(x => x.LSIsValidTarget() && !x.IsZombie))
             {
                 if (soldier.Any(x => x.Position.LSDistance(hero.Position) <= 300 + hero.BoundingRadius && Player.LSDistance(x.Position) <= 900))
                     enemies.Add(hero);
@@ -103,7 +103,7 @@ namespace HeavenStrikeAzir
                 }
             }
             autoattackminions = new List<Obj_AI_Minion>();
-            foreach (var minion in minions.Where(x => x.IsValidTarget(Orbwalking.GetRealAutoAttackRange(x))))
+            foreach (var minion in minions.Where(x => x.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(x))))
             {
                 if (!soldierattackminions.Any(x => x.NetworkId == minion.NetworkId))
                     autoattackminions.Add(minion);

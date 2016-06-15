@@ -29,7 +29,7 @@ namespace OlafxQx.Modes
                 if (Modes.ModeSettings.MenuLocal["Settings.E.Auto"].Cast<ComboBox>().CurrentValue == 1)
                 {
                     var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                     {
                         Champion.PlayerSpells.CastE(t);
                     }

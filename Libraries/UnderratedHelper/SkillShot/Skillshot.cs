@@ -480,7 +480,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                         .Where(
                             o =>
                                 o.Health > 5 && o.NetworkId != unit.NetworkId && !o.IsDead && o.Team == unit.Team &&
-                                o.IsValidTarget(caster.LSDistance(unit), false, missilePos.To3D2()) &&
+                                o.LSIsValidTarget(caster.LSDistance(unit), false, missilePos.To3D2()) &&
                                 CheckUnitCollision(o) != CollisionObjectTypes.Null &&
                                 SkillshotData.CollisionObjects.Any(c => c == CheckUnitCollision(o))))
                 {

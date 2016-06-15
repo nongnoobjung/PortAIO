@@ -53,7 +53,7 @@ namespace iDZEzreal.Modules
             if (Variables.Spells[SpellSlot.Q].IsReady() && getCheckBoxItem(Variables.mixedMenu, "ezreal.mixed.q"))
             {
                 var target = TargetSelector.GetTarget(Variables.Spells[SpellSlot.Q].Range, DamageType.Physical);
-                if (target.IsValidTarget(Variables.Spells[SpellSlot.Q].Range))
+                if (target.LSIsValidTarget(Variables.Spells[SpellSlot.Q].Range))
                 {
                     var prediction = Variables.Spells[SpellSlot.Q].GetSPrediction(target);
                     var castPosition = prediction.CastPosition.Extend((Vector2)ObjectManager.Player.Position, -140);
@@ -67,7 +67,7 @@ namespace iDZEzreal.Modules
             if (Variables.Spells[SpellSlot.W].IsReady() && getCheckBoxItem(Variables.mixedMenu, "ezreal.mixed.w") && ObjectManager.Player.ManaPercent > 35)
             {
                 var wTarget = TargetSelector.GetTarget(Variables.Spells[SpellSlot.W].Range, DamageType.Physical);
-                if (wTarget.IsValidTarget(Variables.Spells[SpellSlot.W].Range)
+                if (wTarget.LSIsValidTarget(Variables.Spells[SpellSlot.W].Range)
                     && Variables.Spells[SpellSlot.W].GetSPrediction(wTarget).HitChance >= MenuGenerator.GetHitchance())
                 {
                     Variables.Spells[SpellSlot.W].Cast(Variables.Spells[SpellSlot.W].GetSPrediction(wTarget).CastPosition);

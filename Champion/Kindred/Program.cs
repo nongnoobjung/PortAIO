@@ -125,21 +125,21 @@ namespace Kindred___YinYang
             var useE = getCheckBoxItem(Language.comboMenu, "e.combo");
             if (useQ && Q.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(ObjectManager.Player.AttackRange)))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(ObjectManager.Player.AttackRange)))
                 {
                     Helper.AdvancedQ(Q, enemy, 3);
                 }
             }
             if (useW && W.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(W.Range) && !o.IsDead && !o.IsZombie))
+                foreach (var enemy in HeroManager.Enemies.Where(o => o.LSIsValidTarget(W.Range) && !o.IsDead && !o.IsZombie))
                 {
                     W.Cast();
                 }
             }
             if (useE && E.IsReady())
             {
-                foreach (var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
+                foreach (var enemy in HeroManager.Enemies.Where(o => o.LSIsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
                 {
                     if (getCheckBoxItem(Language.eMenu, "enemy." + enemy.CharData.BaseSkinName))
                     {
@@ -163,7 +163,7 @@ namespace Kindred___YinYang
                     foreach (
                         var enemy in
                             HeroManager.Enemies.Where(
-                                o => o.IsValidTarget(ObjectManager.Player.AttackRange) && !o.IsDead && !o.IsZombie))
+                                o => o.LSIsValidTarget(ObjectManager.Player.AttackRange) && !o.IsDead && !o.IsZombie))
                     {
                         Q.Cast(Game.CursorPos);
                     }
@@ -172,7 +172,7 @@ namespace Kindred___YinYang
                 {
                     foreach (
                         var enemy in
-                            HeroManager.Enemies.Where(o => o.IsValidTarget(W.Range) && !o.IsDead && !o.IsZombie))
+                            HeroManager.Enemies.Where(o => o.LSIsValidTarget(W.Range) && !o.IsDead && !o.IsZombie))
                     {
                         W.Cast();
                     }
@@ -181,7 +181,7 @@ namespace Kindred___YinYang
                 {
                     foreach (
                         var enemy in
-                            HeroManager.Enemies.Where(o => o.IsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
+                            HeroManager.Enemies.Where(o => o.LSIsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
                     {
                         if (getCheckBoxItem(Language.eMenu, "enemy." + enemy.CharData.BaseSkinName))
                         {
@@ -209,7 +209,7 @@ namespace Kindred___YinYang
 
         private static void KillSteal(int aacount)
         {
-            foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Q.Range)))
+            foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Q.Range)))
             {
                 if (enemy.Health <
                     ObjectManager.Player.CalcDamage(enemy, DamageType.Physical, Kindred.TotalAttackDamage)*aacount)
@@ -287,7 +287,7 @@ namespace Kindred___YinYang
                 foreach (
                     var enemy in
                         HeroManager.Enemies.Where(
-                            x => x.IsValidTarget(1500) && x.IsValid && x.IsVisible && !x.IsDead && !x.IsZombie))
+                            x => x.LSIsValidTarget(1500) && x.IsValid && x.IsVisible && !x.IsDead && !x.IsZombie))
                 {
                     Drawing.DrawText(enemy.HPBarPosition.X, enemy.HPBarPosition.Y, Color.Gold,
                         string.Format("{0} Basic Attack = Kill", Helper.AaIndicator(enemy)));

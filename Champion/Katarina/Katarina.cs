@@ -283,7 +283,7 @@ namespace Staberina
                 return;
             }
 
-            if (getCheckBoxItem(wMenu, "WAuto") && W.IsReady() && Enemies.Any(h => h.IsValidTarget(W.Range)) && W.Cast())
+            if (getCheckBoxItem(wMenu, "WAuto") && W.IsReady() && Enemies.Any(h => h.LSIsValidTarget(W.Range)) && W.Cast())
             {
                 Console.WriteLine("AUTO W");
             }
@@ -294,10 +294,10 @@ namespace Staberina
             //var mode = Orbwalker.ActiveModesFlags;
             var comboMode = getBoxItem(miscMenu, "ComboMode");
             var d = comboMode == 0 ? E.Range : Q.Range;
-            var forceTarget = forcedTarget.IsValidTarget();
+            var forceTarget = forcedTarget.LSIsValidTarget();
             var target = forceTarget ? forcedTarget : TargetSelector.GetTarget(d, DamageType.Magical);
 
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return false;
             }
@@ -345,7 +345,7 @@ namespace Staberina
 
             if (Utility.IsRReady() && (forceTarget || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)))
             {
-                if (!forceTarget && getCheckBoxItem(rMenu, "RInCombo") && target.IsValidTarget(R.Range) && R.Cast())
+                if (!forceTarget && getCheckBoxItem(rMenu, "RInCombo") && target.LSIsValidTarget(R.Range) && R.Cast())
                 {
                     return true;
                 }
@@ -356,7 +356,7 @@ namespace Staberina
                 }
 
                 var enemy =
-                    Enemies.FirstOrDefault(h => h.IsValidTarget(R.Range) && h.GetCalculatedRDamage(UltTicks) > h.Health);
+                    Enemies.FirstOrDefault(h => h.LSIsValidTarget(R.Range) && h.GetCalculatedRDamage(UltTicks) > h.Health);
                 if (enemy != null && R.Cast())
                 {
                     return true;
@@ -392,7 +392,7 @@ namespace Staberina
                 return false;
             }
 
-            if (KSTarget != null && !KSTarget.IsValidTarget(E.Range))
+            if (KSTarget != null && !KSTarget.LSIsValidTarget(E.Range))
             {
                 KSTarget = null;
             }
@@ -401,7 +401,7 @@ namespace Staberina
                 var enemy in
                     Enemies.Where(
                         h =>
-                            h.IsValidTarget(E.Range + Q.Range) && !h.IsZombie &&
+                            h.LSIsValidTarget(E.Range + Q.Range) && !h.IsZombie &&
                             (KSTarget == null || KSTarget.NetworkId == h.NetworkId)).OrderBy(h => h.Health))
             {
                 if (E.IsInRange(enemy))
@@ -477,7 +477,7 @@ namespace Staberina
 
                 var range = Player.Spellbook.GetSpell(wardSlot).SData.CastRange;
 
-                if (!enemy.IsValidTarget(Q.Range + range))
+                if (!enemy.LSIsValidTarget(Q.Range + range))
                 {
                     continue;
                 }
@@ -608,7 +608,7 @@ namespace Staberina
 
             if (getCheckBoxItem(farmMenu, "WFarm") && W.IsReady())
             {
-                var wKillableMinions = minions.Count(m => m.IsValidTarget(W.Range) && W.IsKillable(m));
+                var wKillableMinions = minions.Count(m => m.LSIsValidTarget(W.Range) && W.IsKillable(m));
                 if (wKillableMinions < getSliderItem(farmMenu, "WMinionsHit"))
                 {
                     if (getCheckBoxItem(farmMenu, "EFarm") && E.IsReady()) // e->w
@@ -639,8 +639,8 @@ namespace Staberina
                 return;
             }
 
-            var qKillableMinion = minions.FirstOrDefault(m => m.IsValidTarget(Q.Range) && Q.IsKillable(m));
-            var qMinion = minions.Where(m => m.IsValidTarget(Q.Range)).MinOrDefault(m => m.Health);
+            var qKillableMinion = minions.FirstOrDefault(m => m.LSIsValidTarget(Q.Range) && Q.IsKillable(m));
+            var qMinion = minions.Where(m => m.LSIsValidTarget(Q.Range)).MinOrDefault(m => m.Health);
 
             if (qKillableMinion == null)
             {

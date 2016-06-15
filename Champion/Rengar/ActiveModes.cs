@@ -121,7 +121,7 @@ namespace ElRengarRevamped
                 #region Summoner spells
 
 
-                if (Youmuu.IsReady() && Youmuu.IsOwned() && target.IsValidTarget(spells[Spells.Q].Range))
+                if (Youmuu.IsReady() && Youmuu.IsOwned() && target.LSIsValidTarget(spells[Spells.Q].Range))
                 {
                     Youmuu.Cast();
                 }

@@ -312,7 +312,7 @@ namespace D_Rengar
                         _tiamat.Cast();
                     }
 
-                    if (iHydra && _hydra.IsReady() && th.IsValidTarget(_hydra.Range))
+                    if (iHydra && _hydra.IsReady() && th.LSIsValidTarget(_hydra.Range))
                     {
                         _hydra.Cast();
                     }
@@ -744,7 +744,7 @@ namespace D_Rengar
                     _tiamat.Cast();
                 }
 
-                if (iHydra && _hydra.IsReady() && th.IsValidTarget(_hydra.Range))
+                if (iHydra && _hydra.IsReady() && th.LSIsValidTarget(_hydra.Range))
                 {
                     _hydra.Cast();
                 }
@@ -1009,7 +1009,7 @@ namespace D_Rengar
                 }
 
                 if (_e.IsReady() && getBoxItem(clearMenu, "LanePrio") == 2 && useEl
-                    && minions.IsValidTarget(_e.Range))
+                    && minions.LSIsValidTarget(_e.Range))
                 {
                     _e.Cast(minions);
                 }
@@ -1062,12 +1062,12 @@ namespace D_Rengar
                     _tiamat.Cast();
                 }
 
-                if (useItemsJ && _hydra.IsReady() && mob.IsValidTarget(_hydra.Range))
+                if (useItemsJ && _hydra.IsReady() && mob.LSIsValidTarget(_hydra.Range))
                 {
                     _hydra.Cast();
                 }
 
-                if (_e.IsReady() && useE && mob.IsValidTarget(_e.Range))
+                if (_e.IsReady() && useE && mob.LSIsValidTarget(_e.Range))
                 {
                     _e.Cast(mob);
                 }
@@ -1206,12 +1206,12 @@ namespace D_Rengar
                     _blade.Cast(hero);
                 }
 
-                /* if (iTiamat && _tiamat.IsReady() && hero.IsValidTarget(_tiamat.Range))
+                /* if (iTiamat && _tiamat.IsReady() && hero.LSIsValidTarget(_tiamat.Range))
                 {
                     _tiamat.Cast();
 
                 }
-                if (iHydra && _hydra.IsReady() && hero.IsValidTarget(_hydra.Range))
+                if (iHydra && _hydra.IsReady() && hero.LSIsValidTarget(_hydra.Range))
                 {
                     _hydra.Cast();
 

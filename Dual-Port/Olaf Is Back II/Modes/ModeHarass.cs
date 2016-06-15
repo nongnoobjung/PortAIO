@@ -71,7 +71,7 @@ namespace OlafxQx.Modes
             }
 
             var t = TargetSelector.GetTarget(useQ == 2 ? Q.Range : MenuLocal["Harass.Q.SmallRange"].Cast<Slider>().CurrentValue, DamageType.Physical);
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
             {
                 return;
             }

@@ -13,7 +13,7 @@ namespace NechritoRiven
         public static void BurstLogic()
         {
             var target = TargetSelector.SelectedTarget;
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.LSIsValidTarget() && !target.IsZombie)
             {
                 // Flash
                 if (target.Health < Dmg.Totaldame(target) || MenuConfig.AlwaysF)

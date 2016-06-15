@@ -65,7 +65,7 @@ namespace Nechrito_Nidalee
         private static readonly HpBarIndicator Indicator = new HpBarIndicator();
         private static void Drawing_OnEndScene(EventArgs args)
         {
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.IsValidTarget() && !ene.IsZombie))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.LSIsValidTarget() && !ene.IsZombie))
             {
                 if (MenuConfig.dind)
                 {

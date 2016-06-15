@@ -140,7 +140,7 @@ namespace ElTristana
                         return;
                     }
 
-                    var targeta = HeroManager.Enemies.Find(x => x.HasBuff("TristanaECharge") && x.IsValidTarget(spells[Spells.E].Range));
+                    var targeta = HeroManager.Enemies.Find(x => x.HasBuff("TristanaECharge") && x.LSIsValidTarget(spells[Spells.E].Range));
                     if (targeta == null)
                     {
                         Orbwalker.ForcedTarget = null;
@@ -182,7 +182,7 @@ namespace ElTristana
         {
             if (getCheckBoxItem(miscMenu, "ElTristana.Antigapcloser"))
             {
-                if (gapcloser.Sender.IsValidTarget(250f) && spells[Spells.R].IsReady())
+                if (gapcloser.Sender.LSIsValidTarget(250f) && spells[Spells.R].IsReady())
                 {
                     spells[Spells.R].Cast(gapcloser.Sender);
                 }
@@ -217,17 +217,17 @@ namespace ElTristana
 
         private static void OnCombo()
         {
-            var eTarget = HeroManager.Enemies.Find(x => x.HasBuff("TristanaECharge") && x.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)));
+            var eTarget = HeroManager.Enemies.Find(x => x.HasBuff("TristanaECharge") && x.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)));
             var target = eTarget ?? TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
 
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return;
             }
 
             if (getCheckBoxItem(comboMenu, "ElTristana.Combo.Focus.E"))
             {
-                var passiveTarget = HeroManager.Enemies.Find(x => x.HasBuff("TristanaECharge") && x.IsValidTarget(spells[Spells.E].Range));
+                var passiveTarget = HeroManager.Enemies.Find(x => x.HasBuff("TristanaECharge") && x.LSIsValidTarget(spells[Spells.E].Range));
                 Orbwalker.ForcedTarget = passiveTarget ?? null;
             }
 
@@ -271,7 +271,7 @@ namespace ElTristana
                 }
             }
 
-            if (spells[Spells.Q].IsReady() && getCheckBoxItem(comboMenu, "ElTristana.Combo.Q") && target.IsValidTarget(spells[Spells.E].Range))
+            if (spells[Spells.Q].IsReady() && getCheckBoxItem(comboMenu, "ElTristana.Combo.Q") && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 if (getCheckBoxItem(comboMenu, "ElTristana.Combo.OnlyQ"))
                 {
@@ -296,8 +296,8 @@ namespace ElTristana
         {
             var target =
                 HeroManager.Enemies.Find(
-                    x => x.HasBuff("TristanaECharge") && x.IsValidTarget(2000));
-            if (!target.IsValidTarget())
+                    x => x.HasBuff("TristanaECharge") && x.LSIsValidTarget(2000));
+            if (!target.LSIsValidTarget())
             {
                 return;
             }
@@ -334,7 +334,7 @@ namespace ElTristana
                                 {
                                     if (getCheckBoxItem(suicideMenu, "ElTristana.W.Jump.kill"))
                                     {
-                                        if (target.IsValidTarget(spells[Spells.W].Range) &&
+                                        if (target.LSIsValidTarget(spells[Spells.W].Range) &&
                                             Player.CountEnemiesInRange(getSliderItem(suicideMenu,
                                                 "ElTristana.W.Enemies.Range")) <=
                                             getSliderItem(suicideMenu, "ElTristana.W.Enemies"))
@@ -360,7 +360,7 @@ namespace ElTristana
                                     }
                                     else
                                     {
-                                        if (target.IsValidTarget(spells[Spells.W].Range) &&
+                                        if (target.LSIsValidTarget(spells[Spells.W].Range) &&
                                             Player.CountEnemiesInRange(getSliderItem(suicideMenu,
                                                 "ElTristana.W.Enemies.Range")) <=
                                             getSliderItem(suicideMenu, "ElTristana.W.Enemies"))
@@ -416,7 +416,7 @@ namespace ElTristana
         private static void OnHarass()
         {
             var target = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
             {
                 return;
             }
@@ -439,7 +439,7 @@ namespace ElTristana
             }
 
             if (spells[Spells.Q].IsReady() && getCheckBoxItem(harassMenu, "ElTristana.Harass.Q")
-                && target.IsValidTarget(spells[Spells.E].Range))
+                && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 if (IsECharged(target) && getCheckBoxItem(harassMenu, "ElTristana.Harass.QE"))
                 {
@@ -461,7 +461,7 @@ namespace ElTristana
                     MinionTeam.Neutral,
                     MinionOrderTypes.MaxHealth).FirstOrDefault();
 
-            if (!minions.IsValidTarget() || minions == null)
+            if (!minions.LSIsValidTarget() || minions == null)
             {
                 return;
             }
@@ -484,7 +484,7 @@ namespace ElTristana
             {
                 foreach (var tower in ObjectManager.Get<Obj_AI_Turret>())
                 {
-                    if (!tower.IsDead && tower.Health > 100 && tower.IsEnemy && tower.IsValidTarget() && Player.ServerPosition.LSDistance(tower.ServerPosition) < Orbwalking.GetRealAutoAttackRange(Player))
+                    if (!tower.IsDead && tower.Health > 100 && tower.IsEnemy && tower.LSIsValidTarget() && Player.ServerPosition.LSDistance(tower.ServerPosition) < Orbwalking.GetRealAutoAttackRange(Player))
                     {
                         spells[Spells.E].Cast(tower);
                     }
@@ -538,7 +538,7 @@ namespace ElTristana
 
         public static bool isKillableAndValidTarget(this Obj_AI_Base Target, double CalculatedDamage, DamageType damageType, float distance = float.MaxValue)
         {
-            if (Target == null || !Target.IsValidTarget(distance) || Target.IsDead || Target.CharData.BaseSkinName == "GangPlankBarrel")
+            if (Target == null || !Target.LSIsValidTarget(distance) || Target.IsDead || Target.CharData.BaseSkinName == "GangPlankBarrel")
             {
                 return false;
             }
@@ -622,7 +622,7 @@ namespace ElTristana
                 if (getKeyBindItem(comboMenu, "ElTristana.Combo.E.KeyBind") && spells[Spells.E].IsReady())
                 {
                     var target = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                    if (target != null && target.IsValidTarget())
+                    if (target != null && target.LSIsValidTarget())
                     {
                         if (target.ECanKill())
                             spells[Spells.E].CastOnUnit(target);
@@ -694,9 +694,9 @@ namespace ElTristana
             try
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[Spells.R].Range) && !x.IsDead && !x.IsZombie).OrderBy(x => x.Health))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.R].Range) && !x.IsDead && !x.IsZombie).OrderBy(x => x.Health))
                 {
-                    if (enemy.IsValidTarget(spells[Spells.R].Range) && spells[Spells.R].GetDamage(enemy) > enemy.Health)
+                    if (enemy.LSIsValidTarget(spells[Spells.R].Range) && spells[Spells.R].GetDamage(enemy) > enemy.Health)
                     {
                         if (!getCheckBoxItem(killstealMenu, "ElTristana.Killsteal.R"))
                         {

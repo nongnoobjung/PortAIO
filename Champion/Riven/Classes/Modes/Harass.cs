@@ -16,7 +16,7 @@ namespace NechritoRiven
             var target = TargetSelector.GetTarget(400, DamageType.Physical);
             if (Spells._q.IsReady() && Spells._w.IsReady() && Spells._e.IsReady() && Program._qstack == 1)
             {
-                if (target.IsValidTarget() && !target.IsZombie)
+                if (target.LSIsValidTarget() && !target.IsZombie)
                 {
                     Logic.ForceCastQ(target);
                     LeagueSharp.Common.Utility.DelayAction.Add(1, Logic.ForceW);

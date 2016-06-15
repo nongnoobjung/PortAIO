@@ -292,7 +292,7 @@ namespace Challenger_Series.Plugins
             var goodTarget =
                 ValidTargets.FirstOrDefault(
                     e =>
-                    e.IsValidTarget(820) && e.HasBuffOfType(BuffType.Knockup) || e.HasBuffOfType(BuffType.Snare)
+                    e.LSIsValidTarget(820) && e.HasBuffOfType(BuffType.Knockup) || e.HasBuffOfType(BuffType.Snare)
                     || e.HasBuffOfType(BuffType.Stun) || e.HasBuffOfType(BuffType.Suppression) || e.IsCharmed
                     || e.IsCastingInterruptableSpell() || e.HasBuff("ChronoRevive") || e.HasBuff("ChronoShift"));
             if (goodTarget != null)

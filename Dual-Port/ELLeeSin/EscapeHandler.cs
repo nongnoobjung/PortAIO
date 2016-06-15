@@ -131,7 +131,7 @@ namespace ElLeeSin
         {
             Program.Orbwalk(Game.CursorPos);
 
-            if (BuffedEnemy.IsValidTarget() && BuffedEnemy.IsValid<AIHeroClient>())
+            if (BuffedEnemy.LSIsValidTarget() && BuffedEnemy.IsValid<AIHeroClient>())
             {
                 InitQ = false;
                 return;

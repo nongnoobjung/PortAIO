@@ -146,7 +146,7 @@ namespace iDZed.Utils
             if (getCheckBoxItem("AssassinSetClick"))
             {
                 foreach (var objAiHero in from hero in ObjectManager.Get<AIHeroClient>()
-                    where hero.IsValidTarget()
+                    where hero.LSIsValidTarget()
                     select hero
                     into h
                     orderby h.LSDistance(Game.CursorPos) descending

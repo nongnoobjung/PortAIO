@@ -88,7 +88,7 @@ namespace PrideStalker_Rengar
         }
         private static void Drawing_OnEndScene(EventArgs args)
         {
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.IsValidTarget() && !ene.IsZombie))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.LSIsValidTarget() && !ene.IsZombie))
             {
                 if (MenuConfig.dind)
                 {

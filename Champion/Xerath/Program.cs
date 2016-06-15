@@ -264,7 +264,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     R.Cast();
                 }
-                if (!t.IsValidTarget(W.Range) && getCheckBoxItem(rMenu, "autoR") && !IsCastingR && t.CountAlliesInRange(500) == 0 && Player.CountEnemiesInRange(1100) == 0)
+                if (!t.LSIsValidTarget(W.Range) && getCheckBoxItem(rMenu, "autoR") && !IsCastingR && t.CountAlliesInRange(500) == 0 && Player.CountEnemiesInRange(1100) == 0)
                 {
                     if (OktwCommon.GetKsDamage(t, R) + (R.GetDamage(t) * R.Level) > t.Health)
                     {
@@ -287,7 +287,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicW()
         {
             var t = TargetSelector.GetTarget(W.Range, DamageType.Physical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 var qDmg = Q.GetDamage(t);
                 var wDmg = OktwCommon.GetKsDamage(t, W);
@@ -309,7 +309,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     foreach (
                         var enemy in
                             Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                                enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
                         W.Cast(enemy, true);
                 }
             }
@@ -329,7 +329,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
             var t2 = TargetSelector.GetTarget(1500, DamageType.Magical);
 
-            if (t.IsValidTarget() && t2.IsValidTarget() && t == t2 &&
+            if (t.LSIsValidTarget() && t2.LSIsValidTarget() && t == t2 &&
                 !(getCheckBoxItem(farmMenu, "separate") && Program.LaneClear))
             {
                 if (Q.IsCharging)
@@ -340,7 +340,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     else if (OktwCommon.GetPassiveTime(Player, "XerathArcanopulseChargeUp") < 2 || (Player.CountEnemiesInRange(1000) > 0))
                         Q.CastIfHitchanceEquals(t, HitChance.VeryHigh);
                 }
-                else if (t.IsValidTarget(Q.Range - 300))
+                else if (t.LSIsValidTarget(Q.Range - 300))
                 {
                     if (t.Health < OktwCommon.GetKsDamage(t, Q))
                         Q.StartCharging();
@@ -348,7 +348,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     {
                         Q.StartCharging();
                     }
-                    else if (t.IsValidTarget(1200) && Program.Farm && Player.Mana > RMANA + EMANA + QMANA + QMANA &&
+                    else if (t.LSIsValidTarget(1200) && Program.Farm && Player.Mana > RMANA + EMANA + QMANA + QMANA &&
                              getCheckBoxItem(harassMenu, "harras" + t.NetworkId) && !Player.UnderTurret(true) &&
                              OktwCommon.CanHarras())
                     {
@@ -359,7 +359,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         foreach (
                             var enemy in
                                 Program.Enemies.Where(
-                                    enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                                    enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                             Q.StartCharging();
                     }
                 }
@@ -383,16 +383,16 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 var enemy in
                     Program.Enemies.Where(
                         enemy =>
-                            enemy.IsValidTarget(E.Range) &&
+                            enemy.LSIsValidTarget(E.Range) &&
                             E.GetDamage(enemy) + OktwCommon.GetKsDamage(enemy, Q) + W.GetDamage(enemy) +
                             OktwCommon.GetEchoLudenDamage(enemy) > enemy.Health))
             {
                 Program.CastSpell(E, enemy);
             }
             var t = Orbwalker.LastTarget as AIHeroClient;
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
                 t = TargetSelector.GetTarget(E.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (Program.Combo && Player.Mana > RMANA + EMANA)
                     Program.CastSpell(E, t);
@@ -401,7 +401,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     Program.CastSpell(E, t);
                 foreach (
                     var enemy in
-                        Program.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                        Program.Enemies.Where(enemy => enemy.LSIsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
                     E.Cast(enemy);
             }
         }
@@ -525,7 +525,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
 
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     var rDamage = R.GetDamage(t);
                     if (rDamage * 3 > t.Health)

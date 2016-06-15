@@ -25,7 +25,7 @@ namespace Mordekaiser.Logics
                 return;
 
             var t = TargetSelector.GetTarget(Spells.WDamageRadius, DamageType.Magical);
-            if (!t.IsValidTarget())
+            if (!t.LSIsValidTarget())
                 return;
 
             var targetMovementSpeed = t.MoveSpeed;

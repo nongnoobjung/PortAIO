@@ -117,7 +117,7 @@ namespace Marksman.Champions
         public static int EnemyWStackCount(Obj_AI_Hero t)
         {
             return
-                t.Buffs.Where(xBuff => xBuff.Name == "varuswdebuff" && t.IsValidTarget(Q.Range))
+                t.Buffs.Where(xBuff => xBuff.Name == "varuswdebuff" && t.LSIsValidTarget(Q.Range))
                     .Select(xBuff => xBuff.Count)
                     .FirstOrDefault();
         }
@@ -163,7 +163,7 @@ namespace Marksman.Champions
                 return;
 
             var t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-            if (!t.IsValidTarget(Q.Range))
+            if (!t.LSIsValidTarget(Q.Range))
                 return;
 
             var qMinCharge = Program.Config.Item("QMinChargeC").GetValue<Slider>().Value;
@@ -194,7 +194,7 @@ namespace Marksman.Champions
 
                 var rTarget =
                     ObjectManager.Get<Obj_AI_Hero>()
-                        .Where(hero => hero.IsValidTarget(R.Range) && hero.LSDistance(searchPos) < 300f)
+                        .Where(hero => hero.LSIsValidTarget(R.Range) && hero.LSDistance(searchPos) < 300f)
                         .OrderByDescending(TargetSelector.GetPriority)
                         .First();
 
@@ -227,7 +227,7 @@ namespace Marksman.Champions
 
             t = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
 
-            if (t.IsValidTarget(Q.Range) && t.Health <= CalcQDamage + CalcWDamage)
+            if (t.LSIsValidTarget(Q.Range) && t.Health <= CalcQDamage + CalcWDamage)
                 CastSpellQ();
 
             switch (useQ.SelectedIndex)
@@ -248,14 +248,14 @@ namespace Marksman.Champions
             if (useE && E.IsReady())
             {
                 t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
-                if (t.IsValidTarget(E.Range))
+                if (t.LSIsValidTarget(E.Range))
                     E.Cast(t, false, true);
             }
 
             if (useR && R.IsReady())
             {
                 t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
-                if (t.IsValidTarget(R.Range) && t.Health <= ObjectManager.Player.GetSpellDamage(t, SpellSlot.R) - 30f)
+                if (t.LSIsValidTarget(R.Range) && t.Health <= ObjectManager.Player.GetSpellDamage(t, SpellSlot.R) - 30f)
                     R.Cast(t);
             }
         }

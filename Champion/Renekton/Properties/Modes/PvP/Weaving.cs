@@ -38,7 +38,7 @@ namespace ExorAIO.Champions.Renekton
             ///     The W Weaving Logic.
             /// </summary>
             if (Variables.W.IsReady() &&
-                ((AIHeroClient) args.Target).IsValidTarget(Variables.W.Range) &&
+                ((AIHeroClient) args.Target).LSIsValidTarget(Variables.W.Range) &&
                 Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
             {
                 Variables.W.Cast();

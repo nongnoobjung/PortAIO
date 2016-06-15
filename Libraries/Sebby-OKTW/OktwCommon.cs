@@ -116,7 +116,7 @@ namespace SebbyLib
                 var hero in
                     HeroManager.Enemies.FindAll(
                         hero =>
-                            hero.IsValidTarget(QWER.Range + QWER.Width, true, QWER.RangeCheckFrom) &&
+                            hero.LSIsValidTarget(QWER.Range + QWER.Width, true, QWER.RangeCheckFrom) &&
                             t.NetworkId != hero.NetworkId))
             {
                 var prediction = QWER.GetPrediction(hero);
@@ -138,7 +138,7 @@ namespace SebbyLib
 
         public static bool CanHitSkillShot(Obj_AI_Base target, GameObjectProcessSpellCastEventArgs args)
         {
-            if (args.Target == null && target.IsValidTarget(float.MaxValue))
+            if (args.Target == null && target.LSIsValidTarget(float.MaxValue))
             {
                 var pred = Prediction.Prediction.GetPrediction(target, 0.25f).CastPosition;
                 if (pred == null)

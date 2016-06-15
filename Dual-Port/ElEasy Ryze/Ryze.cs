@@ -270,7 +270,7 @@
         private void OnCombo()
         {
             var target = TargetSelector.GetTarget(spells[Spells.W].Range, DamageType.Magical);
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return;
             }
@@ -290,7 +290,7 @@
                 {
                     case 0:
                     case 1:
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -311,7 +311,7 @@
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -321,7 +321,7 @@
                         }
                         break;
                     case 3:
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -329,7 +329,7 @@
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -344,11 +344,11 @@
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
@@ -363,7 +363,7 @@
                         buf => buf.Name.Equals("RyzePassiveStack", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     case 0:
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -387,11 +387,11 @@
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+                        if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
@@ -402,53 +402,53 @@
                         {
                             spells[Spells.R].Cast();
                         }
-                        if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+                        if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
                         break;
 
                     case 3:
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+                        if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
                         break;
 
                     case 4:
-                        if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+                        if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
@@ -561,17 +561,17 @@
                 return;
             }
 
-            if (useQ && spells[Spells.Q].IsReady() && minions.IsValidTarget(spells[Spells.Q].Range))
+            if (useQ && spells[Spells.Q].IsReady() && minions.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 spells[Spells.Q].Cast(minions);
             }
 
-            if (useW && spells[Spells.W].IsReady() && minions.IsValidTarget(spells[Spells.W].Range))
+            if (useW && spells[Spells.W].IsReady() && minions.LSIsValidTarget(spells[Spells.W].Range))
             {
                 spells[Spells.W].Cast(minions);
             }
 
-            if (useE && spells[Spells.E].IsReady() && minions.IsValidTarget(spells[Spells.E].Range))
+            if (useE && spells[Spells.E].IsReady() && minions.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast(minions);
             }
@@ -603,7 +603,7 @@
                 {
                     case 0:
                     case 1:
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -624,7 +624,7 @@
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -634,7 +634,7 @@
                         }
                         break;
                     case 3:
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -642,7 +642,7 @@
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -657,11 +657,11 @@
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
@@ -676,7 +676,7 @@
                         buf => buf.Name.Equals("RyzePassiveStack", StringComparison.InvariantCultureIgnoreCase)))
                 {
                     case 0:
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
@@ -700,11 +700,11 @@
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+                        if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
@@ -715,53 +715,53 @@
                         {
                             spells[Spells.R].Cast();
                         }
-                        if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+                        if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
                         break;
 
                     case 3:
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+                        if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
                         break;
 
                     case 4:
-                        if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+                        if (useW && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
@@ -799,7 +799,7 @@
                         allMinions.Where(
                             minion => minion.Health <= ObjectManager.Player.GetSpellDamage(minion, SpellSlot.W)))
                     {
-                        if (minion.IsValidTarget(spells[Spells.W].Range))
+                        if (minion.LSIsValidTarget(spells[Spells.W].Range))
                         {
                             spells[Spells.W].CastOnUnit(minion);
                             return;
@@ -816,7 +816,7 @@
                         allMinions.Where(
                             minion => minion.Health <= ObjectManager.Player.GetSpellDamage(minion, SpellSlot.E)))
                     {
-                        if (minion.IsValidTarget())
+                        if (minion.LSIsValidTarget())
                         {
                             spells[Spells.E].CastOnUnit(minion);
                             return;

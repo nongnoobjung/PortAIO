@@ -132,10 +132,10 @@ namespace ElZilean
         private static void Combo()
         {
             var qTarget =
-                HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.IsValidTarget(spells[Spells.Q].Range));
+                HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(spells[Spells.Q].Range));
             var target = qTarget ?? TargetSelector.GetTarget(spells[Spells.Q].Range, DamageType.Magical);
 
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return;
             }
@@ -143,7 +143,7 @@ namespace ElZilean
             Orbwalker.ForcedTarget = target;
 
             if (getCheckBoxItem(comboMenu, "ElZilean.Combo.E") && spells[Spells.E].IsReady()
-                && target.IsValidTarget(spells[Spells.E].Range))
+                && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 if (Player.GetAlliesInRange(spells[Spells.E].Range).Any())
                 {
@@ -162,9 +162,9 @@ namespace ElZilean
             }
 
             var zileanQEnemyBomb =
-                HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.IsValidTarget(spells[Spells.Q].Range));
+                HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(spells[Spells.Q].Range));
             if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && spells[Spells.Q].IsReady()
-            && target.IsValidTarget(spells[Spells.Q].Range) && !target.CanMove && !SebbyLib.OktwCommon.CanMove(target))
+            && target.LSIsValidTarget(spells[Spells.Q].Range) && !target.CanMove && !SebbyLib.OktwCommon.CanMove(target))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.VeryHigh)
@@ -173,7 +173,7 @@ namespace ElZilean
                 }
             }
             else if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && spells[Spells.Q].IsReady()
-                && target.IsValidTarget(spells[Spells.Q].Range))
+                && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.VeryHigh)
@@ -187,7 +187,7 @@ namespace ElZilean
                 Utility.DelayAction.Add(100, () => { spells[Spells.W].Cast(); });
             }
 
-            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Ignite") && target.IsValidTarget(600f) &&
+            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Ignite") && target.LSIsValidTarget(600f) &&
                 IgniteDamage(target) >= target.Health)
             {
                 Player.Spellbook.CastSpell(ignite, target);
@@ -217,7 +217,7 @@ namespace ElZilean
                 return;
             }
             if (getCheckBoxItem(harassMenu, "ElZilean.Harass.Q") && spells[Spells.Q].IsReady()
-                && target.IsValidTarget(spells[Spells.Q].Range) && !target.CanMove && !SebbyLib.OktwCommon.CanMove(target))
+                && target.LSIsValidTarget(spells[Spells.Q].Range) && !target.CanMove && !SebbyLib.OktwCommon.CanMove(target))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.VeryHigh)
@@ -226,7 +226,7 @@ namespace ElZilean
                 }
             }
             else if (getCheckBoxItem(harassMenu, "ElZilean.Harass.Q") && spells[Spells.Q].IsReady()
-                && target.IsValidTarget(spells[Spells.Q].Range))
+                && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.VeryHigh)
@@ -236,7 +236,7 @@ namespace ElZilean
             }
 
             if (getCheckBoxItem(harassMenu, "ElZilean.Harass.E") && spells[Spells.E].IsReady()
-                && target.IsValidTarget(spells[Spells.E].Range))
+                && target.LSIsValidTarget(spells[Spells.E].Range))
             {
                 spells[Spells.E].Cast(target);
             }
@@ -265,7 +265,7 @@ namespace ElZilean
                     spells[Spells.Q].Width,
                     spells[Spells.Q].Range);
 
-            if (getCheckBoxItem(clearMenu, "ElZilean.Clear.Q") && minion.IsValidTarget() && spells[Spells.Q].IsReady())
+            if (getCheckBoxItem(clearMenu, "ElZilean.Clear.Q") && minion.LSIsValidTarget() && spells[Spells.Q].IsReady())
             {
                 spells[Spells.Q].Cast(bestFarmLocation.Position);
             }
@@ -308,7 +308,7 @@ namespace ElZilean
             if (getKeyBindItem(harassMenu, "ElZilean.AutoHarass"))
             {
                 var target = TargetSelector.GetTarget(spells[Spells.Q].Range, DamageType.Magical);
-                if (!target.IsValidTarget())
+                if (!target.LSIsValidTarget())
                 {
                     return;
                 }
@@ -319,7 +319,7 @@ namespace ElZilean
                 }
 
                 if (getCheckBoxItem(harassMenu, "ElZilean.UseQAutoHarass") && spells[Spells.Q].IsReady()
-                    && target.IsValidTarget(spells[Spells.Q].Range))
+                    && target.LSIsValidTarget(spells[Spells.Q].Range))
                 {
                     var prediction = spells[Spells.Q].GetPrediction(target);
                     if (prediction.Hitchance >= HitChance.VeryHigh)
@@ -329,7 +329,7 @@ namespace ElZilean
                 }
 
                 if (getCheckBoxItem(harassMenu, "ElZilean.UseEAutoHarass") && spells[Spells.E].IsReady()
-                    && target.IsValidTarget(spells[Spells.E].Range))
+                    && target.LSIsValidTarget(spells[Spells.E].Range))
                 {
                     spells[Spells.E].Cast(target);
                 }

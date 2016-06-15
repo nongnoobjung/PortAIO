@@ -175,7 +175,7 @@
                     {
                         return;
                     }
-                    if (Q.GetTarget(50) != null || Common.ListMinions().Count(i => i.IsValidTarget(Q.Range + 50)) > 0)
+                    if (Q.GetTarget(50) != null || Common.ListMinions().Count(i => i.LSIsValidTarget(Q.Range + 50)) > 0)
                     {
                         return;
                     }
@@ -277,7 +277,7 @@
 
         private static List<Obj_AI_Base> GetQCirTarget => EntityManager.Heroes.Enemies.Where(i => Q3.GetPredPosition(i).Distance(posDash) < Q3.Range && Q3.IsInRange(i) && i.LSIsValidTarget()).Cast<Obj_AI_Base>().ToList();
 
-        private static List<AIHeroClient> GetRTarget => EntityManager.Heroes.Enemies.Where(i => i.IsValidTarget(R.Range) && HaveR(i)).ToList();
+        private static List<AIHeroClient> GetRTarget => EntityManager.Heroes.Enemies.Where(i => i.LSIsValidTarget(R.Range) && HaveR(i)).ToList();
 
         private static bool IsDashing => (lastE > 0 && Variables.TickCount - lastE <= 100) || Player.IsDashing() || posDash.IsValid();
 
@@ -374,7 +374,7 @@
                 var targetR = GetRTarget;
                 if (targetR.Count > 0)
                 {
-                    var targets = (from enemy in targetR let nearEnemy = EntityManager.Heroes.Enemies.Where(i => i.IsValidTarget(RWidth, true, enemy.ServerPosition) && HaveR(i)).ToList() where (nearEnemy.Count > 1 && enemy.Health + enemy.AttackShield <= R.GetDamage(enemy)) || nearEnemy.Sum(i => i.HealthPercent) / nearEnemy.Count <= getSliderItem(comboMenu, "RHpU") || nearEnemy.Count >= getSliderItem(comboMenu, "RCountA") orderby nearEnemy.Count descending select enemy).ToList();
+                    var targets = (from enemy in targetR let nearEnemy = EntityManager.Heroes.Enemies.Where(i => i.LSIsValidTarget(RWidth, true, enemy.ServerPosition) && HaveR(i)).ToList() where (nearEnemy.Count > 1 && enemy.Health + enemy.AttackShield <= R.GetDamage(enemy)) || nearEnemy.Sum(i => i.HealthPercent) / nearEnemy.Count <= getSliderItem(comboMenu, "RHpU") || nearEnemy.Count >= getSliderItem(comboMenu, "RCountA") orderby nearEnemy.Count descending select enemy).ToList();
                     if (getCheckBoxItem(comboMenu, "RDelay"))
                     {
                         targets = targets.Where(CanCastDelayR).ToList();
@@ -543,7 +543,7 @@
         {
             return
                 Common.ListEnemies()
-                    .Where(i => i.IsValidTarget(E.Range) && (underTower || !GetPosAfterDash(i).IsUnderEnemyTurret()))
+                    .Where(i => i.LSIsValidTarget(E.Range) && (underTower || !GetPosAfterDash(i).IsUnderEnemyTurret()))
                     .ToList();
         }
 
@@ -637,7 +637,7 @@
 
         private static bool IsInRangeQ(Obj_AI_Minion minion)
         {
-            return minion.IsValidTarget(Math.Max(475 + minion.BoundingRadius / 3 - 5, 475));
+            return minion.LSIsValidTarget(Math.Max(475 + minion.BoundingRadius / 3 - 5, 475));
         }
 
         private static void KillSteal()
@@ -759,7 +759,7 @@
                             }
                             var nearMinion =
                                 Common.ListMinions()
-                                    .Where(i => i.IsValidTarget(Q3.Range, true, GetPosAfterDash(mob)))
+                                    .Where(i => i.LSIsValidTarget(Q3.Range, true, GetPosAfterDash(mob)))
                                     .ToList();
                             if (nearMinion.Count > 2 || nearMinion.Count(i => mob.Health <= GetQDmg(mob)) > 1)
                             {
@@ -790,7 +790,7 @@
                 }
                 else
                 {
-                    var minions = Common.ListMinions().Where(i => !haveQ3 ? IsInRangeQ(i) : i.IsValidTarget(Q2.Range - i.BoundingRadius / 2)).OrderByDescending(i => i.MaxHealth).ToList();
+                    var minions = Common.ListMinions().Where(i => !haveQ3 ? IsInRangeQ(i) : i.LSIsValidTarget(Q2.Range - i.BoundingRadius / 2)).OrderByDescending(i => i.MaxHealth).ToList();
                     if (minions.Count == 0)
                     {
                         return;
@@ -844,7 +844,7 @@
                     var minion =
                         EntityManager.MinionsAndMonsters.EnemyMinions.Where(
                             i =>
-                            (i.IsMinion() || i.IsPet(false)) && i.IsValidTarget(Q2.Range - i.BoundingRadius / 2)
+                            (i.IsMinion() || i.IsPet(false)) && i.LSIsValidTarget(Q2.Range - i.BoundingRadius / 2)
                             && Q2.CanLastHit(i, GetQDmg(i))).MaxOrDefault(i => i.MaxHealth);
                     if (minion != null && Q2.Casting(minion, false, LeagueSharp.SDK.CollisionableObjects.YasuoWall).IsCasted())
                     {
@@ -857,7 +857,7 @@
             {
                 var minion = EntityManager.MinionsAndMonsters.EnemyMinions.Where(i =>
                 (i.IsMinion() || i.IsPet(false)) &&
-                i.IsValidTarget(E.Range) &&
+                i.LSIsValidTarget(E.Range) &&
                 !HaveE(i) &&
                 E.CanLastHit(i, GetEDmg(i)) &&
                 Evade.IsSafePoint(GetPosAfterDash(i).ToVector2()).IsSafe &&

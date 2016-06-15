@@ -57,7 +57,7 @@ namespace TheBrand.Commons.ComboSystem
                 mode = Orbwalker.ActiveModes.Harass;
 
             if (OnlyUpdateIfTargetValid && (mode == Orbwalker.ActiveModes.Combo || mode == Orbwalker.ActiveModes.Harass) &&
-                !target.IsValidTarget()) return;
+                !target.LSIsValidTarget()) return;
             if (OnlyUpdateIfCastable && !CanBeCast()) return; //Todo: check if nessecary with new comboSystem
 
             MinHitChance = mode == Orbwalker.ActiveModes.Combo ? MinComboHitchance : MinHarassHitchance;
@@ -285,7 +285,7 @@ namespace TheBrand.Commons.ComboSystem
         /// <returns></returns>
         public bool CouldHit(Obj_AI_Base unit, HitChance minHitChance = HitChance.Low, bool aoe = false)
         {
-            return GetPrediction(unit, aoe).Hitchance >= minHitChance && CanBeCast() && unit.IsValidTarget();
+            return GetPrediction(unit, aoe).Hitchance >= minHitChance && CanBeCast() && unit.LSIsValidTarget();
         }
 
         #endregion

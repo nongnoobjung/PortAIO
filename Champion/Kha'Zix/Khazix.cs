@@ -157,7 +157,7 @@ namespace SephKhazix
                             W.Cast(predw.CastPosition);
                         }
                     }
-                    else if (EvolvedW && target.IsValidTarget(W.Range))
+                    else if (EvolvedW && target.LSIsValidTarget(W.Range))
                     {
                         PredictionOutput pred = WE.GetPrediction(target);
                         if ((pred.Hitchance == HitChance.Immobile && autoWI) || (pred.Hitchance == HitChance.Dashing && autoWD) || pred.Hitchance >= hitchance)
@@ -178,7 +178,7 @@ namespace SephKhazix
                 foreach (Obj_AI_Base minion in
                     allMinions.Where(
                         minion =>
-                            minion.IsValidTarget() &&
+                            minion.LSIsValidTarget() &&
                             HealthPrediction.GetHealthPrediction(
                                 minion, (int)(Khazix.LSDistance(minion) * 1000 / 1400)) <
                             0.75 * Khazix.GetSpellDamage(minion, SpellSlot.Q)))
@@ -260,7 +260,7 @@ namespace SephKhazix
 
         void Waveclear()
         {
-            List<Obj_AI_Minion> allMinions = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.IsValidTarget(W.Range) && !MinionManager.IsWard(x)).ToList();
+            List<Obj_AI_Minion> allMinions = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.LSIsValidTarget(W.Range) && !MinionManager.IsWard(x)).ToList();
 
             if (getCheckBoxItem(farm, "UseQFarm") && Q.IsReady())
             {
@@ -273,7 +273,7 @@ namespace SephKhazix
                 }
                 else if (minion == null || !minion.IsValid)
                 {
-                    foreach (var min in allMinions.Where(x => x.IsValidTarget(Q.Range)))
+                    foreach (var min in allMinions.Where(x => x.LSIsValidTarget(Q.Range)))
                     {
                         if (HealthPrediction.GetHealthPrediction(
                                 min, (int)(Khazix.LSDistance(min) * 1000 / 1400)) >
@@ -288,7 +288,7 @@ namespace SephKhazix
 
             if (getCheckBoxItem(farm, "UseWFarm") && W.IsReady() && Khazix.HealthPercent <= getSliderItem(farm, "Farm.WHealth"))
             {
-                var wmins = EvolvedW ? allMinions.Where(x => x.IsValidTarget(WE.Range)) : allMinions.Where(x => x.IsValidTarget(W.Range));
+                var wmins = EvolvedW ? allMinions.Where(x => x.LSIsValidTarget(WE.Range)) : allMinions.Where(x => x.LSIsValidTarget(W.Range));
                 MinionManager.FarmLocation farmLocation = MinionManager.GetBestCircularFarmLocation(wmins
                       .Select(minion => minion.ServerPosition.To2D())
                       .ToList(), EvolvedW ? WE.Width : W.Width, EvolvedW ? WE.Range : W.Range);
@@ -447,7 +447,7 @@ namespace SephKhazix
         void KillSteal()
         {
             AIHeroClient target = HeroList
-                .Where(x => x.IsValidTarget() && x.LSDistance(Khazix.Position) < 1375f && !x.IsZombie)
+                .Where(x => x.LSIsValidTarget() && x.LSDistance(Khazix.Position) < 1375f && !x.IsZombie)
                 .MinOrDefault(x => x.Health);
 
             if (target != null && target.IsInRange(600))
@@ -557,7 +557,7 @@ namespace SephKhazix
                         LeagueSharp.Common.Utility.DelayAction.Add(getSliderItem(ks, "Edelay"), delegate
                         {
                             PredictionOutput pred = E.GetPrediction(target);
-                            if (target.IsValidTarget() && !target.IsZombie && ShouldJump(pred.CastPosition))
+                            if (target.LSIsValidTarget() && !target.IsZombie && ShouldJump(pred.CastPosition))
                             {
                                 if (getCheckBoxItem(ks, "Ksbypass") || ShouldJump(pred.CastPosition))
                                 {
@@ -664,7 +664,7 @@ namespace SephKhazix
 
             foreach (AIHeroClient enemy in HeroManager.Enemies)
             {
-                if (enemy.IsValidTarget() && enemy.NetworkId != unit.NetworkId)
+                if (enemy.LSIsValidTarget() && enemy.NetworkId != unit.NetworkId)
                 {
                     PredictionOutput pos = WE.GetPrediction(enemy);
                     if (pos.Hitchance >= hc)
@@ -760,7 +760,7 @@ namespace SephKhazix
                 return;
             }
 
-            var Targets = HeroList.Where(x => x.IsValidTarget() && !x.IsInvulnerable && !x.IsZombie);
+            var Targets = HeroList.Where(x => x.LSIsValidTarget() && !x.IsInvulnerable && !x.IsZombie);
 
             if (Q.IsReady() && E.IsReady())
             {
@@ -812,7 +812,7 @@ namespace SephKhazix
             Vector3 Position = new Vector3();
             var jumptarget = IsHealthy
                   ? HeroList
-                      .FirstOrDefault(x => x.IsValidTarget() && !x.IsZombie && x != Qtarget &&
+                      .FirstOrDefault(x => x.LSIsValidTarget() && !x.IsZombie && x != Qtarget &&
                               Vector3.Distance(Khazix.ServerPosition, x.ServerPosition) < E.Range)
                   :
               HeroList

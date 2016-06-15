@@ -268,15 +268,15 @@ namespace VoliPower
                 {
                     _q.Cast(tsQ);
                 }
-                if (tsQ.GetEnemiesInRange(100).Any(enemies => enemies.IsEnemy && !enemies.IsDead) && tsQ.IsValidTarget())
+                if (tsQ.GetEnemiesInRange(100).Any(enemies => enemies.IsEnemy && !enemies.IsDead) && tsQ.LSIsValidTarget())
                 {
                     _q.Cast(tsQ);
                 }
-                else if (Player.CountAlliesInRange(500) >= 1 && tsQ.IsValidTarget())
+                else if (Player.CountAlliesInRange(500) >= 1 && tsQ.LSIsValidTarget())
                 {
                     _q.Cast(tsQ);
                 }
-                else if (tsQ.IsValidTarget())
+                else if (tsQ.LSIsValidTarget())
                 {
                     _q.Cast(tsQ);
                 }
@@ -286,14 +286,14 @@ namespace VoliPower
             #region W-Cast
             if (vW && useskW)
             {
-                if (tsQ.IsValidTarget(_w.Range) && tsQ.Health < _w.GetDamage(tsQ))
+                if (tsQ.LSIsValidTarget(_w.Range) && tsQ.Health < _w.GetDamage(tsQ))
                 {
                     _w.CastOnUnit(tsQ);
                 }
             }
             else if (vW)
             {
-                if (tsQ.IsValidTarget(_w.Range))
+                if (tsQ.LSIsValidTarget(_w.Range))
                 {
                     _w.CastOnUnit(tsQ);
                 }
@@ -303,7 +303,7 @@ namespace VoliPower
             #region E-Cast
             if (vE)
             {
-                if (tsQ.IsValidTarget(_e.Range) && tsQ.LSDistance(Player.Position) <= _w.Range)
+                if (tsQ.LSIsValidTarget(_e.Range) && tsQ.LSDistance(Player.Position) <= _w.Range)
                 {
                     _e.Cast();
                 }
@@ -313,7 +313,7 @@ namespace VoliPower
             #region R-Cast
             if (vR)
             {
-                if (tsR.IsValidTarget(Player.AttackRange) && tsR.HealthPercent > 25)
+                if (tsR.LSIsValidTarget(Player.AttackRange) && tsR.HealthPercent > 25)
                 {
                     _r.Cast();
                 }

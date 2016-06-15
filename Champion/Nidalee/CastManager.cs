@@ -57,7 +57,7 @@ namespace KurisuNidalee
             {
                 if (mode != "ha" || KL.Player.ManaPercent > 65)
                 {
-                    if (target.IsValidTarget(KL.Spells["Javelin"].Range))
+                    if (target.LSIsValidTarget(KL.Spells["Javelin"].Range))
                     {
                         if (target.IsChampion())
                         {
@@ -159,7 +159,7 @@ namespace KurisuNidalee
 
                 if (mode != "ha" || KL.Player.ManaPercent > 65)
                 {
-                    if (target.IsValidTarget(KL.Spells["Bushwhack"].Range))
+                    if (target.LSIsValidTarget(KL.Spells["Bushwhack"].Range))
                     {
                         // try bushwhack prediction
                         if (getBoxItem(wHMenu, "ndhwforce") == 0)
@@ -187,7 +187,7 @@ namespace KurisuNidalee
         {
             if (KL.CatForm() && KL.CanUse(KL.Spells["Takedown"], false, mode))
             {
-                if (target.IsValidTarget(KL.Player.AttackRange + KL.Spells["Takedown"].Range))
+                if (target.LSIsValidTarget(KL.Player.AttackRange + KL.Spells["Takedown"].Range))
                 {
                     KL.Spells["Takedown"].CastOnUnit(target);
                 }
@@ -202,7 +202,7 @@ namespace KurisuNidalee
                 return;
 
             // check if target is hunted in 750 range
-            if (!target.IsValidTarget(KL.Spells["ExPounce"].Range))
+            if (!target.LSIsValidTarget(KL.Spells["ExPounce"].Range))
                 return;
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
@@ -302,7 +302,7 @@ namespace KurisuNidalee
         {
             if (KL.CatForm() && KL.CanUse(KL.Spells["Swipe"], false, mode))
             {
-                if (target.IsValidTarget(KL.Spells["Swipe"].Range))
+                if (target.LSIsValidTarget(KL.Spells["Swipe"].Range))
                 {
                     if (target.IsChampion())
                     {
@@ -345,7 +345,7 @@ namespace KurisuNidalee
 
             if (KL.CatForm() && KL.CanUse(KL.Spells["Aspect"], false, mode))
             {
-                if (!target.IsValidTarget(KL.Spells["Javelin"].Range))
+                if (!target.LSIsValidTarget(KL.Spells["Javelin"].Range))
                     return;
 
                 // get hitbox
@@ -422,14 +422,14 @@ namespace KurisuNidalee
                         }
                         break;
                     case "gap":
-                        if (target.IsValidTarget(375))
+                        if (target.LSIsValidTarget(375))
                         {
                             KL.Spells["Aspect"].Cast();
                             return;
                         }
                         break;
                     case "wc":
-                        if (target.IsValidTarget(375) && target.IsMinion)
+                        if (target.LSIsValidTarget(375) && target.IsMinion)
                         {
                             KL.Spells["Aspect"].Cast();
                             return;
@@ -452,7 +452,7 @@ namespace KurisuNidalee
                         return;
 
                     // or check if pounce timer is ready before switch
-                    if (KL.Spells["Aspect"].IsReady() && target.IsValidTarget(KL.Spells["ExPounce"].Range))
+                    if (KL.Spells["Aspect"].IsReady() && target.LSIsValidTarget(KL.Spells["ExPounce"].Range))
                     {
                         // dont change form if swipe or takedown isn't ready
                         if ((KL.SpellTimer["Takedown"].IsReady() || KL.SpellTimer["Swipe"].IsReady()) &&
@@ -463,14 +463,14 @@ namespace KurisuNidalee
                 else
                 {
                     // check if in pounce range
-                    if (target.IsValidTarget(KL.Spells["Pounce"].Range + 55))
+                    if (target.LSIsValidTarget(KL.Spells["Pounce"].Range + 55))
                     {
                         if (mode != "jg")
                         {
                             // switch to cougar if can kill target
                             if (KL.CatDamage(target)*3 >= target.Health)
                             {
-                                if (mode == "co" && target.IsValidTarget(KL.Spells["Pounce"].Range + 200))
+                                if (mode == "co" && target.LSIsValidTarget(KL.Spells["Pounce"].Range + 200))
                                 {
                                     if (!KL.CanUse(KL.Spells["Javelin"], true, "co") ||
                                         KL.Spells["Javelin"].Cast(target) == Spell.CastStates.Collision)
@@ -512,7 +512,7 @@ namespace KurisuNidalee
                     }
 
 
-                    if (KN.Target.IsValidTarget(KL.Spells["Javelin"].Range) && target.IsChampion())
+                    if (KN.Target.LSIsValidTarget(KL.Spells["Javelin"].Range) && target.IsChampion())
                     {
                         if (KL.SpellTimer["Javelin"].IsReady())
                         {

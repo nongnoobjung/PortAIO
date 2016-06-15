@@ -151,12 +151,12 @@ namespace Sophies_Soraka
         {
             var unit = gapcloser.Sender;
 
-            if (getCheckBoxItem(miscMenu, "useQGapcloser") && unit.IsValidTarget(Q.Range) && Q.IsReady() && unit.IsEnemy)
+            if (getCheckBoxItem(miscMenu, "useQGapcloser") && unit.LSIsValidTarget(Q.Range) && Q.IsReady() && unit.IsEnemy)
             {
                 Q.Cast(unit, Packets);
             }
 
-            if (getCheckBoxItem(miscMenu, "useEGapcloser") && unit.IsValidTarget(E.Range) && E.IsReady() && unit.IsEnemy)
+            if (getCheckBoxItem(miscMenu, "useEGapcloser") && unit.LSIsValidTarget(E.Range) && E.IsReady() && unit.IsEnemy)
             {
                 E.Cast(unit, Packets);
             }
@@ -175,7 +175,7 @@ namespace Sophies_Soraka
             if (ObjectManager.Get<AIHeroClient>()
                     .Any(
                         x =>
-                        x.IsAlly && x.IsValidTarget(float.MaxValue, false)
+                        x.IsAlly && x.LSIsValidTarget(float.MaxValue, false)
                         && x.HealthPercent < getSliderItem(healMenu, "autoRPercent")))
             {
                 R.Cast();
@@ -208,7 +208,7 @@ namespace Sophies_Soraka
 
             var canidates =
                 ObjectManager.Get<AIHeroClient>()
-                    .Where(x => x.IsValidTarget(W.Range) && x.IsAlly && x.HealthPercent < healthPercent);
+                    .Where(x => x.LSIsValidTarget(W.Range) && x.IsAlly && x.HealthPercent < healthPercent);
             var wMode = getBoxItem(healMenu, "HealingPriority");
 
             switch (wMode)
@@ -442,7 +442,7 @@ namespace Sophies_Soraka
                 return;
             }
 
-            if (!unit.IsValidTarget(E.Range))
+            if (!unit.LSIsValidTarget(E.Range))
             {
                 return;
             }

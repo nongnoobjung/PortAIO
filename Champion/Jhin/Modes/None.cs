@@ -13,7 +13,7 @@ namespace Jhin___The_Virtuoso.Modes
             if (Spells.E.IsReady() && Menus.getCheckBoxItem(Menus.miscMenu, "auto.e.immobile"))
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.E.Range) && x.IsEnemyImmobile()))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.E.Range) && x.IsEnemyImmobile()))
                 {
                     Spells.E.Cast(enemy);
                 }
@@ -28,7 +28,7 @@ namespace Jhin___The_Virtuoso.Modes
             }
             if (Spells.Q.IsReady() && Menus.getCheckBoxItem(Menus.ksMenu, "q.ks"))
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.Q.Range) &&
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.Q.Range) &&
                                                                      x.Health < Spells.Q.GetDamage(x)))
                 {
                     Spells.Q.CastOnUnit(enemy);

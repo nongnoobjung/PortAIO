@@ -72,7 +72,7 @@ namespace jesuisFiora
                 {
                     var target = TargetSelector.GetTarget(w.Range, DamageType.Physical);
                     Console.WriteLine("CAST DISPEL");
-                    if (target != null && target.IsValidTarget(w.Range) && w.Cast(target).IsCasted())
+                    if (target != null && target.LSIsValidTarget(w.Range) && w.Cast(target).IsCasted())
                     {
                         return;
                     }

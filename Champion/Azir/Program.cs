@@ -134,9 +134,9 @@ namespace HeavenStrikeAzir
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var target = gapcloser.Sender;
-            if (target.IsEnemy && _r.IsReady() && target.IsValidTarget() && !target.IsZombie && RGAP)
+            if (target.IsEnemy && _r.IsReady() && target.LSIsValidTarget() && !target.IsZombie && RGAP)
             {
-                if (target.IsValidTarget(250)) _r.Cast(target.Position);
+                if (target.LSIsValidTarget(250)) _r.Cast(target.Position);
             }
         }
         
@@ -199,7 +199,7 @@ namespace HeavenStrikeAzir
             {
                 if (_r.IsReady())
                 {
-                    foreach (var hero in HeroManager.Enemies.Where(x => x.IsValidTarget(250) && !x.IsZombie && x.Health < _r.GetDamage(x)))
+                    foreach (var hero in HeroManager.Enemies.Where(x => x.LSIsValidTarget(250) && !x.IsZombie && x.Health < _r.GetDamage(x)))
                     {
                         _r.Cast(hero.Position);
                     }
@@ -210,7 +210,7 @@ namespace HeavenStrikeAzir
                 if (_r.IsReady())
                 {
                     var turret = ObjectManager.Get<Obj_AI_Turret>().Where(x => x.IsAlly && !x.IsDead).OrderByDescending(x => x.LSDistance(Player.Position)).LastOrDefault();
-                    foreach (var hero in HeroManager.Enemies.Where(x => x.IsValidTarget(250) && !x.IsZombie))
+                    foreach (var hero in HeroManager.Enemies.Where(x => x.LSIsValidTarget(250) && !x.IsZombie))
                     {
                         if (Player.ServerPosition.LSDistance(turret.Position)+100 >= hero.LSDistance(turret.Position) && hero.LSDistance(turret.Position) <= 775 + 250)
                         {

@@ -469,7 +469,7 @@ namespace TreeLib.SpellData
                     helperTick = StartTick;
                 }
                 SpellData.MissileSpeed = (int) Unit.MoveSpeed;
-                if (Unit.IsValidTarget(float.MaxValue, false))
+                if (Unit.LSIsValidTarget(float.MaxValue, false))
                 {
                     if (!Unit.HasBuff("SionR") && Utils.GameTimeTickCount - helperTick > 600)
                     {

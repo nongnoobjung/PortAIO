@@ -135,11 +135,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (E.IsReady() && getCheckBoxItem(e, "EInterrupter"))
             {
-                if (sender.IsValidTarget(E.Range))
+                if (sender.LSIsValidTarget(E.Range))
                 {
                     E.Cast(sender.Position);
                 }
-                else if (Q.IsReady() && sender.IsValidTarget(EQ.Range))
+                else if (Q.IsReady() && sender.LSIsValidTarget(EQ.Range))
                 {
                     TryBallE(sender);
                 }
@@ -155,7 +155,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     EQcastNow = true;
                     Q.Cast(gapcloser.End);
                 }
-                else if (gapcloser.Sender.IsValidTarget(E.Range))
+                else if (gapcloser.Sender.LSIsValidTarget(E.Range))
                 {
                     E.Cast(gapcloser.Sender);
                 }
@@ -223,7 +223,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (getKeyBindItem(e, "useQE"))
             {
                 var mouseTarget = Program.Enemies.Where(enemy =>
-                    enemy.IsValidTarget(Eany.Range)).OrderBy(enemy => enemy.LSDistance(Game.CursorPos)).FirstOrDefault();
+                    enemy.LSIsValidTarget(Eany.Range)).OrderBy(enemy => enemy.LSDistance(Game.CursorPos)).FirstOrDefault();
 
                 if (mouseTarget != null)
                 {
@@ -233,7 +233,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
 
             var t = TargetSelector.GetTarget(Eany.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (OktwCommon.GetKsDamage(t, E) + Q.GetDamage(t) > t.Health)
                     TryBallE(t);
@@ -252,7 +252,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             var Rcombo = getCheckBoxItem(r, "Rcombo");
 
             foreach (
-                var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(R.Range) && OktwCommon.ValidUlt(enemy)))
+                var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(R.Range) && OktwCommon.ValidUlt(enemy)))
             {
                 var Rmode = getBoxItem(r, "Rmode" + enemy.NetworkId);
 
@@ -267,7 +267,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (Rcombo)
                 {
-                    if (Q.IsReady() && enemy.IsValidTarget(600))
+                    if (Q.IsReady() && enemy.LSIsValidTarget(600))
                         comboDMG += Q.GetDamage(enemy);
 
                     if (E.IsReady())
@@ -289,7 +289,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (W.Instance.ToggleState == 1)
             {
                 var t = TargetSelector.GetTarget(W.Range - 150, DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     if (Program.Combo && Player.Mana > RMANA + QMANA + WMANA)
                         CatchW(t);
@@ -306,7 +306,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         foreach (
                             var enemy in
                                 Program.Enemies.Where(
-                                    enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                                    enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
                             CatchW(t);
                     }
                 }
@@ -323,7 +323,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             else
             {
                 var t = TargetSelector.GetTarget(W.Range, DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     Program.CastSpell(W, t);
                 }
@@ -341,7 +341,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (Program.Combo && Player.Mana > RMANA + QMANA + EMANA && !E.IsReady())
                     Program.CastSpell(Q, t);
@@ -356,7 +356,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     foreach (
                         var enemy in
                             Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                                enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Program.CastSpell(Q, t);
                 }
             }
@@ -374,7 +374,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         var minion in
                             allMinions.Where(
                                 minion =>
-                                    minion.IsValidTarget(Q.Range) &&
+                                    minion.LSIsValidTarget(Q.Range) &&
                                     (!Player.IsInAutoAttackRange(minion) ||
                                      (!minion.UnderTurret(true) && minion.UnderTurret()))))
                     {

@@ -92,7 +92,7 @@
 
             var target = TargetSelector.GetTarget(E.Range, DamageType.Physical);
 
-            if (target.IsValidTarget())
+            if (target.LSIsValidTarget())
             {
                 if (UseEHarass && Player.ManaPercent > EMiniManaHarass && E.IsReady() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Harass, "Taric.UseTaricAAPassiveHarass")))
                 {

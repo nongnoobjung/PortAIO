@@ -121,7 +121,7 @@ namespace OneKeyToWin_AIO_Sebby
                 R.Cast();
                 Program.debug("interupt");
             }
-            else if (Q.IsReady() && Player.Mana > RMANA + QMANA && sender.IsValidTarget(Q.Range))
+            else if (Q.IsReady() && Player.Mana > RMANA + QMANA && sender.LSIsValidTarget(Q.Range))
                 Q.Cast(sender.ServerPosition);
         }
 
@@ -136,7 +136,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var Target = gapcloser.Sender;
-            if (getCheckBoxItem(eMenu, "AGC") && E.IsReady() && Target.IsValidTarget(800) && Player.Mana > RMANA + EMANA)
+            if (getCheckBoxItem(eMenu, "AGC") && E.IsReady() && Target.LSIsValidTarget(800) && Player.Mana > RMANA + EMANA)
                 E.CastOnUnit(Player);
         }
 
@@ -211,7 +211,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 Rsmart = true;
                 var target = TargetSelector.GetTarget(Q.Range + 100, DamageType.Magical);
-                if (target.IsValidTarget())
+                if (target.LSIsValidTarget())
                 {
                     if (CountEnemiesInRangeDeley(BallPos, R.Width, R.Delay) > 1)
                         R.Cast();
@@ -243,7 +243,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             var ta = TargetSelector.GetTarget(1300, DamageType.Magical);
 
-            if (Program.Combo && ta.IsValidTarget() && !W.IsReady() && Player.Mana > RMANA + EMANA)
+            if (Program.Combo && ta.LSIsValidTarget() && !W.IsReady() && Player.Mana > RMANA + EMANA)
             {
                 if (CountEnemiesInRangeDeley(BallPos, 100, 0.1f) > 0)
                     E.CastOnUnit(best);
@@ -260,7 +260,7 @@ namespace OneKeyToWin_AIO_Sebby
                 var t in
                     Program.Enemies.Where(
                         t =>
-                            t.IsValidTarget() &&
+                            t.LSIsValidTarget() &&
                             BallPos.LSDistance(Prediction.GetPrediction(t, R.Delay).CastPosition) < R.Width &&
                             BallPos.LSDistance(t.ServerPosition) < R.Width))
             {
@@ -273,7 +273,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     var comboDmg = OktwCommon.GetKsDamage(t, R);
 
-                    if (t.IsValidTarget(Q.Range))
+                    if (t.LSIsValidTarget(Q.Range))
                         comboDmg += Q.GetDamage(t);
                     if (W.IsReady())
                         comboDmg += W.GetDamage(t);
@@ -305,7 +305,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void LogicW()
         {
-            if (Program.Enemies.Any(t => t.IsValidTarget() && BallPos.LSDistance(t.ServerPosition) < 250 && t.Health < W.GetDamage(t)))
+            if (Program.Enemies.Any(t => t.LSIsValidTarget() && BallPos.LSDistance(t.ServerPosition) < 250 && t.Health < W.GetDamage(t)))
             {
                 W.Cast();
                 return;
@@ -323,7 +323,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-            if (t.IsValidTarget() && Q.IsReady())
+            if (t.LSIsValidTarget() && Q.IsReady())
             {
                 if (Q.GetDamage(t) + W.GetDamage(t) > t.Health)
                     CastQ(t);
@@ -332,7 +332,7 @@ namespace OneKeyToWin_AIO_Sebby
                 else if (Program.Farm && Player.Mana > RMANA + QMANA + WMANA + EMANA)
                     CastQ(t);
             }
-            if (getCheckBoxItem(wMenu, "W") && !t.IsValidTarget() && Program.Combo &&
+            if (getCheckBoxItem(wMenu, "W") && !t.LSIsValidTarget() && Program.Combo &&
                 Player.Mana > RMANA + 3*QMANA + WMANA + EMANA + WMANA)
             {
                 if (W.IsReady() && Player.HasBuff("orianaghostself"))
@@ -358,7 +358,7 @@ namespace OneKeyToWin_AIO_Sebby
                     var minion in
                         allMinions.Where(
                             minion =>
-                                minion.IsValidTarget(Q.Range) && !Player.IsInAutoAttackRange(minion) &&
+                                minion.LSIsValidTarget(Q.Range) && !Player.IsInAutoAttackRange(minion) &&
                                 minion.Health < Q.GetDamage(minion) && minion.Health > minion.FlatPhysicalDamageMod))
                 {
                     Q.Cast(minion);
@@ -502,7 +502,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static int CountEnemiesInRangeDeley(Vector3 position, float range, float delay)
         {
-            return Program.Enemies.Where(t => t.IsValidTarget()).Select(t => Prediction.GetPrediction(t, delay).CastPosition).Count(prepos => position.LSDistance(prepos) < range);
+            return Program.Enemies.Where(t => t.LSIsValidTarget()).Select(t => Prediction.GetPrediction(t, delay).CastPosition).Count(prepos => position.LSDistance(prepos) < range);
         }
 
         private static void Obj_AI_Base_OnCreate(GameObject obj, EventArgs args)

@@ -278,7 +278,7 @@ namespace D_Elise
         private static void Smiteontarget()
         {
             if (_smite == null) return;
-            var hero = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(570));
+            var hero = HeroManager.Enemies.FirstOrDefault(x => x.LSIsValidTarget(570));
             var smiteDmg = _player.GetSummonerSpellDamage(hero, LeagueSharp.Common.Damage.SummonerSpell.Smite);
             var usesmite = getCheckBoxItem(smiteMenu, "smitecombo");
             if (_player.GetSpell(_smiteSlot).Name.ToLower() == "s5_summonersmiteplayerganker" && usesmite
@@ -294,7 +294,7 @@ namespace D_Elise
                 }
             }
             if (_player.GetSpell(_smiteSlot).Name.ToLower() == "s5_summonersmiteduel" && usesmite
-                && ObjectManager.Player.Spellbook.CanUseSpell(_smiteSlot) == SpellState.Ready && hero.IsValidTarget(570))
+                && ObjectManager.Player.Spellbook.CanUseSpell(_smiteSlot) == SpellState.Ready && hero.LSIsValidTarget(570))
             {
                 ObjectManager.Player.Spellbook.CastSpell(_smiteSlot, hero);
             }
@@ -407,17 +407,17 @@ namespace D_Elise
                 var iZhonyas = getCheckBoxItem(itemMenu, "Zhonyas");
                 var iZhonyashp = _player.Health
                                  <= (_player.MaxHealth * (getSliderItem(itemMenu, "Zhonyashp")) / 100);
-                if (hero.IsValidTarget(450) && iBilge && (iBilgeEnemyhp || iBilgemyhp) && _bilge.IsReady())
+                if (hero.LSIsValidTarget(450) && iBilge && (iBilgeEnemyhp || iBilgemyhp) && _bilge.IsReady())
                 {
                     _bilge.Cast(hero);
 
                 }
-                if (hero.IsValidTarget(450) && iBlade && (iBladeEnemyhp || iBlademyhp) && _blade.IsReady())
+                if (hero.LSIsValidTarget(450) && iBlade && (iBladeEnemyhp || iBlademyhp) && _blade.IsReady())
                 {
                     _blade.Cast(hero);
 
                 }
-                if (iOmenenemys && iOmen && _rand.IsReady() && hero.IsValidTarget(450))
+                if (iOmenenemys && iOmen && _rand.IsReady() && hero.LSIsValidTarget(450))
                 {
                     _rand.Cast();
                 }
@@ -442,7 +442,7 @@ namespace D_Elise
                 Smiteontarget();
                 if (_human)
                 {
-                    if (target.IsValidTarget(_humanE.Range) && getCheckBoxItem(comboMenu, "UseHumanE")
+                    if (target.LSIsValidTarget(_humanE.Range) && getCheckBoxItem(comboMenu, "UseHumanE")
                         && _humanE.IsReady())
                     {
                         if (sReady && getCheckBoxItem(smiteMenu, "Smiteeee")
@@ -457,12 +457,12 @@ namespace D_Elise
                         }
                     }
 
-                    if (target.IsValidTarget(_humanQ.Range) && getCheckBoxItem(comboMenu, "UseHumanQ")
+                    if (target.LSIsValidTarget(_humanQ.Range) && getCheckBoxItem(comboMenu, "UseHumanQ")
                         && _humanQ.IsReady())
                     {
                         _humanQ.Cast(target);
                     }
-                    if (target.IsValidTarget(_humanW.Range) && getCheckBoxItem(comboMenu, "UseHumanW")
+                    if (target.LSIsValidTarget(_humanW.Range) && getCheckBoxItem(comboMenu, "UseHumanW")
                         && _humanW.IsReady())
                     {
                         _humanW.Cast(target);
@@ -472,28 +472,28 @@ namespace D_Elise
                     {
                         _r.Cast();
                     }
-                    if (!_humanQ.IsReady() && !_humanW.IsReady() && hero.IsValidTarget(_spiderQ.Range)
+                    if (!_humanQ.IsReady() && !_humanW.IsReady() && hero.LSIsValidTarget(_spiderQ.Range)
                         && getCheckBoxItem(comboMenu, "UseRCombo") && _r.IsReady())
                     {
                         _r.Cast();
                     }
                 }
                 if (!_spider) return;
-                if (hero.IsValidTarget(_spiderQ.Range) && getCheckBoxItem(comboMenu, "UseSpiderQ")
+                if (hero.LSIsValidTarget(_spiderQ.Range) && getCheckBoxItem(comboMenu, "UseSpiderQ")
                     && _spiderQ.IsReady())
                 {
                     _spiderQ.Cast(hero);
                 }
-                if (hero.IsValidTarget(200) && getCheckBoxItem(comboMenu, "UseSpiderW") && _spiderW.IsReady())
+                if (hero.LSIsValidTarget(200) && getCheckBoxItem(comboMenu, "UseSpiderW") && _spiderW.IsReady())
                 {
                     _spiderW.Cast();
                 }
-                if (hero.IsValidTarget(_spiderE.Range) && _player.LSDistance(target) > _spiderQ.Range
+                if (hero.LSIsValidTarget(_spiderE.Range) && _player.LSDistance(target) > _spiderQ.Range
                     && getCheckBoxItem(comboMenu, "UseSpiderE") && _spiderE.IsReady() && !_spiderQ.IsReady())
                 {
                     _spiderE.Cast(hero);
                 }
-                if (!hero.IsValidTarget(_spiderQ.Range) && !_spiderE.IsReady() && _r.IsReady() && !_spiderQ.IsReady()
+                if (!hero.LSIsValidTarget(_spiderQ.Range) && !_spiderE.IsReady() && _r.IsReady() && !_spiderQ.IsReady()
                     && getCheckBoxItem(comboMenu, "UseRCombo"))
                 {
                     _r.Cast();
@@ -520,13 +520,13 @@ namespace D_Elise
         {
             var target = TargetSelector.GetTarget(_humanQ.Range, DamageType.Magical);
 
-            if (_human && target.IsValidTarget(_humanQ.Range) && getCheckBoxItem(harassMenu, "UseQHarass")
+            if (_human && target.LSIsValidTarget(_humanQ.Range) && getCheckBoxItem(harassMenu, "UseQHarass")
                 && _humanQ.IsReady())
             {
                 _humanQ.Cast(target);
             }
 
-            if (_human && target.IsValidTarget(_humanW.Range) && getCheckBoxItem(harassMenu, "UseWHarass")
+            if (_human && target.LSIsValidTarget(_humanW.Range) && getCheckBoxItem(harassMenu, "UseWHarass")
                 && _humanW.IsReady())
             {
                 _humanW.Cast(target, false, true);
@@ -555,12 +555,12 @@ namespace D_Elise
                 foreach (var minion in mobs)
                     if (_human)
                     {
-                        if (jungleQ && _humanQ.IsReady() && minion.IsValidTarget()
+                        if (jungleQ && _humanQ.IsReady() && minion.LSIsValidTarget()
                             && _player.LSDistance(minion) <= _humanQ.Range)
                         {
                             _humanQ.Cast(minion);
                         }
-                        if (jungleW && _humanW.IsReady() && !_humanQ.IsReady() && minion.IsValidTarget()
+                        if (jungleW && _humanW.IsReady() && !_humanQ.IsReady() && minion.LSIsValidTarget()
                             && _player.LSDistance(minion) <= _humanW.Range)
                         {
                             _humanW.Cast(minion);
@@ -574,12 +574,12 @@ namespace D_Elise
                 {
                     if (_spider)
                     {
-                        if (spiderjungleQ && _spiderQ.IsReady() && minion.IsValidTarget()
+                        if (spiderjungleQ && _spiderQ.IsReady() && minion.LSIsValidTarget()
                             && _player.LSDistance(minion) <= _spiderQ.Range)
                         {
                             _spiderQ.Cast(minion);
                         }
-                        if (spiderjungleW && _spiderW.IsReady() && minion.IsValidTarget()
+                        if (spiderjungleW && _spiderW.IsReady() && minion.LSIsValidTarget()
                             && _player.LSDistance(minion) <= 150)
                         {
                             Orbwalker.DisableAttacking = false;
@@ -618,12 +618,12 @@ namespace D_Elise
                     foreach (var minion in allminions)
                         if (_human)
                         {
-                            if (useHumQ && _humanQ.IsReady() && minion.IsValidTarget()
+                            if (useHumQ && _humanQ.IsReady() && minion.LSIsValidTarget()
                                 && _player.LSDistance(minion) <= _humanQ.Range)
                             {
                                 _humanQ.Cast(minion);
                             }
-                            if (useHumW && _humanW.IsReady() && minion.IsValidTarget()
+                            if (useHumW && _humanW.IsReady() && minion.LSIsValidTarget()
                                 && _player.LSDistance(minion) <= _humanW.Range)
                             {
                                 _humanW.Cast(minion);
@@ -636,12 +636,12 @@ namespace D_Elise
                     foreach (var minion in allminions)
                         if (_spider)
                         {
-                            if (useSpiQFarm && _spiderQ.IsReady() && minion.IsValidTarget()
+                            if (useSpiQFarm && _spiderQ.IsReady() && minion.LSIsValidTarget()
                                 && _player.LSDistance(minion) <= _spiderQ.Range)
                             {
                                 _spiderQ.Cast(minion);
                             }
-                            if (useSpiWFarm && _spiderW.IsReady() && minion.IsValidTarget()
+                            if (useSpiWFarm && _spiderW.IsReady() && minion.LSIsValidTarget()
                                 && _player.LSDistance(minion) <= 125)
                             {
                                 _spiderW.Cast();
@@ -654,13 +654,13 @@ namespace D_Elise
                         if (_human)
                         {
                             if (useHumQ && _player.GetSpellDamage(minion, SpellSlot.Q) > minion.Health
-                                && _humanQ.IsReady() && minion.IsValidTarget()
+                                && _humanQ.IsReady() && minion.LSIsValidTarget()
                                 && _player.LSDistance(minion) <= _humanQ.Range)
                             {
                                 _humanQ.Cast(minion);
                             }
                             if (useHumW && _player.GetSpellDamage(minion, SpellSlot.W) > minion.Health
-                                && _humanW.IsReady() && minion.IsValidTarget()
+                                && _humanW.IsReady() && minion.LSIsValidTarget()
                                 && _player.LSDistance(minion) <= _humanW.Range)
                             {
                                 _humanW.Cast(minion);
@@ -675,11 +675,11 @@ namespace D_Elise
                         {
                             if (useSpiQFarm && _spiderQ.IsReady()
                                 && _player.GetSpellDamage(minion, SpellSlot.Q) > minion.Health && _spiderQ.IsReady()
-                                && minion.IsValidTarget() && _player.LSDistance(minion) <= _spiderQ.Range)
+                                && minion.LSIsValidTarget() && _player.LSDistance(minion) <= _spiderQ.Range)
                             {
                                 _spiderQ.Cast(minion);
                             }
-                            if (useSpiQFarm && _spiderW.IsReady() && minion.IsValidTarget()
+                            if (useSpiQFarm && _spiderW.IsReady() && minion.LSIsValidTarget()
                                 && _player.LSDistance(minion) <= 125)
                             {
                                 _spiderW.Cast();
@@ -766,7 +766,7 @@ namespace D_Elise
             EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
             var target = TargetSelector.GetTarget(_humanE.Range, DamageType.Magical);
 
-            if (_human && target.IsValidTarget(_humanE.Range) && _humanE.IsReady()
+            if (_human && target.LSIsValidTarget(_humanE.Range) && _humanE.IsReady()
                 && _humanE.GetPrediction(target).Hitchance >= HitChance.VeryHigh)
             {
                 _humanE.Cast(target);
@@ -783,7 +783,7 @@ namespace D_Elise
             Interrupter2.InterruptableTargetEventArgs args)
         {
             if (!getCheckBoxItem(miscMenu, "UseEInt")) return;
-            if (unit.IsValidTarget(_humanE.Range) && _humanE.GetPrediction(unit).Hitchance >= HitChance.Low)
+            if (unit.LSIsValidTarget(_humanE.Range) && _humanE.GetPrediction(unit).Hitchance >= HitChance.Low)
             {
                 _humanE.Cast(unit);
             }
@@ -791,12 +791,12 @@ namespace D_Elise
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (_spiderE.IsReady() && _spider && gapcloser.Sender.IsValidTarget(_spiderE.Range)
+            if (_spiderE.IsReady() && _spider && gapcloser.Sender.LSIsValidTarget(_spiderE.Range)
                 && getCheckBoxItem(miscMenu, "Spidergapcloser"))
             {
                 _spiderE.Cast(gapcloser.Sender);
             }
-            if (_humanE.IsReady() && _human && gapcloser.Sender.IsValidTarget(_humanE.Range)
+            if (_humanE.IsReady() && _human && gapcloser.Sender.LSIsValidTarget(_humanE.Range)
                 && getCheckBoxItem(miscMenu, "Humangapcloser"))
             {
                 _humanE.Cast(gapcloser.Sender);
@@ -894,7 +894,7 @@ namespace D_Elise
                 var qhDmg = _player.GetSpellDamage(hero, SpellSlot.Q);
                 var wDmg = _player.GetSpellDamage(hero, SpellSlot.W);
 
-                if (hero.IsValidTarget(600) && getCheckBoxItem(ksMenu, "UseIgnite")
+                if (hero.LSIsValidTarget(600) && getCheckBoxItem(ksMenu, "UseIgnite")
                     && _igniteSlot != SpellSlot.Unknown
                     && _player.Spellbook.CanUseSpell(_igniteSlot) == SpellState.Ready)
                 {
@@ -905,7 +905,7 @@ namespace D_Elise
                 }
                 if (_human)
                 {
-                    if (_humanQ.IsReady() && hero.IsValidTarget(_humanQ.Range)
+                    if (_humanQ.IsReady() && hero.LSIsValidTarget(_humanQ.Range)
                         && getCheckBoxItem(ksMenu, "HumanQKs"))
                     {
                         if (hero.Health <= qhDmg)
@@ -913,7 +913,7 @@ namespace D_Elise
                             _humanQ.Cast(hero);
                         }
                     }
-                    if (_humanW.IsReady() && hero.IsValidTarget(_humanW.Range)
+                    if (_humanW.IsReady() && hero.LSIsValidTarget(_humanW.Range)
                         && getCheckBoxItem(ksMenu, "HumanWKs"))
                     {
                         if (hero.Health <= wDmg)
@@ -922,7 +922,7 @@ namespace D_Elise
                         }
                     }
                 }
-                if (_spider && _spiderQ.IsReady() && hero.IsValidTarget(_spiderQ.Range)
+                if (_spider && _spiderQ.IsReady() && hero.LSIsValidTarget(_spiderQ.Range)
                     && getCheckBoxItem(ksMenu, "SpiderQKs"))
                 {
                     if (hero.Health <= qhDmg)

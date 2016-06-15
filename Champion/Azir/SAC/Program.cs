@@ -256,7 +256,7 @@ namespace SAutoCarry.Champions
 
             if (t != null)
             {
-                if (ComboUseR && Spells[R].IsReady() && t.IsValidTarget(Spells[R].Range) && ShouldCast(SpellSlot.R, t))
+                if (ComboUseR && Spells[R].IsReady() && t.LSIsValidTarget(Spells[R].Range) && ShouldCast(SpellSlot.R, t))
                     Spells[R].CastIfHitchanceEquals(t, HitChance.High);
 
                 if (ComboUseW && Spells[W].IsReady() && ShouldCast(SpellSlot.W, t))
@@ -412,7 +412,7 @@ namespace SAutoCarry.Champions
             foreach (
                 var target in
                     HeroManager.Enemies.Where(
-                        x => x.IsValidTarget(Spells[Q].Range + 100) && !x.HasBuffOfType(BuffType.Invulnerability)))
+                        x => x.LSIsValidTarget(Spells[Q].Range + 100) && !x.HasBuffOfType(BuffType.Invulnerability)))
             {
                 if (ObjectManager.Player.GetSpellDamage(target, SpellSlot.Q) > target.Health + 20)
                 {
@@ -491,7 +491,7 @@ namespace SAutoCarry.Champions
         {
             if (TargetSelector.SelectedTarget != null)
             {
-                if (TargetSelector.SelectedTarget.IsValidTarget(900))
+                if (TargetSelector.SelectedTarget.LSIsValidTarget(900))
                 {
                     if (Spells[Q].IsReady())
                     {
@@ -559,7 +559,7 @@ namespace SAutoCarry.Champions
                 case SpellSlot.E:
                 {
                     if (CalculateDamageE(target) + AutoAttack.GetDamage(target) >= target.Health &&
-                        HeroManager.Enemies.Count(p => p.IsValidTarget() && p.LSDistance(target.ServerPosition) < 600) < 2)
+                        HeroManager.Enemies.Count(p => p.LSIsValidTarget() && p.LSDistance(target.ServerPosition) < 600) < 2)
                         return true;
 
                     return false;
@@ -669,7 +669,7 @@ namespace SAutoCarry.Champions
                 args.Process = false;
                 foreach (var enemy in HeroManager.Enemies)
                 {
-                    if (enemy.IsValidTarget(Spells[R].Range + 200))
+                    if (enemy.LSIsValidTarget(Spells[R].Range + 200))
                     {
                         var pred = Spells[R].GetPrediction(enemy);
                         args.Process |= pred.Hitchance > HitChance.Low;

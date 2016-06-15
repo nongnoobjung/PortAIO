@@ -210,7 +210,7 @@ namespace TheBrand
             for (var i = 0; i < HeroManager.Enemies.Count; i++)
             {
                 if (!inBounce[i] && HeroManager.Enemies[i].LSDistance(target) < 500 &&
-                    HeroManager.Enemies[i].IsValidTarget())
+                    HeroManager.Enemies[i].LSIsValidTarget())
                 {
                     if (!HeroManager.Enemies[i].HasBuff("brandablaze"))
                     {

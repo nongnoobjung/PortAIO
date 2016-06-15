@@ -149,7 +149,7 @@ namespace HeavenStrikeReksaj
             // ks e
             if (!burrowed && _e.IsReady())
             {
-                foreach (var target in HeroManager.Enemies.Where(x => x.IsValidTarget(_e.Range) && !x.IsZombie))
+                foreach (var target in HeroManager.Enemies.Where(x => x.LSIsValidTarget(_e.Range) && !x.IsZombie))
                 {
                     if (target.Health < Player.CalcDamage(target, Player.Mana == 100 ? DamageType.True : DamageType.Physical, GetRawEDamage()))
                         _e.Cast(target);
@@ -158,7 +158,7 @@ namespace HeavenStrikeReksaj
             // ks q
             if (burrowed && _q2.IsReady())
             {
-                foreach (var target in HeroManager.Enemies.Where(x => x.IsValidTarget(_q2.Range) && !x.IsZombie))
+                foreach (var target in HeroManager.Enemies.Where(x => x.LSIsValidTarget(_q2.Range) && !x.IsZombie))
                 {
                     if (target.Health < _q2.GetDamage(target))
                         _q2.Cast(target);
@@ -167,7 +167,7 @@ namespace HeavenStrikeReksaj
             // auto  q2 cast
             if (burrowed && _q2.IsReady() && getCheckBoxItem(autoMenu, autoq2) && !Player.IsRecalling())
             {
-                foreach (var target in HeroManager.Enemies.Where(x => x.IsValidTarget(_q2.Range) && !x.IsZombie))
+                foreach (var target in HeroManager.Enemies.Where(x => x.LSIsValidTarget(_q2.Range) && !x.IsZombie))
                 {
                     _q2.Cast(target);
                 }
@@ -185,20 +185,20 @@ namespace HeavenStrikeReksaj
             if (burrowed && _w.IsReady())
             {
                 var target = TargetSelector.GetTarget(Player.BoundingRadius + 200, DamageType.Physical);
-                if (target.IsValidTarget() && !target.IsZombie)
+                if (target.LSIsValidTarget() && !target.IsZombie)
                     _w.Cast();
             }
             // e cast
             if (!burrowed && _e.IsReady() && Player.Mana >= getSliderItem(spellMenu, comboE1))
             {
                 var target = TargetSelector.GetTarget(_e.Range, DamageType.Physical);
-                if (target.IsValidTarget() && !target.IsZombie)
+                if (target.LSIsValidTarget() && !target.IsZombie)
                     _e.Cast(target);
             }
             // q2 cast
             if (burrowed && _q2.IsReady())
             {
-                foreach (var target in HeroManager.Enemies.Where(x => x.IsValidTarget(_q2.Range) && !x.IsZombie))
+                foreach (var target in HeroManager.Enemies.Where(x => x.LSIsValidTarget(_q2.Range) && !x.IsZombie))
                 {
                     _q2.Cast(target);
                 }
@@ -207,7 +207,7 @@ namespace HeavenStrikeReksaj
             if (!burrowed && _w.IsReady() && getCheckBoxItem(spellMenu, comboW1))
             {
                 var target = Orbwalker.LastTarget;
-                if (target.IsValidTarget() && !target.IsZombie)
+                if (target.LSIsValidTarget() && !target.IsZombie)
                 {
                     if (!(target as Obj_AI_Base).HasBuff("reksaiknockupimmune"))
                         _w.Cast();
@@ -215,7 +215,7 @@ namespace HeavenStrikeReksaj
                 else
                 {
                     var hero = TargetSelector.GetTarget(300, DamageType.Physical);
-                    if (hero.IsValidTarget() && !hero.IsZombie && !hero.HasBuff("reksaiknockupimmune"))
+                    if (hero.LSIsValidTarget() && !hero.IsZombie && !hero.HasBuff("reksaiknockupimmune"))
                         _w.Cast();
                 }
             }
@@ -225,7 +225,7 @@ namespace HeavenStrikeReksaj
                 if (Player.CountEnemiesInRange(300) == 0)
                 {
                     var target = TargetSelector.GetTarget(600, DamageType.Physical);
-                    if (target.IsValidTarget() && !target.IsZombie && Prediction.GetPrediction(target, 10).UnitPosition
+                    if (target.LSIsValidTarget() && !target.IsZombie && Prediction.GetPrediction(target, 10).UnitPosition
                         .LSDistance(Player.Position) > target.LSDistance(Player.Position))
                     {
                         var x = Prediction.GetPrediction(target, 500).UnitPosition;

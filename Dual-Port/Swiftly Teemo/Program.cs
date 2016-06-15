@@ -59,7 +59,7 @@ namespace Swiftly_Teemo
 
         private static void Drawing_OnEndScene(EventArgs args)
         {
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.IsValidTarget() && ene.IsValidTarget(1000) && !ene.IsZombie))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.LSIsValidTarget() && ene.LSIsValidTarget(1000) && !ene.IsZombie))
             {
                 if (!MenuConfig.Dind) continue;
 

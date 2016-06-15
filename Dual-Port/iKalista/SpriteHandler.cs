@@ -73,7 +73,7 @@ namespace IKalista
                 return
                     ObjectManager.Get<AIHeroClient>()
                         .OrderBy(x => x.Health)
-                        .FirstOrDefault(x => x.IsValidTarget(1000f) && x.HasBuff("KalistaCoopStrikeProtect"));
+                        .FirstOrDefault(x => x.LSIsValidTarget(1000f) && x.HasBuff("KalistaCoopStrikeProtect"));
             }
         }
 

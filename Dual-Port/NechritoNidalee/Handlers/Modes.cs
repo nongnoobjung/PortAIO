@@ -37,7 +37,7 @@ namespace Nechrito_Nidalee.Handlers
             var Hunted = Player.HasBuff("NidaleePassiveHunted") || Player.HasBuff("exposeweaknessdebuff") || Target.HasBuff("NidaleePassiveHunted") || Target.HasBuff("exposeweaknessdebuff");
 
             // The full 1v1 rotation
-            if ((Player.LSDistance(Target.Position) <= 1500) && Target != null && Target.IsValidTarget())
+            if ((Player.LSDistance(Target.Position) <= 1500) && Target != null && Target.LSIsValidTarget())
             {
                 if (CatForm() && Champion.Aspect.IsReady() && !Hunted)
                 {
@@ -84,7 +84,7 @@ namespace Nechrito_Nidalee.Handlers
         {
             var Target = TargetSelector.GetTarget(1500, DamageType.Magical);
             var QPred = Champion.Javelin.GetPrediction(Target);
-            if (Target != null && Target.IsValidTarget() && !Target.IsZombie)
+            if (Target != null && Target.LSIsValidTarget() && !Target.IsZombie)
             {
                 if (!CatForm() && Champion.Javelin.IsReady() && QPred.Hitchance == LeagueSharp.Common.HitChance.Collision)
                 {

@@ -67,7 +67,7 @@ namespace TreeLib.Managers
 
         private static void Game_OnUpdate(EventArgs args)
         {
-            if (Minion != null && !Minion.IsValidTarget(float.MaxValue, false))
+            if (Minion != null && !Minion.LSIsValidTarget(float.MaxValue, false))
             {
                 Minion = null;
             }
@@ -79,7 +79,7 @@ namespace TreeLib.Managers
 
             var minion =
                 NearbyMinions.FirstOrDefault(
-                    buff => buff.IsValidTarget() && SmiteableMinions.Contains(buff.CharData.BaseSkinName));
+                    buff => buff.LSIsValidTarget() && SmiteableMinions.Contains(buff.CharData.BaseSkinName));
 
             if (minion == null || !minion.IsValid)
             {

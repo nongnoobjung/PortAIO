@@ -62,13 +62,13 @@ namespace Marksman.Champions
 
         public void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (R.IsReady() && gapcloser.Sender.IsValidTarget(R.Range) && GetValue<bool>("UseRMG"))
+            if (R.IsReady() && gapcloser.Sender.LSIsValidTarget(R.Range) && GetValue<bool>("UseRMG"))
                 R.CastOnUnit(gapcloser.Sender);
         }
 
         private void Interrupter2_OnInterruptableTarget(Obj_AI_Hero unit, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (R.IsReady() && unit.IsValidTarget(R.Range) && GetValue<bool>("UseRMI"))
+            if (R.IsReady() && unit.LSIsValidTarget(R.Range) && GetValue<bool>("UseRMI"))
                 R.CastOnUnit(unit);
         }
 
@@ -109,7 +109,7 @@ namespace Marksman.Champions
             if (args.Target is Obj_AI_Hero)
             {
                 var t = args.Target as Obj_AI_Hero;
-                if (t.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null)) && ComboActive)
+                if (t.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null)) && ComboActive)
                 {
                     var useQ = Q.IsReady() && GetValue<bool>("UseQC");
                     if (useQ)
@@ -148,7 +148,7 @@ namespace Marksman.Champions
             {
                 var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
 
-                if (t.IsValidTarget(E.Range))
+                if (t.LSIsValidTarget(E.Range))
                 {
                     if (Program.Config.Item("DontEToggleHarass" + t.ChampionName) != null &&
                         Program.Config.Item("DontEToggleHarass" + t.ChampionName).GetValue<bool>() == false)
@@ -179,27 +179,27 @@ namespace Marksman.Champions
 
                 if (useE && E.IsReady())
                 {
-                    if (E.IsReady() && t.IsValidTarget(E.Range))
+                    if (E.IsReady() && t.LSIsValidTarget(E.Range))
                         E.CastOnUnit(t);
                 }
 
                 if (useW)
                 {
                     t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                         W.Cast(t);
                 }
                 /*
                 else if (useWks)
                 {
                     t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget() && t.Health < TristanaData.GetWDamage)
+                    if (t.LSIsValidTarget() && t.Health < TristanaData.GetWDamage)
                         W.Cast(t);
                 }
                 else if (useWc)
                 {
                     t = TargetSelector.GetTarget(W.Range, TargetSelector.DamageType.Physical);
-                    if (t.IsValidTarget() && TristanaData.GetEMarkedCount == 4)
+                    if (t.LSIsValidTarget() && TristanaData.GetEMarkedCount == 4)
                         W.Cast(t);
                 }
                 */
@@ -211,7 +211,7 @@ namespace Marksman.Champions
                 {
                     var t = TargetSelector.GetTarget(R.Range - 10, TargetSelector.DamageType.Physical);
 
-                    if (!t.IsValidTarget())
+                    if (!t.LSIsValidTarget())
                         return;
 
                     if (Player.GetSpellDamage(t, SpellSlot.R) - 30 < t.Health ||
@@ -272,7 +272,7 @@ namespace Marksman.Champions
                                     .Where(
                                         m =>
                                             m.Team == GameObjectTeam.Neutral &&
-                                            m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 165))
+                                            m.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null) + 165))
                                     .Sum(mob => (int) mob.Health);
 
                             totalAa = (int) (totalAa/ObjectManager.Player.TotalAttackDamage);
@@ -325,7 +325,7 @@ namespace Marksman.Champions
                                 .Where(
                                     m =>
                                         m.IsEnemy && !m.IsDead &&
-                                        m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
+                                        m.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
                                 .Sum(mob => (int) mob.Health);
 
                         totalAa = (int) (totalAa/ObjectManager.Player.TotalAttackDamage);
@@ -529,7 +529,7 @@ namespace Marksman.Champions
 
             public static float GetComboDamage(Obj_AI_Hero t)
             {
-                if (!t.IsValidTarget(W.Range))
+                if (!t.LSIsValidTarget(W.Range))
                 {
                     return 0;
                 }
@@ -573,7 +573,7 @@ namespace Marksman.Champions
                         .Where(
                             enemy =>
                                 !enemy.IsDead &&
-                                enemy.IsValidTarget(W.Range + Orbwalking.GetRealAutoAttackRange(Player)))
+                                enemy.LSIsValidTarget(W.Range + Orbwalking.GetRealAutoAttackRange(Player)))
                         .FirstOrDefault(enemy => enemy.Buffs.Any(buff => buff.DisplayName == "TristanaEChargeSound"));
 
             public static int GetEMarkedCount

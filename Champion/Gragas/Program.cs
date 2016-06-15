@@ -431,7 +431,7 @@ namespace GragasTheDrunkCarry
 
             if (Q.IsReady() && getCheckBoxItem(jungleMenu, "JQ") && (System.Environment.TickCount - LastMove > 50))
             {
-                if (minion.IsValidTarget(Q.Range))
+                if (minion.LSIsValidTarget(Q.Range))
                 {
                     Qcast(minion);
                     LastMove = System.Environment.TickCount;
@@ -440,7 +440,7 @@ namespace GragasTheDrunkCarry
 
             if (E.IsReady() && getCheckBoxItem(jungleMenu, "JE") && (System.Environment.TickCount - LastMove > 50))
             {
-                if (minion.IsValidTarget(E.Range))
+                if (minion.LSIsValidTarget(E.Range))
                 {
                     E.Cast(minion.Position);
                     LastMove = System.Environment.TickCount;
@@ -463,7 +463,7 @@ namespace GragasTheDrunkCarry
 
             if (Q.IsReady() && getCheckBoxItem(clearMenu, "WQ") && (System.Environment.TickCount - LastMove > 50))
             {
-                if (minion.IsValidTarget(Q.Range))
+                if (minion.LSIsValidTarget(Q.Range))
                 {
                     Qcast(minion);
                     LastMove = System.Environment.TickCount;
@@ -472,7 +472,7 @@ namespace GragasTheDrunkCarry
 
             if (E.IsReady() && getCheckBoxItem(clearMenu, "WE") && (System.Environment.TickCount - LastMove > 50))
             {
-                if (minion.IsValidTarget(E.Range))
+                if (minion.LSIsValidTarget(E.Range))
                 {
                     E.Cast(minion.Position);
                     LastMove = System.Environment.TickCount;
