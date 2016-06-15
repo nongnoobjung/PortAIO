@@ -180,7 +180,7 @@ namespace Nechrito_Twitch
             Spellbook.OnCastSpell += (sender, eventArgs) =>
             {
                 if (!MenuConfig.QRecall) return;
-                if (!Spells._q.IsReady() || !Spells._recall.IsReady()) return;
+                if (!Spells._q.IsReady()) return;
                 if (eventArgs.Slot != SpellSlot.Recall) return;
 
                 Spells._q.Cast();

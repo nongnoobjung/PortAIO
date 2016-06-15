@@ -44,8 +44,7 @@ namespace VayneHunter_Reborn.External
     {
         public static List<Gapcloser> Spells = new List<Gapcloser>();
         public static List<ActiveGapcloser> ActiveGapclosers = new List<ActiveGapcloser>();
-        private static Menu GapMenu;
-        private static string GPMenuName;
+        private static string GPMenuName = "";
 
         static DZAntigapcloserVHR()
         {
@@ -685,10 +684,10 @@ namespace VayneHunter_Reborn.External
                                 (gapcloser.SkillType == GapcloserType.Skillshot &&
                                  ObjectManager.Player.LSDistance(gapcloser.Sender, true) < 250000))) // 500 * 500
             {
-                if (GapMenu[$"{GPMenuName}.{gapcloser.Sender.ChampionName.ToLowerInvariant()}.{gapcloser.SpellName}"].Cast<CheckBox>().CurrentValue)
+                if (GPMenu[$"{GPMenuName}.{gapcloser.Sender.ChampionName.ToLowerInvariant()}.{gapcloser.SpellName}"].Cast<CheckBox>().CurrentValue)
 
                 {
-                    var menuValue = GapMenu[$"{GPMenuName}.{gapcloser.Sender.ChampionName.ToLowerInvariant()}.{gapcloser.SpellName}.skill"].Cast<ComboBox>().CurrentValue;
+                    var menuValue = GPMenu[$"{GPMenuName}.{gapcloser.Sender.ChampionName.ToLowerInvariant()}.{gapcloser.SpellName}.skill"].Cast<ComboBox>().CurrentValue;
 
                     var slot = menuValue == 0 ? SpellSlot.Q : SpellSlot.E;
 

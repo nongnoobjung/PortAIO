@@ -6,7 +6,6 @@ namespace Nechrito_Twitch
     class Spells
     {
         private static AIHeroClient Player = ObjectManager.Player;
-        public static SpellSlot _ignite, _recall;
 
         public static Spell _q { get; set; }
         public static Spell _w { get; set; }
