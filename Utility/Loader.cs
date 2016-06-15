@@ -272,7 +272,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[18]))
                 {
-                    Miscc.Add("brand", new ComboBox("Use addon for Brand : ", 0, "TheBrand", "OKTW"));
+                    Miscc.Add("brand", new ComboBox("Use addon for Brand : ", 0, "TheBrand", "OKTW", "yol0Brand"));
                 }
                 if (Player.ChampionName.Equals(Champion[19]))
                 {

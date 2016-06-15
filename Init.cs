@@ -522,6 +522,9 @@ namespace PortAIO
                             case 1:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
+                            case 2:
+                                yol0Brand.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 PortAIO.Champion.Brand.Program.Load();
                                 break;
