@@ -62,19 +62,6 @@ namespace UnderratedAIO.Champions
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (Yorickghost && clone == null)
-            {
-                clone =
-                    ObjectManager.Get<Obj_AI_Minion>()
-                        .FirstOrDefault(
-                            m =>
-                                m.IsAlly && m.Distance(player) < 3000 &&
-                                HeroManager.Allies.Any(h => h.Name.ToLower().Equals(m.Name.ToLower())));
-                if (clone != null)
-                {
-                    Console.WriteLine("Found: " + clone.Name);
-                }
-            }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Combo();
@@ -95,9 +82,15 @@ namespace UnderratedAIO.Champions
             {
                 moveGhost();
             }
+
+            clone = (Obj_AI_Base)ObjectManager.Player.Pet;
+            if (clone != null && !clone.IsValid)
+            {
+                clone = null;
+            }
         }
 
-        public static Obj_AI_Minion clone;
+        public static Obj_AI_Base clone;
 
         private void moveGhost()
         {
@@ -122,11 +115,11 @@ namespace UnderratedAIO.Champions
                 default:
                     break;
             }
-            if (clone != null && Gtarget != null && Gtarget.IsValid)
+            if (clone != null && Gtarget != null && Gtarget.IsValid && !clone.Spellbook.IsAutoAttacking)
             {
                 R.CastOnUnit(Gtarget, getCheckBoxItem(config, "packets"));
                 GhostDelay = true;
-                Utility.DelayAction.Add(200, () => GhostDelay = false);
+                Utility.DelayAction.Add(500, () => GhostDelay = false);
             }
         }
 
