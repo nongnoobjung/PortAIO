@@ -179,7 +179,7 @@
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             if (getCheckBoxItem(miscellaneousMenu, "ElEasy.Ryze.GapCloser.Activated") && spells[Spells.W].IsReady()
-                && gapcloser.Sender.Distance(this.Player) < spells[Spells.W].Range)
+                && gapcloser.Sender.LSDistance(this.Player) < spells[Spells.W].Range)
             {
                 spells[Spells.W].CastOnUnit(gapcloser.Sender);
             }
@@ -456,7 +456,7 @@
                 }
             }
 
-            if (this.Player.Distance(target) <= 600 && this.IgniteDamage(target) >= target.Health && useI)
+            if (this.Player.LSDistance(target) <= 600 && this.IgniteDamage(target) >= target.Health && useI)
             {
                 this.Player.Spellbook.CastSpell(Ignite, target);
             }
@@ -872,7 +872,7 @@
                 {
                     args.Process =
                         !(spells[Spells.Q].IsReady() || spells[Spells.W].IsReady() || spells[Spells.E].IsReady()
-                          || this.Player.Distance(args.Target) >= 1000);
+                          || this.Player.LSDistance(args.Target) >= 1000);
                 }
             }
         }

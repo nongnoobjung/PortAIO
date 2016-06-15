@@ -36,7 +36,7 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Tumble
                 return;
             }
 
-            if (currentTarget.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(null))
+            if (currentTarget.ServerPosition.LSDistance(ObjectManager.Player.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(null))
             {
                 Orbwalker.ForcedTarget = null;
                 return;

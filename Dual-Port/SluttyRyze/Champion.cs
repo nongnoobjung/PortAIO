@@ -152,7 +152,7 @@ namespace Slutty_ryze
         //
         //            if (sender.NetworkId != target.NetworkId) return;
         //            if (!qSpell) return;
-        //            if (!Champion.Q.IsReady() || !(args.EndPos.Distance(GlobalManager.GetHero) < Champion.Q.Range)) return;
+        //            if (!Champion.Q.IsReady() || !(args.EndPos.LSDistance(GlobalManager.GetHero) < Champion.Q.Range)) return;
         //            var delay = (int)(args.EndTick - Game.Time - Champion.Q.Delay - 0.1f);
         //
         //            if (delay > 0)
@@ -160,7 +160,7 @@ namespace Slutty_ryze
         //            else
         //                Champion.Q.Cast(args.EndPos);
         //
-        //            if (!Champion.Q.IsReady() || !(args.EndPos.Distance(GlobalManager.GetHero) < Champion.Q.Range)) return;
+        //            if (!Champion.Q.IsReady() || !(args.EndPos.LSDistance(GlobalManager.GetHero) < Champion.Q.Range)) return;
         //
         //            if (delay > 0)
         //                Utility.DelayAction.Add(delay * 1000, () => Champion.Q.Cast(args.EndPos));

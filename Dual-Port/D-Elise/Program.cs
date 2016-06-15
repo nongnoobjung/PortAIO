@@ -488,7 +488,7 @@ namespace D_Elise
                 {
                     _spiderW.Cast();
                 }
-                if (hero.IsValidTarget(_spiderE.Range) && _player.Distance(target) > _spiderQ.Range
+                if (hero.IsValidTarget(_spiderE.Range) && _player.LSDistance(target) > _spiderQ.Range
                     && getCheckBoxItem(comboMenu, "UseSpiderE") && _spiderE.IsReady() && !_spiderQ.IsReady())
                 {
                     _spiderE.Cast(hero);
@@ -556,12 +556,12 @@ namespace D_Elise
                     if (_human)
                     {
                         if (jungleQ && _humanQ.IsReady() && minion.IsValidTarget()
-                            && _player.Distance(minion) <= _humanQ.Range)
+                            && _player.LSDistance(minion) <= _humanQ.Range)
                         {
                             _humanQ.Cast(minion);
                         }
                         if (jungleW && _humanW.IsReady() && !_humanQ.IsReady() && minion.IsValidTarget()
-                            && _player.Distance(minion) <= _humanW.Range)
+                            && _player.LSDistance(minion) <= _humanW.Range)
                         {
                             _humanW.Cast(minion);
                         }
@@ -575,12 +575,12 @@ namespace D_Elise
                     if (_spider)
                     {
                         if (spiderjungleQ && _spiderQ.IsReady() && minion.IsValidTarget()
-                            && _player.Distance(minion) <= _spiderQ.Range)
+                            && _player.LSDistance(minion) <= _spiderQ.Range)
                         {
                             _spiderQ.Cast(minion);
                         }
                         if (spiderjungleW && _spiderW.IsReady() && minion.IsValidTarget()
-                            && _player.Distance(minion) <= 150)
+                            && _player.LSDistance(minion) <= 150)
                         {
                             Orbwalker.DisableAttacking = false;
                             _spiderW.Cast();
@@ -619,12 +619,12 @@ namespace D_Elise
                         if (_human)
                         {
                             if (useHumQ && _humanQ.IsReady() && minion.IsValidTarget()
-                                && _player.Distance(minion) <= _humanQ.Range)
+                                && _player.LSDistance(minion) <= _humanQ.Range)
                             {
                                 _humanQ.Cast(minion);
                             }
                             if (useHumW && _humanW.IsReady() && minion.IsValidTarget()
-                                && _player.Distance(minion) <= _humanW.Range)
+                                && _player.LSDistance(minion) <= _humanW.Range)
                             {
                                 _humanW.Cast(minion);
                             }
@@ -637,12 +637,12 @@ namespace D_Elise
                         if (_spider)
                         {
                             if (useSpiQFarm && _spiderQ.IsReady() && minion.IsValidTarget()
-                                && _player.Distance(minion) <= _spiderQ.Range)
+                                && _player.LSDistance(minion) <= _spiderQ.Range)
                             {
                                 _spiderQ.Cast(minion);
                             }
                             if (useSpiWFarm && _spiderW.IsReady() && minion.IsValidTarget()
-                                && _player.Distance(minion) <= 125)
+                                && _player.LSDistance(minion) <= 125)
                             {
                                 _spiderW.Cast();
                             }
@@ -655,13 +655,13 @@ namespace D_Elise
                         {
                             if (useHumQ && _player.GetSpellDamage(minion, SpellSlot.Q) > minion.Health
                                 && _humanQ.IsReady() && minion.IsValidTarget()
-                                && _player.Distance(minion) <= _humanQ.Range)
+                                && _player.LSDistance(minion) <= _humanQ.Range)
                             {
                                 _humanQ.Cast(minion);
                             }
                             if (useHumW && _player.GetSpellDamage(minion, SpellSlot.W) > minion.Health
                                 && _humanW.IsReady() && minion.IsValidTarget()
-                                && _player.Distance(minion) <= _humanW.Range)
+                                && _player.LSDistance(minion) <= _humanW.Range)
                             {
                                 _humanW.Cast(minion);
                             }
@@ -675,12 +675,12 @@ namespace D_Elise
                         {
                             if (useSpiQFarm && _spiderQ.IsReady()
                                 && _player.GetSpellDamage(minion, SpellSlot.Q) > minion.Health && _spiderQ.IsReady()
-                                && minion.IsValidTarget() && _player.Distance(minion) <= _spiderQ.Range)
+                                && minion.IsValidTarget() && _player.LSDistance(minion) <= _spiderQ.Range)
                             {
                                 _spiderQ.Cast(minion);
                             }
                             if (useSpiQFarm && _spiderW.IsReady() && minion.IsValidTarget()
-                                && _player.Distance(minion) <= 125)
+                                && _player.LSDistance(minion) <= 125)
                             {
                                 _spiderW.Cast();
                             }
@@ -861,9 +861,9 @@ namespace D_Elise
                     _player.ServerPosition.LSTo2D(),
                     col.Position.LSTo2D());
                 if (segment.IsOnSegment
-                    && target.ServerPosition.LSTo2D().Distance(segment.SegmentPoint) <= GetHitBox(col) + 40)
+                    && target.ServerPosition.LSTo2D().LSDistance(segment.SegmentPoint) <= GetHitBox(col) + 40)
                 {
-                    if (col.Distance(_player.Position) < _smite.Range
+                    if (col.LSDistance(_player.Position) < _smite.Range
                         && col.Health < _player.GetSummonerSpellDamage(col, LeagueSharp.Common.Damage.SummonerSpell.Smite))
                     {
                         _player.Spellbook.CastSpell(_smiteSlot, col);

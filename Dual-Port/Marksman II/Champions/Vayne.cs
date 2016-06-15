@@ -127,7 +127,7 @@ namespace Marksman.Champions
 
                         case 3:
                         {
-                            if (t.Distance(ObjectManager.Player.Position) > Orbwalking.GetRealAutoAttackRange(null) && Q.IsPositionSafe(t.Position.To2D()))
+                            if (t.LSDistance(ObjectManager.Player.Position) > Orbwalking.GetRealAutoAttackRange(null) && Q.IsPositionSafe(t.Position.To2D()))
                             {
                                 Q.Cast(t.Position);
                             }
@@ -258,7 +258,7 @@ namespace Marksman.Champions
                         {
                             CastE(jungleMobs);
 
-                            if (ObjectManager.Player.Distance(jungleMobs) < ObjectManager.Player.AttackRange/2)
+                            if (ObjectManager.Player.LSDistance(jungleMobs) < ObjectManager.Player.AttackRange/2)
                             {
                                 E.CastOnUnit(jungleMobs);
                             }

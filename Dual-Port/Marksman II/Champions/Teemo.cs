@@ -30,7 +30,7 @@ namespace Marksman.Champions
                              sender.Buffs.Where(
                                  s =>
                                  sender.Team != ObjectManager.Player.Team
-                                 && sender.Distance(ObjectManager.Player.Position) < R.Range)
+                                 && sender.LSDistance(ObjectManager.Player.Position) < R.Range)
                          from b in new[]
                                            {
                                                "teleport", /* Teleport */ "pantheon_grandskyfall_jump", /* Pantheon */ 

@@ -93,7 +93,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoPoppy
                 if (selectedTarget.BadaoIsValidTarget(BadaoMainVariables.E.Range)
                     && !Orbwalking.InAutoAttackRange(selectedTarget)
                     && LeagueSharp.Common.Prediction.GetPrediction(selectedTarget, 0.5f).UnitPosition.LSDistance(ObjectManager.Player.Position)
-                    > selectedTarget.Distance(ObjectManager.Player.Position) + 20)
+                    > selectedTarget.LSDistance(ObjectManager.Player.Position) + 20)
                 {
                     BadaoMainVariables.E.Cast(selectedTarget);
                 }

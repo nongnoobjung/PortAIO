@@ -192,13 +192,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(maxGrab, DamageType.Physical);
 
-                if (t.IsValidTarget(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.ChampionName) && Player.Distance(t.ServerPosition) > minGrab)
+                if (t.IsValidTarget(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.ChampionName) && Player.LSDistance(t.ServerPosition) > minGrab)
                     Program.CastSpell(Q, t);
             }
 
             foreach (var t in Program.Enemies.Where(t => t.IsValidTarget(maxGrab) && getCheckBoxItem(qMenu, "grab" + t.ChampionName)))
             {
-                if (!t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && Player.Distance(t.ServerPosition) > minGrab)
+                if (!t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && Player.LSDistance(t.ServerPosition) > minGrab)
                 {
                     if (Program.Combo && !ts)
                         Program.CastSpell(Q, t);

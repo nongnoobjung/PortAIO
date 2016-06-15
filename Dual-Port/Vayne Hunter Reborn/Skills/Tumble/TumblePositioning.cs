@@ -56,7 +56,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
 
             if (position.UnderAllyTurret_Ex())
             {
-                var nearestAllyTurret = ObjectManager.Get<Obj_AI_Turret>().Where(a => a.IsAlly).OrderBy(d => d.Distance(position, true)).FirstOrDefault();
+                var nearestAllyTurret = ObjectManager.Get<Obj_AI_Turret>().Where(a => a.IsAlly).OrderBy(d => d.LSDistance(position, true)).FirstOrDefault();
 
                 if (nearestAllyTurret != null)
                 {
@@ -84,8 +84,8 @@ namespace VayneHunter_Reborn.Skills.Tumble
                     }
 
                     var closeEnemies =
-                    HeroManager.Enemies.FindAll(en => en.IsValidTarget(1500f) && !(en.Distance(ObjectManager.Player.ServerPosition) < en.AttackRange + 65f))
-                    .OrderBy(en => en.Distance(position));
+                    HeroManager.Enemies.FindAll(en => en.IsValidTarget(1500f) && !(en.LSDistance(ObjectManager.Player.ServerPosition) < en.AttackRange + 65f))
+                    .OrderBy(en => en.LSDistance(position));
 
                     if (
                         !closeEnemies.All(
@@ -101,7 +101,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 else
                 {
                     var closeEnemies =
-                    HeroManager.Enemies.FindAll(en => en.IsValidTarget(1500f)).OrderBy(en => en.Distance(position));
+                    HeroManager.Enemies.FindAll(en => en.IsValidTarget(1500f)).OrderBy(en => en.LSDistance(position));
                     if (closeEnemies.Any())
                     {
                         QEnemiesCheck =

@@ -223,7 +223,7 @@ namespace UnderratedAIO.Champions
             if (getCheckBoxItem(comboMenu, "usee") && checkFuryMode(SpellSlot.E, target) && !lastE.Equals(0) &&
                 (eDmg + player.GetAutoAttackDamage(target) > target.Health ||
                  (((W.IsReady() && canBeOpWIthQ(target.Position) && !rene) ||
-                   (distance < target.Distance(player.Position.LSExtend(target.Position, E.Range)) - distance) ||
+                   (distance < target.LSDistance(player.Position.LSExtend(target.Position, E.Range)) - distance) ||
                    player.LSDistance(target) > E.Range - 100))))
             {
                 var time = System.Environment.TickCount - lastE;

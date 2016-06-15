@@ -45,7 +45,7 @@ namespace VayneHunter_Reborn.Utility.Helpers
 
         public static bool IsJ4Flag(this Vector3 endPosition, Obj_AI_Base target)
         {
-            return getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.condemn.condemnflag") && ObjectManager.Get<Obj_AI_Base>().Any(m => m.Distance(endPosition) <= target.BoundingRadius && m.Name == "Beacon");
+            return getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.condemn.condemnflag") && ObjectManager.Get<Obj_AI_Base>().Any(m => m.LSDistance(endPosition) <= target.BoundingRadius && m.Name == "Beacon");
         }
 
         public static bool Has2WStacks(this AIHeroClient target)

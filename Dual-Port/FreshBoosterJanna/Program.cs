@@ -192,7 +192,7 @@ namespace FreshBooster.Champion
                 }
                 if (getCheckBoxItem(miscMenu, "Janna_AutoREnable"))
                 {
-                    var AutoR = ObjectManager.Get<AIHeroClient>().OrderByDescending(x => x.Health).FirstOrDefault(x => x.HealthPercent < getSliderItem(miscMenu, "Janna_AutoRHP") && x.Distance(Player.ServerPosition) < _R.Range && !x.IsDead && x.IsAlly);
+                    var AutoR = ObjectManager.Get<AIHeroClient>().OrderByDescending(x => x.Health).FirstOrDefault(x => x.HealthPercent < getSliderItem(miscMenu, "Janna_AutoRHP") && x.LSDistance(Player.ServerPosition) < _R.Range && !x.IsDead && x.IsAlly);
                     if (AutoR != null && _R.IsReady() && !Player.IsRecalling())
                     {
                         _R.Cast(true);
@@ -202,7 +202,7 @@ namespace FreshBooster.Champion
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee)) // Flee
                 {
                    EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                    if (WTarget != null && _W.IsReady() && WTarget.Distance(Player.ServerPosition) < 400)
+                    if (WTarget != null && _W.IsReady() && WTarget.LSDistance(Player.ServerPosition) < 400)
                         _W.CastOnUnit(WTarget, true);
                 }
 
@@ -237,14 +237,14 @@ namespace FreshBooster.Champion
         {
             try
             {
-                if (getCheckBoxItem(miscMenu, "Janna_GapQ") && _Q.IsReady() && gapcloser.Sender.ServerPosition.Distance(Player.ServerPosition) < 850 && !_Q.IsCharging)
+                if (getCheckBoxItem(miscMenu, "Janna_GapQ") && _Q.IsReady() && gapcloser.Sender.ServerPosition.LSDistance(Player.ServerPosition) < 850 && !_Q.IsCharging)
                 {
                     _Q.Cast(gapcloser.Sender.ServerPosition, true);
                     QSpell = true;
                     SpellTime = TickCount(1000);
                 }
 
-                if (getCheckBoxItem(miscMenu, "Janna_GapR") && _R.IsReady() && gapcloser.Sender.ServerPosition.Distance(Player.ServerPosition) < 875 && SpellTime < Environment.TickCount && !Player.IsRecalling())
+                if (getCheckBoxItem(miscMenu, "Janna_GapR") && _R.IsReady() && gapcloser.Sender.ServerPosition.LSDistance(Player.ServerPosition) < 875 && SpellTime < Environment.TickCount && !Player.IsRecalling())
                 {
                     _R.Cast(true);
                     RTime = TickCount(2000);
@@ -273,23 +273,23 @@ namespace FreshBooster.Champion
                         var StartPos = args.Start;
                         var EndPos = args.End;
                         var NonTRange = new LeagueSharp.Common.Geometry.Polygon.Rectangle(StartPos, EndPos, sender.BoundingRadius + 30);
-                        var Target = HeroManager.Allies.FirstOrDefault(f => f.Position.Distance(Player.Position) <= _E.Range && NonTRange.IsInside(f.Position));
+                        var Target = HeroManager.Allies.FirstOrDefault(f => f.Position.LSDistance(Player.Position) <= _E.Range && NonTRange.IsInside(f.Position));
                         if (Target == Player && getCheckBoxItem(miscMenu, "Janna_AutoE1")) return;
                         if (Target != null)
                         {
                             _E.CastOnUnit(Target, true);
                             return;
                         }
-                        if (args.Target != null && args.Target.Position.Distance(Player.Position) <= _E.Range && args.Target is AIHeroClient)
+                        if (args.Target != null && args.Target.Position.LSDistance(Player.Position) <= _E.Range && args.Target is AIHeroClient)
                         {
-                            var ShieldTarget = HeroManager.Allies.FirstOrDefault(f => f.Position.Distance(args.Target.Position) <= 10);
+                            var ShieldTarget = HeroManager.Allies.FirstOrDefault(f => f.Position.LSDistance(args.Target.Position) <= 10);
                             _E.CastOnUnit(ShieldTarget, true);
                             return;
                         }
                     }
                     if (sender.IsAlly && args.Target is AIHeroClient)
                     {
-                        if (sender.Position.Distance(Player.Position) <= _E.Range && args.Target != null && args.SData.Name.ToLower().Contains("attack"))
+                        if (sender.Position.LSDistance(Player.Position) <= _E.Range && args.Target != null && args.SData.Name.ToLower().Contains("attack"))
                         {
                             _E.CastOnUnit(sender, true);
                             return;
@@ -313,14 +313,14 @@ namespace FreshBooster.Champion
             {
                 if (!sender.IsEnemy || !sender.IsValid<AIHeroClient>())
                     return;
-                if (getCheckBoxItem(miscMenu, "Janna_InterQ") && _Q.IsReady() && sender.ServerPosition.Distance(Player.ServerPosition) < 850 && !_Q.IsCharging)
+                if (getCheckBoxItem(miscMenu, "Janna_InterQ") && _Q.IsReady() && sender.ServerPosition.LSDistance(Player.ServerPosition) < 850 && !_Q.IsCharging)
                 {
                     _Q.Cast(sender.ServerPosition, true);
                     QSpell = true;
                     SpellTime = TickCount(1000);
                 }
 
-                if (getCheckBoxItem(miscMenu, "Janna_InterR") && _R.IsReady() && sender.ServerPosition.Distance(Player.ServerPosition) < 875 && SpellTime < Environment.TickCount && !Player.IsRecalling())
+                if (getCheckBoxItem(miscMenu, "Janna_InterR") && _R.IsReady() && sender.ServerPosition.LSDistance(Player.ServerPosition) < 875 && SpellTime < Environment.TickCount && !Player.IsRecalling())
                 {
                     _R.Cast(true);
                     RTime = TickCount(2000);

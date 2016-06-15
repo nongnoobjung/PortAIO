@@ -1108,7 +1108,7 @@ namespace KurisuRiven
 
                 if (Utils.GameTimeTickCount - lastw < 500 && Utils.GameTimeTickCount - lasthd < 1000)
                 {
-                    if (unit.Distance(player.ServerPosition) <= q.Range + 90 && q.IsReady())
+                    if (unit.LSDistance(player.ServerPosition) <= q.Range + 90 && q.IsReady())
                     {
                         DoOneQ(unit.ServerPosition);
                     }

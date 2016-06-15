@@ -129,7 +129,7 @@
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             if (!gapcloser.Sender.IsValidTarget(spells[Spells.E].Range)
-                || gapcloser.Sender.Distance(ObjectManager.Player) > spells[Spells.E].Range)
+                || gapcloser.Sender.LSDistance(ObjectManager.Player) > spells[Spells.E].Range)
             {
                 return;
             }
@@ -219,9 +219,9 @@
                 }
             }
 
-            if ((RCombo._index != 0 && target.Distance(RCombo._position) > 1000))
+            if ((RCombo._index != 0 && target.LSDistance(RCombo._position) > 1000))
             {
-                if (Utils.TickCount - RCombo.CastSpell <= Math.Min(2500, target.Distance(RCombo._position) - 1000))
+                if (Utils.TickCount - RCombo.CastSpell <= Math.Min(2500, target.LSDistance(RCombo._position) - 1000))
                 {
                     return;
                 }
@@ -259,8 +259,8 @@
 
                 case 4:
 
-                    if (Game.CursorPos.Distance(target.ServerPosition) < ultRadius
-                        && ObjectManager.Player.Distance(target.ServerPosition) < spells[Spells.R].Range)
+                    if (Game.CursorPos.LSDistance(target.ServerPosition) < ultRadius
+                        && ObjectManager.Player.LSDistance(target.ServerPosition) < spells[Spells.R].Range)
                     {
                         spells[Spells.R].Cast(target);
                     }
@@ -286,7 +286,7 @@
             var comboW = getCheckBoxItem(ElXerathMenu.cMenu, "ElXerath.Combo.W");
             var comboE = getCheckBoxItem(ElXerathMenu.cMenu, "ElXerath.Combo.E");
 
-            if (comboE && spells[Spells.E].IsReady() && Player.Distance(target) < spells[Spells.E].Range)
+            if (comboE && spells[Spells.E].IsReady() && Player.LSDistance(target) < spells[Spells.E].Range)
             {
                 spells[Spells.E].Cast(target);
             }
@@ -317,7 +317,7 @@
                 }
             }
 
-            if (Player.Distance(target) <= 600 && IgniteDamage(target) >= target.Health
+            if (Player.LSDistance(target) <= 600 && IgniteDamage(target) >= target.Health
                 && getCheckBoxItem(ElXerathMenu.miscMenu, "ElXerath.Ignite"))
             {
                 Player.Spellbook.CastSpell(_ignite, target);
@@ -421,9 +421,9 @@
 
             if (spells[Spells.Q].IsCharging)
             {
-                if (minions.Max(x => x.Distance(Player, true)) < spells[Spells.Q].RangeSqr)
+                if (minions.Max(x => x.LSDistance(Player, true)) < spells[Spells.Q].RangeSqr)
                 {
-                    if (minions.Max(x => x.Distance(Player, true)) < spells[Spells.Q].RangeSqr)
+                    if (minions.Max(x => x.LSDistance(Player, true)) < spells[Spells.Q].RangeSqr)
                     {
                         spells[Spells.Q].Cast(spells[Spells.Q].GetLineFarmLocation(minions).Position);
                     }
@@ -505,7 +505,7 @@
                 if (spells[Spells.Q].IsCharging)
                 {
                     var bestFarmPos = spells[Spells.Q].GetLineFarmLocation(minions);
-                    if (minions.Count == minions.Count(x => Player.Distance(x) < spells[Spells.Q].Range)
+                    if (minions.Count == minions.Count(x => Player.LSDistance(x) < spells[Spells.Q].Range)
                         && bestFarmPos.Position.IsValid() && bestFarmPos.MinionsHit > 0)
                     {
                         spells[Spells.Q].Cast(bestFarmPos.Position);

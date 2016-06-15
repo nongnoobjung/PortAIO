@@ -67,7 +67,7 @@ namespace Marksman.Champions
                                  1.6*
                                  (ObjectManager.Player.BaseAttackDamage + ObjectManager.Player.FlatPhysicalDamageMod);
 
-                var xDis = ObjectManager.Player.Distance(t)/Q.ChargedMaxRange;
+                var xDis = ObjectManager.Player.LSDistance(t)/Q.ChargedMaxRange;
                 return (float) fxQDamage2*xDis;
                 */
                 var fxQDamage2 = ObjectManager.Player.GetSpellDamage(t, SpellSlot.Q, 1);
@@ -94,13 +94,13 @@ namespace Marksman.Champions
 
             if (ObjectManager.Player.GetSpellSlot("summonerdot") != SpellSlot.Unknown &&
                 ObjectManager.Player.Spellbook.CanUseSpell(ObjectManager.Player.GetSpellSlot("summonerdot")) ==
-                SpellState.Ready && ObjectManager.Player.Distance(t) < 550)
+                SpellState.Ready && ObjectManager.Player.LSDistance(t) < 550)
                 fComboDamage += (float) ObjectManager.Player.GetSummonerSpellDamage(t, Damage.SummonerSpell.Ignite);
 
-            if (Items.CanUseItem(3144) && ObjectManager.Player.Distance(t) < 550)
+            if (Items.CanUseItem(3144) && ObjectManager.Player.LSDistance(t) < 550)
                 fComboDamage += (float) ObjectManager.Player.GetItemDamage(t, Damage.DamageItems.Bilgewater);
 
-            if (Items.CanUseItem(3153) && ObjectManager.Player.Distance(t) < 550)
+            if (Items.CanUseItem(3153) && ObjectManager.Player.LSDistance(t) < 550)
                 fComboDamage += (float) ObjectManager.Player.GetItemDamage(t, Damage.DamageItems.Botrk);
 
             return fComboDamage;
@@ -147,7 +147,7 @@ namespace Marksman.Champions
             {
                 Vector3 drawPosition;
 
-                if (ObjectManager.Player.Distance(Game.CursorPos) < R.Range - 300f)
+                if (ObjectManager.Player.LSDistance(Game.CursorPos) < R.Range - 300f)
                     drawPosition = Game.CursorPos;
                 else
                     drawPosition = ObjectManager.Player.Position +
@@ -186,7 +186,7 @@ namespace Marksman.Champions
             {
                 Vector3 searchPos;
 
-                if (ObjectManager.Player.Distance(Game.CursorPos) < R.Range - 300f)
+                if (ObjectManager.Player.LSDistance(Game.CursorPos) < R.Range - 300f)
                     searchPos = Game.CursorPos;
                 else
                     searchPos = ObjectManager.Player.Position +
@@ -194,7 +194,7 @@ namespace Marksman.Champions
 
                 var rTarget =
                     ObjectManager.Get<Obj_AI_Hero>()
-                        .Where(hero => hero.IsValidTarget(R.Range) && hero.Distance(searchPos) < 300f)
+                        .Where(hero => hero.IsValidTarget(R.Range) && hero.LSDistance(searchPos) < 300f)
                         .OrderByDescending(TargetSelector.GetPriority)
                         .First();
 

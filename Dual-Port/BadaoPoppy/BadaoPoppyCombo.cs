@@ -75,7 +75,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoPoppy
                 var target = TargetSelector.GetTarget(BadaoMainVariables.E.Range, DamageType.Physical);
                 if (target.BadaoIsValidTarget() && !Orbwalking.InAutoAttackRange(target)
                     && LeagueSharp.Common.Prediction.GetPrediction(target,0.5f).UnitPosition.LSDistance(ObjectManager.Player.Position)
-                    > target.Distance(ObjectManager.Player.Position) + 20)
+                    > target.LSDistance(ObjectManager.Player.Position) + 20)
                 {
                     BadaoMainVariables.E.Cast(target);
                 }

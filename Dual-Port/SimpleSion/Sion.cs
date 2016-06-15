@@ -141,7 +141,7 @@ namespace Sion
                             var A = points[i];
                             var B = points[i == points.Count - 1 ? 0 : i + 1];
 
-                            if (qTarget.ServerPosition.To2D().Distance(A, B, true, true) < 50 * 50)
+                            if (qTarget.ServerPosition.To2D().LSDistance(A, B, true, true) < 50 * 50)
                             {
                                 Q.Cast(qTarget, true);
                             }

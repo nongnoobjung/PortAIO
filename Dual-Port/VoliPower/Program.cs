@@ -115,7 +115,7 @@ namespace VoliPower
 
         static void Interrupter_OnPossibleToInterrupt(Obj_AI_Base unit, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (args.DangerLevel >= Interrupter2.DangerLevel.High && unit.Distance(Player.Position) <= _q.Range)
+            if (args.DangerLevel >= Interrupter2.DangerLevel.High && unit.LSDistance(Player.Position) <= _q.Range)
             {
                 _q.Cast(unit);
             }
@@ -263,7 +263,7 @@ namespace VoliPower
             #region Q-Cast
             if (vQ)
             {
-                if (tsQ.Distance(Player.Position) >= 2500 && tsQ.Direction == Player.Direction && tsQ.MoveSpeed > Player.MoveSpeed &&
+                if (tsQ.LSDistance(Player.Position) >= 2500 && tsQ.Direction == Player.Direction && tsQ.MoveSpeed > Player.MoveSpeed &&
                     tsQ.MoveSpeed < Player.MoveSpeed * 1.3)
                 {
                     _q.Cast(tsQ);
@@ -303,7 +303,7 @@ namespace VoliPower
             #region E-Cast
             if (vE)
             {
-                if (tsQ.IsValidTarget(_e.Range) && tsQ.Distance(Player.Position) <= _w.Range)
+                if (tsQ.IsValidTarget(_e.Range) && tsQ.LSDistance(Player.Position) <= _w.Range)
                 {
                     _e.Cast();
                 }

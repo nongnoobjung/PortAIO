@@ -177,7 +177,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var minionsList = Cache.GetMinions(Player.ServerPosition, Q.Range);
 
-                if (minionsList.Any(x => Player.Distance(x.ServerPosition) > 300 && x.Health < Q.GetDamage(x) * 0.6))
+                if (minionsList.Any(x => Player.LSDistance(x.ServerPosition) > 300 && x.Health < Q.GetDamage(x) * 0.6))
                     Q.Cast();
 
             }

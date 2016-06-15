@@ -226,7 +226,7 @@ namespace HeavenStrikeReksaj
                 {
                     var target = TargetSelector.GetTarget(600, DamageType.Physical);
                     if (target.IsValidTarget() && !target.IsZombie && Prediction.GetPrediction(target, 10).UnitPosition
-                        .Distance(Player.Position) > target.Distance(Player.Position))
+                        .LSDistance(Player.Position) > target.LSDistance(Player.Position))
                     {
                         var x = Prediction.GetPrediction(target, 500).UnitPosition;
                         var y = Player.Position.Extend(x, _e2.Range);

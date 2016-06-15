@@ -108,7 +108,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void LogicR()
         {
-            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && ally.HealthPercent < 70 && Player.ServerPosition.Distance(ally.ServerPosition) < R.Range && getCheckBoxItem(rMenu, "Rally" + ally.ChampionName)))
+            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && ally.HealthPercent < 70 && Player.ServerPosition.LSDistance(ally.ServerPosition) < R.Range && getCheckBoxItem(rMenu, "Rally" + ally.ChampionName)))
             {
                 double dmg = OktwCommon.GetIncomingDamage(ally, 1);
                 var enemys = ally.CountEnemiesInRange(800);
@@ -146,7 +146,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 AIHeroClient lowest = Player;
 
-                foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && getCheckBoxItem(wMenu, "Wally" + ally.ChampionName) && Player.Distance(ally.Position) < W.Range))
+                foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && getCheckBoxItem(wMenu, "Wally" + ally.ChampionName) && Player.LSDistance(ally.Position) < W.Range))
                 {
                     if (ally.Health < lowest.Health)
                         lowest = ally;
@@ -167,7 +167,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     var t = TargetSelector.GetTarget(1000, DamageType.Magical);
                     if (t.IsValidTarget())
                     {
-                        if (Program.Combo && Player.Mana > WMANA + QMANA + EMANA && Player.Distance(t.Position) > Q.Range)
+                        if (Program.Combo && Player.Mana > WMANA + QMANA + EMANA && Player.LSDistance(t.Position) > Q.Range)
                             W.CastOnUnit(Player);
                     }
                 }

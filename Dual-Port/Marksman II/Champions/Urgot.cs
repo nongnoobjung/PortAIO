@@ -51,7 +51,7 @@ namespace Marksman.Champions
                         ObjectManager.Get<Obj_AI_Hero>()
                             .Where(
                                 enemy =>
-                                    enemy.IsEnemy && ObjectManager.Player.Distance(enemy) <= QEx.Range &&
+                                    enemy.IsEnemy && ObjectManager.Player.LSDistance(enemy) <= QEx.Range &&
                                     enemy.HasBuff("urgotcorrosivedebuff"))
                         select enemy).FirstOrDefault();
             }
@@ -133,7 +133,7 @@ namespace Marksman.Champions
             {
                 var t = TargetSelector.GetTarget(R.Range, TargetSelector.DamageType.Physical);
                 if (t != null && UnderAllyTurret(ObjectManager.Player) && !UnderAllyTurret(t) &&
-                    ObjectManager.Player.Distance(t) > 200)
+                    ObjectManager.Player.LSDistance(t) > 200)
                 {
                     R.CastOnUnit(t);
                 }
@@ -157,8 +157,8 @@ namespace Marksman.Champions
                     ObjectManager.Get<Obj_AI_Hero>()
                         .Where(
                             ally =>
-                                ally.IsAlly && !ally.IsDead && ObjectManager.Player.Distance(ally) <= R.Range &&
-                                t.Distance(ally) > t.Distance(ObjectManager.Player));
+                                ally.IsAlly && !ally.IsDead && ObjectManager.Player.LSDistance(ally) <= R.Range &&
+                                t.LSDistance(ally) > t.LSDistance(ObjectManager.Player));
 
                 if (Ally.Count() >= Program.ChampionClass.GetValue<Slider>("UltOp2Count").Value)
                     R.CastOnUnit(t);

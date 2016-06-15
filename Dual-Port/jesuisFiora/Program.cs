@@ -181,8 +181,8 @@ namespace jesuisFiora
             {
                 return (from point in GetQPolygon(qPos.Position).Points
                         from vitalPoint in
-                            qPos.Polygon.Points.OrderBy(p => p.DistanceToPlayer()).ThenByDescending(p => p.Distance(target))
-                        where point.Distance(vitalPoint) < 20
+                            qPos.Polygon.Points.OrderBy(p => p.DistanceToPlayer()).ThenByDescending(p => p.LSDistance(target))
+                        where point.LSDistance(vitalPoint) < 20
                         select point).Any() && Q.Cast(qPos.Position);
             }
 
@@ -330,7 +330,7 @@ namespace jesuisFiora
                 return false;
             }
 
-            if (!Player.LSIsDashing() && Player.GetWaypoints().Last().Distance(Game.CursorPos) > 100)
+            if (!Player.LSIsDashing() && Player.GetWaypoints().Last().LSDistance(Game.CursorPos) > 100)
             {
                 EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
             }
@@ -480,7 +480,7 @@ namespace jesuisFiora
             }
 
             var underTurret = getCheckBoxItem(passiveM, "OrbwalkTurret") && pos.UnderTurret(true);
-            var outsideAARange = getCheckBoxItem(passiveM, "OrbwalkAARange") && Player.Distance(pos) > FioraAutoAttackRange + 250 + (passive.Type.Equals(FioraPassive.PassiveType.UltPassive) ? 50 : 0);
+            var outsideAARange = getCheckBoxItem(passiveM, "OrbwalkAARange") && Player.LSDistance(pos) > FioraAutoAttackRange + 250 + (passive.Type.Equals(FioraPassive.PassiveType.UltPassive) ? 50 : 0);
             if (underTurret || outsideAARange)
             {
                 return;
@@ -489,7 +489,7 @@ namespace jesuisFiora
             var path = Player.GetPath(pos);
             var point = path.Length < 3 ? pos : path.Skip(path.Length / 2).FirstOrDefault();
             //  Console.WriteLine(path.Length);
-            Console.WriteLine("ORBWALK TO PASSIVE: " + Player.Distance(pos));
+            Console.WriteLine("ORBWALK TO PASSIVE: " + Player.LSDistance(pos));
             Orbwalker.OrbwalkTo(target.IsMoving ? point : pos);
         }
 
@@ -842,14 +842,14 @@ namespace jesuisFiora
                 CastQ(target, target.GetFurthestPassive());
 
                 /*  var path = target.GetWaypoints();
-                if (path.Count == 1 || Player.Distance(target) < 700)
+                if (path.Count == 1 || Player.LSDistance(target) < 700)
                 {
                     CastQ(target);
                     return;
                 }
 
-                var d = target.Distance(path[1]);
-                var d2 = Player.Distance(path[1]);
+                var d = target.LSDistance(path[1]);
+                var d2 = Player.LSDistance(path[1]);
                 var t = d / target.MoveSpeed;
                 var dT = Q.Delay + Game.Ping / 2000f - t;
                 if ((dT > .2f || (d2 < 690 && dT > -1)) && CastQ(target))
@@ -911,7 +911,7 @@ namespace jesuisFiora
             {
                 if (unit.ChampionName.Equals("Bard") && args.End.DistanceToPlayer() < 300)
                 {
-                    LeagueSharp.Common.Utility.DelayAction.Add(400 + (int)(unit.Distance(Player) / 7f), () => CastW(castUnit));
+                    LeagueSharp.Common.Utility.DelayAction.Add(400 + (int)(unit.LSDistance(Player) / 7f), () => CastW(castUnit));
                 }
                 else if (unit.ChampionName.Equals("Riven") && args.End.DistanceToPlayer() < 260)
                 {
@@ -965,7 +965,7 @@ namespace jesuisFiora
             }
             else if (type.Equals(SpellDataTargetType.SelfAoe) || type.Equals(SpellDataTargetType.Self))
             {
-                var d = args.End.Distance(Player.ServerPosition);
+                var d = args.End.LSDistance(Player.ServerPosition);
                 var p = args.SData.CastRadius > 5000 ? args.SData.CastRange : args.SData.CastRadius;
                 Console.WriteLine(d + " " + " " + p);
                 if (d < p)

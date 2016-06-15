@@ -897,7 +897,7 @@ namespace Leblanc.Modes
             }
 
 
-            //foreach (var al in ListWJumpPositions.OrderBy(al => al.Distance(t.Position)))
+            //foreach (var al in ListWJumpPositions.OrderBy(al => al.LSDistance(t.Position)))
             //{
             //    Render.Circle.DrawCircle(al.To3D(), 105f, System.Drawing.Color.White);
             //}

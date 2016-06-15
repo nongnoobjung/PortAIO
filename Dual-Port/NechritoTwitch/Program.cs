@@ -77,7 +77,7 @@ namespace Nechrito_Twitch
 
             if (Spells._e.IsReady() && MenuConfig.EAA)
             {
-                if (!target.IsFacing(Player) && target.Distance(Player) >= Player.AttackRange - 50)
+                if (!target.IsFacing(Player) && target.LSDistance(Player) >= Player.AttackRange - 50)
                 {
                     LeagueSharp.Common.Utility.DelayAction.Add(500, ()=> Chat.Print("Exploit Will NOT Interrupt "));
                     return;

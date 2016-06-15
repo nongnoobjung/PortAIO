@@ -215,7 +215,7 @@
             Interrupter2.InterruptableTargetEventArgs args)
         {
             if (args.DangerLevel != Interrupter2.DangerLevel.High
-                || sender.Distance(this.Player) > spells[Spells.R].Range)
+                || sender.LSDistance(this.Player) > spells[Spells.R].Range)
             {
                 return;
             }
@@ -264,7 +264,7 @@
                 var pred = spells[Spells.R].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.High)
                 {
-                    var hits = HeroManager.Enemies.Where(x => x.Distance(target) <= spells[Spells.R].Width).ToList();
+                    var hits = HeroManager.Enemies.Where(x => x.LSDistance(target) <= spells[Spells.R].Width).ToList();
                     Console.WriteLine(hits.Count);
                     if (hits.Any(hit => hits.Count >= hitByR))
                     {
@@ -273,7 +273,7 @@
                 }
             }
 
-            if (this.Player.Distance(target) <= 600 && this.IgniteDamage(target) >= target.Health && useI)
+            if (this.Player.LSDistance(target) <= 600 && this.IgniteDamage(target) >= target.Health && useI)
             {
                 this.Player.Spellbook.CastSpell(Ignite, target);
             }

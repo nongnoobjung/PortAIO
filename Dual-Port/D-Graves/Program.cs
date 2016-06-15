@@ -315,7 +315,7 @@ namespace D_Graves
         {
             if (_w.IsReady() && gapcloser.Sender.IsValidTarget(_w.Range) && getCheckBoxItem(miscMenu, "Gap_W")) _w.Cast(gapcloser.Sender.IsMelee() ? _player : gapcloser.Sender);
 
-            if (_e.IsReady() && gapcloser.Sender.Distance(_player.ServerPosition) <= 200
+            if (_e.IsReady() && gapcloser.Sender.LSDistance(_player.ServerPosition) <= 200
                 && getCheckBoxItem(miscMenu, "Gap_E"))
             {
                 _e.Cast(ObjectManager.Player.Position.Extend(gapcloser.Sender.Position, -_e.Range));

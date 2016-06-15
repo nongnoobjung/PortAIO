@@ -83,7 +83,7 @@
         {
             return
                 ObjectManager.Get<AIHeroClient>()
-                    .Count(hero => hero.IsEnemy && !hero.IsDead && hero.IsValid && hero.Distance(pos) <= range);
+                    .Count(hero => hero.IsEnemy && !hero.IsDead && hero.IsValid && hero.LSDistance(pos) <= range);
         }
 
         public static float GetComboDamage(Obj_AI_Base enemy)
@@ -167,7 +167,7 @@
                     var midpoint = (Player.ServerPosition + pred.UnitPosition) / 2;
                     var vector2 = midpoint - Vector3.Normalize(pred.UnitPosition - Player.ServerPosition) * 300;
 
-                    if (Player.Distance(target.Position) < 400)
+                    if (Player.LSDistance(target.Position) < 400)
                     {
                         vector1 = midpoint + Vector3.Normalize(pred.UnitPosition - Player.ServerPosition) * 800;
                         if (!IsPassWall(pred.UnitPosition, vector1) && !IsPassWall(pred.UnitPosition, vector2))
@@ -240,7 +240,7 @@
 
             var pred = spells[Spells.R1].GetPrediction(target, true);
 
-            if (Player.Distance(target.Position) < 400)
+            if (Player.LSDistance(target.Position) < 400)
             {
                 var midpoint = (Player.ServerPosition + pred.UnitPosition) / 2;
 
@@ -395,7 +395,7 @@
                 }
             }
 
-            if (Player.Distance(target) <= 600 && IgniteDamage(target) >= target.Health && useI)
+            if (Player.LSDistance(target) <= 600 && IgniteDamage(target) >= target.Health && useI)
             {
                 Player.Spellbook.CastSpell(_ignite, target);
             }

@@ -1054,7 +1054,7 @@ namespace GosuMechanicsYasuo
                         //Get intersection point
                         //  Vector2 intersectionPoint = LineIntersectionPoint(startPos, player.Position.LSTo2D(), endPos, V2E(player.Position, minion.Position, 475));
                         //Time when yasuo will be in intersection point
-                        //  float arrivingTime = Vector2.LSDistance(player.Position.LSTo2D(), intersectionPoint) / currentDashSpeed;
+                        //  float arrivingTime = Vector2.Distance(player.Position.LSTo2D(), intersectionPoint) / currentDashSpeed;
                         //Estimated skillshot position
                         //  Vector2 skillshotPosition = V2E(startPos.To3D(), intersectionPoint.To3D(), speed * arrivingTime);
                         if (skillshot.IsDanger(V2E(player.Position, minion.Position, 475)))

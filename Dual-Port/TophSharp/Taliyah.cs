@@ -123,7 +123,7 @@ namespace TophSharp
 
         private static void OnGapClose(ActiveGapcloser gapcloser)
         {
-            if (gapcloser.End.Distance(Player.Position) <= _w.Range && CanUse(_w, gapcloser.Sender))
+            if (gapcloser.End.LSDistance(Player.Position) <= _w.Range && CanUse(_w, gapcloser.Sender))
             {
                 _w.Cast(gapcloser.End);
             }
@@ -131,7 +131,7 @@ namespace TophSharp
 
         private static void OnDash(Obj_AI_Base sender, Dash.DashItem args)
         {
-            if (Player.Distance(args.EndPos) <= _w.Range && CanUse(_w, args.Unit))
+            if (Player.LSDistance(args.EndPos) <= _w.Range && CanUse(_w, args.Unit))
             {
                 _w.Cast(args.Unit);
             }
@@ -180,7 +180,7 @@ namespace TophSharp
                 {
                     _q.Cast(minion);
                 }
-                if (minion.Health <= _w.GetDamage(minion) && usewlasthit && _w.IsReady() && minion.Distance(Player) <= _w.Range)
+                if (minion.Health <= _w.GetDamage(minion) && usewlasthit && _w.IsReady() && minion.LSDistance(Player) <= _w.Range)
                 {
                     _w.Cast(minion);
                 }
@@ -208,7 +208,7 @@ namespace TophSharp
                 {
                     _q.Cast(minion);
                 }
-                if (minion.Health <= _w.GetDamage(minion) && usewlasthit && _w.IsReady() && minion.Distance(Player) <= _w.Range)
+                if (minion.Health <= _w.GetDamage(minion) && usewlasthit && _w.IsReady() && minion.LSDistance(Player) <= _w.Range)
                 {
                     _w.Cast(minion);
                 }

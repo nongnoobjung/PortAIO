@@ -318,7 +318,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (Player.CountEnemiesInRange(getSliderItem(rMenu, "Renemy")) == 0)
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-                if (t.IsValidTarget() && t.Distance(Player.Position) > Q.Range && t.CountAlliesInRange(getSliderItem(rMenu, "RenemyA")) == 0)
+                if (t.IsValidTarget() && t.LSDistance(Player.Position) > Q.Range && t.CountAlliesInRange(getSliderItem(rMenu, "RenemyA")) == 0)
                 {
                     if (Q.GetDamage(t) + W.GetDamage(t) + Player.GetAutoAttackDamage(t) * 3 > t.Health && t.CountEnemiesInRange(1000) < 3)
                     {

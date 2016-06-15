@@ -80,7 +80,7 @@ namespace iDZEzreal
                 return;
             }
 
-            if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.Distance(ObjectManager.Player.ServerPosition) < 350))
+            if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition) < 350))
                 return;
 
             var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(
@@ -183,7 +183,7 @@ namespace iDZEzreal
                 var target = TargetSelector.GetTarget(Variables.Spells[SpellSlot.Q].Range, DamageType.Physical);
 
                 if (target.IsValidTarget(Variables.Spells[SpellSlot.Q].Range) &&
-                    ObjectManager.Player.Distance(target.ServerPosition) <= Variables.Spells[SpellSlot.Q].Range)
+                    ObjectManager.Player.LSDistance(target.ServerPosition) <= Variables.Spells[SpellSlot.Q].Range)
                 {
                     var prediction = Variables.Spells[SpellSlot.Q].GetSPrediction(target);
                     var castPosition = prediction.CastPosition.LSExtend((Vector2)ObjectManager.Player.Position, -140);
@@ -248,12 +248,12 @@ namespace iDZEzreal
 
                 if (target.IsValidTarget(Variables.Spells[SpellSlot.R].Range)
                     && CanExecuteTarget(target)
-                    && ObjectManager.Player.Distance(target) >= Orbwalking.GetRealAutoAttackRange(null) * 0.80f
+                    && ObjectManager.Player.LSDistance(target) >= Orbwalking.GetRealAutoAttackRange(null) * 0.80f
                     &&
                     !(target.Health + 5 <
                       ObjectManager.Player.GetAutoAttackDamage(target) * 2 +
                       Variables.Spells[SpellSlot.Q].GetDamage(target))
-                    && HeroManager.Enemies.Count(m => m.Distance(target.ServerPosition) < 200f) >= getSliderItem(Variables.comboMenu, "ezreal.combo.r.min"))
+                    && HeroManager.Enemies.Count(m => m.LSDistance(target.ServerPosition) < 200f) >= getSliderItem(Variables.comboMenu, "ezreal.combo.r.min"))
                 {
                     Variables.Spells[SpellSlot.R].SPredictionCast(
                         target, target.IsMoving ? HitChance.VeryHigh : HitChance.High);
@@ -277,7 +277,7 @@ namespace iDZEzreal
                 var target = TargetSelector.GetTarget(Variables.Spells[SpellSlot.Q].Range, DamageType.Physical);
 
                 if (target.IsValidTarget(Variables.Spells[SpellSlot.Q].Range) &&
-                    ObjectManager.Player.Distance(target.ServerPosition) <= Variables.Spells[SpellSlot.Q].Range)
+                    ObjectManager.Player.LSDistance(target.ServerPosition) <= Variables.Spells[SpellSlot.Q].Range)
                 {
                     var prediction = Variables.Spells[SpellSlot.Q].GetSPrediction(target);
                     var castPosition = prediction.CastPosition.Extend((Vector2)ObjectManager.Player.Position, -140);
@@ -327,7 +327,7 @@ namespace iDZEzreal
             var minionHealth = HealthPrediction.GetHealthPrediction(qMinion,
                 ((int)
                     (Variables.Spells[SpellSlot.Q].Delay +
-                     (ObjectManager.Player.Distance(qMinion) / Variables.Spells[SpellSlot.Q].Speed) * 1000f +
+                     (ObjectManager.Player.LSDistance(qMinion) / Variables.Spells[SpellSlot.Q].Speed) * 1000f +
                      Game.Ping / 2f)));
             if (qMinion != null)
             {

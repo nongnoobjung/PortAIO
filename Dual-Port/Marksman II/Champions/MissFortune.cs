@@ -119,7 +119,7 @@ namespace Marksman.Champions
                     var t = TargetSelector.GetTarget(E.Range, TargetSelector.DamageType.Physical);
                     if (t.IsValidTarget())
                     {
-                        if (ObjectManager.Player.Distance(t) > 600)
+                        if (ObjectManager.Player.LSDistance(t) > 600)
                             E.CastIfHitchanceEquals(t, t.Path.Count() > 1 ? HitChance.High : HitChance.Medium);
                         else
                             E.CastIfHitchanceEquals(t, HitChance.Low);
@@ -303,7 +303,7 @@ namespace Marksman.Champions
                             foreach (
                                 var x in
                                     ObjectManager.Get<Obj_AI_Minion>()
-                                        .Where(m => m.IsEnemy && !m.IsDead && m.Distance(locE.Position) < 500))
+                                        .Where(m => m.IsEnemy && !m.IsDead && m.LSDistance(locE.Position) < 500))
                             {
                                 E.Cast(x);
                             }

@@ -160,7 +160,7 @@ namespace EvadeA
                     result.Add(from.LSProjectOn(sideStart, sideEnd).SegmentPoint);
                 }
             }
-            return result.MinOrDefault(vector2 => vector2.LSDistance(from));
+            return result.MinOrDefault(vector2 => Vector2.Distance(from));
         }
 
         /// <summary>

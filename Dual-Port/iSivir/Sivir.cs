@@ -147,7 +147,7 @@ namespace iSivir
                 && getCheckBoxItem(comboMenu, "CaitlynAceintheHoleMissile"))
             {
                 Utility.DelayAction.Add(
-                    (int)(args.StartPosition.Distance(ObjectManager.Player.Position) / 2000f + Game.Ping / 2f), 
+                    (int)(args.StartPosition.LSDistance(ObjectManager.Player.Position) / 2000f + Game.Ping / 2f), 
                     () => Spells[SpellSlot.E].Cast());
             }
         }

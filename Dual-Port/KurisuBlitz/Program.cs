@@ -157,7 +157,7 @@ namespace KurisuBlitzcrank
         {
             if (sender.IsEnemy && sender.IsValidTarget() && getCheckBoxItem(exmenu, "int"))
             {
-                if (R.IsReady() && Player.Distance(sender.ServerPosition) <= R.Range)
+                if (R.IsReady() && Player.LSDistance(sender.ServerPosition) <= R.Range)
                 {
                     if (args.DangerLevel >= Interrupter2.DangerLevel.High)
                     {
@@ -165,7 +165,7 @@ namespace KurisuBlitzcrank
                     }
                 }
 
-                if (Q.IsReady() && Player.Distance(sender.ServerPosition) <= getSliderItem(qsmenu, "maxq"))
+                if (Q.IsReady() && Player.LSDistance(sender.ServerPosition) <= getSliderItem(qsmenu, "maxq"))
                 {
                     if (Player.HealthPercent < getSliderItem(qsmenu, "grabhp"))
                     {
@@ -173,7 +173,7 @@ namespace KurisuBlitzcrank
                     }
 
                     if (!getCheckBoxItem(qsmenu, "blq" + sender.NetworkId) &&
-                        Player.Distance(sender.ServerPosition) > getSliderItem(qsmenu, "minq"))
+                        Player.LSDistance(sender.ServerPosition) > getSliderItem(qsmenu, "minq"))
                     {
                         Q.Cast(sender);
                     }
@@ -201,7 +201,7 @@ namespace KurisuBlitzcrank
                     if (!getCheckBoxItem(qsmenu, "blq" + hero.NetworkId) &&
                          getCheckBoxItem(qsmenu, "auq" + hero.NetworkId))
                     {
-                        if (hero.Distance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
+                        if (hero.LSDistance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
                         {
                             Q.CastIfHitchanceEquals(hero, HitChance.VeryHigh);
                         }
@@ -236,7 +236,7 @@ namespace KurisuBlitzcrank
                 if (!getCheckBoxItem(qsmenu, "blq" + ene.NetworkId) &&
                      getCheckBoxItem(qsmenu, "auq" + ene.NetworkId))
                 {
-                    if (ene.Distance(Player.ServerPosition) > getSliderItem(qsmenu, "minq") && Q.IsReady())
+                    if (ene.LSDistance(Player.ServerPosition) > getSliderItem(qsmenu, "minq") && Q.IsReady())
                     {
                         Q.CastIfHitchanceEquals(ene, HitChance.Dashing, true);
                         Q.CastIfHitchanceEquals(ene, HitChance.Immobile, true);
@@ -257,7 +257,7 @@ namespace KurisuBlitzcrank
                 W.Cast();
             }
 
-            var ene = HeroManager.Enemies.FirstOrDefault(x => x.Distance(Player.ServerPosition) <= E.Range + 200);
+            var ene = HeroManager.Enemies.FirstOrDefault(x => x.LSDistance(Player.ServerPosition) <= E.Range + 200);
             if (E.IsReady() && ene.IsValidTarget())
             {
                 E.Cast();
@@ -294,7 +294,7 @@ namespace KurisuBlitzcrank
 
                 if (!(Player.HealthPercent < getSliderItem(qsmenu, "grabhp")))
                 {
-                    if (QT.IsValidTarget() && QT.Distance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
+                    if (QT.IsValidTarget() && QT.LSDistance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
                     {
                         if (!QT.IsZombie && !QT.IsInvulnerable)
                         {
@@ -320,7 +320,7 @@ namespace KurisuBlitzcrank
             {
                 var ET =
                     HeroManager.Enemies.FirstOrDefault(
-                        x => x.HasBuff("rocketgrab2") || x.Distance(Player.ServerPosition) <= E.Range + 200);
+                        x => x.HasBuff("rocketgrab2") || x.LSDistance(Player.ServerPosition) <= E.Range + 200);
 
                 if (ET != null)
                 {
@@ -359,7 +359,7 @@ namespace KurisuBlitzcrank
 
                 if (!(Player.HealthPercent < getSliderItem(qsmenu, "grabhp")))
                 {
-                    if (QT.IsValidTarget() && QT.Distance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
+                    if (QT.IsValidTarget() && QT.LSDistance(Player.ServerPosition) > getSliderItem(qsmenu, "minq"))
                     {
                         if (!QT.IsZombie && !QT.IsInvulnerable)
                         {

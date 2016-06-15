@@ -135,13 +135,13 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!E.IsReady() || !sender.IsEnemy || sender.IsMinion || args.SData.IsAutoAttack() || !sender.IsValid<AIHeroClient>() || Player.Distance(sender.ServerPosition) > 2000)
+            if (!E.IsReady() || !sender.IsEnemy || sender.IsMinion || args.SData.IsAutoAttack() || !sender.IsValid<AIHeroClient>() || Player.LSDistance(sender.ServerPosition) > 2000)
                 return;
 
             if (eMenu["spell" + args.SData.Name] != null && !getCheckBoxItem(eMenu, "spell" + args.SData.Name))
                 return;
 
-            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && Player.Distance(ally.ServerPosition) < E.Range))
+            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && Player.LSDistance(ally.ServerPosition) < E.Range))
             {
                 //double dmg = 0;
 
@@ -187,7 +187,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void LogicE()
         {
-            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && ally.Distance(Player.Position) < E.Range))
+            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && ally.LSDistance(Player.Position) < E.Range))
             {
                 if (getCheckBoxItem(eMenu, "Poison" + ally.ChampionName) && ally.HasBuffOfType(BuffType.Poison))
                 {

@@ -116,7 +116,7 @@ using SebbyLib;
 
             if (Spells[SpellSlot.E].IsReady() && getCheckBoxItem(miscOptions, "com.itwitch.misc.EQAA"))
             {
-                if (!target.IsFacing(ObjectManager.Player) || target.Distance(ObjectManager.Player) >= ObjectManager.Player.AttackRange)
+                if (!target.IsFacing(ObjectManager.Player) || target.LSDistance(ObjectManager.Player) >= ObjectManager.Player.AttackRange)
                 {
                     return;
                 }

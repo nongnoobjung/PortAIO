@@ -140,7 +140,7 @@ namespace Marksman.Champions
                     e => e.Buffs.Any(b => b.Name.ToLower() == "quinnw_cosmetic" && e.IsValidTarget(E.Range)));
             if (enemy != null)
             {
-                if (enemy.Distance(ObjectManager.Player.Position) > Orbwalking.GetRealAutoAttackRange(null) + 65)
+                if (enemy.LSDistance(ObjectManager.Player.Position) > Orbwalking.GetRealAutoAttackRange(null) + 65)
                 {
                     ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, enemy);
                 }

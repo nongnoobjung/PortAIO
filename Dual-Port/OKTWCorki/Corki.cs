@@ -180,7 +180,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     rSplash = 290f;
 
                 var minions = Cache.GetMinions(Player.ServerPosition, R.Range - rSplash);
-                foreach (var minion in minions.Where(minion => minion.Distance(poutput.CastPosition) < rSplash))
+                foreach (var minion in minions.Where(minion => minion.LSDistance(poutput.CastPosition) < rSplash))
                 {
                     R.Cast(minion);
                     return;
@@ -192,7 +192,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             var dashPosition = Player.Position.Extend(Game.CursorPos, W.Range);
 
-            if (Game.CursorPos.Distance(Player.Position) > Player.AttackRange + Player.BoundingRadius * 2 && Program.Combo && getCheckBoxItem(wMenu, "nktdE") && Player.Mana > RMANA + WMANA - 10)
+            if (Game.CursorPos.LSDistance(Player.Position) > Player.AttackRange + Player.BoundingRadius * 2 && Program.Combo && getCheckBoxItem(wMenu, "nktdE") && Player.Mana > RMANA + WMANA - 10)
             {
                 W.Cast(dashPosition);
             }
@@ -320,7 +320,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (getCheckBoxItem(wMenu, "nktdE"))
             {
-                if (Game.CursorPos.Distance(Player.Position) > Player.AttackRange + Player.BoundingRadius * 2)
+                if (Game.CursorPos.LSDistance(Player.Position) > Player.AttackRange + Player.BoundingRadius * 2)
                     drawText("dash: ON ", Player.Position, System.Drawing.Color.Red);
                 else
                     drawText("dash: OFF ", Player.Position, System.Drawing.Color.GreenYellow);

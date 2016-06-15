@@ -39,7 +39,7 @@ namespace BadaoKingdom.BadaoChampion.BadaoPoppy
         {
             if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) || !(target is AIHeroClient))
                 return;
-            if (target.Position.Distance(ObjectManager.Player.Position) <= 200 + 125 + 140)
+            if (target.Position.LSDistance(ObjectManager.Player.Position) <= 200 + 125 + 140)
                 BadaoChecker.BadaoUseTiamat();
         }
     }

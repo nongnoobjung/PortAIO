@@ -230,7 +230,7 @@ namespace FreshBooster.Champion
                 // W
                 if (getCheckBoxItem(miscMenu, "Bard_HealWMinEnable") && !Player.IsRecalling())
                 {
-                    var ally = HeroManager.Allies.OrderBy(f => f.Health).FirstOrDefault(f => f.Distance(Player.Position) < _W.Range && !f.IsDead && !f.IsZombie && f.HealthPercent < getSliderItem(miscMenu, "Bard_HealWMin"));
+                    var ally = HeroManager.Allies.OrderBy(f => f.Health).FirstOrDefault(f => f.LSDistance(Player.Position) < _W.Range && !f.IsDead && !f.IsZombie && f.HealthPercent < getSliderItem(miscMenu, "Bard_HealWMin"));
                     if (ally != null && _W.IsReady() && !ally.InFountain(LeagueSharp.Common.Utility.FountainType.OwnFountain))
                         _W.CastOnUnit(ally, true);
                 }
@@ -239,7 +239,7 @@ namespace FreshBooster.Champion
                 if (getKeyBindItem(miscMenu, "BardRKey") && _R.IsReady())
                 {
                     RCnt = 0;
-                    var range = HeroManager.AllHeroes.OrderBy(f => Game.CursorPos.Distance(f.Position) < 340f);
+                    var range = HeroManager.AllHeroes.OrderBy(f => Game.CursorPos.LSDistance(f.Position) < 340f);
                     if (range == null)
                         return;
                     foreach (var item in range)
@@ -248,8 +248,8 @@ namespace FreshBooster.Champion
                     }
                     if (RCnt == 0)
                         return;
-                    var target = range.FirstOrDefault(f => f.Distance(Game.CursorPos) < 340f);
-                    _R.SetSkillshot(Player.Distance(target.Position) * 3400 / 1.4f, 340f, 1400f, false, SkillshotType.SkillshotCircle);
+                    var target = range.FirstOrDefault(f => f.LSDistance(Game.CursorPos) < 340f);
+                    _R.SetSkillshot(Player.LSDistance(target.Position) * 3400 / 1.4f, 340f, 1400f, false, SkillshotType.SkillshotCircle);
                     if (target != null)
                         _R.CastIfHitchanceEquals(target, HitChance.Medium, true);
                 }
@@ -324,7 +324,7 @@ namespace FreshBooster.Champion
         {
             try
             {
-                if (getCheckBoxItem(miscMenu, "Bard_Anti") && _Q.IsReady() && gapcloser.Sender.Distance(Player.Position) < _Q.Range)
+                if (getCheckBoxItem(miscMenu, "Bard_Anti") && _Q.IsReady() && gapcloser.Sender.LSDistance(Player.Position) < _Q.Range)
                     _Q.CastIfHitchanceEquals(gapcloser.Sender, HitChance.Medium, true);
             }
             catch (Exception)
@@ -360,9 +360,9 @@ namespace FreshBooster.Champion
         {
             try
             {
-                if (getCheckBoxItem(miscMenu, "Bard_Inter") && _R.IsReady() && sender.Distance(Player.Position) < _R.Range)
+                if (getCheckBoxItem(miscMenu, "Bard_Inter") && _R.IsReady() && sender.LSDistance(Player.Position) < _R.Range)
                 {
-                    _R.SetSkillshot(Player.Distance(sender.Position) * 3400 / 1.5f, 340f, 1400f, false, SkillshotType.SkillshotCircle);
+                    _R.SetSkillshot(Player.LSDistance(sender.Position) * 3400 / 1.5f, 340f, 1400f, false, SkillshotType.SkillshotCircle);
                     _R.CastIfHitchanceEquals(sender, HitChance.Medium, true);
                 }
             }
@@ -448,9 +448,9 @@ namespace FreshBooster.Champion
             cnt = 0;
             BardQTarget1 = Player;
             BardQTarget2 = Player;
-            foreach (var item in ObjectManager.Get<Obj_AI_Base>().OrderBy(f => f.Distance(f.Position)))
+            foreach (var item in ObjectManager.Get<Obj_AI_Base>().OrderBy(f => f.LSDistance(f.Position)))
             {
-                if (item.Distance(Player.Position) < _Q.Range)
+                if (item.LSDistance(Player.Position) < _Q.Range)
                     if (item is AIHeroClient || item is Obj_AI_Minion)
                         if (item.IsEnemy && !item.IsDead)
                         {
@@ -459,8 +459,8 @@ namespace FreshBooster.Champion
                             if (cnt == 0 && Range1.IsInside(item.Position))
                             {
                                 BardQTarget1 = item;
-                                Range2 = new LeagueSharp.Common.Geometry.Polygon.Rectangle(Player.Position.Extend(BardQTarget1.Position, Player.Distance(BardQTarget1.Position)),
-                                    Player.Position.Extend(BardQTarget1.Position, Player.Distance(BardQTarget1.Position) + 450), _Q.Width);
+                                Range2 = new LeagueSharp.Common.Geometry.Polygon.Rectangle(Player.Position.Extend(BardQTarget1.Position, Player.LSDistance(BardQTarget1.Position)),
+                                    Player.Position.Extend(BardQTarget1.Position, Player.LSDistance(BardQTarget1.Position) + 450), _Q.Width);
                                 if (Draw)
                                     Range2.Draw(Color.Yellow);
                                 cnt++;

@@ -308,7 +308,7 @@ namespace Marksman.Champions
                             foreach (
                                 var x in
                                     ObjectManager.Get<Obj_AI_Minion>()
-                                        .Where(m => m.IsEnemy && !m.IsDead && m.Distance(locW.Position) < 100))
+                                        .Where(m => m.IsEnemy && !m.IsDead && m.LSDistance(locW.Position) < 100))
                             {
                                 E.CastOnUnit(x);
                             }

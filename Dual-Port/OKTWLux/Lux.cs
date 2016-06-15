@@ -183,7 +183,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void LogicW()
         {
-            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && getCheckBoxItem(wMenu, "damage" + ally.ChampionName) && Player.ServerPosition.Distance(ally.ServerPosition) < W.Range))
+            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && getCheckBoxItem(wMenu, "damage" + ally.ChampionName) && Player.ServerPosition.LSDistance(ally.ServerPosition) < W.Range))
             {
                 double dmg = OktwCommon.GetIncomingDamage(ally);
 
@@ -403,7 +403,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             else if (inx == 3)
             {
                 List<Vector2> waypoints = target.GetWaypoints();
-                if ((Player.Distance(waypoints.Last<Vector2>().To3D()) - Player.Distance(target.Position)) > 400)
+                if ((Player.LSDistance(waypoints.Last<Vector2>().To3D()) - Player.LSDistance(target.Position)) > 400)
                 {
                     Program.CastSpell(R, target);
                 }
@@ -444,7 +444,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     || (mob.BaseSkinName == "SRU_Blue" && getCheckBoxItem(rMenu, "Rblue")))
                     && (mob.CountAlliesInRange(1000) == 0 || getCheckBoxItem(rMenu, "Rally"))
                     && mob.Health < mob.MaxHealth
-                    && mob.Distance(Player.Position) > 1000
+                    && mob.LSDistance(Player.Position) > 1000
                     )
                 {
                     if (DragonDmg == 0)

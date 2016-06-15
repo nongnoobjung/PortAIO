@@ -235,7 +235,7 @@ namespace SephCassiopeia
                 foreach (var t in targs)
                 {
                     var pred = Spells[SpellSlot.R].GetPrediction(t, false);
-                    var enemshit = pred.CastPosition.GetEnemiesInRange(Spells[SpellSlot.R].Width).Where(x=> x.Distance(Player) <= Spells[SpellSlot.R].Range);
+                    var enemshit = pred.CastPosition.GetEnemiesInRange(Spells[SpellSlot.R].Width).Where(x=> x.LSDistance(Player) <= Spells[SpellSlot.R].Range);
                     var counthit = enemshit.Count();
                     var hitfacing = enemshit.Count(x => x.IsFacing(Player) && !x.IsDashing() && !x.IsZombie && !x.IsInvulnerable);
                     var anymovingtome = enemshit.Any(x => x.isMovingToMe() || x.IsFacing(Player));
