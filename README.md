@@ -4,8 +4,9 @@ https://www.elobuddy.net/profile/277-xionlunix/ - This guy is trying to take cre
 
 
 ### - Compile Errors
-#####Make sure you have Berb.Common installed @ https://github.com/berbb/Berb.Common
-#####If you still recieve compile errors refer here : https://www.elobuddy.net/topic/21274-installing-ms-build-tools-140/
+Make sure you have Berb.Common installed @ https://github.com/berbb/Berb.Common
+
+If you are still recieve compile errors refer here : https://www.elobuddy.net/topic/21274-installing-ms-build-tools-140/
 
 ---
 
