@@ -585,10 +585,13 @@ namespace PortAIO.Utility
 
         private static void Loader_OnValueChange(ValueBase<bool> sender, ValueBase<bool>.ValueChangeArgs args)
         {
-            Orbwalker.DisableAttacking = false;
-            Orbwalker.DisableMovement = false;
-            Orbwalker.ForcedTarget = null;
-            Miscc["resetorb"].Cast<CheckBox>().CurrentValue = !Miscc["resetorb"].Cast<CheckBox>().CurrentValue;
+            if (args.NewValue)
+            {
+                Orbwalker.DisableAttacking = false;
+                Orbwalker.DisableMovement = false;
+                Orbwalker.ForcedTarget = null;
+                Miscc["resetorb"].Cast<CheckBox>().CurrentValue = false;
+            }
         }
     }
 }

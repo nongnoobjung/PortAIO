@@ -58,7 +58,8 @@ namespace TreeLib.Core
         ///     The gapcloser used a skillshot ability.
         /// </summary>
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly",
-            Justification = "Reviewed. Suppression is OK here.")] Skillshot,
+            Justification = "Reviewed. Suppression is OK here.")]
+        Skillshot,
 
         /// <summary>
         ///     The gapcloser used a targeted ability.
@@ -774,10 +775,13 @@ namespace TreeLib.Core
 
             foreach (var spell in Spells)
             {
-                var item = menu.Add(spell.ChampionName + spell.Slot, new CheckBox(spell.ChampionName + " " + spell.Slot));
-                menu[spell.ChampionName + spell.Slot].Cast<CheckBox>().OnValueChange += (sender, args) => { spell.Enabled = args.NewValue; };
-                spell.Enabled = menu[spell.ChampionName + spell.Slot].Cast<CheckBox>().CurrentValue;
-                menu.AddSeparator();
+                if (menu[spell.ChampionName + spell.Slot] == null)
+                {
+                    var item = menu.Add(spell.ChampionName + spell.Slot, new CheckBox(spell.ChampionName + " " + spell.Slot));
+                    menu[spell.ChampionName + spell.Slot].Cast<CheckBox>().OnValueChange += (sender, args) => { spell.Enabled = args.NewValue; };
+                    spell.Enabled = menu[spell.ChampionName + spell.Slot].Cast<CheckBox>().CurrentValue;
+                    menu.AddSeparator();
+                }
             }
 
             Game.OnUpdate += Game_OnGameUpdate;
@@ -830,11 +834,11 @@ namespace TreeLib.Core
                 {
                     Start = args.Start,
                     End = args.End,
-                    Sender = (AIHeroClient) sender,
+                    Sender = (AIHeroClient)sender,
                     TickCount = Utils.TickCount,
                     SkillType =
                         args.Target != null && args.Target.IsMe ? GapcloserType.Targeted : GapcloserType.Skillshot,
-                    Slot = ((AIHeroClient) sender).GetSpellSlot(args.SData.Name)
+                    Slot = ((AIHeroClient)sender).GetSpellSlot(args.SData.Name)
                 });
         }
 

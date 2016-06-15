@@ -146,9 +146,12 @@ namespace TreeLib.Core
             {
                 foreach (var spell in spellList.Value)
                 {
-                    var item = _menu.Add(spellList.Key + spell.Slot, new CheckBox(spellList.Key + " " + spell.Slot));
-                    _menu[spellList.Key + spell.Slot].Cast<CheckBox>().OnValueChange += (sender, args) => { spell.Enabled = args.NewValue; };
-                    spell.Enabled = _menu[spellList.Key + spell.Slot].Cast<CheckBox>().CurrentValue;
+                    if (_menu[spellList.Key + spell.Slot] == null)
+                    {
+                        var item = _menu.Add(spellList.Key + spell.Slot, new CheckBox(spellList.Key + " " + spell.Slot));
+                        _menu[spellList.Key + spell.Slot].Cast<CheckBox>().OnValueChange += (sender, args) => { spell.Enabled = args.NewValue; };
+                        spell.Enabled = _menu[spellList.Key + spell.Slot].Cast<CheckBox>().CurrentValue;
+                    }
                 }
             }
         }
