@@ -291,33 +291,18 @@ namespace NoobJaxReloaded
                     Color.Blue);
             }
         }
-        static int CanKill(AIHeroClient target, bool useq)
-        {
-            double damage = 0;
-            if (!useq)
-                return 0;
-            if (Q.IsReady())
-            {
-                damage += ObjectManager.Player.GetSpellDamage(target, SpellSlot.Q);
-            }
-            if (damage >= target.Health)
-            {
-                return 1;
-            }
-            return damage >= target.Health ? 2 : 0;
-
-        }
         private static void Killsteal()
         {
-            foreach (AIHeroClient enemy in AllEnemy)
+            AIHeroClient qTarget = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+            if (qTarget == null || qTarget.HasBuffOfType(BuffType.Invulnerability))
+                return;
             {
-                if (enemy == null || enemy.HasBuffOfType(BuffType.Invulnerability))
-                    return;
+                double damage = 0d;
+                damage = ObjectManager.Player.GetSpellDamage(qTarget, SpellSlot.Q);
 
-                if (CanKill(enemy, getCheckBoxItem(comboMenu, "useQ")) == 1 && enemy.IsValidTarget(390))
+                if (damage > qTarget.Health)
                 {
-                    Q.Cast(enemy);
-                    return;
+                    Q.Cast(qTarget);
                 }
             }
         }
