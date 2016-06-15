@@ -208,6 +208,8 @@
     <Compile Include="Champion\Riven\Classes\Modes\Lane.cs" />
     <Compile Include="Champion\Riven\Classes\Spells.cs" />
     <Compile Include="Champion\Riven\Program.cs" />
+    <Compile Include="Champion\Zilean\IncomingDamageManager.cs" />
+    <Compile Include="Champion\Zilean\Zilean.cs" />
     <Compile Include="Dual-Port\AhriSharp\Ahri.cs" />
     <Compile Include="Dual-Port\AhriSharp\Helper.cs" />
     <Compile Include="Dual-Port\AhriSharp\Program.cs" />
@@ -1001,9 +1003,6 @@
     <Compile Include="Dual-Port\iDZed\Utils\ZedDamage.cs" />
     <Compile Include="Dual-Port\iDZed\Zed.cs" />
     <Compile Include="Champion\Ziggs\Program.cs" />
-    <Compile Include="Champion\Zilean\Drawings.cs" />
-    <Compile Include="Champion\Zilean\Zilean.cs" />
-    <Compile Include="Champion\Zilean\ZileanMenu.cs" />
     <Compile Include="Champion\Zyra\Program.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="Libraries\DZLib\Modules\IModule.cs" />

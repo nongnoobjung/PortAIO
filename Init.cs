@@ -1383,7 +1383,7 @@ namespace PortAIO
                         D_Zyra.Program.Game_OnGameLoad();
                         break;
                     case "zilean": // ElZilean
-                        ElZilean.Zilean.Game_OnGameLoad();
+                        ElZilean.Zilean.OnGameLoad();
                         break;
                     case "shyvana": // D-Shyvana
                         D_Shyvana.Program.Game_OnGameLoad();
