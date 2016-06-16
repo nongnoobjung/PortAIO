@@ -3794,7 +3794,7 @@ namespace EvadeSharp
                     Delay = 250,
                     Range = 950,
                     Radius = 70,
-                    MissileSpeed = 2000,
+                    MissileSpeed = 2200,
                     FixedRange = true,
                     AddHitbox = true,
                     DangerValue = 2,
