@@ -1124,6 +1124,11 @@
     <Compile Include="Utility\AutoFF\Program.cs" />
     <Compile Include="Utility\AutoLevel\Program.cs" />
     <Compile Include="Utility\ChatLogger\Program.cs" />
+    <Compile Include="Utility\EBPredictioner\EventHandlers.cs" />
+    <Compile Include="Utility\EBPredictioner\Program.cs" />
+    <Compile Include="Utility\EBPredictioner\YasWallManager.cs" />
+    <Compile Include="Utility\EBPredictioner\SpellData.cs" />
+    <Compile Include="Utility\EBPredictioner\SPredictioner.cs" />
     <Compile Include="Utility\EmoteSpammer\Program.cs" />
     <Compile Include="Utility\EzEvade\Core\Evade.cs" />
     <Compile Include="Utility\EzEvade\Core\EvadeHelper.cs" />

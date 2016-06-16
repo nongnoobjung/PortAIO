@@ -199,9 +199,14 @@ namespace PortAIO
                     new AntiStealth.AntiStealth();
                 }
 
+                if (Loader.EBPrediction)
+                {
+                    EBPredictioner.Program.Init();
+                }
+
                 //if (Loader.orbwalker)
                 //{
-                    //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();
+                //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();
                 //}
 
                 /*

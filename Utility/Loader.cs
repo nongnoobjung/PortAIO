@@ -110,6 +110,7 @@ namespace PortAIO.Utility
         public static int jinx { get { return Miscc["jinx"].Cast<ComboBox>().CurrentValue; } }
         public static int syndra { get { return Miscc["syndra"].Cast<ComboBox>().CurrentValue; } }
         public static int aatrox { get { return Miscc["aatrox"].Cast<ComboBox>().CurrentValue; } }
+        public static bool EBPrediction { get { return Miscc["EBPrediction"].Cast<CheckBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -482,7 +483,7 @@ namespace PortAIO.Utility
             Miscc.Add("activator", new CheckBox("Enable Activator?"));
             Miscc.Add("tracker", new CheckBox("Enable NabbTracker?"));
             Miscc.Add("recall", new CheckBox("Enable Recall Tracker?"));
-            Miscc.Add("skin", new CheckBox("Enable Skin Hack?"));
+            Miscc.Add("skin", new CheckBox("Enable Skin Hack?", false));
             Miscc.AddSeparator();
             Miscc.Add("evade", new CheckBox("Enable Evade?", false));
             Miscc.Add("godTracker", new CheckBox("Enable God Jungle Tracker?", false));
@@ -492,18 +493,19 @@ namespace PortAIO.Utility
             Miscc.Add("gank", new CheckBox("Enable GankAlerter?", false));
             Miscc.Add("cheat", new CheckBox("Enable TheCheater?", false));
             Miscc.Add("banwards", new CheckBox("Enable Sebby BanWars?", false));
-            Miscc.Add("antialistar", new CheckBox("Enable AntiAlistar?", true));
+            Miscc.Add("antialistar", new CheckBox("Enable AntiAlistar?", false));
             Miscc.AddSeparator();
-            Miscc.Add("sdkPredictioner", new CheckBox("Enable SDKPredictioner?", true));
+            Miscc.Add("sdkPredictioner", new CheckBox("Enable SDKPredictioner?", false));
+            Miscc.Add("EBPrediction", new CheckBox("Enable EBPredictioner?", false));
             Miscc.Add("traptrack", new CheckBox("Enable TrapTracker?", false));
             Miscc.Add("limitedShat", new CheckBox("Enable LimitedShat?", false));
-            Miscc.Add("autoLevel", new CheckBox("Enable Auto Level?", false));
             Miscc.AddSeparator();
+            Miscc.Add("autoLevel", new CheckBox("Enable Auto Level?", false));
             Miscc.Add("chatLogger", new CheckBox("Enable Chat Logger?", false));
             Miscc.Add("autoFF", new CheckBox("Enable Auto FF?", false));
             Miscc.Add("urfSpell", new CheckBox("Enable URF Spam Speller?", false));
-            Miscc.Add("pastingSharp", new CheckBox("Enable PastingSharp?", false));
             Miscc.AddSeparator();
+            Miscc.Add("pastingSharp", new CheckBox("Enable PastingSharp?", false));
             Miscc.Add("emoteSpammer", new CheckBox("Enable Emote Spammer?", false));
             Miscc.Add("antiStealth", new CheckBox("Enable Anti Stealth (ElUtil)?", false));
 
