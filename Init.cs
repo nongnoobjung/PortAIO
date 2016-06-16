@@ -76,6 +76,9 @@ namespace PortAIO
                         case 1:
                             NabbActivator.Index.OnLoad();
                             break;
+                        case 2:
+                            Activators.Activator.Game_OnGameLoad();
+                            break;
                         default:
                             ElUtilitySuite.Entry.OnLoad();
                             break;

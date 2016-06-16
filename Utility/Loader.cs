@@ -473,7 +473,7 @@ namespace PortAIO.Utility
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("Util Dual-Port :");
             Miscc.Add("evadeCB", new ComboBox("Which Evade?", 0, "ezEvade", "Evade#"));
-            Miscc.Add("activatorCB", new ComboBox("Which Activator?", 0, "ElUtilitySuite", "NabbActivator"));
+            Miscc.Add("activatorCB", new ComboBox("Which Activator?", 0, "ElUtilitySuite", "NabbActivator", "Activator#"));
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("Util Changes");
             Miscc.AddLabel("Please F5 after making any changes below >>");
