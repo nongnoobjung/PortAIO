@@ -488,7 +488,7 @@ namespace Challenger_Series.Plugins
 
         private double GetTotalHealthWithShieldsApplied(Obj_AI_Base target)
         {
-            return target.Health + target.AllShield;
+            return target.Health;
         }
 
         public bool IsRendKillable(Obj_AI_Base target)

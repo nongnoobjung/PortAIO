@@ -20,6 +20,7 @@ namespace Marksman.Utils
 
     using Marksman.Champions;
     using EloBuddy;
+    using EloBuddy.SDK;
     internal class Utils
     {
         public static string Tab => "    ";
@@ -268,37 +269,73 @@ namespace Marksman.Utils
 
         public static bool HasSpellShield(this AIHeroClient target)
         {
+            //Banshee's Veil
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "bansheesveil"))
+            {
+                return true;
+            }
+
+            //Sivir E
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "SivirE"))
+            {
+                return true;
+            }
+
+            //Nocturne W
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "NocturneW"))
+            {
+                return true;
+            }
+
+            //Other spellshields
             return target.HasBuffOfType(BuffType.SpellShield) || target.HasBuffOfType(BuffType.SpellImmunity);
         }
 
         public static bool HasUndyingBuff(this AIHeroClient target)
         {
-            if (
-                target.Buffs.Any(
-                    b =>
-                        b.IsValid
-                        && (b.Name == "ChronoShift" /* Zilean R */
-                            || b.Name == "FioraW" /* Fiora Riposte */
-                            || b.Name == "BardRStasis" /* Bard ult */
-                            || b.Name == "JudicatorIntervention" /* Kayle R */
-                            || b.Name == "UndyingRage" /* Tryndamere R */)))
+            // Tryndamere R
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "UndyingRage"))
             {
                 return true;
             }
 
+            // Zilean R
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "ChronoShift"))
+            {
+                return true;
+            }
+
+            // Kayle R
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "JudicatorIntervention"))
+            {
+                return true;
+            }
+
+            // Poppy R
             if (target.ChampionName == "Poppy")
             {
                 if (
-                    HeroManager.Allies.Any(
+                    EntityManager.Heroes.Allies.Any(
                         o =>
-                            !o.IsMe
-                            && o.Buffs.Any(
-                                b =>
-                                    b.Caster.NetworkId == target.NetworkId && b.IsValid &&
-                                    b.DisplayName == "PoppyDITarget")))
+                        !o.IsMe
+                        && o.Buffs.Any(
+                            b =>
+                            b.Caster.NetworkId == target.NetworkId && b.IsValid()
+                            && b.DisplayName == "PoppyDITarget")))
                 {
                     return true;
                 }
+            }
+
+            //Kindred R
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "kindredrnodeathbuff"))
+            {
+                return true;
+            }
+
+            if (target.HasBuffOfType(BuffType.Invulnerability))
+            {
+                return true;
             }
 
             return target.IsInvulnerable;
@@ -332,12 +369,12 @@ namespace Marksman.Utils
 
     public interface IValue<T>
     {
-        T GetValue(Spell spell, FarmMode farmMode, GameObjectTeam minionTeam, MinionType minionType = MinionType.All);
+        T GetValue(LeagueSharp.Common.Spell spell, FarmMode farmMode, GameObjectTeam minionTeam, MinionType minionType = MinionType.All);
     }
 
     public class SomeClass : IValue<Vector2>, IValue<IEnumerable<Obj_AI_Base>>
     {
-        IEnumerable<Obj_AI_Base> IValue<IEnumerable<Obj_AI_Base>>.GetValue(Spell spell, FarmMode farmMode,
+        IEnumerable<Obj_AI_Base> IValue<IEnumerable<Obj_AI_Base>>.GetValue(LeagueSharp.Common.Spell spell, FarmMode farmMode,
             GameObjectTeam minionTeam, MinionType minionType)
         {
             IEnumerable<Obj_AI_Base> list = ObjectManager.Get<Obj_AI_Minion>().Where(m => m.LSIsValidTarget(spell.Range));
@@ -368,7 +405,7 @@ namespace Marksman.Utils
             return mobs;
         }
 
-        Vector2 IValue<Vector2>.GetValue(Spell spell, FarmMode farmMode, GameObjectTeam minionTeam,
+        Vector2 IValue<Vector2>.GetValue(LeagueSharp.Common.Spell spell, FarmMode farmMode, GameObjectTeam minionTeam,
             MinionType minionType)
         {
             return new Vector2(0, 0);
@@ -380,10 +417,10 @@ namespace Marksman.Utils
     {
         public static Vector2 GetMobPosition => new Vector2(0, 0);
 
-        public static int GetMinionCountsInRange(this Spell spell)
+        public static int GetMinionCountsInRange(this LeagueSharp.Common.Spell spell)
             => MinionManager.GetMinions(ObjectManager.Player.Position, spell.Range).Count;
 
-        public static bool GetMinionTotalAaCont(this Spell spell, int minionCount = 1)
+        public static bool GetMinionTotalAaCont(this LeagueSharp.Common.Spell spell, int minionCount = 1)
         {
             var totalAa =
                 ObjectManager.Get<Obj_AI_Minion>().Where(m => m.LSIsValidTarget(spell.Range)).Sum(mob => (int) mob.Health);
@@ -401,7 +438,7 @@ namespace Marksman.Utils
             return totalAa >= minionCount;
         }
 
-        public static Vector2 GetCircularFarmMinions(this Spell spell, int minionCount = 1)
+        public static Vector2 GetCircularFarmMinions(this LeagueSharp.Common.Spell spell, int minionCount = 1)
         {
             List<Obj_AI_Base> minions = MinionManager.GetMinions(ObjectManager.Player.Position, spell.Range);
             MinionManager.FarmLocation location = spell.GetCircularFarmLocation(minions, spell.Width*0.75f);
@@ -413,7 +450,7 @@ namespace Marksman.Utils
             return new Vector2(0, 0);
         }
 
-        private static List<Obj_AI_Base> GetCollisionMinions(this Spell spell, AIHeroClient source,
+        private static List<Obj_AI_Base> GetCollisionMinions(this LeagueSharp.Common.Spell spell, AIHeroClient source,
             Vector3 targetposition)
         {
             var input = new PredictionInput
@@ -432,7 +469,7 @@ namespace Marksman.Utils
                     .ToList();
         }
 
-        public static Obj_AI_Base GetLineCollisionMinions(this Spell spell, int minionCount = 1)
+        public static Obj_AI_Base GetLineCollisionMinions(this LeagueSharp.Common.Spell spell, int minionCount = 1)
         {
             List<Obj_AI_Base> minions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, spell.Range);
             foreach (var minion in minions.Where(x => x.Health <= spell.GetDamage(x)))
@@ -458,7 +495,7 @@ namespace Marksman.Utils
             return null;
         }
 
-        public static Vector2 GetLineFarmMinions(this Spell spell, int minionCount)
+        public static Vector2 GetLineFarmMinions(this LeagueSharp.Common.Spell spell, int minionCount)
         {
             List<Obj_AI_Base> minions = MinionManager.GetMinions(ObjectManager.Player.Position, spell.Range);
             MinionManager.FarmLocation location = spell.GetLineFarmLocation(minions);
@@ -471,7 +508,7 @@ namespace Marksman.Utils
         }
 
 
-        public static IEnumerable<Obj_AI_Base> GetMobGroup(this Spell spell,
+        public static IEnumerable<Obj_AI_Base> GetMobGroup(this LeagueSharp.Common.Spell spell,
             FarmMode farmMode,
             GameObjectTeam minionTeam,
             MinionType minionType = MinionType.All,
@@ -529,7 +566,7 @@ namespace Marksman.Utils
             Position
         }
 
-        public static IEnumerable<Obj_AI_Base> GetMins(this Spell spell, FarmMode farmMode, GameObjectTeam minionTeam,
+        public static IEnumerable<Obj_AI_Base> GetMins(this LeagueSharp.Common.Spell spell, FarmMode farmMode, GameObjectTeam minionTeam,
             MinionType minionType = MinionType.All, MinionGroup minionGroup = MinionGroup.Alone, int minionCount = 1)
         {
             IEnumerable<Obj_AI_Base> list = ObjectManager.Get<Obj_AI_Minion>().Where(m => m.LSIsValidTarget(spell.Range));
@@ -578,7 +615,7 @@ namespace Marksman.Utils
             return null;
         }
 
-        public static SharpDX.Color MenuColor(this Spell spell)
+        public static SharpDX.Color MenuColor(this LeagueSharp.Common.Spell spell)
         {
             switch (spell.Slot)
             {
@@ -602,17 +639,17 @@ namespace Marksman.Utils
                 && ObjectManager.Player.Spellbook.CanUseSpell(ObjectManager.Player.GetSpellSlot("summonerdot"))
                 == SpellState.Ready && ObjectManager.Player.LSDistance(t) < 550)
             {
-                fComboDamage += (float) ObjectManager.Player.GetSummonerSpellDamage(t, Damage.SummonerSpell.Ignite);
+                fComboDamage += (float) ObjectManager.Player.GetSummonerSpellDamage(t, LeagueSharp.Common.Damage.SummonerSpell.Ignite);
             }
 
             if (Items.CanUseItem(3144) && ObjectManager.Player.LSDistance(t) < 550)
             {
-                fComboDamage += (float) ObjectManager.Player.GetItemDamage(t, Damage.DamageItems.Bilgewater);
+                fComboDamage += (float) ObjectManager.Player.GetItemDamage(t, LeagueSharp.Common.Damage.DamageItems.Bilgewater);
             }
 
             if (Items.CanUseItem(3153) && ObjectManager.Player.LSDistance(t) < 550)
             {
-                fComboDamage += (float) ObjectManager.Player.GetItemDamage(t, Damage.DamageItems.Botrk);
+                fComboDamage += (float) ObjectManager.Player.GetItemDamage(t, LeagueSharp.Common.Damage.DamageItems.Botrk);
             }
             return (float) fComboDamage;
         }
@@ -641,7 +678,7 @@ namespace Marksman.Utils
             return unit != null && (unit.HasBuff("kindredrnodeathbuff") && unit.HealthPercent <= 10);
         }
 
-        public static bool IsPositionSafe(this Spell spell, Vector2 position)
+        public static bool IsPositionSafe(this LeagueSharp.Common.Spell spell, Vector2 position)
             // use underTurret and .Extend for this please
         {
             var myPos = ObjectManager.Player.Position.LSTo2D();
