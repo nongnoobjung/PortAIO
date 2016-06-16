@@ -634,7 +634,7 @@ namespace LuluLicious
         public void CustomInterrupter_OnInterruptableTarget(AIHeroClient sender,
             CustomInterrupter.InterruptableTargetEventArgs args)
         {
-            if (sender == null || !sender.LSIsValidTarget())
+            if (sender == null || !sender.LSIsValidTarget() || sender.IsAlly)
             {
                 return;
             }
@@ -654,9 +654,9 @@ namespace LuluLicious
                 return;
             }
 
-            if (
-                Allies.OrderBy(h => h.LSDistance(sender))
-                    .Any(h => h.LSIsValidTarget(R.Range, false) && h.LSDistance(sender) < RRadius && R.CastOnUnit(h))) {}
+            if (Allies.OrderBy(h => h.LSDistance(sender)).Any(h => h.LSIsValidTarget(R.Range, false) && h.LSDistance(sender) < RRadius && R.CastOnUnit(h)))
+            {
+            }
         }
 
         private static void CustomAntiGapcloser_OnEnemyGapcloser(TreeLib.Core.ActiveGapcloser gapcloser)
