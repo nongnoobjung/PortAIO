@@ -333,7 +333,7 @@
 
                 if (Q.GetDamage(isBombed) + IgniteSpell.GetDamage(isBombed) > isBombed.Health)
                 {
-                    if (isBombed.IsValidTarget(Q.Range))
+                    if (isBombed.LSIsValidTarget(Q.Range))
                     {
                         Player.Spellbook.CastSpell(IgniteSpell.Slot, isBombed);
                     }
