@@ -54,6 +54,7 @@ namespace Activators.Summoners
                     Menu.Add("selfmuchhp" + Name + "pct", new Slider("Use on Hero Dmg Dealt % >=", 45));
                     Menu.Add("use" + Name + "tower", new CheckBox("Include Tower Damage", false));
                     Menu.Add("mode" + Name, new ComboBox("Mode: ", 1, "Always", "Combo"));
+                    Menu.AddSeparator();
                 }
 
                 if (Name == "summonerboost")
@@ -78,6 +79,7 @@ namespace Activators.Summoners
                     Menu.Add("use" + Name + "od", new CheckBox("Use for Dangerous Only", false));
                     Menu.Add("use" + Name + "delay", new Slider("Activation Delay (in ms)", 150, 0, 500));
                     Menu.Add("mode" + Name, new ComboBox("Mode: ", 0, "Always", "Combo"));
+                    Menu.AddSeparator();
                 }
 
                 if (Name == "summonerdot")
@@ -101,12 +103,14 @@ namespace Activators.Summoners
                     Menu.Add("itu", new CheckBox("Dont Ignite Near Turret"));
                     Menu.Add("igtu", new Slider("-> Ignore after Level", 11, 1, 18));
                     Menu.Add("mode" + Name, new ComboBox("Mode: ", 1, "Killsteal", "Combo"));
+                    Menu.AddSeparator();
                 }
 
                 if (Name == "summonermana")
                 {
                     Activator.UseAllyMenu = true;
                     Menu.Add("selflowmp" + Name + "pct", new Slider("Minimum Mana % <=", 40));
+                    Menu.AddSeparator();
                 }
 
                 if (Name == "summonerbarrier")
@@ -117,6 +121,7 @@ namespace Activators.Summoners
                     Menu.Add("use" + Name + "ulti", new CheckBox("Use on Dangerous (Ultimates Only)"));
                     Menu.Add("use" + Name + "tower", new CheckBox("Include Tower Damage"));
                     Menu.Add("mode" + Name, new ComboBox("Mode: ", 1, "Always", "Combo"));
+                    Menu.AddSeparator();
                 }
 
                 if (Name == "summonerexhaust")
@@ -127,6 +132,7 @@ namespace Activators.Summoners
                     Menu.Add("f" + Name, new CheckBox("Force Exhaust (Dangerous)"));
                     Menu.Add("use" + Name + "ulti", new CheckBox("Use on Dangerous (Utimates Only)"));
                     Menu.Add("mode" + Name, new ComboBox("Mode: ", 0, "Always", "Combo"));
+                    Menu.AddSeparator();
                 }
 
                 if (Name == "summonersmite")
@@ -139,6 +145,7 @@ namespace Activators.Summoners
                     Menu.Add("smitesuper", new CheckBox("Smite Epic Camps"));
                     Menu.Add("smitemode", new ComboBox("Smite Enemies: ", 1, "Killsteal", "Combo", "Nope"));
                     Menu.Add("savesmite", new CheckBox("Save a Smite Charge"));
+                    Menu.AddSeparator();
                 }
 
                 if (Name == "summonerteleport")
@@ -147,6 +154,7 @@ namespace Activators.Summoners
                     Menu.Add("telesound", new CheckBox("Enable Sound", false));
                     Menu.Add("telelowhp2", new CheckBox("Ping Low Health Allies", false));
                     Menu.Add("teleulthp2", new CheckBox("Ping Dangerous Activity", false));
+                    Menu.AddSeparator();
                 }
             }
 

@@ -96,6 +96,7 @@ namespace Activators.Spells
 
                 if (Category.Any(t => t == MenuType.ActiveCheck))
                     Menu.Add("mode" + Name, new ComboBox("Mode: ", 0, "Always", "Combo"));
+                Menu.AddSeparator();
             }
 
             catch (Exception e)
