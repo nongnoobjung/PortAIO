@@ -1,5 +1,6 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Menu.Values;
 using LeagueSharp;
 using LeagueSharp.Common;
 using System;
@@ -35,66 +36,76 @@ namespace RyzeAssembly
 
         private void LaneClear(RyzeMain ryze)
         {
-            var laneclearQ = true;
-            var laneclearW = true;
-            var laneclearE = true;
-            var laneclearR = true;
+            var Mana = Menu._laneclearMenu["ManaL"].Cast<Slider>().CurrentValue;
+            var laneclearQ = Menu._laneclearMenu["QL"].Cast<CheckBox>().CurrentValue;
+            var laneclearW = Menu._laneclearMenu["WL"].Cast<CheckBox>().CurrentValue;
+            var laneclearE = Menu._laneclearMenu["EL"].Cast<CheckBox>().CurrentValue;
+            var laneclearR = Menu._laneclearMenu["RL"].Cast<CheckBox>().CurrentValue;
             var minion = MinionManager.GetMinions(ryze.Spells.Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth).FirstOrDefault();
-
-            if (minion != null)
+            if (ryze.Hero.ManaPercent <= Mana)
             {
-                if (laneclearQ && ryze.Spells.Q.IsReady())
+                if (minion != null)
                 {
-                    var Qpred = ryze.Spells.Q.GetPrediction(minion);
-                    ryze.Spells.Q.Cast(Qpred.UnitPosition);
-                }
-                if (laneclearE && ryze.Spells.E.IsReady())
-                {
-                    ryze.Spells.E.Cast(minion);
-                }
-                if (laneclearW && ryze.Spells.W.IsReady())
-                {
-                    ryze.Spells.W.Cast(minion);
-                }
-                if (laneclearR && ryze.Spells.R.IsReady() && (ryze.GetPassiveBuff >= 4 || ryze.Hero.HasBuff("ryzepassivecharged")))
-                {
-                    ryze.Spells.R.Cast();
+                    if (laneclearQ && ryze.Spells.Q.IsReady())
+                    {
+                        var Qpred = ryze.Spells.Q.GetPrediction(minion);
+                        ryze.Spells.Q.Cast(Qpred.UnitPosition);
+                    }
+                    if (laneclearE && ryze.Spells.E.IsReady())
+                    {
+                        ryze.Spells.E.Cast(minion);
+                    }
+                    if (laneclearW && ryze.Spells.W.IsReady())
+                    {
+                        ryze.Spells.W.Cast(minion);
+                    }
+                    if (laneclearR && ryze.Spells.R.IsReady() && (ryze.GetPassiveBuff >= 4 || ryze.Hero.HasBuff("ryzepassivecharged")))
+                    {
+                        ryze.Spells.R.Cast();
+                    }
                 }
             }
-
         }
 
         private static void JungleClear(RyzeMain ryze)
         {
-            var jungleclearQ = true;
-            var jungleclearW = true;
-            var jungleclearE = true;
-            var jungleclearR = true;
+            var Mana = Menu._jungleclearMenu["ManaJ"].Cast<Slider>().CurrentValue;
+            var jungleclearQ = Menu._jungleclearMenu["QJ"].Cast<CheckBox>().CurrentValue;
+            var jungleclearW = Menu._jungleclearMenu["WJ"].Cast<CheckBox>().CurrentValue;
+            var jungleclearE = Menu._jungleclearMenu["EJ"].Cast<CheckBox>().CurrentValue;
+            var jungleclearR = Menu._jungleclearMenu["RJ"].Cast<CheckBox>().CurrentValue;
             var minion = MinionManager.GetMinions(ryze.Spells.Q.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth).FirstOrDefault();
-            if (minion != null)
+            if (ryze.Hero.ManaPercent <= Mana)
             {
-                if (jungleclearQ && ryze.Spells.Q.IsReady())
+                if (minion != null)
                 {
-                    var Qpred = ryze.Spells.Q.GetPrediction(minion);
-                    ryze.Spells.Q.Cast(Qpred.UnitPosition);
-                }
-                if (jungleclearE && ryze.Spells.E.IsReady())
-                {
-                    ryze.Spells.E.Cast(minion);
-                }
-                if (jungleclearW && ryze.Spells.W.IsReady())
-                {
-                    ryze.Spells.W.Cast(minion);
-                }
-                if (jungleclearR && ryze.Spells.R.IsReady() && (ryze.GetPassiveBuff >= 4 || ryze.Hero.HasBuff("ryzepassivecharged")))
-                {
-                    ryze.Spells.R.Cast();
+                    if (jungleclearQ && ryze.Spells.Q.IsReady())
+                    {
+                        var Qpred = ryze.Spells.Q.GetPrediction(minion);
+                        ryze.Spells.Q.Cast(Qpred.UnitPosition);
+                    }
+                    if (jungleclearE && ryze.Spells.E.IsReady())
+                    {
+                        ryze.Spells.E.Cast(minion);
+                    }
+                    if (jungleclearW && ryze.Spells.W.IsReady())
+                    {
+                        ryze.Spells.W.Cast(minion);
+                    }
+                    if (jungleclearR && ryze.Spells.R.IsReady() && (ryze.GetPassiveBuff >= 4 || ryze.Hero.HasBuff("ryzepassivecharged")))
+                    {
+                        ryze.Spells.R.Cast();
+                    }
                 }
             }
         }
         private void mixed(RyzeMain ryze)
         {
-            ryze.Spells.qCastPred();
+            var Q = Menu._harrashMenu["QH"].Cast<CheckBox>().CurrentValue;
+            var Mana = Menu._harrashMenu["ManaH"].Cast<Slider>().CurrentValue;
+            if (ryze.Hero.ManaPercent <= Mana)
+                if (Q)
+                    ryze.Spells.qCastPred();
         }
 
         private List<String> functions = new List<String>();
@@ -254,9 +265,6 @@ namespace RyzeAssembly
                     }
 
                 }
-            }
-            else
-            {
             }
         }
         public bool sendSpell(string s, RyzeMain ryze)

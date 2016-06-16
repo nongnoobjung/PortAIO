@@ -25,8 +25,8 @@ namespace RyzeAssembly
 
             loadLaneClear();
             loadDrawings();
-            //  loadJungleClear();
-            //  loadHarassh();
+            loadJungleClear();
+            loadHarassh();
         }
         public void loadHarassh()
         {
@@ -34,6 +34,7 @@ namespace RyzeAssembly
             _harrashMenu = menu.AddSubMenu("Harrash", "Harrash");
             {
                 _harrashMenu.Add("QH", new CheckBox("Use Q in Harrash"));
+                _harrashMenu.Add("ManaH", new Slider("% mana Harrash", 40, 0, 100));
             }
         }
 
@@ -45,6 +46,7 @@ namespace RyzeAssembly
                 _laneclearMenu.Add("WL", new CheckBox("Use W in Laneclear"));
                 _laneclearMenu.Add("EL", new CheckBox("Use E in Laneclear"));
                 _laneclearMenu.Add("RL", new CheckBox("Use R in Laneclear"));
+                _laneclearMenu.Add("ManaL", new Slider("% mana LaneClear", 40, 0, 100));
             }
 
         }
@@ -56,6 +58,7 @@ namespace RyzeAssembly
                 _jungleclearMenu.Add("WJ", new CheckBox("Use W in JungleClear"));
                 _jungleclearMenu.Add("EJ", new CheckBox("Use E in JungleClear"));
                 _jungleclearMenu.Add("RJ", new CheckBox("Use R in JungleClear"));
+                _jungleclearMenu.Add("ManaJ", new Slider("% mana JungleClear", 40, 0, 100));
 
             }
         }
