@@ -45,9 +45,8 @@ namespace Nechrito_Twitch // Namespace, if we'd put this class in a folder it'd 
         }
 
         // Initializes the loading process
-        private static void Main() => CustomEvents.Game.OnGameLoad += OnGameLoad;
 
-        private static void OnGameLoad(EventArgs args)
+        public static void OnGameLoad()
         {
             if (Player.ChampionName != "Twitch") return; // If our player name isn't Twitch, we will return and we will not load the script
 
