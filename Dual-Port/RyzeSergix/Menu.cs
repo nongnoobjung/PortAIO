@@ -12,7 +12,7 @@ namespace RyzeAssembly
 {
     class Menu
     {
-        private EloBuddy.SDK.Menu.Menu _drawSettingsMenu, _laneclearMenu, _jungleclearMenu, _harrashMenu;
+        public static EloBuddy.SDK.Menu.Menu _drawSettingsMenu, _laneclearMenu, _jungleclearMenu, _harrashMenu;
         public EloBuddy.SDK.Menu.Menu menu;
         public Menu()
         {

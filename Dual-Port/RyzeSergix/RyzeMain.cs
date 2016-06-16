@@ -139,13 +139,13 @@ namespace RyzeAssembly
         private void draw(EventArgs args)
         {
             if (Hero.IsDead) return;
-            if (_menu.menu["Draw Q Range"].Cast<CheckBox>().CurrentValue)
+            if (RyzeAssembly.Menu._drawSettingsMenu["Draw Q Range"].Cast<CheckBox>().CurrentValue)
                 if(_spells.Q.IsReady())
                 Render.Circle.DrawCircle(Hero.Position, 900f, System.Drawing.Color.Blue, 2);
-            if (_menu.menu["Draw W Range"].Cast<CheckBox>().CurrentValue)
+            if (RyzeAssembly.Menu._drawSettingsMenu["Draw W Range"].Cast<CheckBox>().CurrentValue)
                 if (_spells.W.IsReady())
                     Render.Circle.DrawCircle(Hero.Position, 600f, System.Drawing.Color.Blue, 2);
-            if (_menu.menu["Draw E Range"].Cast<CheckBox>().CurrentValue)
+            if (RyzeAssembly.Menu._drawSettingsMenu["Draw E Range"].Cast<CheckBox>().CurrentValue)
                 if (_spells.E.IsReady())
                     Render.Circle.DrawCircle(Hero.Position, 600f, System.Drawing.Color.Blue, 2);
        
