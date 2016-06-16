@@ -10,7 +10,7 @@ namespace Nechrito_Twitch
 {
     internal class MenuConfig
     {
-        public static Menu Config, combo, harass, lane, steal, draw, misc, ExploitMenu;
+        public static Menu Config, combo, harass, lane, steal, draw, misc, ExploitMenu, Jungle;
         public static string MenuName = "Nechrito Twitch";
 
         public static void LoadMenu()
@@ -27,6 +27,10 @@ namespace Nechrito_Twitch
 
             lane = Config.AddSubMenu("Lane", "Lane");
             lane.Add("laneW", new CheckBox("Use W"));
+
+            Jungle = Config.AddSubMenu("Jungle", "Jungle");
+            Jungle.Add("JungleE", new CheckBox("Use E"));
+            Jungle.Add("JungleW", new CheckBox("Use W", false));
 
             steal = Config.AddSubMenu("Steal", "Steal");
             steal.Add("StealEpic", new CheckBox("Dragons & Baron"));
@@ -46,6 +50,9 @@ namespace Nechrito_Twitch
         // Menu Items
         public static bool StealEpic => steal["StealEpic"].Cast<CheckBox>().CurrentValue;
         public static bool StealBuff => steal["StealBuff"].Cast<CheckBox>().CurrentValue;
+
+        public static bool JungleW => Jungle["JungleW"].Cast<CheckBox>().CurrentValue;
+        public static bool JungleE => Jungle["JungleE"].Cast<CheckBox>().CurrentValue;
 
         public static bool UseW => combo["UseW"].Cast<CheckBox>().CurrentValue;
         public static bool KsE => combo["KsE"].Cast<CheckBox>().CurrentValue;
