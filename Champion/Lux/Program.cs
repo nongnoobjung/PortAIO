@@ -592,7 +592,7 @@ namespace MoonLux
             if (stealBaron)
             {
                 var baron =
-                    ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.CharData.BaseSkinName.Equals("SRU_Baron"));
+                    ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.CharData.BaseSkinName.Equals("SRU_Baron") && x.IsHPBarRendered);
 
                 if (baron != null)
                 {
@@ -608,7 +608,7 @@ namespace MoonLux
             if (stealDragon)
             {
                 var dragon =
-                    ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.CharData.BaseSkinName.Equals("SRU_Dragon"));
+                    ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.CharData.BaseSkinName.Equals("SRU_Dragon") && x.IsHPBarRendered);
 
                 if (dragon != null)
                 {
@@ -624,7 +624,7 @@ namespace MoonLux
             if (stealBlue)
             {
                 var blueBuffs =
-                    ObjectManager.Get<Obj_AI_Minion>().Where(x => x.CharData.BaseSkinName.Equals("SRU_Blue")).ToList();
+                    ObjectManager.Get<Obj_AI_Minion>().Where(x => x.CharData.BaseSkinName.Equals("SRU_Blue") && x.IsHPBarRendered).ToList();
 
                 if (blueBuffs.Any())
                 {
@@ -651,7 +651,7 @@ namespace MoonLux
             }
 
             var redBuffs =
-                ObjectManager.Get<Obj_AI_Minion>().Where(x => x.CharData.BaseSkinName.Equals("SRU_Red")).ToList();
+                ObjectManager.Get<Obj_AI_Minion>().Where(x => x.CharData.BaseSkinName.Equals("SRU_Red") && x.IsHPBarRendered).ToList();
 
             if (!redBuffs.Any())
             {
