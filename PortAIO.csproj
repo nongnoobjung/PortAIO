@@ -1615,6 +1615,7 @@
     <None Include="Resources\RecallBar.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Dual-Port\YasuoSharpV2\" />
     <Folder Include="Libraries\ValvraveSharp\Plugin\" />
   </ItemGroup>
   <ItemGroup>
