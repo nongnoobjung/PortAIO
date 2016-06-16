@@ -73,6 +73,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             qMenu = Config.AddSubMenu("Q Config");
             qMenu.Add("countQ", new Slider("Auto Q if x enemies are going in your direction 0-disable", 3, 0, 5));
             qMenu.Add("autoQ", new CheckBox("Auto Q in combo"));
+            qMenu.Add("expoit", new CheckBox("Q Exploit"));
             qMenu.Add("recallSafe", new CheckBox("Safe Q recall (Press B)"));
 
             wMenu = Config.AddSubMenu("W Config");
@@ -156,6 +157,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (Program.LagFree(0))
             {
+                Exploit();
                 SetMana();
             }
 
@@ -172,6 +174,44 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 LogicW();
             if (Program.LagFree(4) && R.IsReady() && Program.Combo)
                 LogicR();
+        }
+
+        private static void Exploit()
+        {
+            var target = TargetSelector.GetTarget(Player.AttackRange, DamageType.Physical);
+            if (target == null || !target.LSIsValidTarget() || target.IsInvulnerable) return;
+
+            if (!getCheckBoxItem(qMenu, "expoit")) return;
+            if (!Q.IsReady()) return;
+
+            if (E.IsReady())
+            {
+                if (!target.IsFacing(Player) && target.LSDistance(Player) >= Player.AttackRange - 50)
+                {
+                    LeagueSharp.Common.Utility.DelayAction.Add(500, () => Chat.Print("Exploit Will NOT Interrupt "));
+                    return;
+                }
+
+                if (target.Health <= Player.LSGetAutoAttackDamage(target) * 1.275 + GetDamage(target))
+                {
+                    E.Cast();
+                    LeagueSharp.Common.Utility.DelayAction.Add(500, () => Chat.Print("Casting E to then cast AA Q"));
+                }
+            }
+
+            if (!(target.Health < Player.GetAutoAttackDamage(target)) || !Player.Spellbook.IsAutoAttacking) return;
+
+            Q.Cast();
+            do
+            {
+                LeagueSharp.Common.Utility.DelayAction.Add(500, () => Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Exploit Active</font></b><b><font color=\"#FFFFFF\">]</font></b>"));
+                // Game.PrintChat("Casting Q");
+            } while (Q.Cast());
+        }
+
+        private static float GetDamage(Obj_AI_Base target)
+        {
+            return E.GetDamage(target);
         }
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
