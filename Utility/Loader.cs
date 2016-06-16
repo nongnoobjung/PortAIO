@@ -496,7 +496,7 @@ namespace PortAIO.Utility
             Miscc.Add("antialistar", new CheckBox("Enable AntiAlistar?", false));
             Miscc.AddSeparator();
             Miscc.Add("sdkPredictioner", new CheckBox("Enable SDKPredictioner?", false));
-            Miscc.Add("EBPrediction", new CheckBox("Enable EBPredictioner?", false));
+            Miscc.Add("EBPrediction", new CheckBox("Enable EBPredictioner?", true));
             Miscc.Add("traptrack", new CheckBox("Enable TrapTracker?", false));
             Miscc.Add("limitedShat", new CheckBox("Enable LimitedShat?", false));
             Miscc.AddSeparator();
