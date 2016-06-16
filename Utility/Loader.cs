@@ -111,6 +111,7 @@ namespace PortAIO.Utility
         public static int syndra { get { return Miscc["syndra"].Cast<ComboBox>().CurrentValue; } }
         public static int aatrox { get { return Miscc["aatrox"].Cast<ComboBox>().CurrentValue; } }
         public static bool EBPrediction { get { return Miscc["EBPrediction"].Cast<CheckBox>().CurrentValue; } }
+        public static bool reform { get { return Miscc["reform"].Cast<CheckBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -508,6 +509,7 @@ namespace PortAIO.Utility
             Miscc.Add("pastingSharp", new CheckBox("Enable PastingSharp?", false));
             Miscc.Add("emoteSpammer", new CheckBox("Enable Emote Spammer?", false));
             Miscc.Add("antiStealth", new CheckBox("Enable Anti Stealth (ElUtil)?", false));
+            Miscc.Add("reform", new CheckBox("Enable Toxic Player Reform Program?", false));
 
             var credits = Miscc.AddSubMenu("Credits");
             credits.AddLabel("Nathan or jQuery");

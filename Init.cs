@@ -207,6 +207,11 @@ namespace PortAIO
                     EBPredictioner.Program.Init();
                 }
 
+                if (Loader.reform)
+                {
+                    Toxic_Player_Reform_Program.Program.Main();
+                }
+
                 //if (Loader.orbwalker)
                 //{
                 //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();

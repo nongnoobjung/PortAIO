@@ -39,7 +39,6 @@ Utility Ports [Only doing after Champions are completed] :
 - Activator # [https://github.com/xKurisu/Activator/tree/master/Activator]
 - IHateSkillshots [https://github.com/Vasilyi/L-/]
 - ControlSharp [https://github.com/tr33s/LeagueSharp/blob/master/ControlSharp/Program.cs]
-- Toxic Player Reform Program [https://github.com/myo/LeagueSharp/blob/master/Toxic%20Player%20Reform%20Program/Toxic%20Player%20Reform%20Program/Program.cs]
 - AntiMelee Standalon [https://github.com/strcow/LeagueSharp/tree/master/CowAntiMelee/CowAntiMelee]
 - StreamSharp [https://github.com/Nouser/Leaguesharp/tree/master/LeagueSharp/StreamSharp/StreamSharp]
 - OKTW Ward Standalone [Already in PortAIO]

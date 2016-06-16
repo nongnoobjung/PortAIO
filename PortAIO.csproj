@@ -1428,6 +1428,7 @@
     <Compile Include="Utility\TheCheater\LeaguesharpOrbwalkDetector.cs" />
     <Compile Include="Utility\TheCheater\SacOrbwalkerDetector.cs" />
     <Compile Include="Utility\TheCheater\TheCheater.cs" />
+    <Compile Include="Utility\ToxicReform\Program.cs" />
     <Compile Include="Utility\TrapTracker\Program.cs" />
     <Compile Include="Utility\UniversalGankAlerter\Program.cs" />
     <Compile Include="Utility\UniversalPingBlock\Program.cs" />
