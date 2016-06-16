@@ -66,8 +66,6 @@ using SebbyLib;
             miscOptions.Add("com.itwitch.misc.recall", new KeyBind("Stealth Recall", false, KeyBind.BindTypes.HoldActive, 'T'));
             miscOptions.Add("com.itwitch.misc.Exploit", new CheckBox("Use Exploit", false));
             miscOptions.AddLabel("Will Instant Q After Kill");
-            miscOptions.Add("com.itwitch.misc.EAAQ", new CheckBox("E AA Q", false));
-            miscOptions.AddLabel("Will cast E if killable by E + AA then Q");
 
 
             drawOptions = Menu.AddSubMenu("iTwitch 2.0 - Drawing", "com.itwitch.drawing");
@@ -104,35 +102,6 @@ using SebbyLib;
         public static void LoadSpells()
         {
             Spells[SpellSlot.W].SetSkillshot(0.25f, 120f, 1400f, false, SkillshotType.SkillshotCircle);
-        }
-
-        private static void Exploit() // nechrito was here
-        {
-            var target = TargetSelector.GetTarget(ObjectManager.Player.AttackRange, DamageType.Physical);
-            if (target == null || !target.LSIsValidTarget() || target.IsInvulnerable) return;
-
-            if (!getCheckBoxItem(miscOptions, "com.itwitch.misc.Exploit")) return;
-            if (!Spells[SpellSlot.Q].IsReady()) return;
-
-            if (Spells[SpellSlot.E].IsReady() && getCheckBoxItem(miscOptions, "com.itwitch.misc.EQAA"))
-            {
-                if (!target.IsFacing(ObjectManager.Player) || target.LSDistance(ObjectManager.Player) >= ObjectManager.Player.AttackRange)
-                {
-                    return;
-                }
-
-                if (target.Health <= ObjectManager.Player.GetAutoAttackDamage(target) * 1.33 + target.GetPoisonDamage())
-                {
-                    Spells[SpellSlot.E].Cast(target);
-                }
-            }
-
-            if (target.Health + target.AttackShield < ObjectManager.Player.GetAutoAttackDamage(target, true) && ObjectManager.Player.Spellbook.IsAutoAttacking)
-            {
-                Spells[SpellSlot.Q].Cast();
-                Chat.Print("Exploited Q");
-            }
-
         }
 
         public static void OnCombo()
@@ -207,6 +176,15 @@ using SebbyLib;
 
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
+            Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
+        }
+
+        private static void OnProcessSpell(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (!getCheckBoxItem(miscOptions, "com.itwitch.misc.Exploit"))
+                return;
+
+            //TODO exploit
         }
 
         public static void OnHarass()
@@ -285,7 +263,6 @@ using SebbyLib;
                 ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall);
             }
 
-            Exploit();
             if (getCheckBoxItem(comboOptions, "com.itwitch.combo.useEKillable") && Spells[SpellSlot.E].IsReady())
             {
                 if (HeroManager.Enemies.Any(x => x.IsPoisonKillable() && x.LSIsValidTarget(Spells[SpellSlot.E].Range)))
