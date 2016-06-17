@@ -12,7 +12,7 @@ namespace Infected_Twitch.Menus
     {
         private static Menu Menu { get; set; }
 
-        public static Menu comboMenu, harassMenu, laneMenu, miscMenu, killstealMenu, trinketMenu, drawMenu, exploitMenu, jungleMenu;
+        public static Menu comboMenu, harassMenu, laneMenu, miscMenu, killstealMenu, trinketMenu, exploitMenu, jungleMenu;
 
         public static void Load()
         {

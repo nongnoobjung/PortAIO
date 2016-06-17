@@ -29,17 +29,17 @@ namespace Challenger_Series
     public class Soraka : CSPlugin
     {
 
-        public static LeagueSharp.Common.Spell Q, W, E, R;
+        public static LeagueSharp.SDK.Spell Q, W, E, R;
 
         public Soraka()
         {
-            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 750);
-            W = new LeagueSharp.Common.Spell(SpellSlot.W, 550);
-            E = new LeagueSharp.Common.Spell(SpellSlot.E, 900);
-            R = new LeagueSharp.Common.Spell(SpellSlot.R);
+            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 750);
+            W = new LeagueSharp.SDK.Spell(SpellSlot.W, 550);
+            E = new LeagueSharp.SDK.Spell(SpellSlot.E, 900);
+            R = new LeagueSharp.SDK.Spell(SpellSlot.R);
 
-            Q.SetSkillshot(0.5f, 125, 1750, false, LeagueSharp.Common.SkillshotType.SkillshotCircle);
-            E.SetSkillshot(0.5f, 70f, 1750, false, LeagueSharp.Common.SkillshotType.SkillshotCircle);
+            Q.SetSkillshot(0.30f, 125, 1750, false, SkillshotType.SkillshotCircle);
+            E.SetSkillshot(0.4f, 70f, 1750, false, SkillshotType.SkillshotCircle);
 
             InitializeMenu();
 
@@ -47,7 +47,7 @@ namespace Challenger_Series
             DelayedOnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
             GameObject.OnCreate += OnCreateObj;
-            //Events.OnGapCloser += OnGapCloser;
+            Events.OnGapCloser += OnGapCloser;
             Events.OnInterruptableTarget += this.OnInterruptableTarget;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             this._rand = new Random();
@@ -77,16 +77,34 @@ namespace Challenger_Series
             }
         }
 
-        /*
         private void OnGapCloser(object sender, Events.GapCloserEventArgs args)
         {
-            var ally = EntityManager.Heroes.Allies.FirstOrDefault(a => a.Distance(args.End) < 300 || args.Sender.Distance(a) < 300);
-            if (ally.IsHPBarRendered && ally.Distance(ObjectManager.Player) < 800)
+            if (args.Target != null && args.Target.Distance(ObjectManager.Player) < 850)
             {
-                E.Cast(ally.ServerPosition.Randomize(-25, 25));
+                var hero = args.Target as AIHeroClient;
+                if (hero != null && hero.IsHPBarRendered)
+                {
+                    E.Cast(hero.ServerPosition.Randomize(-15, 15));
+                    return;
+                }
+                E.Cast(args.Target.Position.Randomize(-15, 15));
+            }
+            if (args.End.Distance(ObjectManager.Player.Position) < 850)
+            {
+                if (args.End.Distance(ObjectManager.Player.Position) < 450)
+                {
+                    E.Cast(ObjectManager.Player.ServerPosition.Randomize(-15, 15));
+                }
+                else
+                {
+                    var gcTarget = GameObjects.AllyHeroes.FirstOrDefault(ally => ally.Position.Distance(args.End) < 450);
+                    if (gcTarget != null)
+                    {
+                        E.Cast(gcTarget.ServerPosition.Randomize(-15, 15));
+                    }
+                }
             }
         }
-        */
 
         private void OnCreateObj(GameObject obj, EventArgs args)
         {
@@ -97,12 +115,12 @@ namespace Challenger_Series
                 {
                     var enemyJ4 = ValidTargets.First(h => h.CharData.BaseSkinName.Contains("Jarvan"));
                     if (enemyJ4 != null && enemyJ4.LSIsValidTarget())
-                    E.Cast(enemyJ4.ServerPosition);
+                        E.Cast(enemyJ4.ServerPosition);
                 }
-                if (obj.Name.ToLower().Contains("soraka_base_e_rune.troy") && EntityManager.Heroes.Enemies.Count(e => e.IsHPBarRendered && e.Distance(obj.Position) < 300) > 0)
+                /*if (obj.Name.ToLower().Contains("soraka_base_e_rune.troy") && EntityManager.Heroes.Enemies.Count(e => e.IsHPBarRendered && e.Distance(obj.Position) < 300) > 0)
                 {
                     Q.Cast(obj.Position);
-                }
+                }*/
                 if (EntityManager.Heroes.Allies.All(h => h.CharData.BaseSkinName != "Rengar"))
                 {
                     if (obj.Name == "Rengar_LeapSound.troy")
@@ -205,6 +223,7 @@ namespace Challenger_Series
             MainMenu.Add("checkallysurvivability", new CheckBox("Check if ult will save ally", true));
             MainMenu.Add("ultafterignite", new CheckBox("ULT (R) after IGNITE", false));
             MainMenu.Add("blockaas", new CheckBox("Block AutoAttacks?", true));
+            MainMenu.Add("rakapredtype", new ComboBox("PredictionType", 0, "Common", "SDK"));
 
             MainMenu.Add("draww", new CheckBox("Draw W?", true));
             MainMenu.Add("drawq", new CheckBox("Draw Q?", true));
@@ -220,39 +239,39 @@ namespace Challenger_Series
             var spellLevel = ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level;
             if (spellLevel < 1) return 0;
             return Math.Min(
-                new double[] {25, 35, 45, 55, 65}[spellLevel - 1] +
-                0.4*ObjectManager.Player.FlatMagicDamageMod +
-                (0.1*(ObjectManager.Player.MaxHealth - ObjectManager.Player.Health)),
-                new double[] {50, 70, 90, 110, 130}[spellLevel - 1] +
-                0.8*ObjectManager.Player.FlatMagicDamageMod);
+                new double[] { 25, 35, 45, 55, 65 }[spellLevel - 1] +
+                0.4 * ObjectManager.Player.FlatMagicDamageMod +
+                (0.1 * (ObjectManager.Player.MaxHealth - ObjectManager.Player.Health)),
+                new double[] { 50, 70, 90, 110, 130 }[spellLevel - 1] +
+                0.8 * ObjectManager.Player.FlatMagicDamageMod);
         }
 
         public double GetWHealingAmount()
         {
             var spellLevel = ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level;
             if (spellLevel < 1) return 0;
-            return new double[] {120, 150, 180, 210, 240}[spellLevel - 1] +
-                   0.6*ObjectManager.Player.FlatMagicDamageMod;
+            return new double[] { 120, 150, 180, 210, 240 }[spellLevel - 1] +
+                   0.6 * ObjectManager.Player.FlatMagicDamageMod;
         }
 
         public double GetRHealingAmount()
         {
             var spellLevel = ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Level;
             if (spellLevel < 1) return 0;
-            return new double[] {120, 150, 180, 210, 240}[spellLevel - 1] +
-                   0.6*ObjectManager.Player.FlatMagicDamageMod;
+            return new double[] { 120, 150, 180, 210, 240 }[spellLevel - 1] +
+                   0.6 * ObjectManager.Player.FlatMagicDamageMod;
         }
 
         public int GetWManaCost()
         {
             var spellLevel = ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level;
             if (spellLevel < 1) return 0;
-            return new[] {40, 45, 50, 55, 60}[spellLevel - 1];
+            return new[] { 40, 45, 50, 55, 60 }[spellLevel - 1];
         }
 
         public double GetWHealthCost()
         {
-            return 0.10*ObjectManager.Player.MaxHealth;
+            return 0.10 * ObjectManager.Player.MaxHealth;
         }
 
         #endregion ChampionData
@@ -263,12 +282,12 @@ namespace Challenger_Series
         {
             return !ObjectManager.Player.InFountain() && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level >= 1 &&
                    ObjectManager.Player.Health - GetWHealthCost() >
-                   getSliderItem(MainMenu, "wmyhp") /100f*ObjectManager.Player.MaxHealth;
+                   getSliderItem(MainMenu, "wmyhp") / 100f * ObjectManager.Player.MaxHealth;
         }
 
         public void QLogic()
         {
-            if (!Q.IsReady() || (ObjectManager.Player.Mana < 3*GetWManaCost() && CanW())) return;
+            if (!Q.IsReady() || (ObjectManager.Player.Mana < 3 * GetWManaCost() && CanW())) return;
             var shouldntKS =
                 EntityManager.Heroes.Allies.Any(
                     h => h.Position.Distance(ObjectManager.Player.Position) < 600 && !h.IsDead && !h.IsMe);
@@ -279,10 +298,10 @@ namespace Challenger_Series
                 {
                     continue;
                 }
-                var pred = Q.GetPrediction(hero);
-                if ((int) pred.Hitchance > (int) HitChance.Medium && pred.UnitPosition.Distance(ObjectManager.Player.ServerPosition) < Q.Range)
+                var pred = GetPrediction(hero, Q);
+                if (((int)pred.Item1 > (int)HitChance.Medium || hero.HasBuff("SorakaEPacify")) && pred.Item2.Distance(ObjectManager.Player.ServerPosition) < Q.Range)
                 {
-                    Q.Cast(hero);
+                    Q.Cast(pred.Item2);
                 }
             }
         }
@@ -450,6 +469,24 @@ namespace Challenger_Series
         }
 
         #endregion STTCSelector
+
+        private Tuple<HitChance, Vector3, List<Obj_AI_Base>> GetPrediction(AIHeroClient target, LeagueSharp.SDK.Spell spell)
+        {
+            switch (getBoxItem(MainMenu, "rakapredtype"))
+            {
+                case 0:
+                    {
+                        var pred = spell.GetPrediction(target);
+                        return new Tuple<HitChance, Vector3, List<Obj_AI_Base>>(pred.Hitchance, pred.UnitPosition, pred.CollisionObjects);
+                    }
+                default:
+                    {
+
+                        var pred = LeagueSharp.Common.Prediction.GetPrediction(target, spell.Delay, spell.Width, spell.Speed);
+                        return new Tuple<HitChance, Vector3, List<Obj_AI_Base>>((HitChance)((int)pred.Hitchance), pred.UnitPosition, pred.CollisionObjects);
+                    }
+            }
+        }
 
     }
 }

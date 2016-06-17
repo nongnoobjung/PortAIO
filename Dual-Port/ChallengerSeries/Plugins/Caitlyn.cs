@@ -33,7 +33,7 @@ namespace Challenger_Series.Plugins
             E = new LeagueSharp.SDK.Spell(SpellSlot.E, 770);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 2000);
 
-            Q.SetSkillshot(0.40f, 60f, 2200f, false, SkillshotType.SkillshotLine);
+            Q.SetSkillshot(0.25f, 60f, 2000f, false, SkillshotType.SkillshotLine);
             E.SetSkillshot(0.25f, 80f, 1600f, true, SkillshotType.SkillshotLine);
             R.SetSkillshot(3000f, 50f, 1000f, false, SkillshotType.SkillshotLine);
             InitMenu();
@@ -59,16 +59,16 @@ namespace Challenger_Series.Plugins
             if (sender.IsMe && args.Animation == "Spell3")
             {
                 var target = TargetSelector.GetTarget(1000, DamageType.Physical);
-                var pred = Q.GetPrediction(target);
+                var pred = GetPrediction(target, Q);
                 if (AlwaysQAfterE)
                 {
-                    if ((int)pred.Hitchance >= (int)HitChance.Medium
-                        && pred.UnitPosition.Distance(ObjectManager.Player.ServerPosition) < 1100) Q.Cast(pred.UnitPosition);
+                    if ((int)pred.Item1 >= (int)HitChance.Medium
+                        && pred.Item2.Distance(ObjectManager.Player.ServerPosition) < 1100) Q.Cast(pred.Item2);
                 }
                 else
                 {
-                    if ((int)pred.Hitchance > (int)HitChance.Medium
-                        && pred.UnitPosition.Distance(ObjectManager.Player.ServerPosition) < 1100) Q.Cast(pred.UnitPosition);
+                    if ((int)pred.Item1 > (int)HitChance.Medium
+                        && pred.Item2.Distance(ObjectManager.Player.ServerPosition) < 1100) Q.Cast(pred.Item2);
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace Challenger_Series.Plugins
             var sender = args.Sender;
             if (UseEAntiGapclose)
             {
-                if (args.IsDirectedToPlayer && args.Sender.Distance(ObjectManager.Player) < 800)
+                if (args.IsDirectedToPlayer && args.Sender.Distance(ObjectManager.Player) < 750)
                 {
                     if (E.IsReady())
                     {
@@ -91,8 +91,7 @@ namespace Challenger_Series.Plugins
         private void OnInterruptableTarget(object oSender, Events.InterruptableTargetEventArgs args)
         {
             var sender = args.Sender;
-            if (!GameObjects.AllyMinions.Any(m => m.Position.Distance(sender.ServerPosition) < 100)
-                && args.DangerLevel >= LeagueSharp.SDK.DangerLevel.Medium && ObjectManager.Player.Distance(sender) < 550)
+            if (!GameObjects.AllyMinions.Any(m => !m.IsDead && m.Name.ToLower().Contains("yordle")) && ObjectManager.Player.Distance(sender) < 550)
             {
                 W.Cast(sender.ServerPosition);
             }
@@ -103,9 +102,13 @@ namespace Challenger_Series.Plugins
             base.OnProcessSpellCast(sender, args);
             if (sender is AIHeroClient && sender.IsEnemy)
             {
-                if (args.SData.Name == "summonerflash" && args.End.Distance(ObjectManager.Player.ServerPosition) < 350)
+                if (args.SData.Name == "summonerflash" && args.End.Distance(ObjectManager.Player.ServerPosition) < 650)
                 {
-                    E.Cast(args.End);
+                    var pred = GetPrediction((AIHeroClient)args.Target, E);
+                    if (!pred.Item3.Any(o => o.IsMinion && !o.IsDead && !o.IsAlly))
+                    {
+                        E.Cast(args.End);
+                    }
                 }
             }
         }
@@ -155,10 +158,10 @@ namespace Challenger_Series.Plugins
                     var eTarget = TargetSelector.GetTarget(UseEOnEnemiesCloserThanSlider, DamageType.Physical);
                     if (eTarget != null)
                     {
-                        var pred = E.GetPrediction(eTarget);
-                        if (pred.CollisionObjects.Count == 0 && (int)pred.Hitchance >= (int)HitChance.High)
+                        var pred = GetPrediction(eTarget, E);
+                        if (pred.Item3.Count == 0 && (int)pred.Item1 >= (int)HitChance.High)
                         {
-                            E.Cast(pred.UnitPosition);
+                            E.Cast(pred.Item2);
                         }
                     }
                 }
@@ -169,10 +172,10 @@ namespace Challenger_Series.Plugins
                             e =>
                             e.IsMelee && e.Distance(ObjectManager.Player) < UseEOnEnemiesCloserThanSlider
                             && !e.IsZombie);
-                    var pred = E.GetPrediction(eTarget);
-                    if (pred.CollisionObjects.Count == 0 && (int)pred.Hitchance >= (int)HitChance.Medium)
+                    var pred = GetPrediction(eTarget, E);
+                    if (pred.Item3.Count == 0 && (int)pred.Item1 > (int)HitChance.Medium)
                     {
-                        E.Cast(pred.UnitPosition);
+                        E.Cast(pred.Item2);
                     }
                 }
             }
@@ -190,6 +193,7 @@ namespace Challenger_Series.Plugins
         private bool UseEAntiGapclose;
         private int UseEOnEnemiesCloserThanSlider;
         private int DrawRange;
+        private int PredictionType;
         private bool DrawQRange;
         private bool DrawRRange;
         private int QHarassMode;
@@ -201,6 +205,7 @@ namespace Challenger_Series.Plugins
             ComboMenu.Add("caitqcombo", new CheckBox("Use Q", true));
             ComboMenu.Add("caitecombo", new CheckBox("Use E", true));
             ComboMenu.Add("caitrcombo", new KeyBind("Use R", false, KeyBind.BindTypes.HoldActive, 'R'));
+            ComboMenu.Add("caitpredtype", new ComboBox("Prediction Type", 0, "Common", "SDK"));
 
             AutoWConfig = MainMenu.AddSubMenu("W Settings: ");
             AutoWConfig.Add("caitusewinterrupt", new CheckBox("Use W to Interrupt", true));
@@ -216,10 +221,11 @@ namespace Challenger_Series.Plugins
             MainMenu.Add("caitdrawrange", new Slider("Draw a circle with radius: ", 800, 0, 1240));
             MainMenu.Add("caitqrange", new CheckBox("Draw Q Range", true));
             MainMenu.Add("caitrrange", new CheckBox("Draw R Range", true));
-            
+
             UseQCombo = getCheckBoxItem(ComboMenu, "caitqcombo");
             UseECombo = getCheckBoxItem(ComboMenu, "caitecombo");
             UseRCombo = getKeyBindItem(ComboMenu, "caitrcombo");
+            PredictionType = getBoxItem(ComboMenu, "caitpredtype");
 
             QHarassMode = getBoxItem(MainMenu, "caitqharassmode");
             UseEOnEnemiesCloserThanSlider = getSliderItem(MainMenu, "caitescape");
@@ -245,18 +251,18 @@ namespace Challenger_Series.Plugins
                 if (UseQCombo && Q.IsReady() && ObjectManager.Player.CountEnemyHeroesInRange(800) == 0
                     && ObjectManager.Player.CountEnemyHeroesInRange(1100) > 0)
                 {
-                    Q.CastIfWillHit(TargetSelector.GetTarget(1100, DamageType.Physical), 2);
+                    Q.CastIfWillHit(TargetSelector.GetTarget(900, DamageType.Physical), 2);
                     var goodQTarget =
                         ValidTargets.FirstOrDefault(
                             t =>
-                            t.Distance(ObjectManager.Player) < 1150 && t.Health < Q.GetDamage(t)
+                            t.Distance(ObjectManager.Player) < 950 && t.Health < Q.GetDamage(t)
                             || SquishyTargets.Contains(t.CharData.BaseSkinName));
                     if (goodQTarget != null)
                     {
-                        var pred = Q.GetPrediction(goodQTarget);
-                        if ((int)pred.Hitchance > (int)HitChance.Medium)
+                        var pred = GetPrediction(goodQTarget, Q);
+                        if ((int)pred.Item1 > (int)HitChance.Medium)
                         {
-                            Q.Cast(pred.UnitPosition);
+                            Q.Cast(pred.Item2);
                         }
                     }
                 }
@@ -270,16 +276,16 @@ namespace Challenger_Series.Plugins
                     var qTarget = TargetSelector.GetTarget(1100, DamageType.Physical);
                     if (qTarget != null)
                     {
-                        var pred = Q.GetPrediction(qTarget);
-                        if ((int)pred.Hitchance > (int)HitChance.Medium)
+                        var pred = GetPrediction(qTarget, Q);
+                        if ((int)pred.Item1 > (int)HitChance.Medium)
                         {
                             if (qHarassMode == 1)
                             {
-                                Q.Cast(pred.UnitPosition);
+                                Q.Cast(pred.Item2);
                             }
-                            else if (pred.CollisionObjects.Count == 0)
+                            else if (pred.Item3.Count == 0)
                             {
-                                Q.Cast(pred.UnitPosition);
+                                Q.Cast(pred.Item2);
                             }
                         }
                     }
@@ -352,5 +358,22 @@ namespace Challenger_Series.Plugins
                 "Tristana", "TwistedFate", "Twitch", "Varus", "Vayne", "Veigar", "Velkoz",
                 "Viktor", "Xerath", "Zed", "Ziggs", "Jhin", "Soraka"
             };
+
+        private Tuple<HitChance, Vector3, List<Obj_AI_Base>> GetPrediction(AIHeroClient target, LeagueSharp.SDK.Spell spell)
+        {
+            switch (PredictionType)
+            {
+                case 1:
+                    {
+                        var pred = spell.GetPrediction(target);
+                        return new Tuple<HitChance, Vector3, List<Obj_AI_Base>>(pred.Hitchance, pred.UnitPosition, pred.CollisionObjects);
+                    }
+                default:
+                    {
+                        var pred = LeagueSharp.Common.Prediction.GetPrediction(target, spell.Delay, spell.Width, spell.Speed);
+                        return new Tuple<HitChance, Vector3, List<Obj_AI_Base>>((HitChance)((int)pred.Hitchance), pred.UnitPosition, pred.CollisionObjects);
+                    }
+            }
+        }
     }
 }
