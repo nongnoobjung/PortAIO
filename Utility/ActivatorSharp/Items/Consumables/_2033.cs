@@ -14,7 +14,7 @@ namespace Activators.Items.Consumables
         internal override int Duration => 101;
         internal override float Range => float.MaxValue;
         internal override MenuType[] Category => new[] { MenuType.SelfLowMP, MenuType.SelfLowHP, MenuType.SelfMuchHP };
-        internal override MapType[] Maps => new[] { MapType.SummonersRift, MapType.TwistedTreeline, MapType.CrystalScar };
+        internal override MapType[] Maps => new[] { MapType.Common };
         internal override int DefaultHP => 55;
         internal override int DefaultMP => 25;
 

@@ -109,7 +109,7 @@ namespace Activators
                 zmenu.Add("autolevelup", new CheckBox("Auto Level Ultimate"));
                 zmenu.Add("autotrinket", new CheckBox("Auto Upgrade Trinket", false));
                 zmenu.Add("healthp", new ComboBox("Ally Priority:", 1, "Low HP", "Most AD/AP", "Most HP"));
-                zmenu.Add("weightdmg", new Slider("Weight Income Damage (%)", 125, 100, 165));
+                zmenu.Add("weightdmg", new Slider("Weight Income Damage (%)", 115, 100, 150));
                 zmenu.Add("usecombo", new KeyBind("Combo (active)", false, KeyBind.BindTypes.HoldActive, 32));
                 zmenu.AddGroupLabel("Spell Database");
                 LoadSpellMenu(zmenu);
@@ -362,7 +362,7 @@ namespace Activators
                     adata.Delay = entry.Delay;
                     adata.Speed = entry.MissileSpeed;
                     adata.Range = entry.Range;
-                    adata.Width = entry.SpellType.ToString().Contains("Circle") ? entry.Radius : entry.Width;
+                    adata.Width = entry.Radius;
                     adata.SpellType = entry.SpellType;
                     adata.MissileName = entry.MissileSpellName;
                     adata.ExtraMissileNames = entry.ExtraMissileNames;
@@ -455,7 +455,7 @@ namespace Activators
                         parent.Add(entry.SDataName + "danger", new CheckBox("danger", entry.HitType.Contains(HitType.Danger)));
                         parent.Add(entry.SDataName + "crowdcontrol", new CheckBox("crowdcontrol", entry.HitType.Contains(HitType.CrowdControl)));
                         parent.Add(entry.SDataName + "ultimate", new CheckBox("danger ultimate", entry.HitType.Contains(HitType.Ultimate)));
-                        parent.Add(entry.SDataName + "forceexhaust", new CheckBox("force exhuast", entry.HitType.Contains(HitType.ForceExhaust)));
+                        parent.Add(entry.SDataName + "forceexhaust", new CheckBox("force exhaust", entry.HitType.Contains(HitType.ForceExhaust)));
 
                         LeagueSharp.Common.Utility.DelayAction.Add(5000, () => parent[entry.SDataName + "predict"].Cast<CheckBox>().CurrentValue = entry.SpellTags.Contains(SpellTags.Damage) || entry.SpellTags.Contains(SpellTags.CrowdControl));
                     }

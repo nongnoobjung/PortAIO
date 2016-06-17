@@ -90,12 +90,19 @@ namespace Activators.Base
         {
             foreach (var unit in Activator.Heroes.Where(x => x.Player.NetworkId == hero.NetworkId))
             {
-                if (!unit.Player.LSIsValidTarget(float.MaxValue, false) || unit.Player.IsZombie || unit.Immunity)
+                if (unit.IncomeDamage != 0 && unit.IncomeDamage.ToString().Contains("E")) // Check Expo
                 {
                     unit.Attacker = null;
                     unit.IncomeDamage = 0;
                     unit.HitTypes.Clear();
-                }       
+                }
+
+                if (unit.Player.IsZombie || unit.Immunity || !unit.Player.LSIsValidTarget(float.MaxValue, false))
+                {
+                    unit.Attacker = null;
+                    unit.IncomeDamage = 0;
+                    unit.HitTypes.Clear();
+                }
             }
         }
 
@@ -125,7 +132,7 @@ namespace Activators.Base
             {
                 "Anivia", "AurelionSol", "Azir", "Brand", "Cassiopeia", "Heimerdinger", "Karma",
                 "Karthus", "Lux", "Malzahar", "Orianna", "Ryze", "Swain", "Twistedfate",
-                "Veigar", "Velkoz", "Viktor", "Xerath", "Ziggs"
+                "Veigar", "Velkoz", "Viktor", "Xerath", "Ziggs", "Taliyah"
             };
 
             var supports = new[]

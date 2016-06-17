@@ -14,7 +14,7 @@ namespace Activators.Items.Offensives
         internal override int Duration => 100;
         internal override float Range => 750f;
         internal override MenuType[] Category => new[] { MenuType.SelfLowHP, MenuType.EnemyLowHP };
-        internal override MapType[] Maps => new[] { MapType.CrystalScar, MapType.HowlingAbyss };
+        internal override MapType[] Maps => new[] { MapType.CrystalScar };
         internal override int DefaultHP => 95;
         internal override int DefaultMP => 0;
 
