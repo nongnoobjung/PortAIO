@@ -109,7 +109,7 @@
         private static void Exploit()
         {
             var target = TargetSelector.GetTarget(ObjectManager.Player.HasBuff("TwitchFullAutomatic") ? 850 : 550, DamageType.Physical);
-            if (target == null || !target.IsValidTarget() || target.IsInvulnerable || !Spells[SpellSlot.Q].IsReady()) return;
+            if (target == null || !target.LSIsValidTarget() || target.IsInvulnerable || !Spells[SpellSlot.Q].IsReady()) return;
 
             if (Spells[SpellSlot.E].IsReady() && getCheckBoxItem(miscOptions, "com.itwitch.misc.EAAQ"))
             {
