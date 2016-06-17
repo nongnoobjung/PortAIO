@@ -36,7 +36,7 @@ namespace Challenger_Series.Plugins
             E = new LeagueSharp.SDK.Spell(SpellSlot.E, 25000);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 1400);
 
-            R.SetSkillshot(250f, 100f, 1600f, false, SkillshotType.SkillshotLine);
+            R.SetSkillshot(0.25f, 100f, 1600f, false, SkillshotType.SkillshotLine);
             InitMenu();
             AIHeroClient.OnSpellCast += OnDoCast;
             Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;

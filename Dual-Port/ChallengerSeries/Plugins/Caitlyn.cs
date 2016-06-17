@@ -11,6 +11,7 @@ using EloBuddy.SDK;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
+using Prediction = Challenger_Series.Utils.Prediction;
 
 namespace Challenger_Series.Plugins
 {
@@ -33,9 +34,11 @@ namespace Challenger_Series.Plugins
             E = new LeagueSharp.SDK.Spell(SpellSlot.E, 770);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 2000);
 
-            Q.SetSkillshot(0.25f, 60f, 2000f, false, SkillshotType.SkillshotLine);
+            Q.SetSkillshot(0.25f, 50f, 2000f, false, SkillshotType.SkillshotLine);
+            W.SetSkillshot(1.00f, 100f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             E.SetSkillshot(0.25f, 80f, 1600f, true, SkillshotType.SkillshotLine);
-            R.SetSkillshot(3000f, 50f, 1000f, false, SkillshotType.SkillshotLine);
+            R.SetSkillshot(3.00f, 50f, 1000f, false, SkillshotType.SkillshotLine);
+
             InitMenu();
             Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
             Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;
@@ -59,7 +62,7 @@ namespace Challenger_Series.Plugins
             if (sender.IsMe && args.Animation == "Spell3")
             {
                 var target = TargetSelector.GetTarget(1000, DamageType.Physical);
-                var pred = GetPrediction(target, Q);
+                var pred = Prediction.GetPrediction(target, Q);
                 if (AlwaysQAfterE)
                 {
                     if ((int)pred.Item1 >= (int)HitChance.Medium
@@ -91,7 +94,7 @@ namespace Challenger_Series.Plugins
         private void OnInterruptableTarget(object oSender, Events.InterruptableTargetEventArgs args)
         {
             var sender = args.Sender;
-            if (!GameObjects.AllyMinions.Any(m => !m.IsDead && m.Name.ToLower().Contains("yordle")) && ObjectManager.Player.Distance(sender) < 550)
+            if (!GameObjects.AllyMinions.Any(m => !m.IsDead && m.CharData.BaseSkinName.Contains("trap") && m.Distance(sender.ServerPosition) < 100) && ObjectManager.Player.Distance(sender) < 550)
             {
                 W.Cast(sender.ServerPosition);
             }
@@ -104,7 +107,7 @@ namespace Challenger_Series.Plugins
             {
                 if (args.SData.Name == "summonerflash" && args.End.Distance(ObjectManager.Player.ServerPosition) < 650)
                 {
-                    var pred = GetPrediction((AIHeroClient)args.Target, E);
+                    var pred = Prediction.GetPrediction((AIHeroClient)args.Target, E);
                     if (!pred.Item3.Any(o => o.IsMinion && !o.IsDead && !o.IsAlly))
                     {
                         E.Cast(args.End);
@@ -127,6 +130,19 @@ namespace Challenger_Series.Plugins
             if (DrawRRange == true)
             {
                 Render.Circle.DrawCircle(ObjectManager.Player.Position, 2000, Color.ForestGreen);
+            }
+            var victims =
+                   GameObjects.EnemyHeroes.Where(
+                       x =>
+                           x.IsValid && !x.IsDead && x.IsEnemy &&
+                           (x.IsVisible && x.LSIsValidTarget()) &&
+                           ObjectManager.Player.GetSpellDamage(x, SpellSlot.R) >= x.Health - 150)
+                       .Aggregate("", (current, target) => current + (target.ChampionName + " "));
+
+            if (victims != "" && R.IsReady())
+            {
+                Drawing.DrawText(Drawing.Width * 0.44f, Drawing.Height * 0.7f, System.Drawing.Color.GreenYellow,
+                    "Ult can kill: " + victims);
             }
         }
 
@@ -158,7 +174,7 @@ namespace Challenger_Series.Plugins
                     var eTarget = TargetSelector.GetTarget(UseEOnEnemiesCloserThanSlider, DamageType.Physical);
                     if (eTarget != null)
                     {
-                        var pred = GetPrediction(eTarget, E);
+                        var pred = Prediction.GetPrediction(eTarget, E);
                         if (pred.Item3.Count == 0 && (int)pred.Item1 >= (int)HitChance.High)
                         {
                             E.Cast(pred.Item2);
@@ -172,7 +188,7 @@ namespace Challenger_Series.Plugins
                             e =>
                             e.IsMelee && e.Distance(ObjectManager.Player) < UseEOnEnemiesCloserThanSlider
                             && !e.IsZombie);
-                    var pred = GetPrediction(eTarget, E);
+                    var pred = Prediction.GetPrediction(eTarget, E);
                     if (pred.Item3.Count == 0 && (int)pred.Item1 > (int)HitChance.Medium)
                     {
                         E.Cast(pred.Item2);
@@ -184,6 +200,7 @@ namespace Challenger_Series.Plugins
         private Menu ComboMenu;
         private Menu AutoWConfig;
         private bool UseQCombo;
+        private bool UseWCombo;
         private bool UseECombo;
         private bool UseRCombo;
         private bool AlwaysQAfterE;
@@ -193,7 +210,6 @@ namespace Challenger_Series.Plugins
         private bool UseEAntiGapclose;
         private int UseEOnEnemiesCloserThanSlider;
         private int DrawRange;
-        private int PredictionType;
         private bool DrawQRange;
         private bool DrawRRange;
         private int QHarassMode;
@@ -203,9 +219,9 @@ namespace Challenger_Series.Plugins
         {
             ComboMenu = MainMenu.AddSubMenu("Combo Settings: ", "Combo Settings: ");
             ComboMenu.Add("caitqcombo", new CheckBox("Use Q", true));
+            ComboMenu.Add("caitwcombo", new CheckBox("Use W", true));
             ComboMenu.Add("caitecombo", new CheckBox("Use E", true));
             ComboMenu.Add("caitrcombo", new KeyBind("Use R", false, KeyBind.BindTypes.HoldActive, 'R'));
-            ComboMenu.Add("caitpredtype", new ComboBox("Prediction Type", 0, "Common", "SDK"));
 
             AutoWConfig = MainMenu.AddSubMenu("W Settings: ");
             AutoWConfig.Add("caitusewinterrupt", new CheckBox("Use W to Interrupt", true));
@@ -216,19 +232,19 @@ namespace Challenger_Series.Plugins
             MainMenu.Add("caitalwaysqaftere", new CheckBox("Always Q after E (EQ combo)", true));
             MainMenu.Add("caitqharassmode", new ComboBox("Q HARASS MODE: ", 0, "FULLDAMAGE", "ALLOWMINIONS", "DISABLED"));
             MainMenu.Add("caiteantigapclose", new CheckBox("Use E AntiGapclose", false));
-            MainMenu.Add("caitescape", new Slider("Use E on enemies closer than", 400, 100, 650));
+            MainMenu.Add("caitecomboshit", new Slider("Use E on enemies closer than", 770, 200, 770));
             MainMenu.Add("caiteonlymelees", new CheckBox("Only use E on melees", false));
             MainMenu.Add("caitdrawrange", new Slider("Draw a circle with radius: ", 800, 0, 1240));
             MainMenu.Add("caitqrange", new CheckBox("Draw Q Range", true));
             MainMenu.Add("caitrrange", new CheckBox("Draw R Range", true));
 
             UseQCombo = getCheckBoxItem(ComboMenu, "caitqcombo");
+            UseWCombo = getCheckBoxItem(ComboMenu, "caitwcombo");
             UseECombo = getCheckBoxItem(ComboMenu, "caitecombo");
             UseRCombo = getKeyBindItem(ComboMenu, "caitrcombo");
-            PredictionType = getBoxItem(ComboMenu, "caitpredtype");
 
             QHarassMode = getBoxItem(MainMenu, "caitqharassmode");
-            UseEOnEnemiesCloserThanSlider = getSliderItem(MainMenu, "caitescape");
+            UseEOnEnemiesCloserThanSlider = getSliderItem(MainMenu, "caitecomboshit");
 
             DrawRange = getSliderItem(MainMenu, "caitdrawrange");
             DrawQRange = getCheckBoxItem(MainMenu, "caitqrange");
@@ -251,7 +267,6 @@ namespace Challenger_Series.Plugins
                 if (UseQCombo && Q.IsReady() && ObjectManager.Player.CountEnemyHeroesInRange(800) == 0
                     && ObjectManager.Player.CountEnemyHeroesInRange(1100) > 0)
                 {
-                    Q.CastIfWillHit(TargetSelector.GetTarget(900, DamageType.Physical), 2);
                     var goodQTarget =
                         ValidTargets.FirstOrDefault(
                             t =>
@@ -259,8 +274,8 @@ namespace Challenger_Series.Plugins
                             || SquishyTargets.Contains(t.CharData.BaseSkinName));
                     if (goodQTarget != null)
                     {
-                        var pred = GetPrediction(goodQTarget, Q);
-                        if ((int)pred.Item1 > (int)HitChance.Medium)
+                        var pred = Prediction.GetPrediction(goodQTarget, Q);
+                        if ((int)pred.Item1 > (int)HitChance.Medium && pred.Item2.Distance(ObjectManager.Player.Position) < 1100)
                         {
                             Q.Cast(pred.Item2);
                         }
@@ -276,8 +291,8 @@ namespace Challenger_Series.Plugins
                     var qTarget = TargetSelector.GetTarget(1100, DamageType.Physical);
                     if (qTarget != null)
                     {
-                        var pred = GetPrediction(qTarget, Q);
-                        if ((int)pred.Item1 > (int)HitChance.Medium)
+                        var pred = Prediction.GetPrediction(qTarget, Q);
+                        if ((int)pred.Item1 > (int)HitChance.Medium && pred.Item2.Distance(ObjectManager.Player.Position) < 1100)
                         {
                             if (qHarassMode == 1)
                             {
@@ -298,13 +313,13 @@ namespace Challenger_Series.Plugins
             var goodTarget =
                 ValidTargets.FirstOrDefault(
                     e =>
-                    e.LSIsValidTarget(820) && e.HasBuffOfType(BuffType.Knockup) || e.HasBuffOfType(BuffType.Snare)
+                    !e.IsDead && e.HasBuffOfType(BuffType.Knockup) || e.HasBuffOfType(BuffType.Snare)
                     || e.HasBuffOfType(BuffType.Stun) || e.HasBuffOfType(BuffType.Suppression) || e.IsCharmed
-                    || e.IsCastingInterruptableSpell() || e.HasBuff("ChronoRevive") || e.HasBuff("ChronoShift"));
+                    || e.IsCastingInterruptableSpell() || !e.CanMove);
             if (goodTarget != null)
             {
                 var pos = goodTarget.ServerPosition;
-                if (pos.Distance(ObjectManager.Player.ServerPosition) < 820)
+                if (!GameObjects.AllyMinions.Any(m => !m.IsDead && m.CharData.BaseSkinName.Contains("trap") && m.Distance(goodTarget.ServerPosition) < 100) && pos.Distance(ObjectManager.Player.ServerPosition) < 820)
                 {
                     W.Cast(goodTarget.ServerPosition);
                 }
@@ -319,22 +334,36 @@ namespace Challenger_Series.Plugins
 
                 W.Cast(enemyMinion.ServerPosition);
             }
+            if (UseWCombo)
+            {
+                foreach (var hero in GameObjects.EnemyHeroes.Where(h => h.Distance(ObjectManager.Player) < W.Range))
+                {
+                    var pred = Prediction.GetPrediction(hero, W);
+                    if (
+                        !GameObjects.AllyMinions.Any(
+                            m => !m.IsDead && m.CharData.BaseSkinName.Contains("trap") && m.Distance(pred.Item2) < 100) &&
+                        (int)pred.Item1 > (int)HitChance.Medium && ObjectManager.Player.Distance(pred.Item2) < W.Range)
+                    {
+                        W.Cast(pred.Item2);
+                    }
+                }
+            }
         }
 
         void RLogic()
         {
-            if (UseRCombo && R.IsReady() && ObjectManager.Player.CountEnemyHeroesInRange(900) == 0)
+            if (UseRCombo && ObjectManager.Player.CountEnemyHeroesInRange(900) == 0)
             {
                 foreach (var rTarget in
                     ValidTargets.Where(
                         e =>
-                        SquishyTargets.Contains(e.CharData.BaseSkinName) && R.GetDamage(e) > 0.1 * e.MaxHealth
+                        SquishyTargets.Contains(e.CharData.BaseSkinName) && R.GetDamage(e) > 0.15 * e.MaxHealth
                         || R.GetDamage(e) > e.Health))
                 {
                     if (rTarget.Distance(ObjectManager.Player) > 1400)
                     {
-                        var pred = R.GetPrediction(rTarget);
-                        if (!pred.CollisionObjects.Any(obj => obj is AIHeroClient))
+                        var pred = Prediction.GetPrediction(rTarget, R);
+                        if (!pred.Item3.Any(obj => obj is AIHeroClient))
                         {
                             R.CastOnUnit(rTarget);
                         }
@@ -358,22 +387,5 @@ namespace Challenger_Series.Plugins
                 "Tristana", "TwistedFate", "Twitch", "Varus", "Vayne", "Veigar", "Velkoz",
                 "Viktor", "Xerath", "Zed", "Ziggs", "Jhin", "Soraka"
             };
-
-        private Tuple<HitChance, Vector3, List<Obj_AI_Base>> GetPrediction(AIHeroClient target, LeagueSharp.SDK.Spell spell)
-        {
-            switch (Utils.Prediction.PredictionMode)
-            {
-                case 1:
-                    {
-                        var pred = spell.GetPrediction(target);
-                        return new Tuple<HitChance, Vector3, List<Obj_AI_Base>>(pred.Hitchance, pred.UnitPosition, pred.CollisionObjects);
-                    }
-                default:
-                    {
-                        var pred = LeagueSharp.Common.Prediction.GetPrediction(target, spell.Delay, spell.Width, spell.Speed);
-                        return new Tuple<HitChance, Vector3, List<Obj_AI_Base>>((HitChance)((int)pred.Hitchance), pred.UnitPosition, pred.CollisionObjects);
-                    }
-            }
-        }
     }
 }

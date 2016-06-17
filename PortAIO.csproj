@@ -256,6 +256,7 @@
     <Compile Include="Dual-Port\ChallengerSeries\Utils\HpBarDamageIndicator.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Utils\Logic\PositionSaverCore.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Utils\Misc.cs" />
+    <Compile Include="Dual-Port\ChallengerSeries\Utils\Prediction.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Utils\VectorHelper.cs" />
     <Compile Include="Champion\Cho%27Gath\Program.cs" />
     <Compile Include="Champion\Corki\Program.cs" />
