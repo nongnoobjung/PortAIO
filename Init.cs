@@ -1215,6 +1215,9 @@ namespace PortAIO
                             case 2:
                                 GosuMechanicsYasuo.Program.Game_OnGameLoad();
                                 break;
+                            case 3:
+                                YasuoSharpV2.Program.Init();
+                                break;
                             default:
                                 Valvrave_Sharp.Program.MainA();
                                 break;
