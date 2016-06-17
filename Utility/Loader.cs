@@ -243,7 +243,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[9]))
                 {
-                    Miscc.Add("ashe", new ComboBox("Use addon for Ashe : ", 0, "OKTW", "ChallengerSeries", "Marksman II"));
+                    Miscc.Add("ashe", new ComboBox("Use addon for Ashe : ", 0, "OKTW", "ChallengerSeries", "Marksman II", "ExorAIO"));
                 }
                 if (Player.ChampionName.Equals(Champion[10]))
                 {
