@@ -271,19 +271,19 @@ namespace OneKeyToWin_AIO_Sebby
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
             var t1 = TargetSelector.GetTarget(Q1.Range, DamageType.Physical);
-            if (t.LSIsValidTarget(Q.Range) && Player.Distance(t.ServerPosition) > 500)
+            if (t.LSIsValidTarget(Q.Range) && Player.LSDistance(t.ServerPosition) > 500)
             {
                 var qDmg = OktwCommon.GetKsDamage(t, Q);
-                if (qDmg + Player.GetAutoAttackDamage(t) > t.Health)
+                if (qDmg + Player.LSGetAutoAttackDamage(t) > t.Health)
                     Q.Cast(t);
-                else if (qDmg + Player.GetAutoAttackDamage(t) * 3 > t.Health)
+                else if (qDmg + Player.LSGetAutoAttackDamage(t) * 3 > t.Health)
                     Q.Cast(t);
                 else if (Program.Combo && Player.Mana > RMANA + QMANA + WMANA)
                     Q.Cast(t);
                 else if (Program.Farm && Player.Mana > RMANA + QMANA + EMANA + WMANA)
                     Q.Cast(t);
             }
-            else if (t1.LSIsValidTarget(Q1.Range) && getCheckBoxItem(qMenu, "harasQ") && Player.Distance(t1.ServerPosition) > Q.Range + 50)
+            else if (t1.LSIsValidTarget(Q1.Range) && getCheckBoxItem(qMenu, "harasQ") && Player.LSDistance(t1.ServerPosition) > Q.Range + 50)
             {
                 var minions = Cache.GetMinions(Player.ServerPosition, Q1.Range);
 
