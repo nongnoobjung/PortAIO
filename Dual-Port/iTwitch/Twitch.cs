@@ -106,31 +106,23 @@
             Spells[SpellSlot.W].SetSkillshot(0.25f, 120f, 1400f, false, SkillshotType.SkillshotCircle);
         }
 
-        private static void Exploit() // nechrito was here
+        private static void Exploit()
         {
-            var target = TargetSelector.GetTarget(ObjectManager.Player.AttackRange, DamageType.Physical);
-            if (target == null || !target.LSIsValidTarget() || target.IsInvulnerable) return;
+            var target = TargetSelector.GetTarget(ObjectManager.Player.HasBuff("TwitchFullAutomatic") ? 850 : 550, DamageType.Physical);
+            if (target == null || !target.IsValidTarget() || target.IsInvulnerable || !Spells[SpellSlot.Q].IsReady()) return;
 
-            if (!getCheckBoxItem(miscOptions, "com.itwitch.misc.Exploit")) return;
-            if (!Spells[SpellSlot.Q].IsReady()) return;
-
-            if (Spells[SpellSlot.E].IsReady() && getCheckBoxItem(miscOptions, "com.itwitch.misc.EQAA"))
+            if (Spells[SpellSlot.E].IsReady() && getCheckBoxItem(miscOptions, "com.itwitch.misc.EAAQ"))
             {
-                if (!target.IsFacing(ObjectManager.Player) || target.LSDistance(ObjectManager.Player) >= ObjectManager.Player.AttackRange)
+                var realRange = ObjectManager.Player.HasBuff("TwitchFullAutomatic") ? 850 : 550;
+                if (target.Distance(ObjectManager.Player) > realRange)
                 {
                     return;
                 }
 
-                if (target.Health <= ObjectManager.Player.GetAutoAttackDamage(target) * 1.33 + target.GetPoisonDamage())
+                if (target.Health <= ObjectManager.Player.LSGetAutoAttackDamage(target) * (1.15) + Spells[SpellSlot.E].GetDamage(target) * (1.35))
                 {
-                    Spells[SpellSlot.E].Cast(target);
+                    Spells[SpellSlot.E].Cast();
                 }
-            }
-
-            if (target.Health + target.AttackShield < ObjectManager.Player.GetAutoAttackDamage(target, true) && ObjectManager.Player.Spellbook.IsAutoAttacking)
-            {
-                Spells[SpellSlot.Q].Cast();
-                Chat.Print("Exploited Q");
             }
 
         }
@@ -208,6 +200,19 @@
 
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
+            Orbwalker.OnPostAttack += AfterAttack;
+        }
+
+        private static void AfterAttack(AttackableUnit target, EventArgs args)
+        {
+            if (target is AIHeroClient && target.LSIsValidTarget() && getCheckBoxItem(miscOptions, "com.itwitch.misc.Exploit"))
+            {
+                var tg = target as AIHeroClient;
+                if (tg?.Health + 5 <= ObjectManager.Player.LSGetAutoAttackDamage(tg, true))
+                {
+                    Spells[SpellSlot.Q].Cast();
+                }
+            }
         }
 
         public static void OnHarass()
@@ -286,9 +291,12 @@
                 ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall);
             }
 
-            Exploit();
+            if (getCheckBoxItem(miscOptions, "com.itwitch.misc.Exploit")) Exploit();
+
             if (getCheckBoxItem(comboOptions, "com.itwitch.combo.useEKillable") && Spells[SpellSlot.E].IsReady())
             {
+                if (getCheckBoxItem(miscOptions, "com.itwitch.misc.EAAQ") && Spells[SpellSlot.Q].IsReady()) return;
+
                 if (HeroManager.Enemies.Any(x => x.IsPoisonKillable() && x.LSIsValidTarget(Spells[SpellSlot.E].Range)))
                 {
                     Spells[SpellSlot.E].Cast();
