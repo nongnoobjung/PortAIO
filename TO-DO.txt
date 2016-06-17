@@ -1,6 +1,5 @@
 ﻿To-Do :
 - Replace nechrito twitch with nechrito twitch [SDK]
-- YasuoPro Updates [https://github.com/SephLeague/LeagueSharp/commits/master]
 
 ------------------------------------------------------------------------
 
