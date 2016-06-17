@@ -113,7 +113,8 @@ namespace PortAIO.Utility
         public static int missfortune { get { return Miscc["missfortune"].Cast<ComboBox>().CurrentValue; } }
         public static bool EBPrediction { get { return Miscc["EBPrediction"].Cast<CheckBox>().CurrentValue; } }
         public static bool reform { get { return Miscc["reform"].Cast<CheckBox>().CurrentValue; } }
-
+        public static bool dzaware { get { return Miscc["dzaware"].Cast<CheckBox>().CurrentValue; } }
+        public static int trackerCB { get { return Miscc["trackerCB"].Cast<ComboBox>().CurrentValue; } }
 
         public static Menu Miscc;
 
@@ -481,6 +482,7 @@ namespace PortAIO.Utility
             Miscc.AddGroupLabel("Util Dual-Port :");
             Miscc.Add("evadeCB", new ComboBox("Which Evade?", 0, "ezEvade", "Evade#"));
             Miscc.Add("activatorCB", new ComboBox("Which Activator?", 0, "ElUtilitySuite", "NabbActivator", "Activator#"));
+            Miscc.Add("trackerCB", new ComboBox("Which Tracker?", 0, "NabbTracker"));
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("Util Changes");
             Miscc.AddLabel("Please F5 after making any changes below >>");
@@ -488,13 +490,13 @@ namespace PortAIO.Utility
             Miscc.Add("util", new CheckBox("Util only mode? (No champs will load)", false));
             Miscc.AddSeparator();
             Miscc.Add("activator", new CheckBox("Enable Activator?"));
-            Miscc.Add("tracker", new CheckBox("Enable NabbTracker?"));
+            Miscc.Add("tracker", new CheckBox("Enable Tracker?"));
             Miscc.Add("recall", new CheckBox("Enable Recall Tracker?"));
             Miscc.Add("skin", new CheckBox("Enable Skin Hack?", false));
             Miscc.AddSeparator();
             Miscc.Add("evade", new CheckBox("Enable Evade?", false));
+            Miscc.Add("dzaware", new CheckBox("Enable DZAwareness?", false));
             Miscc.Add("godTracker", new CheckBox("Enable God Jungle Tracker?", false));
-            Miscc.Add("ping", new CheckBox("Enable Ping Block?", false));
             Miscc.Add("human", new CheckBox("Enable Humanizer?", false));
             Miscc.AddSeparator();
             Miscc.Add("gank", new CheckBox("Enable GankAlerter?", false));
@@ -516,6 +518,8 @@ namespace PortAIO.Utility
             Miscc.Add("emoteSpammer", new CheckBox("Enable Emote Spammer?", false));
             Miscc.Add("antiStealth", new CheckBox("Enable Anti Stealth (ElUtil)?", false));
             Miscc.Add("reform", new CheckBox("Enable Toxic Player Reform Program?", false));
+            Miscc.AddSeparator();
+            Miscc.Add("ping", new CheckBox("Enable Ping Block?", false));
 
             var credits = Miscc.AddSubMenu("Credits");
             credits.AddLabel("Nathan or jQuery");

@@ -96,7 +96,20 @@ namespace PortAIO
 
                 if (Loader.useTracker)
                 {
-                    NabbTracker.Program.Game_OnGameLoad();
+                    switch (Loader.trackerCB)
+                    {
+                        case 0:
+                            NabbTracker.Program.Game_OnGameLoad();
+                            break;
+                        default:
+                            NabbTracker.Program.Game_OnGameLoad();
+                            break;
+                    }
+                }
+
+                if (Loader.dzaware)
+                {
+                    DZAwarenessAIO.Program.Game_OnGameLoad();
                 }
 
                 if (Loader.godTracker)
