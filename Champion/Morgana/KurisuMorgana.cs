@@ -64,7 +64,10 @@ namespace KurisuMorgana
             shieldMenu = _menu.AddSubMenu("Use Shield [Who?]", "usefor");
             foreach (var frn in ObjectManager.Get<AIHeroClient>().Where(x => x.Team == Me.Team))
             {
-                shieldMenu.Add("useon" + frn.NetworkId, new CheckBox("Shield " + frn.ChampionName, !frn.IsMe));
+                if (shieldMenu["useon" + frn.NetworkId] == null)
+                {
+                    shieldMenu.Add("useon" + frn.NetworkId, new CheckBox("Shield " + frn.ChampionName, !frn.IsMe));
+                }
             }
             shieldMenu.AddSeparator();
             shieldMenu.AddGroupLabel("Enemy Shield :");
@@ -76,9 +79,12 @@ namespace KurisuMorgana
 
                 foreach (var lib in KurisuLib.CCList.Where(x => x.HeroName == ene.ChampionName))
                 {
-                    shieldMenu.AddLabel(lib.Slot + " - " + lib.SpellMenuName);
-                    shieldMenu.Add(lib.SDataName + "on", new CheckBox("Enabled"));
-                    shieldMenu.AddSeparator();
+                    if (shieldMenu[lib.SDataName + "on"] == null)
+                    {
+                        shieldMenu.AddLabel(lib.Slot + " - " + lib.SpellMenuName);
+                        shieldMenu.Add(lib.SDataName + "on", new CheckBox("Enabled"));
+                        shieldMenu.AddSeparator();
+                    }
                 }
             }
 
@@ -162,15 +168,9 @@ namespace KurisuMorgana
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (!Me.LSIsValidTarget(300))
-            {
-                return;
-            }
-
             CheckDamage(TargetSelector.GetTarget(_r.Range + 10, DamageType.Magical));
 
-            AutoCast(getCheckBoxItem(menuQ, "useqdash"), getCheckBoxItem(menuQ, "useqauto"),
-                getCheckBoxItem(menuW, "usewauto"));
+            AutoCast(getCheckBoxItem(menuQ, "useqdash"), getCheckBoxItem(menuQ, "useqauto"), getCheckBoxItem(menuW, "usewauto"));
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
