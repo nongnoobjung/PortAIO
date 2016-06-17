@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
+using EloBuddy;
 
-namespace ExorAIO.Champions.Renekton
+namespace ExorSDK.Champions.Renekton
 {
     /// <summary>
     ///     The logics class.
@@ -20,18 +22,17 @@ namespace ExorAIO.Champions.Renekton
             /// <summary>
             ///     The KillSteal Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.ks"))
+            if (Vars.Q.IsReady() &&
+                Vars.getCheckBoxItem(Vars.QMenu, "killsteal"))
             {
-                foreach (var target in
-                    HeroManager.Enemies.Where(
-                        t =>
-                            !Bools.IsSpellShielded(t) &&
-                            t.LSIsValidTarget(Variables.Q.Range) &&
-                            !t.LSIsValidTarget(Variables.AARange) &&
-                            t.Health < Variables.Q.GetDamage(t)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.Q.Range) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.Q)))
                 {
-                    Variables.Q.Cast();
+                    Vars.Q.Cast();
                 }
             }
         }

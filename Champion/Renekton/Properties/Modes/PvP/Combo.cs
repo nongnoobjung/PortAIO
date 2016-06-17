@@ -1,10 +1,9 @@
 using System;
-using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Renekton
+namespace ExorSDK.Champions.Renekton
 {
     /// <summary>
     ///     The logics class.
@@ -19,33 +18,24 @@ namespace ExorAIO.Champions.Renekton
         {
             if (Bools.HasSheenBuff() ||
                 !Targets.Target.LSIsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
 
             /// <summary>
-            ///     The Q Combo Logic.
-            /// </summary>
-            if (Variables.Q.IsReady() &&
-                !Variables.W.IsReady() &&
-                Targets.Target.LSIsValidTarget(Variables.Q.Range) &&
-                !ObjectManager.Player.HasBuff("RenektonPreExecute") &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
-            {
-                Variables.Q.Cast();
-            }
-
-            /// <summary>
             ///     The E Combo Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Targets.Target.LSIsValidTarget(Variables.E.Range) &&
-                !ObjectManager.Player.HasBuff("renektonsliceanddicedelay") &&
-                (!Targets.Target.UnderTurret() || Targets.Target.HealthPercent < 10) &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+            if (Vars.E.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.E.Range) &&
+                !GameObjects.Player.HasBuff("renektonsliceanddicedelay") &&
+                Vars.getCheckBoxItem(Vars.EMenu, "combo"))
             {
-                Variables.E.Cast(Targets.Target.Position);
+                if (Targets.Target.HealthPercent < 10 ||
+                    !Targets.Target.IsUnderEnemyTurret())
+                {
+                    Vars.E.Cast(Targets.Target.ServerPosition);
+                }
             }
         }
     }

@@ -1,7 +1,7 @@
 using EloBuddy.SDK.Menu.Values;
-using ExorAIO.Utilities;
+using ExorSDK.Utilities;
 
-namespace ExorAIO.Champions.Renekton
+namespace ExorSDK.Champions.Renekton
 {
     /// <summary>
     ///     The menu class.
@@ -13,30 +13,54 @@ namespace ExorAIO.Champions.Renekton
         /// </summary>
         public static void Initialize()
         {
-            Variables.QMenu = Variables.Menu.AddSubMenu("Use Q to:", "qmenu");
-            Variables.QMenu.Add("qspell.combo", new CheckBox("Combo"));
-            Variables.QMenu.Add("qspell.ks", new CheckBox("KillSteal"));
-            Variables.QMenu.Add("qspell.auto", new CheckBox("Logical"));
-            Variables.QMenu.Add("qspell.farm", new CheckBox("Clear"));
+            /// <summary>
+            ///     Sets the menu for the Q.
+            /// </summary>
+            Vars.QMenu = Vars.Menu.AddSubMenu("q", "Use Q to:");
+            {
+                Vars.QMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.QMenu.Add("killsteal", new CheckBox("KillSteal", true));
+                Vars.QMenu.Add("logical", new CheckBox("Logical", true));
+                Vars.QMenu.Add("clear", new CheckBox("Clear", true));
+            }
 
-            Variables.WMenu = Variables.Menu.AddSubMenu("Use W to:", "wmenu");
-            Variables.WMenu.Add("wspell.combo", new CheckBox("Combo"));
-            Variables.WMenu.Add("wspell.jgc", new CheckBox("JungleClear"));
+            /// <summary>
+            ///     Sets the menu for the W.
+            /// </summary>
+            Vars.WMenu = Vars.Menu.AddSubMenu("w", "Use W to:");
+            {
+                Vars.WMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.WMenu.Add("jungleclear", new CheckBox("JungleClear", true));
+                Vars.WMenu.Add("buildings", new CheckBox("Buildings", true));
+            }
 
-            Variables.EMenu = Variables.Menu.AddSubMenu("Use E to:", "emenu");
-            Variables.EMenu.AddLabel("It will only use the 1st E, you will have to manually use the 2nd E.");
-            Variables.EMenu.Add("espell.combo", new CheckBox("Combo"));
+            /// <summary>
+            ///     Sets the menu for the E.
+            /// </summary>
+            Vars.EMenu = Vars.Menu.AddSubMenu("e", "Use E to:");
+            {
+                Vars.EMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.EMenu.AddGroupLabel("Will only use the first E");
+            }
 
-            Variables.RMenu = Variables.Menu.AddSubMenu("Use R to:", "rmenu");
-            Variables.RMenu.Add("rspell.lifesaver", new CheckBox("LifeSaver"));
+            /// <summary>
+            ///     Sets the menu for the R.
+            /// </summary>
+            Vars.RMenu = Vars.Menu.AddSubMenu("r", "Use R to:");
+            {
+                Vars.RMenu.Add("lifesaver", new CheckBox("Lifesaver", true));
+                Vars.RMenu.Add("aoe", new CheckBox("If 2+ Enemies in Range", true));
+            }
 
-            Variables.DrawingsMenu = Variables.Menu.AddSubMenu("Drawings", "drawingsmenu");
-            Variables.DrawingsMenu.Add("drawings.q", new CheckBox("Q Range"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Green);
-            Variables.DrawingsMenu.Add("drawings.w", new CheckBox("W Range"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Purple);
-            Variables.DrawingsMenu.Add("drawings.e", new CheckBox("E Range"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Cyan);
+            /// <summary>
+            ///     Sets the drawings menu.
+            /// </summary>
+            Vars.DrawingsMenu = Vars.Menu.AddSubMenu("drawings", "Drawings");
+            {
+                Vars.DrawingsMenu.Add("q", new CheckBox("Q Range"));
+                Vars.DrawingsMenu.Add("w", new CheckBox("W Range"));
+                Vars.DrawingsMenu.Add("e", new CheckBox("E Range"));
+            }
         }
     }
 }

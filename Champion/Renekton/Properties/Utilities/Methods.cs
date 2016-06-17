@@ -1,6 +1,7 @@
 using EloBuddy;
+using LeagueSharp;
 
-namespace ExorAIO.Champions.Renekton
+namespace ExorSDK.Champions.Renekton
 {
     /// <summary>
     ///     The methods class.

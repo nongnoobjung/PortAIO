@@ -4,6 +4,7 @@ using ExorSDK.Champions.Darius;
 using ExorSDK.Champions.Nautilus;
 using ExorSDK.Champions.Nunu;
 using ExorSDK.Champions.Olaf;
+using ExorSDK.Champions.Renekton;
 using ExorSDK.Champions.Sivir;
 using ExorSDK.Utilities;
 using LeagueSharp;
@@ -43,6 +44,9 @@ namespace ExorSDK.Core
                     break;
                 case "Olaf":
                     new Olaf().OnLoad();
+                    break;
+                case "Renekton":
+                    new Renekton().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

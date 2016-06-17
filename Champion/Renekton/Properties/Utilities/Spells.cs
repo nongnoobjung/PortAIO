@@ -1,8 +1,9 @@
 using EloBuddy;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Renekton
+namespace ExorSDK.Champions.Renekton
 {
     /// <summary>
     ///     The spell class.
@@ -14,10 +15,10 @@ namespace ExorAIO.Champions.Renekton
         /// </summary>
         public static void Initialize()
         {
-            Variables.Q = new Spell(SpellSlot.Q, ObjectManager.Player.BoundingRadius + 225f);
-            Variables.W = new Spell(SpellSlot.W, ObjectManager.Player.BoundingRadius + 175f);
-            Variables.E = new Spell(SpellSlot.E, 450f);
-            Variables.R = new Spell(SpellSlot.R);
+            Vars.Q = new Spell(SpellSlot.Q, GameObjects.Player.BoundingRadius + 225f);
+            Vars.W = new Spell(SpellSlot.W, GameObjects.Player.BoundingRadius + 175f);
+            Vars.E = new Spell(SpellSlot.E, 450f);
+            Vars.R = new Spell(SpellSlot.R);
         }
     }
 }

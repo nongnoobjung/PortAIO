@@ -1,8 +1,6 @@
 using System;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
 
-namespace ExorAIO.Champions.Renekton
+namespace ExorSDK.Champions.Renekton
 {
     /// <summary>
     ///     The logics class.
@@ -13,12 +11,6 @@ namespace ExorAIO.Champions.Renekton
         ///     Called when the game updates itself.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public static void Harass(EventArgs args)
-        {
-            if (!Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
-            {
-            }
-        }
+        public static void Harass(EventArgs args) {}
     }
 }

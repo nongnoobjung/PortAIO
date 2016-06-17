@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using ExorSDK.Utilities;
 using EloBuddy;
 using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Renekton
+namespace ExorSDK.Champions.Renekton
 {
     /// <summary>
     ///     The logics class.
@@ -18,44 +19,49 @@ namespace ExorAIO.Champions.Renekton
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Automatic(EventArgs args)
         {
-            if (ObjectManager.Player.IsRecalling())
-            {
-                return;
-            }
+            if (GameObjects.Player.LSIsRecalling()) {}
 
             /// <summary>
             ///     The Automatic Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                !ObjectManager.Player.UnderTurret() &&
-                ObjectManager.Player.ManaPercent >= 50 &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.auto"))
+            if (Vars.Q.IsReady() &&
+                GameObjects.Player.ManaPercent >= 50 &&
+                !GameObjects.Player.IsUnderEnemyTurret() &&
+                Vars.getCheckBoxItem(Vars.QMenu, "logical"))
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) ||
-                    ObjectManager.Player.HasBuff("RenektonPreExecute"))
+                if (GameObjects.Player.HasBuff("RenektonPreExecute") ||
+                    Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
                     return;
                 }
 
-                if (HeroManager.Enemies.Any(
-                    t =>
-                        t.LSIsValidTarget(Variables.Q.Range) &&
-                        (!t.LSIsValidTarget(Variables.W.Range) || !Variables.W.IsReady())))
+                foreach (var target in GameObjects.EnemyHeroes.Where(t => t.LSIsValidTarget(Vars.Q.Range)))
                 {
-                    Variables.Q.Cast();
+                    if (!Vars.W.IsReady() ||
+                        !target.LSIsValidTarget(Vars.W.Range))
+                    {
+                        Vars.Q.Cast();
+                    }
                 }
             }
 
             /// <summary>
             ///     The Automatic R Logic.
             /// </summary>
-            if (Variables.R.IsReady() &&
-                ObjectManager.Player.CountEnemiesInRange(700f) > 0 &&
-                HealthPrediction.GetHealthPrediction(ObjectManager.Player, (int) (250 + Game.Ping/2f)) <=
-                ObjectManager.Player.MaxHealth/4 &&
-                Variables.getCheckBoxItem(Variables.RMenu, "rspell.lifesaver"))
+            if (Vars.R.IsReady() &&
+                GameObjects.Player.CountEnemyHeroesInRange(700f) > 0)
             {
-                Variables.R.Cast();
+                if (Health.GetPrediction(GameObjects.Player, (int)(250 + Game.Ping/2f)) <= GameObjects.Player.MaxHealth/6 &&
+                    Vars.getCheckBoxItem(Vars.RMenu, "lifesaver"))
+                {
+                    Vars.R.Cast();
+                }
+                else if (GameObjects.Player.CountEnemyHeroesInRange(Vars.R.Range) >= 2 &&
+                    Vars.getCheckBoxItem(Vars.RMenu, "aoe"))
+                //aoe
+                {
+                    Vars.R.Cast();
+                }
             }
         }
     }

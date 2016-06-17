@@ -631,15 +631,13 @@ namespace PortAIO
                         switch (Loader.renekton)
                         {
                             case 0:
-                                ExorAIO.Core.Bootstrap.BuildMenu();
-                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                ExorSDK.AIO.OnLoad();
                                 break;
                             case 1:
                                 UnderratedAIO.Champions.Renekton.OnLoad();
                                 break;
                             default:
-                                ExorAIO.Core.Bootstrap.BuildMenu();
-                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                ExorSDK.AIO.OnLoad();
                                 break;
                         }
                         break;

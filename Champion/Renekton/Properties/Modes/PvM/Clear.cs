@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using EloBuddy.SDK;
 
-namespace ExorAIO.Champions.Renekton
+namespace ExorSDK.Champions.Renekton
 {
     /// <summary>
     ///     The logics class.
@@ -25,22 +27,68 @@ namespace ExorAIO.Champions.Renekton
             /// <summary>
             ///     The Clear Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.farm"))
+            if (Vars.Q.IsReady() &&
+                Vars.getCheckBoxItem(Vars.QMenu, "clear"))
             {
                 if (Targets.Minions.Any() &&
                     Targets.Minions.Count() >= 3)
                 {
-                    Variables.Q.Cast();
+                    Vars.Q.Cast();
                 }
                 else if (Targets.JungleMinions.Any())
                 {
-                    if (!Variables.W.IsReady() &&
-                        !ObjectManager.Player.HasBuff("RenektonPreExecute"))
+                    if (!Vars.W.IsReady() &&
+                        !GameObjects.Player.HasBuff("RenektonPreExecute"))
                     {
-                        Variables.Q.Cast();
+                        Vars.Q.Cast();
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Called on do-cast.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        public static void JungleClear(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (Orbwalker.LastTarget as Obj_AI_Minion == null)
+            {
+                return;
+            }
+
+            /// <summary>
+            ///     The W JungleClear Logic.
+            /// </summary>
+            if (Vars.W.IsReady() &&
+                Vars.getCheckBoxItem(Vars.WMenu, "jungleclear") &&
+                Targets.JungleMinions.Contains(Orbwalker.LastTarget as Obj_AI_Minion))
+            {
+                Vars.W.Cast();
+            }
+        }
+
+        /// <summary>
+        ///     Called on do-cast.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        public static void BuildingClear(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (Orbwalker.LastTarget as Obj_HQ == null &&
+                Orbwalker.LastTarget as Obj_AI_Turret  == null &&
+                Orbwalker.LastTarget as Obj_BarracksDampener == null)
+            {
+                return;
+            }
+
+            /// <summary>
+            ///     The W BuildingClear Logic.
+            /// </summary>
+            if (Vars.W.IsReady() && Vars.getCheckBoxItem(Vars.WMenu, "buildings"))
+            {
+                Vars.W.Cast();
             }
         }
     }

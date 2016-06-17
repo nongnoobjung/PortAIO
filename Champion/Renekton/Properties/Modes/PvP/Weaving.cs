@@ -1,10 +1,11 @@
 using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Renekton
+namespace ExorSDK.Champions.Renekton
 {
     /// <summary>
     ///     The logics class.
@@ -18,18 +19,8 @@ namespace ExorAIO.Champions.Renekton
         /// <param name="args">The args.</param>
         public static void Weaving(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            /// <summary>
-            ///     The W JungleClear Logic.
-            /// </summary>
-            if (Variables.W.IsReady() &&
-                Targets.JungleMinions.Any() &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.jgc"))
-            {
-                Variables.W.Cast();
-            }
-
-            if (!args.Target.IsValid<AIHeroClient>() ||
-                Bools.IsSpellShielded((AIHeroClient) args.Target))
+            if (!(args.Target is AIHeroClient) ||
+                Invulnerable.Check(args.Target as AIHeroClient))
             {
                 return;
             }
@@ -37,11 +28,21 @@ namespace ExorAIO.Champions.Renekton
             /// <summary>
             ///     The W Weaving Logic.
             /// </summary>
-            if (Variables.W.IsReady() &&
-                ((AIHeroClient) args.Target).LSIsValidTarget(Variables.W.Range) &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
+            if (Vars.W.IsReady() &&
+                Vars.getCheckBoxItem(Vars.WMenu, "combo"))
             {
-                Variables.W.Cast();
+                Vars.W.Cast();
+            }
+
+            /// <summary>
+            ///     The Q Combo Logic.
+            /// </summary>
+            if (Vars.Q.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
+                !GameObjects.Player.HasBuff("RenektonPreExecute") &&
+                Vars.getCheckBoxItem(Vars.QMenu, "combo"))
+            {
+                Vars.Q.Cast();
             }
         }
     }
