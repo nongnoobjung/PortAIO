@@ -12,7 +12,7 @@ namespace Infected_Twitch.Menus
     {
         private static Menu Menu { get; set; }
 
-        public static Menu comboMenu, harassMenu, laneMenu, miscMenu, killstealMenu, trinketMenu, exploitMenu, jungleMenu;
+        public static Menu comboMenu, harassMenu, laneMenu, miscMenu, killstealMenu, trinketMenu, exploitMenu, jungleMenu, drawMenu;
 
         public static void Load()
         {
@@ -45,7 +45,6 @@ namespace Infected_Twitch.Menus
 
             // Misc
             miscMenu = Menu.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("DrawDmg", new CheckBox("Damage Indicator", true));
             miscMenu.Add("EBeforeDeath", new CheckBox("Use E Before Death", true));
             miscMenu.Add("StealEpic", new CheckBox("Steal Herald, Baron & Dragons", true));
             miscMenu.Add("StealRed", new CheckBox("Steal Redbuff", true));
@@ -70,6 +69,12 @@ namespace Infected_Twitch.Menus
             exploitMenu.Add("UseExploit", new CheckBox("Exploit", true));
             exploitMenu.AddLabel("Will try E AA Q / E AA AA Q");
             exploitMenu.Add("EAAQ", new CheckBox("E AA Q", true));
+            exploitMenu.Add("EAAAAQ", new CheckBox("E AA AA Q", true));
+
+
+            drawMenu = Menu.AddSubMenu("Drawings", "Drawings");
+            drawMenu.Add("DrawDmg", new CheckBox("Damage Indicator", true));
+            drawMenu.Add("DrawTimer", new CheckBox("Q Timer", true));
 
         }
 
@@ -99,9 +104,11 @@ namespace Infected_Twitch.Menus
         public static bool BuyTrinket => trinketMenu["BuyTrinket"].Cast<CheckBox>().CurrentValue;
         public static bool UseExploit => exploitMenu["UseExploit"].Cast<CheckBox>().CurrentValue;
         public static bool Eaaq => exploitMenu["EAAQ"].Cast<CheckBox>().CurrentValue;
+        public static bool Eaaaaq => exploitMenu["EAAAAQ"].Cast<CheckBox>().CurrentValue;
         public static bool StealEpic => miscMenu["StealEpic"].Cast<CheckBox>().CurrentValue;
         public static bool StealRed => miscMenu["StealRed"].Cast<CheckBox>().CurrentValue;
-        public static bool DrawDmg => miscMenu["DrawDmg"].Cast<CheckBox>().CurrentValue;
+        public static bool DrawDmg => drawMenu["DrawDmg"].Cast<CheckBox>().CurrentValue;
+        public static bool DrawTimer => drawMenu["DrawTimer"].Cast<CheckBox>().CurrentValue;
         public static bool EBeforeDeath => miscMenu["EBeforeDeath"].Cast<CheckBox>().CurrentValue;
 
     }

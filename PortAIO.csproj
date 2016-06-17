@@ -397,6 +397,7 @@
     <Compile Include="Dual-Port\Infected Twitch\Core\Spells.cs" />
     <Compile Include="Dual-Port\Infected Twitch\Core\Usables.cs" />
     <Compile Include="Dual-Port\Infected Twitch\Event\DrawDmg.cs" />
+    <Compile Include="Dual-Port\Infected Twitch\Event\DrawSpells.cs" />
     <Compile Include="Dual-Port\Infected Twitch\Event\EOnDeath.cs" />
     <Compile Include="Dual-Port\Infected Twitch\Event\Exploit.cs" />
     <Compile Include="Dual-Port\Infected Twitch\Event\Killsteal.cs" />
