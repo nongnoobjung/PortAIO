@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Challenger_Series.Utils;
 using LeagueSharp.SDK;
 using SharpDX;
 using Color = System.Drawing.Color;
@@ -12,6 +11,7 @@ using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using Prediction = Challenger_Series.Utils.Prediction;
+using Challenger_Series.Utils;
 
 namespace Challenger_Series.Plugins
 {
@@ -34,7 +34,7 @@ namespace Challenger_Series.Plugins
             E = new LeagueSharp.SDK.Spell(SpellSlot.E, 770);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 2000);
 
-            Q.SetSkillshot(0.25f, 50f, 2000f, false, SkillshotType.SkillshotLine);
+            Q.SetSkillshot(0.25f, 60f, 2000f, false, SkillshotType.SkillshotLine);
             W.SetSkillshot(1.00f, 100f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             E.SetSkillshot(0.25f, 80f, 1600f, true, SkillshotType.SkillshotLine);
             R.SetSkillshot(3.00f, 50f, 1000f, false, SkillshotType.SkillshotLine);
@@ -83,7 +83,7 @@ namespace Challenger_Series.Plugins
             {
                 if (args.IsDirectedToPlayer && args.Sender.Distance(ObjectManager.Player) < 750)
                 {
-                    if (E.IsReady())
+                    if (E.IsReady() && ShouldE(sender.ServerPosition))
                     {
                         E.Cast(sender.ServerPosition);
                     }
@@ -108,7 +108,7 @@ namespace Challenger_Series.Plugins
                 if (args.SData.Name == "summonerflash" && args.End.Distance(ObjectManager.Player.ServerPosition) < 650)
                 {
                     var pred = Prediction.GetPrediction((AIHeroClient)args.Target, E);
-                    if (!pred.Item3.Any(o => o.IsMinion && !o.IsDead && !o.IsAlly))
+                    if (!pred.Item3.Any(o => o.IsMinion && !o.IsDead && !o.IsAlly) && ShouldE(args.End))
                     {
                         E.Cast(args.End);
                     }
@@ -136,8 +136,8 @@ namespace Challenger_Series.Plugins
                        x =>
                            x.IsValid && !x.IsDead && x.IsEnemy &&
                            (x.IsVisible && x.LSIsValidTarget()) &&
-                           ObjectManager.Player.GetSpellDamage(x, SpellSlot.R) >= x.Health - 150)
-                       .Aggregate("", (current, target) => current + (target.ChampionName + " "));
+                           R.GetDamage(x) > x.Health - 100)
+                       .Aggregate("", (current, target) => current + (target.ChampionName + " " + (target.Spellbook.Spells.Any(s => s.Name.Contains("heal") && s.IsReady()) ? "(Has Heal) " : "") + (target.Spellbook.Spells.Any(s => s.Name.Contains("barrier") && s.IsReady()) ? "(Has Barrier)" : "")));
 
             if (victims != "" && R.IsReady())
             {
@@ -154,7 +154,7 @@ namespace Challenger_Series.Plugins
                 var target = orbwalkingActionArgs.Target as Obj_AI_Minion;
                 if (target != null && !target.CharData.BaseSkinName.Contains("MinionSiege") && target.Health > 60)
                 {
-                    var tg = (Obj_AI_Hero)TargetSelector.GetTarget(715, DamageType.Physical);
+                    var tg = (AIHeroClient)TargetSelector.GetTarget(715, DamageType.Physical);
                     if (tg != null && tg.IsHPBarRendered)
                     {
                         Orbwalker.ForceTarget = tg;
@@ -175,7 +175,7 @@ namespace Challenger_Series.Plugins
                     if (eTarget != null)
                     {
                         var pred = Prediction.GetPrediction(eTarget, E);
-                        if (pred.Item3.Count == 0 && (int)pred.Item1 >= (int)HitChance.High)
+                        if (pred.Item3.Count == 0 && (int)pred.Item1 >= (int)HitChance.High && ShouldE(pred.Item2))
                         {
                             E.Cast(pred.Item2);
                         }
@@ -189,7 +189,7 @@ namespace Challenger_Series.Plugins
                             e.IsMelee && e.Distance(ObjectManager.Player) < UseEOnEnemiesCloserThanSlider
                             && !e.IsZombie);
                     var pred = Prediction.GetPrediction(eTarget, E);
-                    if (pred.Item3.Count == 0 && (int)pred.Item1 > (int)HitChance.Medium)
+                    if (pred.Item3.Count == 0 && (int)pred.Item1 > (int)HitChance.Medium && ShouldE(pred.Item2))
                     {
                         E.Cast(pred.Item2);
                     }
@@ -387,5 +387,15 @@ namespace Challenger_Series.Plugins
                 "Tristana", "TwistedFate", "Twitch", "Varus", "Vayne", "Veigar", "Velkoz",
                 "Viktor", "Xerath", "Zed", "Ziggs", "Jhin", "Soraka"
             };
+
+        private bool ShouldE(Vector3 predictedPos)
+        {
+            var rect = new Utils.Geometry.Rectangle(ObjectManager.Player.ServerPosition, predictedPos, 80f);
+            if (GameObjects.EnemyMinions.Any(m => m.Distance(ObjectManager.Player) < 900 && !m.Position.IsOutside(rect)))
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

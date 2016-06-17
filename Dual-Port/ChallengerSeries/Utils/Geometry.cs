@@ -19,7 +19,6 @@ using Color = System.Drawing.Color;
 using Path = System.Collections.Generic.List<ClipperLib.IntPoint>;
 using Paths = System.Collections.Generic.List<System.Collections.Generic.List<ClipperLib.IntPoint>>;
 using GamePath = System.Collections.Generic.List<SharpDX.Vector2>;
-using EloBuddy.SDK;
 using EloBuddy;
 
 namespace Challenger_Series.Utils
@@ -72,7 +71,7 @@ namespace Challenger_Series.Utils
                 var d = (int)to.Distance(from);
                 if (d > distance)
                 {
-                    return from + distance * (to - from).Normalized();
+                    return from + distance * (to - from).LSNormalized();
                 }
                 distance -= d;
             }
@@ -192,7 +191,7 @@ namespace Challenger_Series.Utils
             /// <value>
             /// The direction.
             /// </value>
-            public Vector2 Direction { get { return (End - Start).Normalized(); } }
+            public Vector2 Direction { get { return (End - Start).LSNormalized(); } }
 
             /// <summary>
             /// Gets the perpendicular.
@@ -318,7 +317,7 @@ namespace Challenger_Series.Utils
                 var Side1 = Direction.LSRotated(-Angle * 0.5f);
                 for (var i = 0; i <= CircleLineSegmentN; i++)
                 {
-                    var cDirection = Side1.Rotated(i * Angle / CircleLineSegmentN).Normalized();
+                    var cDirection = Side1.LSRotated(i * Angle / CircleLineSegmentN).LSNormalized();
                     result.Add(new Vector2(Center.X + outRadius * cDirection.X, Center.Y + outRadius * cDirection.Y));
                 }
                 return result;

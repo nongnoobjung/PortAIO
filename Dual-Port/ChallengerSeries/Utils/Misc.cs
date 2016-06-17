@@ -34,28 +34,6 @@ namespace Challenger_Series.Utils
         }
 
         /// <summary>
-        ///     Returns if the spell is ready to use.
-        /// </summary>
-        public static bool IsReady(this SpellDataInst spell, int t = 0)
-        {
-            return spell != null && spell.Slot != SpellSlot.Unknown && t == 0
-                       ? spell.State == SpellState.Ready
-                       : (spell.State == SpellState.Ready
-                          || (spell.State == SpellState.Cooldown && (spell.CooldownExpires - Game.Time) <= t / 1000f));
-        }
-
-        public static bool IsReady(this SpellSlot slot, int t = 0)
-        {
-            var s = ObjectManager.Player.Spellbook.GetSpell(slot);
-            return s != null && IsReady(s, t);
-        }
-
-        public static bool IsReady(this LeagueSharp.Common.Spell spell, int t = 0)
-        {
-            return IsReady(spell.Instance, t);
-        }
-
-        /// <summary>
         ///     Returns true if the unit is under turret range.
         /// </summary>
         public static bool UnderTurret(this Obj_AI_Base unit, bool enemyTurretsOnly)
