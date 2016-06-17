@@ -218,7 +218,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[3]))
                 {
-                    Miscc.Add("kalista", new ComboBox("Use addon for Kalista : ", 0, "Marksman II", "iKalista - Reborn", "ChallengerSeries"));
+                    Miscc.Add("kalista", new ComboBox("Use addon for Kalista : ", 0, "Marksman II", "iKalista - Reborn", "ChallengerSeries", "HastaKalista"));
                 }
                 if (Player.ChampionName.Equals(Champion[4]))
                 {

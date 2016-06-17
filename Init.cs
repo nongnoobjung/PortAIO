@@ -888,6 +888,9 @@ namespace PortAIO
                             case 2:
                                 Challenger_Series.Program.Main();
                                 break;
+                            case 3:
+                                HastaKalistaBaby.Program.OnGameLoad();
+                                break;
                             default:
                                 Marksman.Program.Game_OnGameLoad();
                                 break;

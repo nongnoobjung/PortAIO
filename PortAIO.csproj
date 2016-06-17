@@ -354,6 +354,12 @@
     <Compile Include="Dual-Port\GosuMechanics Yasuo\SpellDatabase.cs" />
     <Compile Include="Dual-Port\GosuMechanics Yasuo\Utils.cs" />
     <Compile Include="Dual-Port\GosuMechanics Yasuo\Yasuo.cs" />
+    <Compile Include="Dual-Port\HastaKalista\AutoLevel.cs" />
+    <Compile Include="Dual-Port\HastaKalista\Damage.cs" />
+    <Compile Include="Dual-Port\HastaKalista\DamageIndicator.cs" />
+    <Compile Include="Dual-Port\HastaKalista\EarlyEvade.cs" />
+    <Compile Include="Dual-Port\HastaKalista\Helper.cs" />
+    <Compile Include="Dual-Port\HastaKalista\Program.cs" />
     <Compile Include="Dual-Port\HeavenStrikeReksaj\Program.cs" />
     <Compile Include="Dual-Port\hi_im_gosu\Program.cs" />
     <Compile Include="Dual-Port\hJhin\Champions\Jhin.cs" />
