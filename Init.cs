@@ -899,6 +899,9 @@ namespace PortAIO
                             case 1:
                                 Karma.Program.Game_OnGameLoad();
                                 break;
+                            case 2:
+                                ExorSDK.AIO.OnLoad();
+                                break;
                             default:
                                 Spirit_Karma.Program.Load();
                                 break;

@@ -430,7 +430,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[56]))
                 {
-                    Miscc.Add("karma", new ComboBox("Use addon for Karma : ", 0, "Spirit Karma", "Esk0r Karma"));
+                    Miscc.Add("karma", new ComboBox("Use addon for Karma : ", 0, "Spirit Karma", "Esk0r Karma", "ExorAIO"));
                 }
                 if (Player.ChampionName.Equals(Champion[57]))
                 {
