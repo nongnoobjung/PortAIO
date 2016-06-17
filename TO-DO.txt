@@ -45,4 +45,25 @@ Utility Ports [Only doing after Champions are completed] :
 - AutoSharp - Once working again
 - AutoJungle - Once working again
 
+Notes : 
+- Finish Up ExorAIO
+- Finish Up Marksman
+- Challenger Series
+- OKTW
+- UnderratedAIO
+- BrianSharp/Valvrave
+- Slutty Series
+- D_ Series
+- FreshBooster
+- Hikicarry Series
+- Justy
+- Noob
+- Esk0r
+- Seph
+- vSupport
+- Mid Or Feed
+- SharpShooter
+- SkyLv
+- EloFactory
+
 ------------------------------------------------------------------------
