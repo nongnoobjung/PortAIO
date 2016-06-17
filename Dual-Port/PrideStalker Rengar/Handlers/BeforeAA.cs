@@ -1,5 +1,4 @@
-﻿using LeagueSharp.SDK.Core.UI;
-using LeagueSharp.SDK.Core.Utils;
+﻿using LeagueSharp.SDK.Core.Utils;
 using SharpDX;
 using System;
 using System.Linq;

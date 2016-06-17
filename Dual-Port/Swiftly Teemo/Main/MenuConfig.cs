@@ -3,7 +3,6 @@
 using EloBuddy;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using LeagueSharp.SDK.Core.UI;
 
 #endregion
 
