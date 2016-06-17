@@ -1,10 +1,4 @@
-﻿To-Do :
-- Replace nechrito twitch with nechrito twitch [SDK]
-https://github.com/myo/LeagueSharp/commits/master
-
-------------------------------------------------------------------------
-
--Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
+﻿-Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
 
 Renekton, Tryndamere, Ryze, Ashe, Mundo, Graves, Jax, Jhin, Jax, Quinn, Karma = Port these for ExorAIO SDK
 
