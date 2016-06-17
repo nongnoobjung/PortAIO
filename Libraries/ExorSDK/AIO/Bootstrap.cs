@@ -6,6 +6,7 @@ using ExorSDK.Champions.Nunu;
 using ExorSDK.Champions.Olaf;
 using ExorSDK.Champions.Renekton;
 using ExorSDK.Champions.Sivir;
+using ExorSDK.Champions.Tryndamere;
 using ExorSDK.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
@@ -47,6 +48,9 @@ namespace ExorSDK.Core
                     break;
                 case "Renekton":
                     new Renekton().OnLoad();
+                    break;
+                case "Tryndamere":
+                    new Tryndamere().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

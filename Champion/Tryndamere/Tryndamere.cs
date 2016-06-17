@@ -1,9 +1,9 @@
 using System;
-using EloBuddy;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 using EloBuddy.SDK;
-using ExorAIO.Utilities;
 
-namespace ExorAIO.Champions.Tryndamere
+namespace ExorSDK.Champions.Tryndamere
 {
     /// <summary>
     ///     The champion class.
@@ -13,7 +13,7 @@ namespace ExorAIO.Champions.Tryndamere
         /// <summary>
         ///     Loads Tryndamere.
         /// </summary>
-        public static void OnLoad()
+        public void OnLoad()
         {
             /// <summary>
             ///     Initializes the menus.
@@ -42,7 +42,7 @@ namespace ExorAIO.Champions.Tryndamere
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnUpdate(EventArgs args)
         {
-            if (ObjectManager.Player.IsDead)
+            if (GameObjects.Player.IsDead)
             {
                 return;
             }
@@ -52,23 +52,17 @@ namespace ExorAIO.Champions.Tryndamere
             /// </summary>
             Logics.Automatic(args);
 
-            if (Orbwalker.IsAutoAttacking)
+            if (GameObjects.Player.Spellbook.IsAutoAttacking)
             {
                 return;
             }
-
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            /// 
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Logics.Combo(args);
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 Logics.Clear(args);
             }

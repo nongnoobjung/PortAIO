@@ -624,8 +624,7 @@ namespace PortAIO
                         ExorSDK.AIO.OnLoad();
                         break;
                     case "tryndamere":
-                        ExorAIO.Core.Bootstrap.BuildMenu();
-                        ExorAIO.Core.Bootstrap.LoadChampion();
+                        ExorSDK.AIO.OnLoad();
                         break;
                     case "renekton":
                         switch (Loader.renekton)

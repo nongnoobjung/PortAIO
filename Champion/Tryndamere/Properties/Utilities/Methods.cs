@@ -1,6 +1,7 @@
 using EloBuddy;
+using LeagueSharp;
 
-namespace ExorAIO.Champions.Tryndamere
+namespace ExorSDK.Champions.Tryndamere
 {
     /// <summary>
     ///     The methods class.

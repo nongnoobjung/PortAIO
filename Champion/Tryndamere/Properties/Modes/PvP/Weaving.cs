@@ -1,8 +1,7 @@
 using EloBuddy;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using LeagueSharp;
 
-namespace ExorAIO.Champions.Tryndamere
+namespace ExorSDK.Champions.Tryndamere
 {
     /// <summary>
     ///     The logics class.
@@ -14,11 +13,6 @@ namespace ExorAIO.Champions.Tryndamere
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The args.</param>
-        public static void Weaving(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (!args.Target.IsValid<AIHeroClient>() || Bools.IsSpellShielded((AIHeroClient) args.Target))
-            {
-            }
-        }
+        public static void Weaving(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args) {}
     }
 }

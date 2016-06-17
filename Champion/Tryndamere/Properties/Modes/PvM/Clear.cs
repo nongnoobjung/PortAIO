@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
-using EloBuddy;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Tryndamere
+namespace ExorSDK.Champions.Tryndamere
 {
     /// <summary>
     ///     The logics class.
@@ -23,29 +22,14 @@ namespace ExorAIO.Champions.Tryndamere
             }
 
             /// <summary>
-            ///     The Clear E Logics.
+            ///     The LaneClear E Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededEMana &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.farm"))
+            if (Vars.E.IsReady() &&
+                Vars.getCheckBoxItem(Vars.EMenu, "laneclear"))
             {
-                /// <summary>
-                ///     The LaneClear E Logic.
-                /// </summary>
-                if (Targets.Minions.Any())
+                if (Vars.E.GetLineFarmLocation(Targets.Minions, Vars.E.Width).MinionsHit >= 4)
                 {
-                    if (Targets.Minions.Count() >= 3)
-                    {
-                        Variables.E.Cast(Targets.Minions[0].Position);
-                    }
-                }
-
-                /// <summary>
-                ///     The JungleClear E Logic.
-                /// </summary>
-                if (Targets.JungleMinions.Any())
-                {
-                    Variables.E.Cast(Targets.JungleMinions[0].Position);
+                    Vars.E.Cast(Vars.E.GetLineFarmLocation(Targets.Minions, Vars.E.Width).Position);
                 }
             }
         }

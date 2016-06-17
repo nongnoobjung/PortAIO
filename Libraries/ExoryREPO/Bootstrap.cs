@@ -1,7 +1,6 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK.Menu;
 using ExorAIO.Champions.Ryze;
-using ExorAIO.Champions.Tryndamere;
 using ExorAIO.Utilities;
 
 namespace ExorAIO.Core
@@ -29,9 +28,6 @@ namespace ExorAIO.Core
         {
             switch (ObjectManager.Player.ChampionName)
             {
-                case "Tryndamere":
-                    Tryndamere.OnLoad();
-                    break;
                 case "Ryze":
                     Ryze.OnLoad();
                     break;

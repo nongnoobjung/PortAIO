@@ -1,8 +1,7 @@
-using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using ExorAIO.Utilities;
+using ExorSDK.Utilities;
 
-namespace ExorAIO.Champions.Tryndamere
+namespace ExorSDK.Champions.Tryndamere
 {
     /// <summary>
     ///     The menu class.
@@ -12,47 +11,50 @@ namespace ExorAIO.Champions.Tryndamere
         /// <summary>
         ///     Sets the menu.
         /// </summary>
-        public static bool getCheckBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(Menu m, string item)
-        {
-            return m[item].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool getKeyBindItem(Menu m, string item)
-        {
-            return m[item].Cast<KeyBind>().CurrentValue;
-        }
-
-        public static int getBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<ComboBox>().CurrentValue;
-        }
-
         public static void Initialize()
         {
-            Variables.QMenu = Variables.Menu.AddSubMenu("Use Q to:", "qmenu");
-            Variables.QMenu.Add("qspell.auto", new CheckBox("Logical"));
+            /// <summary>
+            ///     Sets the menu for the Q.
+            /// </summary>
+            Vars.QMenu = Vars.Menu.AddSubMenu("Use Q to:");
+            {
+                Vars.QMenu.Add("logical", new CheckBox("Logical", true));
+            }
 
-            Variables.WMenu = Variables.Menu.AddSubMenu("Use W to:", "wmenu");
-            Variables.WMenu.Add("wspell.combo", new CheckBox("Combo"));
+            /// <summary>
+            ///     Sets the menu for the W.
+            /// </summary>
+            Vars.WMenu = Vars.Menu.AddSubMenu("Use W to:");
+            {
+                Vars.WMenu.Add("combo", new CheckBox("Combo", true));
+            }
 
-            Variables.EMenu = Variables.Menu.AddSubMenu("Use E to:", "emenu");
-            Variables.EMenu.Add("espell.combo", new CheckBox("Combo"));
-            Variables.EMenu.Add("espell.farm", new CheckBox("Clear"));
-            Variables.EMenu.Add("espell.mana", new Slider("Clear: Mana >= x%", 50, 0, 99));
+            /// <summary>
+            ///     Sets the menu for the E.
+            /// </summary>
+            Vars.EMenu = Vars.Menu.AddSubMenu("Use E to:");
+            {
+                Vars.EMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.EMenu.Add("killsteal", new CheckBox("KillSteal", true));
+                Vars.EMenu.Add("laneclear", new CheckBox("LaneClear", true));
+            }
 
-            Variables.RMenu = Variables.Menu.AddSubMenu("Use R to:", "rmenu");
-            Variables.RMenu.Add("rspell.lifesaver", new CheckBox("LifeSaver"));
+            /// <summary>
+            ///     Sets the menu for the R.
+            /// </summary>
+            Vars.RMenu = Vars.Menu.AddSubMenu("Use R to:");
+            {
+                Vars.RMenu.Add("lifesaver", new CheckBox("Lifesaver", true));
+            }
 
-            Variables.DrawingsMenu = Variables.Menu.AddSubMenu("Drawings", "drawingsmenu");
-            Variables.DrawingsMenu.Add("drawings.w", new CheckBox("W Range"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Purple);
-            Variables.DrawingsMenu.Add("drawings.e", new CheckBox("E Range"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Cyan);
+            /// <summary>
+            /// Sets the drawings menu.
+            /// </summary>
+            Vars.DrawingsMenu = Vars.Menu.AddSubMenu("Drawings");
+            {
+                Vars.DrawingsMenu.Add("w", new CheckBox("W Range"));
+                Vars.DrawingsMenu.Add("e", new CheckBox("E Range"));
+            }
         }
     }
 }
