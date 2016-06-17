@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using EloBuddy;
 using EloBuddy.SDK.Events;
-using ExorAIO.Core;
 using PortAIO.Utility;
 using LeagueSharp.Common;
 using SharpDX;
@@ -644,8 +643,7 @@ namespace PortAIO
                         switch (Loader.ryze)
                         {
                             case 0:
-                                ExorAIO.Core.Bootstrap.BuildMenu();
-                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                ExorSDK.AIO.OnLoad();
                                 break;
                             case 1:
                                 ElEasy.Plugins.Ryze f = new ElEasy.Plugins.Ryze();
@@ -661,8 +659,7 @@ namespace PortAIO
                                 RyzeAssembly.Program.Init();
                                 break;
                             default:
-                                ExorAIO.Core.Bootstrap.BuildMenu();
-                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                ExorSDK.AIO.OnLoad();
                                 break;
                         }
                         break;

@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Ryze
+namespace ExorSDK.Champions.Ryze
 {
     /// <summary>
     ///     The logics class.
@@ -26,9 +24,10 @@ namespace ExorAIO.Champions.Ryze
             /// <summary>
             ///     The Clear R Logic.
             /// </summary>
-            if (Variables.R.IsReady() &&
-                Variables.E.IsReady() &&
-                Variables.getCheckBoxItem(Variables.RMenu, "rspell.farm"))
+            if (Vars.R.IsReady() &&
+                Vars.E.IsReady() &&
+                GameObjects.Player.ManaPercent > 20 &&
+                Vars.getCheckBoxItem(Vars.RMenu, "clear"))
             {
                 /// <summary>
                 ///     The LaneClear R Logic.
@@ -37,7 +36,7 @@ namespace ExorAIO.Champions.Ryze
                 {
                     if (Targets.Minions.Count() >= 3)
                     {
-                        Variables.R.Cast();
+                        Vars.R.Cast();
                     }
                 }
 
@@ -46,27 +45,24 @@ namespace ExorAIO.Champions.Ryze
                 /// </summary>
                 else if (Targets.JungleMinions.Any())
                 {
-                    Variables.R.Cast();
+                    Vars.R.Cast();
                 }
             }
 
             /// <summary>
             ///     The Clear Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                GameObjects.Player.ManaPercent > ManaManager.NeededQMana &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.farm"))
+            if (Vars.Q.IsReady() &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "clear")) &&
+                Vars.getSliderItem(Vars.QMenu, "clear") != 101)
             {
                 /// <summary>
                 ///     The LaneClear Q Logic.
                 /// </summary>
-                foreach (var minion in Targets.Minions.Where(m => m.Health < Variables.Q.GetDamage(m)))
+                if (Targets.Minions.Any())
                 {
-                    if (!Variables.Q.GetPrediction(minion).CollisionObjects.Any(c => c.IsMinion))
-                    {
-                        Variables.Q.Cast(Variables.Q.GetPrediction(minion).UnitPosition);
-                        return;
-                    }
+                    Vars.Q.Cast(Targets.Minions[0].ServerPosition);
                 }
 
                 /// <summary>
@@ -74,23 +70,24 @@ namespace ExorAIO.Champions.Ryze
                 /// </summary>
                 if (Targets.JungleMinions.Any())
                 {
-                    Variables.Q.Cast(Targets.JungleMinions[0].ServerPosition);
+                    Vars.Q.Cast(Targets.JungleMinions[0].ServerPosition);
                 }
             }
 
             /// <summary>
             ///     The Clear W Logic.
             /// </summary>
-            if (Variables.W.IsReady() &&
-                GameObjects.Player.ManaPercent > ManaManager.NeededWMana &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.farm"))
+            if (Vars.W.IsReady() &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.W.Slot, Vars.getSliderItem(Vars.WMenu, "clear")) &&
+                Vars.getSliderItem(Vars.WMenu, "clear") != 101)
             {
                 /// <summary>
                 ///     The LaneClear W Logic.
                 /// </summary>
                 if (Targets.Minions.Any())
                 {
-                    Variables.W.CastOnUnit(Targets.Minions[0]);
+                    Vars.W.CastOnUnit(Targets.Minions[0]);
                 }
 
                 /// <summary>
@@ -98,34 +95,32 @@ namespace ExorAIO.Champions.Ryze
                 /// </summary>
                 if (Targets.JungleMinions.Any())
                 {
-                    Variables.W.CastOnUnit(Targets.JungleMinions[0]);
+                    Vars.W.CastOnUnit(Targets.JungleMinions[0]);
                 }
             }
 
             /// <summary>
             ///     The Clear E Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                GameObjects.Player.ManaPercent > ManaManager.NeededEMana &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.farm"))
+            if (Vars.E.IsReady() &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.EMenu, "clear")) &&
+                Vars.getSliderItem(Vars.EMenu, "clear") != 101)
             {
                 /// <summary>
                 ///     The LaneClear E Logic.
                 /// </summary>
                 if (Targets.Minions.Any())
                 {
-                    if (Targets.Minions.Count(m => m.LSDistance(Targets.Minions[0]) < 200f) >= 3)
-                    {
-                        Variables.E.CastOnUnit(Targets.Minions[0]);
-                    }
+                    Vars.E.CastOnUnit(Targets.Minions[0]);
                 }
 
                 /// <summary>
-                ///     The JungleClear W Logic.
+                ///     The JungleClear E Logic.
                 /// </summary>
                 else if (Targets.JungleMinions.Any())
                 {
-                    Variables.E.CastOnUnit(Targets.JungleMinions[0]);
+                    Vars.E.CastOnUnit(Targets.JungleMinions[0]);
                 }
             }
         }

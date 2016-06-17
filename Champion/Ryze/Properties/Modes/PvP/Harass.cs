@@ -1,11 +1,10 @@
 using System;
-using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Ryze
+namespace ExorSDK.Champions.Ryze
 {
     /// <summary>
     ///     The logics class.
@@ -19,7 +18,7 @@ namespace ExorAIO.Champions.Ryze
         public static void Harass(EventArgs args)
         {
             if (!Targets.Target.LSIsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
@@ -27,15 +26,28 @@ namespace ExorAIO.Champions.Ryze
             /// <summary>
             ///     The Q Harass Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Targets.Target.LSIsValidTarget(Variables.Q.Range) &&
-                GameObjects.Player.ManaPercent > ManaManager.NeededQMana &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.harass"))
+            if (Vars.Q.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "harass")) &&
+                Vars.getSliderItem(Vars.QMenu, "harass") != 101)
             {
-                if (!Variables.Q.GetPrediction(Targets.Target).CollisionObjects.Any(c => c.IsMinion))
+                if (!Vars.Q.GetPrediction(Targets.Target).CollisionObjects.Any(c => c.IsMinion))
                 {
-                    Variables.Q.Cast(Targets.Target);
+                    Vars.Q.Cast(Vars.Q.GetPrediction(Targets.Target).UnitPosition);
                 }
+            }
+
+            /// <summary>
+            ///     The E Harass Logic.
+            /// </summary>
+            if (Vars.E.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.E.Range) &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.EMenu, "harass")) &&
+                Vars.getSliderItem(Vars.EMenu, "harass") != 101)
+            {
+                Vars.E.CastOnUnit(Targets.Target);
             }
         }
     }

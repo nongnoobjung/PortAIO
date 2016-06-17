@@ -5,6 +5,7 @@ using ExorSDK.Champions.Nautilus;
 using ExorSDK.Champions.Nunu;
 using ExorSDK.Champions.Olaf;
 using ExorSDK.Champions.Renekton;
+using ExorSDK.Champions.Ryze;
 using ExorSDK.Champions.Sivir;
 using ExorSDK.Champions.Tryndamere;
 using ExorSDK.Utilities;
@@ -51,6 +52,9 @@ namespace ExorSDK.Core
                     break;
                 case "Tryndamere":
                     new Tryndamere().OnLoad();
+                    break;
+                case "Ryze":
+                    new Ryze().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

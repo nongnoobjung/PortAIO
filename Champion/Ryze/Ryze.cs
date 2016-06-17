@@ -1,10 +1,12 @@
 using System;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
+using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Ryze
+namespace ExorSDK.Champions.Ryze
 {
     /// <summary>
     ///     The champion class.
@@ -14,7 +16,7 @@ namespace ExorAIO.Champions.Ryze
         /// <summary>
         ///     Loads Ryze.
         /// </summary>
-        public static void OnLoad()
+        public void OnLoad()
         {
             /// <summary>
             ///     Initializes the menus.
@@ -43,7 +45,7 @@ namespace ExorAIO.Champions.Ryze
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnUpdate(EventArgs args)
         {
-            if (ObjectManager.Player.IsDead)
+            if (GameObjects.Player.IsDead)
             {
                 return;
             }
@@ -58,15 +60,10 @@ namespace ExorAIO.Champions.Ryze
             /// </summary>
             Logics.Killsteal(args);
 
-            if (Orbwalker.IsAutoAttacking)
+            if (GameObjects.Player.Spellbook.IsAutoAttacking)
             {
                 return;
             }
-
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            /// 
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
@@ -78,25 +75,25 @@ namespace ExorAIO.Champions.Ryze
                 Logics.Harass(args);
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 Logics.Clear(args);
             }
         }
 
         /// <summary>
-        ///     Called on gapclosing spell.
+        ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="gapcloser">The <see cref="ActiveGapcloser" /> instance containing the event data.</param>
-        public static void OnEnemyGapcloser(ActiveGapcloser gapcloser)
+        /// <param name="sender">The object.</param>
+        /// <param name="args">The <see cref="Events.GapCloserEventArgs" /> instance containing the event data.</param>
+        public static void OnGapCloser(object sender, Events.GapCloserEventArgs args)
         {
-            if (Variables.W.IsReady() &&
-                !Bools.IsSpellShielded(gapcloser.Sender) &&
-                ObjectManager.Player.LSDistance(gapcloser.End) < Variables.W.Range &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.gp"))
+            if (Vars.W.IsReady() &&
+                args.Sender.LSIsValidTarget(Vars.W.Range) &&
+                !Invulnerable.Check(args.Sender, DamageType.Magical, false) &&
+                Vars.getCheckBoxItem(Vars.WMenu, "gapcloser"))
             {
-                Variables.W.CastOnUnit(gapcloser.Sender);
+                Vars.W.CastOnUnit(args.Sender);
             }
         }
     }

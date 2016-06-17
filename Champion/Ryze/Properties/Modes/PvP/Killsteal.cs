@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Ryze
+namespace ExorSDK.Champions.Ryze
 {
     /// <summary>
     ///     The logics class.
@@ -18,18 +19,22 @@ namespace ExorAIO.Champions.Ryze
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Killsteal(EventArgs args)
         {
-
             /// <summary>
             ///     The KillSteal Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.ks"))
+            if (Vars.Q.IsReady() &&
+                Vars.getCheckBoxItem(Vars.QMenu, "killsteal"))
             {
-                foreach (var target in GameObjects.EnemyHeroes.Where(t => !Invulnerable.Check(t) && t.Health < Variables.Q.GetDamage(t) && t.LSIsValidTarget(Variables.Q.Range - 100f)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        t.LSIsValidTarget(Vars.Q.Range - 50f) &&
+                        !Invulnerable.Check(t, DamageType.Magical) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.Q)))
                 {
-                    if (!Variables.Q.GetPrediction(Targets.Target).CollisionObjects.Any(c => c.IsMinion))
+                    if (!Vars.Q.GetPrediction(Targets.Target).CollisionObjects.Any(c => Targets.Minions.Contains(c)))
                     {
-                        Variables.Q.Cast(Variables.Q.GetPrediction(target).UnitPosition);
+                        Vars.Q.Cast(Vars.Q.GetPrediction(target).UnitPosition);
                         return;
                     }
                 }
@@ -38,16 +43,17 @@ namespace ExorAIO.Champions.Ryze
             /// <summary>
             ///     The KillSteal W Logic.
             /// </summary>
-            if (Variables.W.IsReady() &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.ks"))
+            if (Vars.W.IsReady() &&
+                Vars.getCheckBoxItem(Vars.WMenu, "killsteal"))
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
-                        !Invulnerable.Check(t) &&
-                        t.LSIsValidTarget(Variables.W.Range) &&
-                        t.Health < Variables.W.GetDamage(t)))
+                        t.LSIsValidTarget(Vars.W.Range) &&
+                        !Invulnerable.Check(t, DamageType.Magical, false) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.W)))
                 {
-                    Variables.W.CastOnUnit(target);
+                    Vars.W.CastOnUnit(target);
                     return;
                 }
             }
@@ -55,16 +61,17 @@ namespace ExorAIO.Champions.Ryze
             /// <summary>
             ///     The KillSteal E Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.ks"))
+            if (Vars.E.IsReady() &&
+                Vars.getCheckBoxItem(Vars.EMenu, "killsteal"))
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
-                        !Invulnerable.Check(t) &&
-                        t.LSIsValidTarget(Variables.E.Range) &&
-                        t.Health < Variables.E.GetDamage(t)))
+                        t.LSIsValidTarget(Vars.E.Range) &&
+                        !Invulnerable.Check(t, DamageType.Magical, false) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.E)))
                 {
-                    Variables.E.CastOnUnit(target);
+                    Vars.E.CastOnUnit(target);
                 }
             }
         }

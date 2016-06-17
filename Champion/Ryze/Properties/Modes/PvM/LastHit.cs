@@ -1,6 +1,6 @@
 using System;
 
-namespace ExorAIO.Champions.Ryze
+namespace ExorSDK.Champions.Ryze
 {
     /// <summary>
     ///     The logics class.
@@ -11,8 +11,6 @@ namespace ExorAIO.Champions.Ryze
         ///     Fired when the game is updated.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public static void LastHit(EventArgs args)
-        {
-        }
+        public static void LastHit(EventArgs args) {}
     }
 }

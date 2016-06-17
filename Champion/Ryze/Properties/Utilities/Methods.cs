@@ -1,7 +1,8 @@
 using EloBuddy;
-using LeagueSharp.Common;
+using LeagueSharp;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Ryze
+namespace ExorSDK.Champions.Ryze
 {
     /// <summary>
     ///     The methods class.
@@ -14,7 +15,7 @@ namespace ExorAIO.Champions.Ryze
         public static void Initialize()
         {
             Game.OnUpdate += Ryze.OnUpdate;
-            AntiGapcloser.OnEnemyGapcloser += Ryze.OnEnemyGapcloser;
+            Events.OnGapCloser += Ryze.OnGapCloser;
         }
     }
 }

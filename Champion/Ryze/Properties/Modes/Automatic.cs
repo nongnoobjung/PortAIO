@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
 using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Ryze
+namespace ExorSDK.Champions.Ryze
 {
     /// <summary>
     ///     The logics class.
@@ -17,35 +19,50 @@ namespace ExorAIO.Champions.Ryze
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Automatic(EventArgs args)
         {
-            if (ObjectManager.Player.IsRecalling())
+            if (GameObjects.Player.LSIsRecalling())
             {
                 return;
             }
 
             /// <summary>
+            ///     The No AA while in Combo option.
+            /// </summary>
+            if (Vars.getCheckBoxItem(Vars.MiscMenu, "noaa"))
+            {
+                Orbwalker.DisableAttacking = !(Bools.HasSheenBuff() || GameObjects.Player.ManaPercent < 10 || !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || (!Vars.Q.IsReady() && !Vars.W.IsReady() && !Vars.E.IsReady()));
+            }
+
+            /// <summary>
             ///     The Stacking Logics.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededTearMana)
+            if (Vars.Q.IsReady())
             {
                 /// <summary>
                 ///     The Tear Stacking Logic.
                 /// </summary>
-                if (Bools.HasTear(ObjectManager.Player) &&
+                if (!Targets.Minions.Any() &&
+                    Bools.HasTear(GameObjects.Player) &&
+                    GameObjects.Player.CountEnemyHeroesInRange(1500) == 0 &&
                     Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None) &&
-                    ObjectManager.Player.CountEnemiesInRange(1500) == 0 &&
-                    Variables.getCheckBoxItem(Variables.MiscMenu, "misc.tear"))
+                    GameObjects.Player.ManaPercent >
+                        ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.MiscMenu, "tear")) &&
+                    Vars.getSliderItem(Vars.MiscMenu, "tear") != 101)
                 {
-                    Variables.Q.Cast(Game.CursorPos);
+                    Vars.Q.Cast(Game.CursorPos);
                 }
 
                 /// <summary>
                 ///     The Passive Stacking Logic.
                 /// </summary>
-                else if (ObjectManager.Player.GetBuffCount("RyzePassiveStack") < 3 &&
-                         Variables.getCheckBoxItem(Variables.MiscMenu, "misc.manager"))
+                if (!GameObjects.Player.HasBuff("RyzePassiveCharged") &&
+                    Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None) &&
+                    Vars.getSliderItem(Vars.MiscMenu, "stacks") != 0 &&
+                    Vars.getSliderItem(Vars.MiscMenu, "stacks") >
+                        GameObjects.Player.GetBuffCount("RyzePassiveStack") &&
+                    GameObjects.Player.ManaPercent >
+                        Vars.getSliderItem(Vars.MiscMenu, "stacksmana"))
                 {
-                    Variables.Q.Cast(Game.CursorPos);
+                    Vars.Q.Cast(Game.CursorPos);
                 }
             }
         }
