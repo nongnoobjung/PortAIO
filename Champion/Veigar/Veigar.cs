@@ -126,6 +126,7 @@ namespace FreshBooster.Champion
                 KillSteal.Add("Veigar_KseR", new CheckBox("Use R"));
 
                 Misc = menu.AddSubMenu("Misc", "Misc");
+                Misc.Add("Veigar_LowerQ", new Slider("Lower Q Damage on Clearing : ", 25, 0, 100));
                 Misc.Add("Veigar_Anti-GapCloser", new CheckBox("Anti GapCloser"));
                 Misc.Add("Veigar_Interrupt", new CheckBox("E with Interrupt"));
 
@@ -340,7 +341,7 @@ namespace FreshBooster.Champion
             }
             if (getCheckBoxItem(JungleClear, "Veigar_JUseQSet") || getCheckBoxItem(LaneClear, "Veigar_LUseQSet"))
             {
-                var minions = MinionManager.GetMinions(_Q.Range, MinionTypes.All, MinionTeam.NotAlly).Where(m => m.LSIsValidTarget() && m.Health > 5 && m.LSDistance(Player) < _Q.Range && m.Health < _Q.GetDamage(m));
+                var minions = MinionManager.GetMinions(_Q.Range, MinionTypes.All, MinionTeam.NotAlly).Where(m => m.LSIsValidTarget() && m.Health > 5 && m.LSDistance(Player) < _Q.Range && m.Health < (_Q.GetDamage(m) - getSliderItem(Misc, "Veigar_LowerQ")));
                 var objAiBases = from minion in minions let pred = _Q.GetCollision(Player.Position.LSTo2D(), new List<Vector2>() { Player.Position.LSExtend(minion.Position, _Q.Range).LSTo2D() }, 70f) orderby pred.Count descending select minion;
                 if (objAiBases.Any())
                 {
