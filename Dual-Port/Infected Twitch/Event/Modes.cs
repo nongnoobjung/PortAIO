@@ -100,10 +100,7 @@ namespace Infected_Twitch.Event
 
                 if (!(Player.ManaPercent >= 7.5)) return;
 
-
-            var wPred = Spells.W.GetPrediction(Target).CastPosition;
-
-            Spells.W.Cast(wPred);
+            Spells.W.Cast(Target.Position);
         }
 
         private static void Harass()
@@ -117,22 +114,19 @@ namespace Infected_Twitch.Event
 
             if (!MenuConfig.HarassW) return;
 
-            var wPred = Spells.W.GetPrediction(Target).CastPosition;
-
-            Spells.W.Cast(wPred);
+            Spells.W.Cast(Target.Position);
         }
 
         private static void Lane()
         {
-            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Player.AttackRange)).ToList();
-            if(!MenuConfig.LaneW) return;
+            var minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, ObjectManager.Player.Position, Spells.W.Range).Where(m => m.LSIsValidTarget());
+            var position = EntityManager.MinionsAndMonsters.GetCircularFarmLocation(minions, Spells.W.Width, (int)Spells.W.Range);
+            if (!MenuConfig.LaneW) return;
             if(!Spells.W.IsReady()) return;
 
-            var wPred = Spells.W.GetCircularFarmLocation(minions);
-
-            if (wPred.MinionsHit >= 4)
+            if (position.HitNumber >= 2)
             {
-                Spells.W.Cast(wPred.Position);
+                Spells.W.Cast(position.CastPosition);
             }
                 
         }
@@ -141,15 +135,15 @@ namespace Infected_Twitch.Event
         {
             if(Player.Level == 1) return;
             var mob = ObjectManager.Get<Obj_AI_Minion>().Where(m => !m.IsDead && !m.IsZombie && m.Team == GameObjectTeam.Neutral && !GameObjects.JungleSmall.Contains(m) && m.LSIsValidTarget(Spells.E.Range)).ToList();
+            var position = EntityManager.MinionsAndMonsters.GetCircularFarmLocation(mob, Spells.W.Width, (int)Spells.W.Range);
 
             if (MenuConfig.JungleW && Player.ManaPercent >= 20)
             {
                 if (mob.Count == 0) return;
 
-                var wPrediction = Spells.W.GetCircularFarmLocation(mob);
-                if(wPrediction.MinionsHit >= 2)
+                if (position.HitNumber >= 2)
                 {
-                    Spells.W.Cast(wPrediction.Position);
+                    Spells.W.Cast(position.CastPosition);
                 }
             }
            

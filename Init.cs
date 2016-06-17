@@ -495,7 +495,6 @@ namespace PortAIO
                     case "thresh": // OKTW - Sebby - All Seeby champs go down here
                     case "annie":
                     case "karthus":
-                    case "missfortune":
                     case "malzahar":
                     case "orianna":
                     case "velkoz":
@@ -1000,6 +999,9 @@ namespace PortAIO
                             case 3:
                                 Leblanc.Program.Init();
                                 break;
+                            case 4:
+                                BLeblanc.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 PopBlanc.Program.OnLoad();
                                 break;
@@ -1068,6 +1070,20 @@ namespace PortAIO
                         break;
                     case "malphite": // eleasy
                         new ElEasy.Plugins.Malphite();
+                        break;
+                    case "missfortune":
+                        switch (Loader.missfortune)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
                         break;
                     case "vayne":
                         switch (Loader.vayne)

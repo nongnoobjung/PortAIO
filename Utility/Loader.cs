@@ -110,6 +110,7 @@ namespace PortAIO.Utility
         public static int jinx { get { return Miscc["jinx"].Cast<ComboBox>().CurrentValue; } }
         public static int syndra { get { return Miscc["syndra"].Cast<ComboBox>().CurrentValue; } }
         public static int aatrox { get { return Miscc["aatrox"].Cast<ComboBox>().CurrentValue; } }
+        public static int missfortune { get { return Miscc["missfortune"].Cast<ComboBox>().CurrentValue; } }
         public static bool EBPrediction { get { return Miscc["EBPrediction"].Cast<CheckBox>().CurrentValue; } }
         public static bool reform { get { return Miscc["reform"].Cast<CheckBox>().CurrentValue; } }
 
@@ -190,6 +191,7 @@ namespace PortAIO.Utility
             "Jinx", //63
             "Syndra", //64
             "Aatrox", //65
+            "MissFortune", //66
         });
 
         public static void Menu()
@@ -356,7 +358,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[38]))
                 {
-                    Miscc.Add("leblanc", new ComboBox("Use addon for LeBlanc : ", 0, "PopBlanc", "xQx LeBlanc", "FreshBooster", "LeBlanc II"));
+                    Miscc.Add("leblanc", new ComboBox("Use addon for LeBlanc : ", 0, "PopBlanc", "xQx LeBlanc", "FreshBooster", "LeBlanc II", "Badao LeBlanc"));
                 }
                 if (Player.ChampionName.Equals(Champion[39]))
                 {
@@ -465,6 +467,10 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[65]))
                 {
                     Miscc.Add("aatrox", new ComboBox("Use addon for Aatrox : ", 0, "BrianSharp", "KappaSeries"));
+                }
+                if (Player.ChampionName.Equals(Champion[66]))
+                {
+                    Miscc.Add("missfortune", new ComboBox("Use addon for MissFortune : ", 0, "OKTW", "Marksman II"));
                 }
             }
             else

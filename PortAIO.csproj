@@ -233,6 +233,8 @@
     <Compile Include="Dual-Port\BadaoGP\BadaoChecker.cs" />
     <Compile Include="Dual-Port\BadaoGP\BadaoMainVariables.cs" />
     <Compile Include="Dual-Port\BadaoGP\BadaoMath.cs" />
+    <Compile Include="Dual-Port\BadaoLeBlanc\Program.cs" />
+    <Compile Include="Dual-Port\BadaoLeBlanc\TwoChains.cs" />
     <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppy.cs" />
     <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyAssasinate.cs" />
     <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyAuto.cs" />
@@ -477,6 +479,7 @@
     <Compile Include="Dual-Port\Marksman II\Champions\Kindred.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\Kogmaw.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\Lucian.cs" />
+    <Compile Include="Dual-Port\Marksman II\Champions\MissFortune.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\PlayerSpells.cs" />
     <Compile Include="Dual-Port\Marksman II\Champions\Sivir.cs" />
     <Compile Include="Dual-Port\Marksman II\Common\CommonAutoBush.cs" />

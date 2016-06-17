@@ -75,7 +75,7 @@ namespace Infected_Twitch.Menus
 
        
         // List
-        public static int TrinketList => miscMenu["TrinketList"].Cast<ComboBox>().CurrentValue;
+        public static int TrinketList => trinketMenu["TrinketList"].Cast<ComboBox>().CurrentValue;
 
 
         // Keybind
