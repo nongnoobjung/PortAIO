@@ -295,7 +295,7 @@ namespace PortAIO
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
                             case 1:
-                                Nechrito_Twitch.Program.OnGameLoad();
+                                Infected_Twitch.Program.Load();
                                 break;
                             case 2:
                                 iTwitch.Twitch.OnGameLoad();

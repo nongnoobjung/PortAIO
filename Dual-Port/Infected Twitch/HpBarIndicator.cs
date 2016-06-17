@@ -1,11 +1,14 @@
-﻿using System;
-using LeagueSharp;
+﻿#region
+
+using System;
+using EloBuddy;
 using SharpDX;
 using SharpDX.Direct3D9;
 using Color = System.Drawing.Color;
-using EloBuddy;
 
-namespace Nechrito_Twitch
+#endregion
+
+namespace Infected_Twitch
 {
     internal class HpBarIndicator
     {
@@ -65,20 +68,20 @@ namespace Nechrito_Twitch
 
         private float getHpProc(float dmg = 0)
         {
-            float health = ((unit.Health - dmg) > 0) ? (unit.Health - dmg) : 0;
-            return (health / unit.MaxHealth);
+            var health = unit.Health - dmg > 0 ? unit.Health - dmg : 0;
+            return health / unit.MaxHealth;
         }
 
         private Vector2 getHpPosAfterDmg(float dmg)
         {
-            float w = getHpProc(dmg) * width;
+            var w = getHpProc(dmg) * width;
             return new Vector2(startPosition.X + w, startPosition.Y);
         }
 
         public void drawDmg(float dmg, ColorBGRA color)
         {
-            Vector2 hpPosNow = getHpPosAfterDmg(0);
-            Vector2 hpPosAfter = getHpPosAfterDmg(dmg);
+            var hpPosNow = getHpPosAfterDmg(0);
+            var hpPosAfter = getHpPosAfterDmg(dmg);
 
             fillHPBar(hpPosNow, hpPosAfter, color);
             //fillHPBar((int)(hpPosNow.X - startPosition.X), (int)(hpPosAfter.X- startPosition.X), color);
