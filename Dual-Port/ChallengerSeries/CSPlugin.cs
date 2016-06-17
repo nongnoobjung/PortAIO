@@ -61,7 +61,9 @@ namespace Challenger_Series
             CrossAssemblySettings = MainMenu.AddSubMenu("Challenger Utils: ");
             CrossAssemblySettings.Add("performancechallengerx", new CheckBox("Use Performance Challenger", false));
             CrossAssemblySettings.Add("triggeronupdate", new Slider("Trigger OnUpdate X times a second", 26, 20, 33));
+            CrossAssemblySettings.Add("predictiontouse", new ComboBox("Use Prediction: ", 0, new[] { "Common", "SDK" }));
 
+            Utils.Prediction.PredictionMode = getBoxItem(CrossAssemblySettings, "predictiontouse");
             IsPerformanceChallengerEnabled = getCheckBoxItem(CrossAssemblySettings, "performancechallengerx");
             TriggerOnUpdate = getSliderItem(CrossAssemblySettings, "triggeronupdate");
 

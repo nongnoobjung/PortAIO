@@ -23,6 +23,7 @@ using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
+using Prediction = Challenger_Series.Utils.Prediction;
 
 namespace Challenger_Series
 {
@@ -38,7 +39,7 @@ namespace Challenger_Series
             E = new LeagueSharp.SDK.Spell(SpellSlot.E, 900);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R);
 
-            Q.SetSkillshot(0.30f, 125, 1750, false, SkillshotType.SkillshotCircle);
+            Q.SetSkillshot(0.30f, 125, 1600, false, SkillshotType.SkillshotCircle);
             E.SetSkillshot(0.4f, 70f, 1750, false, SkillshotType.SkillshotCircle);
 
             InitializeMenu();
@@ -223,7 +224,6 @@ namespace Challenger_Series
             MainMenu.Add("checkallysurvivability", new CheckBox("Check if ult will save ally", true));
             MainMenu.Add("ultafterignite", new CheckBox("ULT (R) after IGNITE", false));
             MainMenu.Add("blockaas", new CheckBox("Block AutoAttacks?", true));
-            MainMenu.Add("rakapredtype", new ComboBox("PredictionType", 0, "Common", "SDK"));
 
             MainMenu.Add("draww", new CheckBox("Draw W?", true));
             MainMenu.Add("drawq", new CheckBox("Draw Q?", true));
@@ -298,7 +298,7 @@ namespace Challenger_Series
                 {
                     continue;
                 }
-                var pred = GetPrediction(hero, Q);
+                var pred = Prediction.GetPrediction(hero, Q);
                 if (((int)pred.Item1 > (int)HitChance.Medium || hero.HasBuff("SorakaEPacify")) && pred.Item2.Distance(ObjectManager.Player.ServerPosition) < Q.Range)
                 {
                     Q.Cast(pred.Item2);
@@ -469,24 +469,5 @@ namespace Challenger_Series
         }
 
         #endregion STTCSelector
-
-        private Tuple<HitChance, Vector3, List<Obj_AI_Base>> GetPrediction(AIHeroClient target, LeagueSharp.SDK.Spell spell)
-        {
-            switch (getBoxItem(MainMenu, "rakapredtype"))
-            {
-                case 0:
-                    {
-                        var pred = spell.GetPrediction(target);
-                        return new Tuple<HitChance, Vector3, List<Obj_AI_Base>>(pred.Hitchance, pred.UnitPosition, pred.CollisionObjects);
-                    }
-                default:
-                    {
-
-                        var pred = LeagueSharp.Common.Prediction.GetPrediction(target, spell.Delay, spell.Width, spell.Speed);
-                        return new Tuple<HitChance, Vector3, List<Obj_AI_Base>>((HitChance)((int)pred.Hitchance), pred.UnitPosition, pred.CollisionObjects);
-                    }
-            }
-        }
-
     }
 }

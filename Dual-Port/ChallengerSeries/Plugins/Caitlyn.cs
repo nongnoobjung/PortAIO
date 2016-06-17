@@ -361,7 +361,7 @@ namespace Challenger_Series.Plugins
 
         private Tuple<HitChance, Vector3, List<Obj_AI_Base>> GetPrediction(AIHeroClient target, LeagueSharp.SDK.Spell spell)
         {
-            switch (PredictionType)
+            switch (Utils.Prediction.PredictionMode)
             {
                 case 1:
                     {
