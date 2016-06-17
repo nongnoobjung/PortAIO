@@ -53,7 +53,7 @@ namespace Infected_Twitch.Event
 
             if (!MenuConfig.StealRed) return;
 
-            var mob = ObjectManager.Get<Obj_AI_Minion>().Where(m => !m.IsDead && !m.IsZombie && m.Team == GameObjectTeam.Neutral && m.IsValidTarget(Spells.E.Range)).ToList();
+            var mob = ObjectManager.Get<Obj_AI_Minion>().Where(m => !m.IsDead && !m.IsZombie && m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.E.Range)).ToList();
 
             foreach (var m in mob)
             {
@@ -69,9 +69,9 @@ namespace Infected_Twitch.Event
 
         private static void Combo()
         {
-            if (Target == null || Target.IsInvulnerable || !Target.IsValidTarget(Spells.W.Range)) return;
+            if (Target == null || Target.IsInvulnerable || !Target.LSIsValidTarget(Spells.W.Range)) return;
 
-            if (MenuConfig.UseYoumuu && Target.IsValidTarget(Player.AttackRange))
+            if (MenuConfig.UseYoumuu && Target.LSIsValidTarget(Player.AttackRange))
             {
                 Usables.CastYomu();
             }
@@ -92,7 +92,7 @@ namespace Infected_Twitch.Event
 
         private static void Harass()
         {
-            if (Target == null || Target.IsInvulnerable || !Target.IsValidTarget()) return;
+            if (Target == null || Target.IsInvulnerable || !Target.LSIsValidTarget()) return;
 
             if (Dmg.Stacks(Target) >= MenuConfig.HarassE && Target.Distance(Player) >= Player.AttackRange + 50)
             {
@@ -108,7 +108,7 @@ namespace Infected_Twitch.Event
 
         private static void Lane()
         {
-            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.IsValidTarget(Player.AttackRange)).ToList();
+            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Player.AttackRange)).ToList();
             if (!MenuConfig.LaneW) return;
             if (!Spells.W.IsReady()) return;
 
@@ -123,7 +123,7 @@ namespace Infected_Twitch.Event
         private static void Jungle()
         {
             if (Player.Level == 1) return;
-            var mob = ObjectManager.Get<Obj_AI_Minion>().Where(m => !m.IsDead && !m.IsZombie && m.Team == GameObjectTeam.Neutral && !GameObjects.JungleSmall.Contains(m) && m.IsValidTarget(Spells.E.Range)).ToList();
+            var mob = ObjectManager.Get<Obj_AI_Minion>().Where(m => !m.IsDead && !m.IsZombie && m.Team == GameObjectTeam.Neutral && !GameObjects.JungleSmall.Contains(m) && m.LSIsValidTarget(Spells.E.Range)).ToList();
 
             if (MenuConfig.JungleW && Player.ManaPercent >= 20)
             {
