@@ -7,6 +7,7 @@ using SharpDX;
 using EloBuddy;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Menu;
+using EloBuddy.SDK;
 
 namespace YasuoPro
 {
@@ -27,21 +28,27 @@ namespace YasuoPro
 
         internal static float WCLastE = 0f;
 
-        internal static ItemManager.Item Hydra, Tiamat, Blade, Bilgewater, Youmu;
+        internal static ItemManager.Item Hydra, Titanic, Tiamat, Blade, Bilgewater, Youmu;
 
+        internal float LastTornadoClearTick;
+
+        public static int TickCount
+        {
+            get { return (int)(Game.Time * 1000f); }
+        }
         /* Credits to Brian for Q Skillshot values */
-        internal static Dictionary<int, Spell> Spells;
+        internal static Dictionary<int, LeagueSharp.Common.Spell> Spells;
 
 
         internal void InitSpells()
         {
-            Spells =  new Dictionary<int, Spell> {
-            { 1, new Spell(SpellSlot.Q, 500f) },
-            { 2, new Spell(SpellSlot.Q, 1150f) },
-            { 3, new Spell(SpellSlot.W, 450f) },
-            { 4, new Spell(SpellSlot.E, 475f) },
-            { 5, new Spell(SpellSlot.R, 1250f) },
-            { 6, new Spell(ObjectManager.Player.GetSpellSlot("summonerdot"), 600) }
+            Spells =  new Dictionary<int, LeagueSharp.Common.Spell> {
+            { 1, new LeagueSharp.Common.Spell(SpellSlot.Q, 450f) },
+            { 2, new LeagueSharp.Common.Spell(SpellSlot.Q, 1150f) },
+            { 3, new LeagueSharp.Common.Spell(SpellSlot.W, 450f) },
+            { 4, new LeagueSharp.Common.Spell(SpellSlot.E, 475f) },
+            { 5, new LeagueSharp.Common.Spell(SpellSlot.R, 1250f) },
+            { 6, new LeagueSharp.Common.Spell(ObjectManager.Player.GetSpellSlot("summonerdot"), 600) }
             };
 
             Spells[Q].SetSkillshot(GetQ1Delay, 20f, float.MaxValue, false, SkillshotType.SkillshotLine);
@@ -116,24 +123,28 @@ namespace YasuoPro
                 return false;
             }
 
-            //Avoid casting Q if E in range and Tornado ready :o
-            if (GetBool("Combo.UseEQ", YasuoMenu.ComboM) && tready && Spells[E].IsReady() && target.IsDashable() && ((GetBool("Combo.UseE", YasuoMenu.ComboM) && GetBool("Combo.ETower", YasuoMenu.ComboM) && GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM)) || !GetDashPos(target).PointUnderEnemyTurret()))
+            if (tready)
             {
-                Initalization.Yasuo.CastE(target);
-                return false;
-            }
-
-
-            if (tready && Yasuo.LSIsDashing())
-            {
-                if (GetBool("Combo.NoQ2Dash", YasuoMenu.ComboM) || !(ETarget is AIHeroClient))
+                //Avoid casting Q if E in range and Tornado ready :o
+                if (Spells[E].IsReady() && target.IsDashable() && GetBool("Misc.saveQ4QE", YasuoMenu.MiscM) && GetBool("Combo.UseEQ", YasuoMenu.ComboM) &&
+                    isHealthy &&
+                    (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && GetBool("Combo.UseE", YasuoMenu.ComboM) &&
+                     ((GetBool("Combo.ETower", YasuoMenu.ComboM) && GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM)) ||
+                      !GetDashPos(target).PointUnderEnemyTurret())))
                 {
-                    return false;
+                    return Spells[E].CastOnUnit(target);
+                }
+
+                if (Yasuo.LSIsDashing())
+                {
+                    if (GetBool("Combo.NoQ2Dash", YasuoMenu.ComboM) || !(ETarget is AIHeroClient))
+                    {
+                        return false;
+                    }
                 }
             }
-            
 
-            Spell sp = tready ? Spells[Q2] : Spells[Q];
+            LeagueSharp.Common.Spell sp = tready ? Spells[Q2] : Spells[Q];
             PredictionOutput pred = sp.GetPrediction(target);
 
             if (pred.Hitchance >= minhc)
@@ -295,12 +306,32 @@ namespace YasuoPro
             return UltMode.Priority;
         }
 
+        internal EMode GetEMode()
+        {
+            switch (GetSL("Combo.EMode", YasuoMenu.ComboM))
+            {
+                case 0:
+                    return EMode.Old;
+                case 1:
+                    return EMode.New;
+            }
+            return EMode.New;
+        }
+
+
+        internal enum EMode
+        {
+            Old,
+            New
+        }
+
 
 
         internal void InitItems()
         {
             Hydra = new ItemManager.Item(3074, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
             Tiamat = new ItemManager.Item(3077, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
+            Titanic = new ItemManager.Item(3053, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
             Blade = new ItemManager.Item(3153, 450f, ItemManager.ItemCastType.TargettedCast, 1);
             Bilgewater = new ItemManager.Item(3144, 450f, ItemManager.ItemCastType.TargettedCast, 1);
             Youmu = new ItemManager.Item(3142, 185f, ItemManager.ItemCastType.SelfCast, 1, 3);
