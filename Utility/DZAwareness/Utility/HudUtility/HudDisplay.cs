@@ -42,13 +42,56 @@ namespace DZAwarenessAIO.Utility.HudUtility
             moduleMenu = RootMenu.AddSubMenu("HUD!", "dz191.dza.hud");
             {
                 moduleMenu.AddBool("dz191.dza.hud.show", "Show HUD");
+                moduleMenu.Add("dz191.dza.hud.showKey", new KeyBind("Show HUD Key", false, KeyBind.BindTypes.HoldActive, 'H'));
                 moduleMenu.AddBool("dz191.dza.hud.draggable", "Draggable", true);
                 moduleMenu.AddSlider("dz191.dza.hud.x", "HUD X", new Tuple<int, int, int>(20, 0, Drawing.Direct3DDevice.Viewport.Width));
                 moduleMenu.AddSlider("dz191.dza.hud.y", "HUD Y", new Tuple<int, int, int>(Drawing.Direct3DDevice.Viewport.Height - HudVariables.CroppedHeight - 20, 0, Drawing.Direct3DDevice.Viewport.Height));
             }
 
             InitSprites();
+            Game.OnUpdate += Game_OnUpdate;
             Game.OnWndProc += OnWndProc;
+        }
+
+        public static int lastTick;
+
+        private static void Game_OnUpdate(EventArgs args)
+        {
+            if (getKeyBindItem(moduleMenu, "dz191.dza.hud.showKey") && Environment.TickCount - lastTick > 300)
+            {
+                if (HudVariables.CurrentStatus == SpriteStatus.Shrinked)
+                {
+                    HudVariables.CurrentStatus = SpriteStatus.Expanded;
+                    HudVariables.HudSprite.Crop(0, 0, (int)HudVariables.SpriteWidth, (int)HudVariables.SpriteHeight);
+
+                    HudVariables.ExpandShrinkButton.Remove();
+                    HudVariables.ExpandShrinkButton = new Render.Sprite(Resources.Shrink, HudVariables.CurrentPosition)
+                    {
+                        PositionUpdate = () => new Vector2(HudVariables.CurrentPosition.X + HudVariables.SpriteWidth - 15, HudVariables.CurrentPosition.Y + 3),
+                        Scale = new Vector2(0.7f, 0.7f),
+                        VisibleCondition = delegate { return HudVariables.ShouldBeVisible; }
+                    };
+
+                    HudVariables.ExpandShrinkButton.Add(1);
+                    lastTick = Environment.TickCount;
+                }
+                else
+                {
+                    HudVariables.CurrentStatus = SpriteStatus.Shrinked;
+                    HudVariables.HudSprite.Crop(0, 0, (int)HudVariables.SpriteWidth, HudVariables.CroppedHeight);
+
+                    HudVariables.ExpandShrinkButton.Remove();
+                    HudVariables.ExpandShrinkButton = new Render.Sprite(Resources.Expand, HudVariables.CurrentPosition)
+                    {
+                        PositionUpdate = () => new Vector2(HudVariables.CurrentPosition.X + HudVariables.SpriteWidth - 15, HudVariables.CurrentPosition.Y + 3),
+                        Scale = new Vector2(0.7f, 0.7f),
+                        VisibleCondition = delegate { return HudVariables.ShouldBeVisible; }
+                    };
+
+                    HudVariables.ExpandShrinkButton.Add(1);
+                    lastTick = Environment.TickCount;
+                }
+            }
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -100,7 +143,7 @@ namespace DZAwarenessAIO.Utility.HudUtility
                         SecondList.Any(
                             panel =>
                                 Helper.IsInside(
-                                    Utils.GetCursorPos(), (int) panel.Position.X, (int) panel.Position.Y, panel.Width,
+                                    Utils.GetCursorPos(), (int)panel.Position.X, (int)panel.Position.Y, panel.Width,
                                     panel.Height)))
                     {
                         //return;
@@ -139,12 +182,8 @@ namespace DZAwarenessAIO.Utility.HudUtility
             }
 
 
-            if (args.Msg == (uint) WindowsMessages.WM_LBUTTONUP)
             {
-                if (
-                    Utils.GetCursorPos()
-                        .LSDistance(new Vector2(HudVariables.CurrentPosition.X + HudVariables.SpriteWidth - 15 + (Resources.Expand.Width * 0.7f) / 2f,
-                            HudVariables.CurrentPosition.Y + 3 + (Resources.Expand.Height * 0.7f) / 2f)) < Resources.Expand.Width * 0.7f / 2f)
+                if (Utils.GetCursorPos().LSDistance(new Vector2(HudVariables.CurrentPosition.X + HudVariables.SpriteWidth - 15 + (Resources.Expand.Width * 0.7f) / 2f, HudVariables.CurrentPosition.Y + 3 + (Resources.Expand.Height * 0.7f) / 2f)) < Resources.Expand.Width * 0.7f / 2f)
                 {
                     if (HudVariables.CurrentStatus == SpriteStatus.Shrinked)
                     {
