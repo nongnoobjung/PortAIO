@@ -1,4 +1,4 @@
-﻿namespace ElEasy.Plugins
+namespace ElEasy.Plugins
 {
     using System;
     using System.Collections.Generic;
@@ -444,11 +444,11 @@
                         {
                             spells[Spells.W].CastOnUnit(target);
                         }
-                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
+                        if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range) && !spells[Spells.W].IsReady())
                         {
                             spells[Spells.Q].Cast(target);
                         }
-                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
+                        if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range) && !spells[Spells.W].IsReady())
                         {
                             spells[Spells.E].CastOnUnit(target);
                         }
