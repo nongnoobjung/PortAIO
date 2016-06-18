@@ -108,7 +108,7 @@ namespace GosuMechanicsYasuo
             wwMenu = Config.AddSubMenu("Windwall on Combo Whitelist Settings", "ww");
             foreach (var hero in HeroManager.Enemies.Where(x => x.IsEnemy))
             {
-                wwMenu.Add(hero.ChampionName, new CheckBox("Use Put WallBehind if Enemy is " + hero.ChampionName));
+                wwMenu.Add(hero.NetworkId + "", new CheckBox("Use Put WallBehind if Enemy is " + hero.ChampionName));
             }
 
             // Combo
@@ -983,7 +983,7 @@ namespace GosuMechanicsYasuo
 
             float dist = myHero.LSDistance(po.UnitPosition);
             if (!target.IsMoving || myHero.LSDistance(dashPos) <= dist + 40)
-                if (dist < 330 && dist > 100 && W.IsReady() && getCheckBoxItem(wwMenu, target.ChampionName))
+                if (dist < 330 && dist > 100 && W.IsReady() && getCheckBoxItem(wwMenu, target.NetworkId + ""))
                 {
                     W.Cast(po.UnitPosition, true);
                 }
