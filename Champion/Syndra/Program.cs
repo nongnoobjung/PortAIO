@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -23,6 +23,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static float QMANA, WMANA, EMANA, RMANA;
         private static readonly List<Obj_AI_Minion> BallsList = new List<Obj_AI_Minion>();
         private static bool EQcastNow;
+        private static SpellSlot IgniteSlot;
 
         public static Menu draw, q, w, e, r, harass, farm;
 
@@ -65,7 +66,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             E.SetSkillshot(0.25f, 100, 2500f, false, SkillshotType.SkillshotLine);
             EQ.SetSkillshot(0.6f, 100f, 2500f, false, SkillshotType.SkillshotLine);
             Eany.SetSkillshot(0.30f, 50f, 2500f, false, SkillshotType.SkillshotLine);
-
+            IgniteSlot = ObjectManager.Player.GetSpellSlot("SummonerDot");
             draw = Config.AddSubMenu("Draw");
             draw.Add("qRange", new CheckBox("Q range", false));
             draw.Add("wRange", new CheckBox("W range", false));
@@ -87,7 +88,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             e.Add("harrasE", new CheckBox("Harass Q + E", false));
             e.Add("EInterrupter", new CheckBox("Auto Q + E Interrupter"));
             e.Add("useQE", new KeyBind("Semi-manual Q + E near mouse key", false, KeyBind.BindTypes.PressToggle, 'T'));
-                //32 == space
+            //32 == space
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
                 e.Add("Egapcloser" + enemy.NetworkId, new CheckBox("Q + E Gap : " + enemy.ChampionName));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
@@ -125,8 +126,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (sender.IsMe && args.Slot == SpellSlot.Q && EQcastNow && E.IsReady())
             {
-                var customeDelay = Q.Delay - (E.Delay + Player.LSDistance(args.End)/E.Speed);
-                Utility.DelayAction.Add((int) (customeDelay*1000), () => E.Cast(args.End));
+                var customeDelay = Q.Delay - (E.Delay + Player.LSDistance(args.End) / E.Speed);
+                Utility.DelayAction.Add((int)(customeDelay * 1000), () => E.Cast(args.End));
             }
         }
 
@@ -248,11 +249,10 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicR()
         {
             R.Range = R.Level == 3 ? 750 : 675;
-
             var Rcombo = getCheckBoxItem(r, "Rcombo");
 
             foreach (
-                var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(R.Range) && OktwCommon.ValidUlt(enemy)))
+                var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(R.Range) && OktwCommon.ValidUlt(enemy)))
             {
                 var Rmode = getBoxItem(r, "Rmode" + enemy.NetworkId);
 
@@ -261,27 +261,76 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Rmode == 1)
                     R.Cast(enemy);
 
-                var comboDMG = OktwCommon.GetKsDamage(enemy, R);
-                comboDMG += R.GetDamage(enemy, 1)*(R.Instance.Ammo - 3);
-                comboDMG += OktwCommon.GetEchoLudenDamage(enemy);
-
-                if (Rcombo)
+                var comboDMG = GetComboDamage(enemy, true, true, true, true);
+                if (enemy.Health + enemy.HPRegenRate < comboDMG)
                 {
-                    if (Q.IsReady() && enemy.LSIsValidTarget(600))
-                        comboDMG += Q.GetDamage(enemy);
-
-                    if (E.IsReady())
-                        comboDMG += E.GetDamage(enemy);
-
-                    if (W.IsReady())
-                        comboDMG += W.GetDamage(enemy);
-                }
-
-                if (enemy.Health < comboDMG)
-                {
+                    if (IgniteSlot.IsReady())
+                    {
+                        ObjectManager.Player.Spellbook.CastSpell(IgniteSlot, enemy);
+                    }
                     R.Cast(enemy);
                 }
             }
+        }
+
+        public static float GetComboDamage(Obj_AI_Base enemy, bool UseQ, bool UseW, bool UseE, bool UseR)
+        {
+            if (enemy == null)
+                return 0f;
+            var damage = 0d;
+            var combomana = 0d;
+            var useR = getCheckBoxItem(r, "Rcombo");
+
+            //Add R Damage
+            if (R.IsReady() && UseR && useR)
+            {
+                combomana += ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.Mana;
+                if (combomana <= ObjectManager.Player.Mana) damage += GetRDamage(enemy);
+                else combomana -= ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.Mana;
+            }
+
+            //Add Q Damage
+            if (Q.IsReady() && UseQ)
+            {
+                combomana += ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.Mana;
+                if (combomana <= ObjectManager.Player.Mana) damage += ObjectManager.Player.GetSpellDamage(enemy, SpellSlot.Q);
+                else combomana -= ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.Mana;
+            }
+
+            //Add E Damage
+            if (E.IsReady() && UseE)
+            {
+                combomana += ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).SData.Mana;
+                if (combomana <= ObjectManager.Player.Mana) damage += ObjectManager.Player.GetSpellDamage(enemy, SpellSlot.E);
+                else combomana -= ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).SData.Mana;
+            }
+
+            //Add W Damage
+            if (W.IsReady() && UseW)
+            {
+                combomana += ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.Mana;
+                if (combomana <= ObjectManager.Player.Mana) damage += ObjectManager.Player.GetSpellDamage(enemy, SpellSlot.W);
+                else combomana -= ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.Mana;
+            }
+
+            return (float)damage;
+        }
+        public static double GetRDamage(Obj_AI_Base enemy)
+        {
+            if (!R.IsReady()) return 0f;
+            var damage = 0d;
+            if (IgniteSlot.IsReady())
+                damage += GetIgniteDamage(enemy);
+            if (R.IsReady())
+                damage += Math.Min(7, ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo) *
+                    LeagueSharp.Common.Damage.LSGetSpellDamage(Player, enemy, SpellSlot.R, 1);
+            return (float)damage;
+        }
+        public static float GetIgniteDamage(Obj_AI_Base enemy)
+        {
+            if (IgniteSlot == SpellSlot.Unknown || ObjectManager.Player.Spellbook.CanUseSpell(IgniteSlot) != SpellState.Ready)
+                return 0f;
+            return (float)ObjectManager.Player.GetSummonerSpellDamage(enemy, LeagueSharp.Common.Damage.SummonerSpell.Ignite);
         }
 
         private static void LogicW()
@@ -379,7 +428,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                                      (!minion.UnderTurret(true) && minion.UnderTurret()))))
                     {
                         var hpPred = HealthPrediction.GetHealthPrediction(minion, 600);
-                        if (hpPred < Q.GetDamage(minion) && hpPred > minion.Health - hpPred*2)
+                        if (hpPred < Q.GetDamage(minion) && hpPred > minion.Health - hpPred * 2)
                         {
                             Q.Cast(minion);
                             return;
@@ -529,7 +578,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             EMANA = E.Instance.SData.Mana;
 
             if (!R.IsReady())
-                RMANA = QMANA - Player.PARRegenRate*Q.Instance.Cooldown;
+                RMANA = QMANA - Player.PARRegenRate * Q.Instance.Cooldown;
             else
                 RMANA = R.Instance.SData.Mana;
         }
