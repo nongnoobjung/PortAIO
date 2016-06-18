@@ -42,7 +42,7 @@ namespace ExorSDK.Champions.Ryze
                     return;
                 }
 
-                if (Vars.W.IsReady() &&
+                if (Vars.W.IsReady() || Vars.Q.IsReady() &&
                     GameObjects.Player.GetBuffCount("RyzePassiveStack") == 3)
                 {
                     Vars.R.Cast();
@@ -83,14 +83,14 @@ namespace ExorSDK.Champions.Ryze
             if (Vars.Q.IsReady() &&
                 Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
                 Vars.getCheckBoxItem(Vars.QMenu, "combo") && GameObjects.Player.GetBuffCount("RyzePassiveStack") != 4)
-            { 
-                Vars.Q.Cast(Targets.Target);
+            {
+                Vars.Q.Cast(Vars.Q.GetPrediction(Targets.Target).CastPosition);
             }
             if (Vars.Q.IsReady() &&
             Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
             Vars.getCheckBoxItem(Vars.QMenu, "combo") && GameObjects.Player.GetBuffCount("RyzePassiveStack") == 4 && !Vars.W.IsReady())
             {
-                Vars.Q.Cast(Targets.Target);
+                Vars.Q.Cast(Vars.Q.GetPrediction(Targets.Target).CastPosition);
             }
             /// <summary>
             ///     The E Combo Logic.
