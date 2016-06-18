@@ -176,7 +176,7 @@ namespace UnderratedAIO.Champions
                         !i.IsDead &&
                         ((i.Health * 100 / i.MaxHealth) <= menuC["atpercenty"].Cast<Slider>().CurrentValue ||
                          IncDamages.GetAllyData(i.NetworkId).IsAboutToDie) && player.LSDistance(i) < R.Range &&
-                        !menuM["ulty" + i.BaseSkinName].Cast<CheckBox>().CurrentValue && i.CountEnemiesInRange(750) > 0)
+                        !menuM["ulty" + i.NetworkId].Cast<CheckBox>().CurrentValue && i.CountEnemiesInRange(750) > 0)
                     .OrderByDescending(i => Environment.Hero.GetAdOverTime(player, i, 5))
                     .FirstOrDefault();
 
@@ -371,7 +371,7 @@ namespace UnderratedAIO.Champions
             menuM.AddGroupLabel("Don't ult on");
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsAlly))
             {
-                menuM.Add("ulty" + hero.BaseSkinName, new CheckBox(hero.BaseSkinName, false));
+                menuM.Add("ulty" + hero.NetworkId, new CheckBox(hero.BaseSkinName, false));
             }
 
             config.Add("packets", new CheckBox("Use Packets", false));

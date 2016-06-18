@@ -309,7 +309,7 @@ namespace Ziggs
             if (castToMouse || Utils.TickCount - LastWToMouseT < 400)
             {
                 var pos = ObjectManager.Player.ServerPosition.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), -150).To3D();
-                W.Cast(pos, true);
+                W.Cast(Game.CursorPos, true);
                 if (castToMouse)
                 {
                     LastWToMouseT = Utils.TickCount;

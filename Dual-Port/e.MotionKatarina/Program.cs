@@ -185,6 +185,7 @@ namespace e.Motion_Katarina
             miscMenu.Add("motion.katarina.misc.wardjumpkey", new KeyBind("Wardjump Key", false, KeyBind.BindTypes.HoldActive, 'Z'));
             miscMenu.Add("motion.katarina.misc.noRCancel", new CheckBox("Prevent R Cancel"));
             miscMenu.Add("motion.katarina.misc.cancelR", new CheckBox("Cancel R when no Enemies are around", false));
+            miscMenu.Add("motion.katarina.misc.cancelKey", new KeyBind("Manual Cancel", false, KeyBind.BindTypes.HoldActive, 'A'));
             miscMenu.Add("motion.katarina.misc.kswhileult", new CheckBox("Do Killsteal while Ulting"));
             miscMenu.Add("motion.katarina.misc.allyTurret", new CheckBox("Jump unter Turret for Gapcloser"));
 
@@ -242,7 +243,7 @@ namespace e.Motion_Katarina
         {
             Demark();
             LeagueSharp.Common.Utility.HpBarDamageIndicator.Enabled = getCheckBoxItem(drawingsMenu, "motion.katarina.drawings.dmg");
-            if (Player.IsDead || Player.IsRecalling())
+            if (Player.IsDead || Player.LSIsRecalling())
             {
                 return;
             }
@@ -250,8 +251,20 @@ namespace e.Motion_Katarina
             {
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
-                if (getCheckBoxItem(miscMenu, "motion.katarina.misc.cancelR") && Player.GetEnemiesInRange(R.Range + 50).Count == 0)
+                if (getKeyBindItem(miscMenu, "motion.katarina.misc.cancelKey"))
+                {
+                    Orbwalker.DisableAttacking = false;
+                    Orbwalker.DisableMovement = false;
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                    Orbwalker.OrbwalkTo(Game.CursorPos);
+                }
+                if (getCheckBoxItem(miscMenu, "motion.katarina.misc.cancelR") && Player.GetEnemiesInRange(R.Range + 50).Count == 0)
+                {
+                    Orbwalker.DisableAttacking = false;
+                    Orbwalker.DisableMovement = false;
+                    EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                    Orbwalker.OrbwalkTo(Game.CursorPos);
+                }
                 if (getCheckBoxItem(miscMenu, "motion.katarina.misc.kswhileult"))
                     Killsteal();
                 return;
@@ -443,7 +456,7 @@ namespace e.Motion_Katarina
                     Vector3 extPos = Player.Position.LSExtend(turretToJump.Position, 685 - i);
                     float dist = objectPosition.LSDistance(extPos + extrarange);
                     Vector3 predictedPosition = objectPosition.LSExtend(extPos, dist);
-                    if (predictedPosition.LSDistance(turretToJump.Position) <= 890 && !predictedPosition.IsWall())
+                    if (predictedPosition.LSDistance(turretToJump.Position) <= 890 && !predictedPosition.LSIsWall())
                     {
                         WardJump(Player.Position.LSExtend(turretToJump.Position, 650 - i), false);
                         JumpPosition = Player.Position.LSExtend(turretToJump.Position, 650 - i);
@@ -452,7 +465,7 @@ namespace e.Motion_Katarina
                     }
 
                     i += 50;
-                } while (i <= 300 || !Player.Position.LSExtend(turretToJump.Position, 650 - i).IsWall());
+                } while (i <= 300 || !Player.Position.LSExtend(turretToJump.Position, 650 - i).LSIsWall());
             }
 
         }
@@ -491,7 +504,7 @@ namespace e.Motion_Katarina
             else if (placeward)
             {
                 int wardId = GetWardItem();
-                if (wardId != -1 && !wardJumpPosition.IsWall())
+                if (wardId != -1 && !wardJumpPosition.LSIsWall())
                 {
                     WardJumpReady = true;
                     PutWard(wardJumpPosition.LSTo2D(), (ItemId)wardId);
@@ -524,7 +537,7 @@ namespace e.Motion_Katarina
             double damage = 0d;
             if (Q.IsReady())
             {
-                damage += Player.GetSpellDamage(target, SpellSlot.Q) + Player.LSGetSpellDamage(target, SpellSlot.Q, 1);
+                damage += Player.LSGetSpellDamage(target, SpellSlot.Q) + Player.LSGetSpellDamage(target, SpellSlot.Q, 1);
             }
             if (target.HasBuff("katarinaqmark") || target == qTarget)
             {
@@ -532,15 +545,15 @@ namespace e.Motion_Katarina
             }
             if (W.IsReady())
             {
-                damage += Player.GetSpellDamage(target, SpellSlot.W);
+                damage += Player.LSGetSpellDamage(target, SpellSlot.W);
             }
             if (E.IsReady())
             {
-                damage += Player.GetSpellDamage(target, SpellSlot.E);
+                damage += Player.LSGetSpellDamage(target, SpellSlot.E);
             }
             if (R.IsReady() || (Player.GetSpell(R.Slot).State == SpellState.Surpressed && R.Level > 0))
             {
-                damage += Player.GetSpellDamage(target, SpellSlot.R);
+                damage += Player.LSGetSpellDamage(target, SpellSlot.R);
             }
             if (Player.GetSummonerSpellDamage(target, LeagueSharp.Common.Damage.SummonerSpell.Ignite) > 0 && IgniteSpellSlot != SpellSlot.Unknown && IgniteSpellSlot.IsReady())
             {
@@ -558,7 +571,7 @@ namespace e.Motion_Katarina
                 return 0;
             if (Q.IsReady() && useq)
             {
-                damage += ObjectManager.Player.GetSpellDamage(target, SpellSlot.Q);
+                damage += ObjectManager.Player.LSGetSpellDamage(target, SpellSlot.Q);
                 if ((W.IsReady() && usew) || (E.IsReady() && usee))
                 {
                     damage += ObjectManager.Player.LSGetSpellDamage(target, SpellSlot.Q, 1);
@@ -570,11 +583,11 @@ namespace e.Motion_Katarina
             }
             if (W.IsReady() && usew)
             {
-                damage += ObjectManager.Player.GetSpellDamage(target, SpellSlot.W);
+                damage += ObjectManager.Player.LSGetSpellDamage(target, SpellSlot.W);
             }
             if (E.IsReady() && usee)
             {
-                damage += ObjectManager.Player.GetSpellDamage(target, SpellSlot.E);
+                damage += ObjectManager.Player.LSGetSpellDamage(target, SpellSlot.E);
             }
             if (damage >= target.Health)
             {

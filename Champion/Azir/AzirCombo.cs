@@ -37,6 +37,8 @@ namespace HeavenStrikeAzir
             if (Program._q.IsReady() && Orbwalker.CanMove && Program.qcombo && (!Program.donotqcombo || (!Soldiers.enemies.Any() && !Soldiers.splashautoattackchampions.Any())))
             {
                 var target = TargetSelector.GetTarget(Program._q.Range, DamageType.Magical);
+                if (target == null)
+                    return;
                 foreach (var obj in Soldiers.soldier)
                 {
                     Program._q.SetSkillshot(0.0f, 65f, 1500f, false, SkillshotType.SkillshotLine, obj.Position, Player.Position);
@@ -46,6 +48,8 @@ namespace HeavenStrikeAzir
             if (Program._w.IsReady() && Orbwalker.CanMove && Program.wcombo)
             {
                 var target = TargetSelector.GetTarget(Program._w.Range + 300, DamageType.Magical);
+                if (target == null)
+                    return;
                 if (target.LSIsValidTarget() && !target.IsZombie && (!Soldiers.enemies.Contains(target) || Player.LSCountEnemiesInRange(1000) >= 2) || Program._q.IsReady() || !target.CanMove)
                 {
                     var x = Player.LSDistance(target.Position) > Program._w.Range ? Player.Position.LSExtend(target.Position, Program._w.Range)
