@@ -182,6 +182,7 @@ namespace DZAwarenessAIO.Utility.HudUtility
             }
 
 
+            if (args.Msg == (uint)WindowsMessages.WM_LBUTTONUP)
             {
                 if (Utils.GetCursorPos().LSDistance(new Vector2(HudVariables.CurrentPosition.X + HudVariables.SpriteWidth - 15 + (Resources.Expand.Width * 0.7f) / 2f, HudVariables.CurrentPosition.Y + 3 + (Resources.Expand.Height * 0.7f) / 2f)) < Resources.Expand.Width * 0.7f / 2f)
                 {
