@@ -213,7 +213,7 @@ namespace YasuoPro
 
         internal static bool isBlackListed(this AIHeroClient unit)
         {
-            return !Helper.GetBool("ult" + unit.ChampionName, YasuoMenu.ComboM);
+            return !Helper.GetBool("ult" + unit.NetworkId, YasuoMenu.ComboM);
         }
 
         internal static int MinionsInRange(this Obj_AI_Base unit, float range)

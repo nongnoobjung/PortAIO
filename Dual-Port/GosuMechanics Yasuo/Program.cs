@@ -139,7 +139,7 @@ namespace GosuMechanicsYasuo
             ultMenu = Config.AddSubMenu("Ult Whitelist Settings", "ult");
             foreach (var hero in HeroManager.Enemies.Where(x => x.IsEnemy))
             {
-                ultMenu.Add(hero.ChampionName, new CheckBox("Use Ulti if Target is " + hero.ChampionName));
+                ultMenu.Add(hero.NetworkId + "", new CheckBox("Use Ulti if Target is " + hero.ChampionName));
             }
 
             //Harass / AutoQ
@@ -811,7 +811,7 @@ namespace GosuMechanicsYasuo
                     if (enemy.LSIsValidTarget(Program.R.Range))
                     {
                         
-                        if (Program.IsKnockedUp(enemy) && Program.CanCastDelayR(enemy) && enemy.Health <= ((getSliderItem(comboMenu, "R1") / 100 * enemy.MaxHealth) * 1.5f) && getCheckBoxItem(ultMenu, enemy.ChampionName))
+                        if (Program.IsKnockedUp(enemy) && Program.CanCastDelayR(enemy) && enemy.Health <= ((getSliderItem(comboMenu, "R1") / 100 * enemy.MaxHealth) * 1.5f) && getCheckBoxItem(ultMenu, enemy.NetworkId + ""))
                         {
                             Program.R.Cast();
                         }

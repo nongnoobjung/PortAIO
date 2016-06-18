@@ -71,7 +71,7 @@ namespace YasuoPro
                 menu.AddGroupLabel("Ult Settings ");
                 foreach (var hero in HeroManager.Enemies)
                 {
-                    menu.AddBool("ult" + hero.ChampionName, "Ult " + hero.ChampionName);
+                    menu.AddBool("ult" + hero.NetworkId, "Ult " + hero.ChampionName);
                 }
                 menu.AddSeparator();
                 menu.AddSList("Combo.UltMode", "Ult Prioritization", new string[] { "Lowest Health", "TS Priority", "Most enemies" }, 0);
