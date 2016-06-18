@@ -1,6 +1,7 @@
 using ExorSDK.Champions.Anivia;
 using ExorSDK.Champions.Caitlyn;
 using ExorSDK.Champions.Darius;
+using ExorSDK.Champions.Jhin;
 using ExorSDK.Champions.Nautilus;
 using ExorSDK.Champions.Nunu;
 using ExorSDK.Champions.Olaf;
@@ -55,6 +56,9 @@ namespace ExorSDK.Core
                     break;
                 case "Ryze":
                     new Ryze().OnLoad();
+                    break;
+                case "Jhin":
+                    new Jhin().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;
