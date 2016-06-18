@@ -50,28 +50,28 @@ namespace YasuoSharpV2
 
         internal class YasWall
         {
-            public MissileClient pointL;
-            public MissileClient pointR;
+            public Obj_SpellLineMissile pointL;
+            public Obj_SpellLineMissile pointR;
             public float endtime = 0;
             public YasWall()
             {
 
             }
 
-            public YasWall(MissileClient L, MissileClient R)
+            public YasWall(Obj_SpellLineMissile L, Obj_SpellLineMissile R)
             {
                 pointL = L;
                 pointR = R;
                 endtime = Game.Time + 4;
             }
 
-            public void setR(MissileClient R)
+            public void setR(Obj_SpellLineMissile R)
             {
                 pointR = R;
                 endtime = Game.Time + 4;
             }
 
-            public void setL(MissileClient L)
+            public void setL(Obj_SpellLineMissile L)
             {
                 pointL = L;
                 endtime = Game.Time + 4;

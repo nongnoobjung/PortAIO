@@ -404,11 +404,11 @@ namespace YasuoSharpV2
         private static void OnCreateObject(GameObject sender, EventArgs args)
         {
             //wall
-            if (sender.IsValid<MissileClient>())
+            if (sender.IsValid<Obj_SpellLineMissile>())
             {
-                if (sender is MissileClient)
+                if (sender is Obj_SpellLineMissile)
                 {
-                    MissileClient missle = (MissileClient)sender;
+                    Obj_SpellLineMissile missle = (Obj_SpellLineMissile)sender;
                     if (missle.SData.Name == "yasuowmovingwallmisl")
                     {
                         Yasuo.wall.setL(missle);
@@ -421,9 +421,9 @@ namespace YasuoSharpV2
                 }
             }
 
-            if (sender.IsValid<MissileClient>() && sender.IsValid)
+            if (sender.IsValid<Obj_SpellLineMissile>() && sender.IsValid)
             {
-                var s = sender as MissileClient;
+                var s = sender as Obj_SpellLineMissile;
                 if (s != null)
                 {
                     if ((s).Target.IsMe)
@@ -460,7 +460,7 @@ namespace YasuoSharpV2
             }
         }
 
-        public static void OnProcessSpell(Obj_AI_Base obj, GameObjectProcessSpellCastEventArgs arg)
+        internal static void OnProcessSpell(Obj_AI_Base obj, GameObjectProcessSpellCastEventArgs arg)
         {
             if (obj.IsMe)
             {
@@ -475,7 +475,7 @@ namespace YasuoSharpV2
             }
         }
 
-        public static void OnLevelUp(Obj_AI_Base sender, LeagueSharp.Common.CustomEvents.Unit.OnLevelUpEventArgs args)
+        internal static void OnLevelUp(Obj_AI_Base sender, LeagueSharp.Common.CustomEvents.Unit.OnLevelUpEventArgs args)
         {
             if (sender.NetworkId == Yasuo.Player.NetworkId)
             {
