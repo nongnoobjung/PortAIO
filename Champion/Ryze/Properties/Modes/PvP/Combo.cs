@@ -33,9 +33,8 @@ namespace ExorSDK.Champions.Ryze
             /// <summary>
             ///     The R Combo Logic.
             /// </summary>
-            if (Vars.R.IsReady() &&
-                GameObjects.Player.ManaPercent > 20 &&
-                Vars.getCheckBoxItem(Vars.RMenu, "combo"))
+            if (Vars.R.IsReady()  &&
+                Vars.getCheckBoxItem(Vars.RMenu, "combo") && Targets.Target.LSIsValidTarget(Vars.Q.Range))
             {
                 if (!GameObjects.Player.HasBuff("RyzePassiveCharged") &&
                     GameObjects.Player.GetBuffCount("RyzePassiveStack") == 0)
@@ -43,12 +42,16 @@ namespace ExorSDK.Champions.Ryze
                     return;
                 }
 
-                if (!Vars.Q.IsReady() &&
+                if (Vars.W.IsReady() &&
                     GameObjects.Player.GetBuffCount("RyzePassiveStack") == 3)
                 {
                     Vars.R.Cast();
                 }
-                else if (GameObjects.Player.GetBuffCount("RyzePassiveStack") < 3)
+                if (GameObjects.Player.GetBuffCount("RyzePassiveStack") == 2 && !Vars.E.IsReady() )
+                {
+                    Vars.R.Cast();
+                }
+                if (GameObjects.Player.GetBuffCount("RyzePassiveStack") == 1 && !Vars.Q.IsReady() || !Vars.E.IsReady())
                 {
                     Vars.R.Cast();
                 }
@@ -78,12 +81,17 @@ namespace ExorSDK.Champions.Ryze
             ///     The Q Combo Logic.
             /// </summary>
             if (Vars.Q.IsReady() &&
-                Targets.Target.LSIsValidTarget(Vars.Q.Range-50f) &&
-                Vars.getCheckBoxItem(Vars.QMenu, "combo"))
+                Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
+                Vars.getCheckBoxItem(Vars.QMenu, "combo") && GameObjects.Player.GetBuffCount("RyzePassiveStack") != 4)
             { 
-                Vars.Q.Cast(Vars.Q.GetPrediction(Targets.Target).UnitPosition);
+                Vars.Q.Cast(Targets.Target);
             }
-
+            if (Vars.Q.IsReady() &&
+            Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
+            Vars.getCheckBoxItem(Vars.QMenu, "combo") && GameObjects.Player.GetBuffCount("RyzePassiveStack") == 4 && !Vars.W.IsReady())
+            {
+                Vars.Q.Cast(Targets.Target);
+            }
             /// <summary>
             ///     The E Combo Logic.
             /// </summary>
@@ -98,7 +106,11 @@ namespace ExorSDK.Champions.Ryze
                 }
 
                 if (GameObjects.Player.HasBuff("RyzePassiveCharged") ||
-                    GameObjects.Player.GetBuffCount("RyzePassiveStack") != 0)
+                    GameObjects.Player.GetBuffCount("RyzePassiveStack") != 0 && GameObjects.Player.GetBuffCount("RyzePassiveStack") != 4)
+                {
+                    Vars.E.CastOnUnit(Targets.Target);
+                }
+                if (GameObjects.Player.GetBuffCount("RyzePassiveStack") == 4 && !Vars.W.IsReady())
                 {
                     Vars.E.CastOnUnit(Targets.Target);
                 }
