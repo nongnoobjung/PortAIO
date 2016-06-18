@@ -113,7 +113,7 @@ namespace LCS_Lucian
                         getCheckBoxItem(comboMenu, "lucian.q.combo") &&
                         ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.Q.Range &&
                         Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
-                        ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
+                        ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff") && LucianSpells.Q.IsInRange((AIHeroClient)args.Target))
                     {
                         LucianSpells.Q.CastOnUnit((AIHeroClient)args.Target);
                     }
@@ -167,7 +167,7 @@ namespace LCS_Lucian
                     if (LucianSpells.Q.IsReady() && getCheckBoxItem(comboMenu, "lucian.q.combo") &&
                         ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.Q.Range &&
                         Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
-                        ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
+                        ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff") && LucianSpells.Q.IsInRange((AIHeroClient)args.Target))
                     {
                         LucianSpells.Q.CastOnUnit((AIHeroClient)args.Target);
                     }
