@@ -125,7 +125,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
             {
                 return Vector3.Zero;
             }
-            if (Missile != null && Missile.IsValid && Target.LSIsValidTarget())
+            if (Missile != null && Missile.IsValid && Missile.IsValidMissile() && Missile.IsValid<MissileClient>() && Target.LSIsValidTarget())
             {
                 if (Missile != null)
                 {
