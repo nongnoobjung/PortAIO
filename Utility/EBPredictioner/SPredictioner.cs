@@ -35,7 +35,7 @@ namespace EBPredictioner
             _spells = EloBuddy.SDK.Spells.SpellDatabase.GetSpellInfoList(MyHero.BaseSkinName);
 
             #region Initialize Menu
-            Config = MainMenu.AddMenu("EBPredictioner", "sdkpaksldjaskdjlkasjdk");
+            Config = MainMenu.AddMenu("EBPredictioner", "asdasdasdsad");
             Config.AddGroupLabel("Taken logic from AIMBot, huge credits to iCreative.");
             Config.Add("ENABLED", new CheckBox("Enabled"));
             //Config.Add("SPREDHITC", new ComboBox("HitChance", 0, "High", "Medium", "Low"));
