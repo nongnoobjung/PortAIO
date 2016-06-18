@@ -75,10 +75,11 @@ namespace Infected_Twitch.Menus
             drawMenu = Menu.AddSubMenu("Drawings", "Drawings");
             drawMenu.Add("DrawDmg", new CheckBox("Damage Indicator", true));
             drawMenu.Add("DrawTimer", new CheckBox("Q Timer", true));
+            drawMenu.Add("DrawKillable", new CheckBox("Killable By Passive", true));
 
         }
 
-       
+
         // List
         public static int TrinketList => trinketMenu["TrinketList"].Cast<ComboBox>().CurrentValue;
 
@@ -110,6 +111,7 @@ namespace Infected_Twitch.Menus
         public static bool DrawDmg => drawMenu["DrawDmg"].Cast<CheckBox>().CurrentValue;
         public static bool DrawTimer => drawMenu["DrawTimer"].Cast<CheckBox>().CurrentValue;
         public static bool EBeforeDeath => miscMenu["EBeforeDeath"].Cast<CheckBox>().CurrentValue;
-
+        public static bool DrawKillable => drawMenu["DrawKillable"].Cast<CheckBox>().CurrentValue;
     }
+
 }

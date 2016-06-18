@@ -44,7 +44,7 @@ namespace Infected_Twitch.Event
             {
                 foreach (var m in ObjectManager.Get<Obj_AI_Base>().Where(x => Dragons.Contains(x.CharData.BaseSkinName) && !x.IsDead))
                 {
-                    if (m.Health < Dmg.EDamage(m))
+                    if (m.Health < Spells.E.GetDamage(m))
                     {
                         Spells.E.Cast();
                     }
@@ -59,7 +59,7 @@ namespace Infected_Twitch.Event
             {
                 if (m.CharData.BaseSkinName.Contains("SRU_Red"))
                 {
-                    if (m.Health < Dmg.EDamage(m))
+                    if (m.Health < Spells.E.GetDamage(m))
                     {
                         Spells.E.Cast();
                     }
@@ -83,7 +83,7 @@ namespace Infected_Twitch.Event
 
             if (!MenuConfig.ComboW) return;
             if (!Spells.W.IsReady()) return;
-            if (Target.Health < Player.GetAutoAttackDamage(Target) * 2 && Target.Distance(Player) < Player.AttackRange) return;
+            if (Target.Health <= Player.GetAutoAttackDamage(Target) * 2 && Target.Distance(Player) < Player.AttackRange) return;
 
             if (!(Player.ManaPercent >= 7.5)) return;
             var wPred = Spells.W.GetPrediction(Target).CastPosition;
@@ -138,9 +138,9 @@ namespace Infected_Twitch.Event
 
             if (!MenuConfig.JungleE) return;
 
-            foreach (var m in mob)
+            foreach (var m in ObjectManager.Get<Obj_AI_Base>().Where(x => Monsters.Contains(x.CharData.BaseSkinName) && !x.IsDead))
             {
-                if (m.Health < Dmg.EDamage(m))
+                if (m.Health < Spells.E.GetDamage(m))
                 {
                     Spells.E.Cast();
                 }

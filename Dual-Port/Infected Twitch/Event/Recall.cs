@@ -1,6 +1,5 @@
 ﻿#region
 
-using System;
 using Infected_Twitch.Core;
 using Infected_Twitch.Menus;
 using EloBuddy;

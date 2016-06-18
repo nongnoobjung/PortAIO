@@ -31,5 +31,6 @@ namespace Infected_Twitch.Core
             "SRU_Dragon_Air", "SRU_Dragon_Fire", "SRU_Dragon_Water", "SRU_Dragon_Earth", "SRU_Dragon_Elder", "SRU_Baron",
             "SRU_RiftHerald"
         };
+
     }
 }

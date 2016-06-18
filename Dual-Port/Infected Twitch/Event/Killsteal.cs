@@ -29,14 +29,13 @@ namespace Infected_Twitch.Event
 
             if (MenuConfig.KillstealE)
             {
-                if (Target == null || Target.IsDead || !Target.LSIsValidTarget(Spells.E.Range)) return;
-                if (Dmg.Executable(Target))
+                if (Dmg.EDamage(Target) > Target.Health)
                 {
                     Spells.E.Cast();
                 }
             }
 
-            if (target.HealthPercent <= 10 && !Spells.Q.IsReady())
+            if (Target.HealthPercent <= 10 && !Spells.Q.IsReady())
             {
                 Usables.Botrk();
             }
