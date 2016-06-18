@@ -2,19 +2,23 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
     using System.Linq;
-    using EloBuddy;
-    using EloBuddy.SDK;
-    using LeagueSharp.Common;
-    using SharpDX;
-    using ItemData = LeagueSharp.Common.Data.ItemData;
+
     using Spell = LeagueSharp.Common.Spell;
     using Utility = LeagueSharp.Common.Utility;
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
     using EloBuddy.SDK.Rendering;
-    using System.Drawing;
-    using SebbyLib;
+
+    using EloBuddy;
+    using LeagueSharp.Common;
+
+    using SharpDX;
+
+    using Color = System.Drawing.Color;
+    using ItemData = LeagueSharp.Common.Data.ItemData;
+    using EloBuddy.SDK;
 
     public class Twitch
     {
@@ -35,9 +39,8 @@
 
         #region Fields
 
-        public static Menu Menu { get; set; }
+        private static Menu Menu;
         public static Menu comboOptions, harassOptions, laneclearOptions, miscOptions, drawOptions;
-
 
         #endregion
 
@@ -71,14 +74,16 @@
 
 
             drawOptions = Menu.AddSubMenu("iTwitch 2.0 - Drawing", "com.itwitch.drawing");
-            drawOptions.Add("com.itwitch.misc.eDamage", new CheckBox("Draw E Damage on Enemies", true));
+            drawOptions.Add("com.itwitch.drawing.drawERange", new CheckBox("Draw E Range", true));
+            drawOptions.Add("com.itwitch.drawing.drawRRange", new CheckBox("Draw R Range", true));
             drawOptions.Add("com.itwitch.drawing.drawQTime", new CheckBox("Draw Q Time", true));
             drawOptions.Add("com.itwitch.drawing.drawEStacks", new CheckBox("Draw E Stacks", true));
             drawOptions.Add("com.itwitch.drawing.drawEStackT", new CheckBox("Draw E Stack Time", true));
             drawOptions.Add("com.itwitch.drawing.drawRTime", new CheckBox("Draw R Time", true));
+            drawOptions.Add("com.itwitch.drawing.eDamage", new CheckBox("Draw E Damage on Enemies", true));
+
 
         }
-
 
         public static bool getCheckBoxItem(Menu m, string item)
         {
@@ -100,39 +105,17 @@
             return m[item].Cast<ComboBox>().CurrentValue;
         }
 
-
         public static void LoadSpells()
         {
             Spells[SpellSlot.W].SetSkillshot(0.25f, 120f, 1400f, false, SkillshotType.SkillshotCircle);
         }
 
-        private static void Exploit()
-        {
-            var target = TargetSelector.GetTarget(ObjectManager.Player.HasBuff("TwitchFullAutomatic") ? 850 : 550, DamageType.Physical);
-            if (target == null || !target.LSIsValidTarget() || target.IsInvulnerable || !Spells[SpellSlot.Q].IsReady()) return;
-
-            if (Spells[SpellSlot.E].IsReady() && getCheckBoxItem(miscOptions, "com.itwitch.misc.EAAQ"))
-            {
-                var realRange = ObjectManager.Player.HasBuff("TwitchFullAutomatic") ? 850 : 550;
-                if (target.Distance(ObjectManager.Player) > realRange)
-                {
-                    return;
-                }
-
-                if (target.Health <= ObjectManager.Player.LSGetAutoAttackDamage(target) * (1.15) + Spells[SpellSlot.E].GetDamage(target) * (1.35))
-                {
-                    Spells[SpellSlot.E].Cast();
-                }
-            }
-
-        }
-
         public static void OnCombo()
         {
-
             if (getCheckBoxItem(comboOptions, "com.itwitch.combo.useW") && Spells[SpellSlot.W].IsReady())
             {
-                if (getCheckBoxItem(miscOptions, "com.itwitch.misc.saveManaE") && ObjectManager.Player.Mana <= Spells[SpellSlot.E].ManaCost + Spells[SpellSlot.W].ManaCost)
+                if (getCheckBoxItem(miscOptions, "com.itwitch.misc.saveManaE")
+                    && ObjectManager.Player.Mana <= Spells[SpellSlot.E].ManaCost + Spells[SpellSlot.W].ManaCost)
                 {
                     return;
                 }
@@ -141,14 +124,17 @@
                 {
                     return;
                 }
+
                 var wTarget = TargetSelector.GetTarget(Spells[SpellSlot.W].Range, DamageType.Physical);
 
                 if (wTarget != null
                     && wTarget.Health
-                     < ObjectManager.Player.GetAutoAttackDamage(wTarget, true)
-                     * getSliderItem(miscOptions, "com.itwitch.misc.noWAA")) return;
+                    < ObjectManager.Player.LSGetAutoAttackDamage(wTarget, true)
+                    * getSliderItem(miscOptions, "com.itwitch.misc.noWAA"))
+                    return;
 
-                if (wTarget.LSIsValidTarget(Spells[SpellSlot.W].Range) && !ObjectManager.Player.HasBuff("TwitchHideInShadows"))
+                if (wTarget.LSIsValidTarget(Spells[SpellSlot.W].Range)
+                    && !ObjectManager.Player.HasBuff("TwitchHideInShadows"))
                 {
                     var prediction = Spells[SpellSlot.W].GetPrediction(wTarget);
                     if (prediction.Hitchance >= HitChance.High)
@@ -162,6 +148,8 @@
         public static void OnGameLoad()
         {
             if (ObjectManager.Player.ChampionName != "Twitch") return;
+
+            CustomDamageIndicator.Initialize(Extensions.GetPoisonDamage);
 
             LoadSpells();
             LoadMenu();
@@ -201,6 +189,26 @@
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
             Orbwalker.OnPostAttack += AfterAttack;
+            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+        }
+
+        private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (args.Target != null && sender != null && sender.IsAlly && args.Target.IsEnemy)
+            {
+                var senderHero = sender as AIHeroClient;
+                var targetHero = args.Target as AIHeroClient;
+                if (targetHero != null && senderHero != null && targetHero.Buffs.Any(b => b.Name.ToLower().Equals("twitchdeadlyvenom")))
+                {
+                    var spelldamage = senderHero.LSGetSpellDamage(targetHero, args.Slot);
+                    if ((spelldamage / targetHero.Health) * 100f >= targetHero.HealthPercent
+                        || spelldamage >= targetHero.Health
+                        || senderHero.LSGetAutoAttackDamage(targetHero, true) >= targetHero.Health)
+                    {
+                        Spells[SpellSlot.Q].Cast();
+                    }
+                }
+            }
         }
 
         private static void AfterAttack(AttackableUnit target, EventArgs args)
@@ -208,7 +216,7 @@
             if (target is AIHeroClient && target.LSIsValidTarget() && getCheckBoxItem(miscOptions, "com.itwitch.misc.Exploit"))
             {
                 var tg = target as AIHeroClient;
-                if (tg?.Health + 5 <= ObjectManager.Player.LSGetAutoAttackDamage(tg, true))
+                if (tg?.Health + 5 <= ObjectManager.Player.LSGetAutoAttackDamage(tg, true) && tg.Buffs.Any(b => b.Name.ToLower().Equals("twitchdeadlyvenom")))
                 {
                     Spells[SpellSlot.Q].Cast();
                 }
@@ -231,6 +239,27 @@
             }
         }
 
+        private static void Exploit()
+        {
+            var target = TargetSelector.GetTarget(ObjectManager.Player.HasBuff("TwitchFullAutomatic") ? 850 : 550, DamageType.Physical);
+            if (target == null || !target.LSIsValidTarget() || target.IsInvulnerable || !Spells[SpellSlot.Q].IsReady()) return;
+
+            if (Spells[SpellSlot.E].IsReady() && getCheckBoxItem(miscOptions, "com.itwitch.misc.EAAQ"))
+            {
+                var realRange = ObjectManager.Player.HasBuff("TwitchFullAutomatic") ? 850 : 550;
+                if (target.Distance(ObjectManager.Player) > realRange)
+                {
+                    return;
+                }
+
+                if (target.Health <= ObjectManager.Player.LSGetAutoAttackDamage(target) * (1.15) + Spells[SpellSlot.E].GetDamage(target) * (1.35))
+                {
+                    Spells[SpellSlot.E].Cast();
+                }
+            }
+
+        }
+
         #endregion
 
         #region Methods
@@ -238,7 +267,17 @@
         private static void OnDraw(EventArgs args)
         {
             CustomDamageIndicator.DrawingColor = System.Drawing.Color.DarkOliveGreen;
-            CustomDamageIndicator.Enabled = getCheckBoxItem(drawOptions, "com.itwitch.misc.eDamage");
+            CustomDamageIndicator.Enabled = getCheckBoxItem(drawOptions, "com.itwitch.drawing.eDamage");
+
+            if (getCheckBoxItem(drawOptions, "com.itwitch.drawing.drawRRange"))
+            {
+                Render.Circle.DrawCircle(ObjectManager.Player.Position, Spells[SpellSlot.R].Range, Color.BlueViolet);
+            }
+
+            if (getCheckBoxItem(drawOptions, "com.itwitch.drawing.drawERange"))
+            {
+                Render.Circle.DrawCircle(ObjectManager.Player.Position, Spells[SpellSlot.E].Range, Color.BlueViolet);
+            }
 
             if (getCheckBoxItem(drawOptions, "com.itwitch.drawing.drawQTime")
                 && ObjectManager.Player.HasBuff("TwitchHideInShadows"))
@@ -249,7 +288,7 @@
                     ObjectManager.Player.Position.Z);
                 position.DrawTextOnScreen(
                     "Stealth:  " + $"{ObjectManager.Player.GetRemainingBuffTime("TwitchHideInShadows"):0.0}",
-                    System.Drawing.Color.AntiqueWhite);
+                    Color.AntiqueWhite);
             }
 
             if (getCheckBoxItem(drawOptions, "com.itwitch.drawing.drawRTime")
@@ -257,7 +296,7 @@
             {
                 ObjectManager.Player.Position.DrawTextOnScreen(
                     "Ultimate:  " + $"{ObjectManager.Player.GetRemainingBuffTime("TwitchFullAutomatic"):0.0}",
-                    System.Drawing.Color.AntiqueWhite);
+                    Color.AntiqueWhite);
             }
 
             if (getCheckBoxItem(drawOptions, "com.itwitch.drawing.drawEStacks"))
@@ -266,7 +305,7 @@
                     HeroManager.Enemies.Where(x => x.HasBuff("TwitchDeadlyVenom") && !x.IsDead && x.IsVisible))
                 {
                     var position = new Vector3(source.Position.X, source.Position.Y + 10, source.Position.Z);
-                    position.DrawTextOnScreen($"{"Stacks: " + source.GetPoisonStacks()}", System.Drawing.Color.AntiqueWhite);
+                    position.DrawTextOnScreen($"{"Stacks: " + source.GetPoisonStacks()}", Color.AntiqueWhite);
                 }
             }
 
@@ -278,7 +317,7 @@
                     var position = new Vector3(source.Position.X, source.Position.Y - 30, source.Position.Z);
                     position.DrawTextOnScreen(
                         "Stack Timer:  " + $"{source.GetRemainingBuffTime("TwitchDeadlyVenom"):0.0}",
-                        System.Drawing.Color.AntiqueWhite);
+                        Color.AntiqueWhite);
                 }
             }
         }
@@ -287,7 +326,6 @@
         {
             if (getKeyBindItem(miscOptions, "com.itwitch.misc.recall"))
             {
-                Spells[SpellSlot.Q].Cast();
                 ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall);
             }
 
@@ -312,8 +350,8 @@
             {
                 OnHarass();
             }
-
         }
+
         #endregion
     }
 }

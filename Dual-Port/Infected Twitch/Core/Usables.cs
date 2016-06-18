@@ -23,7 +23,7 @@ namespace Infected_Twitch.Core
                 Items.UseItem(3153, Target);
             }
             // Bilgewater Cutlass
-            if (Items.CanUseItem(3144) && GameObjects.Player.HealthPercent <= 90)
+            if (Items.CanUseItem(3144))
             {
                 Items.UseItem(3144, Target);
             }

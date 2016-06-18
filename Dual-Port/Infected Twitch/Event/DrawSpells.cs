@@ -29,12 +29,11 @@ namespace Infected_Twitch.Event
             }
             if (Target == null || Target.IsDead || Target.IsInvulnerable || !Target.LSIsValidTarget()) return;
 
-            if (MenuConfig.DrawKillable)
+            if (!MenuConfig.DrawKillable) return;
+
+            if (Target.Health <= Dmg.EDamage(Target))
             {
-                if (Target.Health <= Dmg.EDamage(Target))
-                {
-                    Drawing.DrawText(heropos.X - 60, heropos.Y + 120, Color.White, Target.Name + " Is Killable By Passive");
-                }
+                Drawing.DrawText(heropos.X - 60, heropos.Y + 120, Color.White, Target.Name + " Is Killable By Passive");
             }
         }
     }

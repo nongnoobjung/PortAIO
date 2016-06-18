@@ -20,7 +20,7 @@ namespace Infected_Twitch.Event
             var target = GameObjects.EnemyHeroes.FirstOrDefault(x => x.LSIsValidTarget(1200) && Dmg.Stacks(x) > 0 && !x.IsDead && !x.IsInvulnerable);
             if (target == null) return;
 
-            if (GameObjects.Player.HealthPercent <= 7)
+            if (GameObjects.Player.HealthPercent <= 8)
             {
                 Spells.E.Cast();
             }

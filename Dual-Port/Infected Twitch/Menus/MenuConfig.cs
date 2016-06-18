@@ -24,6 +24,7 @@ namespace Infected_Twitch.Menus
             comboMenu.Add("ComboW", new CheckBox("Use W", true));
             comboMenu.Add("UseYoumuu", new CheckBox("Use Youmuu", true));
             comboMenu.Add("UseBotrk", new CheckBox("Use Blade Of The Ruined King", true));
+            comboMenu.Add("ComboE", new CheckBox("Use E", true));
 
 
             // Harass
@@ -76,6 +77,7 @@ namespace Infected_Twitch.Menus
             drawMenu.Add("DrawDmg", new CheckBox("Damage Indicator", true));
             drawMenu.Add("DrawTimer", new CheckBox("Q Timer", true));
             drawMenu.Add("DrawKillable", new CheckBox("Killable By Passive", true));
+            drawMenu.Add("Debug", new CheckBox("Debug Mode (Chat Prints)", false));
 
         }
 
@@ -112,6 +114,10 @@ namespace Infected_Twitch.Menus
         public static bool DrawTimer => drawMenu["DrawTimer"].Cast<CheckBox>().CurrentValue;
         public static bool EBeforeDeath => miscMenu["EBeforeDeath"].Cast<CheckBox>().CurrentValue;
         public static bool DrawKillable => drawMenu["DrawKillable"].Cast<CheckBox>().CurrentValue;
+        public static bool ComboE => comboMenu["ComboE"].Cast<CheckBox>().CurrentValue;
+        public static bool Debug => drawMenu["Debug"].Cast<CheckBox>().CurrentValue;
+
+
     }
 
 }

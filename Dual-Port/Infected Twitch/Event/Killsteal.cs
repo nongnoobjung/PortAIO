@@ -15,29 +15,22 @@ namespace Infected_Twitch.Event
     {
         public static void Update(EventArgs args)
         {
-            var target = TargetSelector.GetTarget(600f, DamageType.Physical);
-
-            if (MenuConfig.KillstealIgnite)
-            {
-                if (!Spells.Ignite.IsReady()) return;
-
-                if (target.LSIsValidTarget(600f) && Dmg.IgniteDmg >= target.Health)
-                {
-                    GameObjects.Player.Spellbook.CastSpell(Spells.Ignite, target);
-                }
-            }
-
-            if (MenuConfig.KillstealE)
-            {
-                if (Dmg.EDamage(Target) > Target.Health)
-                {
-                    Spells.E.Cast();
-                }
-            }
+            if (!SafeTarget(Target)) return;
 
             if (Target.HealthPercent <= 10 && !Spells.Q.IsReady())
             {
                 Usables.Botrk();
+            }
+
+            if (!MenuConfig.KillstealIgnite) return;
+            if (!Spells.Ignite.IsReady()) return;
+
+            var target = TargetSelector.GetTarget(600f, DamageType.Physical);
+            if (target == null || !target.LSIsValidTarget(600f) || Spells.E.IsReady()) return;
+
+            if (target.IsValidTarget(600f) && Dmg.IgniteDmg >= target.Health)
+            {
+                GameObjects.Player.Spellbook.CastSpell(Spells.Ignite, target);
             }
         }
     }

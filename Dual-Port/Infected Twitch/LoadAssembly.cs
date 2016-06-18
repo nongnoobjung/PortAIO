@@ -11,7 +11,7 @@ namespace Infected_Twitch
 {
     internal class LoadAssembly
     {
-        public static void Load()
+        public static void OnGameLoad()
         {
 
             Spells.Load();

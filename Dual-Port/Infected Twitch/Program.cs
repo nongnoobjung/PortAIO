@@ -14,7 +14,7 @@ namespace Infected_Twitch
         {
             if (GameObjects.Player.ChampionName != "Twitch") return;
 
-            LoadAssembly.Load();
+            LoadAssembly.OnGameLoad();
         }
     }
 }

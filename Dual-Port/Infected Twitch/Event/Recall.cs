@@ -16,8 +16,8 @@ namespace Infected_Twitch.Event
         {
             Spellbook.OnCastSpell += (sender, eventArgs) =>
             {
-               if (eventArgs.Slot != SpellSlot.Recall) return;
                 if (!MenuConfig.QRecall) return;
+                if (eventArgs.Slot != SpellSlot.Recall) return;
                 if (!Spells.Q.IsReady()) return;
 
                 Spells.Q.Cast();

@@ -14,19 +14,15 @@ namespace Infected_Twitch.Event
 {
     internal class DrawDmg : Core.Core
     {
-        private static readonly HpBarIndicator DrawHpBar = new HpBarIndicator();
+        private static readonly HpBarIndicator Indicator = new HpBarIndicator();
         public static void Draw(EventArgs args)
         {
-            if(Player.IsDead || !MenuConfig.DrawDmg) return;
-
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(x => x.LSIsValidTarget(1200) && !x.IsZombie))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.LSIsValidTarget() && !ene.IsZombie))
             {
-                var easyKill = Spells.E.IsReady() && Dmg.Executable(enemy)
-                      ? new ColorBGRA(0, 255, 0, 120)
-                      : new ColorBGRA(255, 255, 0, 120);
+                if (!MenuConfig.DrawDmg) continue;
 
-                DrawHpBar.unit = enemy;
-                DrawHpBar.drawDmg(Dmg.EDamage(enemy), easyKill);
+                Indicator.unit = enemy;
+                Indicator.drawDmg(Dmg.EDamage(enemy), new ColorBGRA(255, 204, 0, 170));
             }
         }
     }
