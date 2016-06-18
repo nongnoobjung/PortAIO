@@ -1,6 +1,6 @@
 ﻿-Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
 
-Mundo, Graves, Jax, Jhin, Jax, Quinn = Port these for ExorAIO SDK
+Mundo, Graves, Jax, Jax, Quinn = Port these for ExorAIO SDK
 
 Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
 - SkyLv Tristana/AurelionSol [https://github.com/EloFactory/SkyLv_SoLuTiON]
@@ -36,6 +36,7 @@ Utility Ports [Only doing after Champions are completed] :
 - AioCaster
 - AutoSharp - Once working again
 - AutoJungle - Once working again
+- Emote Spammer [https://github.com/myo/LeagueSharp]
 
 Notes : 
 - Finish Up ExorAIO
