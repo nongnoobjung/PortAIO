@@ -53,11 +53,11 @@ namespace VayneHunter_Reborn.Utility
             {
                 if (ObjectManager.Player.LSDistance(drakeWallQPos) <= 1500f && PlayerHelper.IsSummonersRift())
                 {
-                    Render.Circle.DrawCircle(new Vector2(12050, 4827).To3D(), 65f, Color.AliceBlue);
+              //      Render.Circle.DrawCircle(new Vector2(12050, 4827).To3D(), 65f, Color.AliceBlue);
                 }
                 if (ObjectManager.Player.LSDistance(midWallQPos) <= 1500f && PlayerHelper.IsSummonersRift())
                 {
-                    Render.Circle.DrawCircle(new Vector2(6962, 8952).To3D(), 65f, Color.AliceBlue);
+                //    Render.Circle.DrawCircle(new Vector2(6962, 8952).To3D(), 65f, Color.AliceBlue);
                 }
             }
 

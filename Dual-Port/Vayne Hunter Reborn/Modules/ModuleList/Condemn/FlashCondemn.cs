@@ -17,21 +17,9 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Condemn
 
     class FlashCondemn : IModule
     {
-        private static Spell E
-        {
-            get
-            {
-                return Variables.spells[SpellSlot.E];
-            }
-        }
+        private static Spell E => Variables.spells[SpellSlot.E];
 
-        private static Spell Flash
-        {
-            get
-            {
-                return new Spell(ObjectManager.Player.GetSpellSlot("SummonerFlash"), 425f);
-            }
-        }
+        private static Spell Flash => new Spell(ObjectManager.Player.GetSpellSlot("SummonerFlash"), 425f);
 
         public void OnLoad()
         {

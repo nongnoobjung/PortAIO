@@ -12,6 +12,8 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Condemn
 {
     class AutoE : IModule
     {
+        private static Spell E => Variables.spells[SpellSlot.E];
+
         public void OnLoad()
         {
             

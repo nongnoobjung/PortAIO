@@ -1,13 +1,15 @@
 ﻿using System;
+using DZLib.Core;
 using LeagueSharp;
 using LeagueSharp.Common;
 using VayneHunter_Reborn.External;
+using VayneHunter_Reborn.Skills.Tumble.VHRQ;
 using VayneHunter_Reborn.Utility;
 using VayneHunter_Reborn.Utility.MenuUtility;
+using ActiveGapcloser = VayneHunter_Reborn.External.ActiveGapcloser;
 using EloBuddy;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using DZLib.Core;
 
 namespace VayneHunter_Reborn.Skills.Condemn
 {
@@ -17,7 +19,7 @@ namespace VayneHunter_Reborn.Skills.Condemn
         {
             Interrupter2.OnInterruptableTarget += OnInterruptableTarget;
             //   CustomAntigapcloser.OnEnemyGapcloser += CustomAntigapcloser_OnEnemyGapcloser;
-            DZAntigapcloser.OnEnemyGapcloser += OnEnemyGapcloser;
+            DZAntigapcloserVHR.OnEnemyGapcloser += OnEnemyGapcloser;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
             GameObject.OnCreate += GameObject_OnCreate;
         }
@@ -43,18 +45,41 @@ namespace VayneHunter_Reborn.Skills.Condemn
         }
 
 
-        private static void OnEnemyGapcloser(DZLib.Core.ActiveGapcloser gapcloser)
+        private static void OnEnemyGapcloser(ActiveGapcloser gapcloser, SpellSlot slot)
         {
-            if (getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.general.antigp") && Variables.spells[SpellSlot.E].IsReady())
+            if (getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.general.antigp") && Variables.spells[slot].IsReady())
             {
                 LeagueSharp.Common.Utility.DelayAction.Add(getSliderItem(MenuGenerator.miscMenu, "dz191.vhr.misc.general.antigpdelay"),
                     () =>
                     {
                         if (gapcloser.Sender.LSIsValidTarget(Variables.spells[SpellSlot.E].Range) &&
                             getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.general.antigp")
-                            && Variables.spells[SpellSlot.E].IsReady())
+                            && (Variables.spells[slot].IsReady()))
                         {
-                            Variables.spells[SpellSlot.E].CastOnUnit(gapcloser.Sender);
+                            switch (slot)
+                            {
+                                case SpellSlot.Q:
+                                    var senderPos = gapcloser.End;
+                                    var backOut = ObjectManager.Player.ServerPosition.LSExtend(senderPos, 300f);
+                                    if (backOut.IsSafe())
+                                    {
+                                        if (gapcloser.Start.LSDistance(ObjectManager.Player.ServerPosition) >
+                                            gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition))
+                                        {
+                                            Variables.spells[SpellSlot.Q].Cast(backOut);
+                                        }
+                                    }
+
+                                    break;
+
+                                case SpellSlot.E:
+                                    if (gapcloser.Start.LSDistance(ObjectManager.Player.ServerPosition) >
+                                        gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition))
+                                    {
+                                        Variables.spells[SpellSlot.E].CastOnUnit(gapcloser.Sender);
+                                    }
+                                    break;
+                            }
                         }
                     });
             }
