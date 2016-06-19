@@ -323,7 +323,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[29]))
                 {
-                    Miscc.Add("kayle", new ComboBox("Use addon for Kayle : ", 0, "SephKayle", "OKTW"));
+                    Miscc.Add("kayle", new ComboBox("Use addon for Kayle : ", 0, "SephKayle", "OKTW", "D_Kayle"));
                 }
                 if (Player.ChampionName.Equals(Champion[30]))
                 {

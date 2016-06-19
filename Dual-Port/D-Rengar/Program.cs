@@ -114,7 +114,7 @@ namespace D_Rengar
             harassMenu.Add("UseQH", new CheckBox("Use Q"));
             harassMenu.Add("UseWH", new CheckBox("Use W"));
             harassMenu.Add("UseEH", new CheckBox("Use E"));
-            harassMenu.Add("harasstoggle", new KeyBind("AutoHarass (toggle)", false, KeyBind.BindTypes.HoldActive, 'L'));
+            harassMenu.Add("harasstoggle", new KeyBind("AutoHarass (toggle)", false, KeyBind.BindTypes.PressToggle, 'L'));
 
 
             lasthitMenu = Menu.AddSubMenu("LastHit", "LastHit");

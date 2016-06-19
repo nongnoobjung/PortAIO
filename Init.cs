@@ -953,6 +953,9 @@ namespace PortAIO
                             case 1:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
+                            case 2:
+                                D_Kayle.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 SephKayle.Program.OnGameLoad();
                                 break;

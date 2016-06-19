@@ -72,13 +72,7 @@ namespace Marksman.Champions
             }
         }
 
-        public bool IsQActive
-        {
-            get
-            {
-                return ObjectManager.Player.HasBuff("FrostShot");
-            }
-        }
+        public bool IsQActive => ObjectManager.Player.HasBuff("FrostShot");
 
         private void Interrupter2_OnInterruptableTarget(
             AIHeroClient unit,

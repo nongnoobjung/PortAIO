@@ -286,9 +286,16 @@ namespace Marksman.Champions
         {
             SoulBoundSaver();
 
-            if (EntityManager.Heroes.Enemies.Any(x => x.IsRendKillable()))
+            foreach (var e in HeroManager.Enemies.Where(e => e.LSIsValidTarget(E.Range)))
             {
-                E.Cast();
+                foreach (var b in e.Buffs.Where(buff => buff.Name.Contains("kalistaexpungemarker")))
+                {
+                    if (E.IsReady() && e.Health < GetEDamage(e))
+                    {
+                        E.Cast();
+                    }
+                }
+
             }
 
             foreach (var myBoddy in
