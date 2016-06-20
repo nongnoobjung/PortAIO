@@ -694,7 +694,18 @@ namespace PortAIO
                         }
                         break;
                     case "drmundo": // Hestia's Mundo
-                        Mundo.Mundo.OnLoad();
+                        switch (Loader.mundo)
+                        {
+                            case 0:
+                                Mundo.Mundo.OnLoad();
+                                break;
+                            case 1:
+                                ExorSDK.AIO.OnLoad();
+                                break;
+                            default:
+                                Mundo.Mundo.OnLoad();
+                                break;
+                        }
                         break;
                     case "draven": // UltimaDraven
                         switch (Loader.draven)

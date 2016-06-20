@@ -30,10 +30,6 @@ namespace Marksman.Champions
 
         public static LeagueSharp.Common.Spell Q;
 
-        public bool ShowUlt;
-
-        public string UltTarget;
-
         public static LeagueSharp.Common.Spell W;
 
         private bool canCastR = true;

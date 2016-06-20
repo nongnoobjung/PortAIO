@@ -115,6 +115,7 @@ namespace PortAIO.Utility
         public static bool reform { get { return Miscc["reform"].Cast<CheckBox>().CurrentValue; } }
         public static bool dzaware { get { return Miscc["dzaware"].Cast<CheckBox>().CurrentValue; } }
         public static int trackerCB { get { return Miscc["trackerCB"].Cast<ComboBox>().CurrentValue; } }
+        public static int mundo { get { return Miscc["mundo"].Cast<ComboBox>().CurrentValue; } }
 
         public static Menu Miscc;
 
@@ -193,6 +194,7 @@ namespace PortAIO.Utility
             "Syndra", //64
             "Aatrox", //65
             "MissFortune", //66
+            "DrMundo", //67
         });
 
         public static void Menu()
@@ -472,6 +474,10 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[66]))
                 {
                     Miscc.Add("missfortune", new ComboBox("Use addon for MissFortune : ", 0, "OKTW", "Marksman II"));
+                }
+                if (Player.ChampionName.Equals(Champion[67]))
+                {
+                    Miscc.Add("mundo", new ComboBox("Use addon for Dr.Mundo : ", 0, "Hestia's Mundo", "ExorSDK"));
                 }
             }
             else
