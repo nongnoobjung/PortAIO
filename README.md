@@ -1,7 +1,5 @@
 https://www.elobuddy.net/profile/277-xionlunix/ - This guy is trying to take credit for the PortAIO. Drop this guy.
 
-####PORTAIO IS NOT 100% COMPATIBLE WITH ONE FOR ALL. SOME WORK, SOME DON'T.
-
 # Welcome to PortAIO's Official Github
 ###### - Berb : Creator of project, porter, github maker maintainer guy, bug fixer and developer
 ###### - Muse30 : Active Porter, supporter, bug fixer and developer, just think of him as a Berb v2
