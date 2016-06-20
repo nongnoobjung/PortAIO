@@ -55,8 +55,7 @@
         /// <returns>
         ///     The <see cref="float" />.
         /// </returns>
-        public static float GetHealthWithShield(this Obj_AI_Base target)
-            => target.AttackShield > 0 ? target.Health + target.AttackShield : target.Health + 10;
+        public static float GetHealthWithShield(this Obj_AI_Base target) => target.Health; // TODO shield when fixed.
 
         /// <summary>
         ///     Gets the rend buff

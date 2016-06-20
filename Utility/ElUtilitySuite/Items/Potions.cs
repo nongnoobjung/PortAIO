@@ -166,10 +166,7 @@
 
                     var item = this.Items.Select(x => x.Item).FirstOrDefault(x => x.IsReady() && x.IsOwned());
 
-                    if (item != null)
-                    {
-                        item.Cast();
-                    }
+                    item?.Cast();
                 }
             }
             catch (Exception e)
@@ -209,13 +206,7 @@
             /// <value>
             ///     The item.
             /// </value>
-            public EloBuddy.SDK.Item Item
-            {
-                get
-                {
-                    return GetItem();
-                }
-            }
+            public EloBuddy.SDK.Item Item => this.GetItem();
 
             #endregion
         }

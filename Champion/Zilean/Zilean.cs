@@ -9,6 +9,7 @@
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
     using EloBuddy.SDK;
+    using Color = System.Drawing.Color;
     using Spell = LeagueSharp.Common.Spell;
 
     internal class Zilean
@@ -43,7 +44,7 @@
         ///     The menu
         /// </value>
         private static Menu Menu { get; set; }
-        public static Menu comboMenu, harassMenu, fleeMenu, ultMenu, laneMenu;
+        public static Menu comboMenu, harassMenu, fleeMenu, ultMenu, laneMenu, drawingsMenu;
 
         /// <summary>
         ///     Gets the player.
@@ -111,7 +112,6 @@
                     Console.WriteLine(@"[ELZILEAN] loaded champions: {0}", ally.ChampionName);
                 }
 
-                IncomingDamageManager.RemoveDelay = 500;
                 IncomingDamageManager.Skillshots = true;
 
 
@@ -155,7 +155,7 @@
                     comboMenu.Add("ElZilean.Combo.W", new CheckBox("Use W", true));
                     comboMenu.Add("ElZilean.Combo.E", new CheckBox("Use E", true));
                     comboMenu.Add("ElZilean.Ignite", new CheckBox("Use Ignite", true));
-
+                    comboMenu.Add("ElZilean.Combo.W2", new CheckBox("Always reset Q", false));
                 }
 
 
@@ -163,7 +163,6 @@
                 {
                     harassMenu.Add("ElZilean.Harass.Q", new CheckBox("Use Q", true));
                     harassMenu.Add("ElZilean.Harass.W", new CheckBox("Use W", true));
-
                 }
 
 
@@ -185,14 +184,20 @@
                     laneMenu.Add("ElZilean.laneclear.Q", new CheckBox("Use Q", true));
                     laneMenu.Add("ElZilean.laneclear.W", new CheckBox("Use W", true));
                     laneMenu.Add("ElZilean.laneclear.Mana", new Slider("Minimum mana", 20, 0, 100));
-                    ;
+                    laneMenu.Add("ElZilean.laneclear.QMouse", new CheckBox("Cast Q to mouse", false));
                 }
 
                 fleeMenu = Menu.AddSubMenu("Flee", "Flee");
                 {
                     fleeMenu.Add("ElZilean.Flee.Key", new KeyBind("Flee key", false, KeyBind.BindTypes.HoldActive, 'Z'));
                     fleeMenu.Add("ElZilean.Flee.Mana", new Slider("Minimum mana", 20, 0, 100));
+                }
 
+
+                drawingsMenu = Menu.AddSubMenu("Drawings", "Drawings");
+                {
+                    drawingsMenu.Add("ElZilean.Draw.Off", new CheckBox("Disable drawings", false));
+                    drawingsMenu.Add("ElZilean.Draw.Q", new CheckBox("Draw Q", true));
                 }
 
             }
@@ -218,7 +223,32 @@
             return m[item].Cast<KeyBind>().CurrentValue;
         }
 
+        /// <summary>
+        ///     Called when the game draws itself.
+        /// </summary>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private static void OnDraw(EventArgs args)
+        {
+            try
+            {
+                if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Off"))
+                {
+                    return;
+                }
 
+                if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Q"))
+                {
+                    if (Q.Level > 0)
+                    {
+                        Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.DodgerBlue);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+        }
         /// <summary>
         ///     The ignite killsteal logic
         /// </summary>
@@ -280,20 +310,18 @@
                     }
 
                     E.Cast(closestEnemy);
-                    return;
                 }
-
-                if (Player.GetAlliesInRange(E.Range).Any())
+                if (Player.GetAlliesInRange(E.Range).Any() && Player.GetEnemiesInRange(800f).Count >= 1)
                 {
                     var closestToTarget = Player.GetAlliesInRange(E.Range)
                       .OrderByDescending(h => (h.PhysicalDamageDealtPlayer + h.MagicDamageDealtPlayer))
                       .FirstOrDefault();
 
-                    LeagueSharp.Common.Utility.DelayAction.Add(100, () => E.Cast(closestToTarget));
+                    E.Cast(closestToTarget);
                 }
             }
 
-            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && Q.IsReady() && target.LSIsValidTarget(Q.Range))
+            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && Q.IsReady() && target.LSIsValidTarget(Q.Range) && !target.IsZombie)
             {
                 var pred = Q.GetPrediction(target);
                 if (pred.Hitchance >= HitChance.VeryHigh)
@@ -302,9 +330,15 @@
                 }
             }
 
-            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.W") && W.IsReady() && !Q.IsReady())
+            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.W") && getCheckBoxItem(comboMenu, "ElZilean.Combo.W2") && W.IsReady() && !Q.IsReady())
             {
+                if (Q.Instance.CooldownExpires - Game.Time < 3)
+                {
+                    return;
+                }
+
                 W.Cast();
+                Console.WriteLine("ALWAYS RESET Q");
             }
 
             // Check if target has a bomb
@@ -316,8 +350,14 @@
                 return;
             }
 
-            if (isBombed.LSIsValidTarget())
+            if (isBombed != null && isBombed.LSIsValidTarget(Q.Range))
             {
+                if (Q.Instance.CooldownExpires - Game.Time < 3)
+                {
+                    Console.WriteLine("3");
+                    return;
+                }
+
                 if (getCheckBoxItem(comboMenu, "ElZilean.Combo.W"))
                 {
                     W.Cast();
@@ -405,7 +445,7 @@
                 // Check if target has a bomb
                 var isBombed =
                 HeroManager.Enemies
-                    .FirstOrDefault(x => x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(Q.Range));
+                    .Find(x => x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(Q.Range));
 
                 if (isBombed.LSIsValidTarget())
                 {
@@ -450,7 +490,13 @@
                     return;
                 }
 
-                if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.Q") && Q.IsReady())
+                if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.Q") && getCheckBoxItem(laneMenu, "ElZilean.laneclear.QMouse") && Q.IsReady())
+                {
+                    Q.Cast(Game.CursorPos);
+                }
+
+                if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.Q") && Q.IsReady()
+                    && !getCheckBoxItem(laneMenu, "ElZilean.laneclear.QMouse") && farmLocation.MinionsHit >= 3)
                 {
                     Q.Cast(farmLocation.Position.To3D());
                 }

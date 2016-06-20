@@ -1,8 +1,5 @@
 ﻿- To-Do
-
 - Update Marksman II [https://github.com/CPMSoft/xQx-LeagueSharp/commits/master] (Commits : "Updated" ,"Updated Caitlyn" & "Updated Caitlyn.cs")
-- Zilean Updates
-- iKalista Reborn E fix
 
 -Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
 

@@ -116,6 +116,7 @@ namespace ElTristana
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
             Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
             Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;
+            Orbwalker.OnPostAttack += Orbwalking_AfterAttack;
 
             Menu = MenuInit.Menu_;
             comboMenu = MenuInit.comboMenu;
@@ -126,6 +127,24 @@ namespace ElTristana
             miscMenu = MenuInit.miscMenu;
             killstealMenu = MenuInit.killstealMenu;
 
+        }
+
+        private static void Orbwalking_AfterAttack(AttackableUnit target, EventArgs args)
+        {
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)
+                || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+            {
+                if (!(target is AIHeroClient))
+                {
+                    return;
+                }
+
+                var targetQ = (AIHeroClient)target;
+                if (targetQ.LSIsValidTarget() && getCheckBoxItem(comboMenu, "ElTristana.Combo.Q"))
+                {
+                    spells[Spells.Q].Cast();
+                }
+            }
         }
 
         private static void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
@@ -616,9 +635,19 @@ namespace ElTristana
                 return;
             }
 
+            if (getCheckBoxItem(comboMenu, "ElTristana.Combo.Focus.E"))
+            {
+                var passiveTarget = HeroManager.Enemies.FirstOrDefault(x => x.LSIsValidTarget() && x.HasBuff("TristanaECharge")
+                || x.HasBuff("tristanaechargesound") && Player.IsInAutoAttackRange(x));
+
+                if (passiveTarget != null)
+                {
+                    Orbwalker.ForcedTarget = passiveTarget;
+                }
+            }
+
             try
             {
-
                 if (getKeyBindItem(comboMenu, "ElTristana.Combo.E.KeyBind") && spells[Spells.E].IsReady())
                 {
                     var target = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
@@ -694,9 +723,10 @@ namespace ElTristana
             try
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.R].Range) && !x.IsDead && !x.IsZombie).OrderBy(x => x.Health))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.R].Range)
+                    && !x.IsDead && !x.IsZombie && spells[Spells.R].GetDamage(x) > x.Health))
                 {
-                    if (enemy.LSIsValidTarget(spells[Spells.R].Range) && spells[Spells.R].GetDamage(enemy) > enemy.Health)
+                    if (enemy.LSIsValidTarget(spells[Spells.R].Range))
                     {
                         if (!getCheckBoxItem(killstealMenu, "ElTristana.Killsteal.R"))
                         {
