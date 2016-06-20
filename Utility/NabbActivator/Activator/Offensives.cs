@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
-using EloBuddy;
+using LeagueSharp;
 using LeagueSharp.SDK;
 using EloBuddy.SDK.Menu.Values;
+using EloBuddy;
 using EloBuddy.SDK;
 
 namespace NabbActivator
@@ -95,9 +96,9 @@ namespace NabbActivator
             if (Items.CanUseItem(3030) &&
                 Targets.Target.LSIsValidTarget(800f))
             {
-                Items.UseItem(3030, Movement.GetPrediction(Targets.Target, 0.5f).UnitPosition);
+                Items.UseItem(3030, Targets.Target.ServerPosition);
             }
-            
+
             /// <summary>
             ///     The Hextech Protobelt Logic.
             /// </summary>
