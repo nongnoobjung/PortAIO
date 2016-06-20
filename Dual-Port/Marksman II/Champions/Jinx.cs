@@ -84,21 +84,9 @@ namespace Marksman.Champions
         }
 
 
-        public float QAddRange
-        {
-            get
-            {
-                return 50 + 25 * ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level;
-            }
-        }
+        public float QAddRange => 50 + 25 * ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level;
 
-        private static bool FishBoneActive
-        {
-            get
-            {
-                return ObjectManager.Player.AttackRange > 565f;
-            }
-        }
+        private static bool FishBoneActive => ObjectManager.Player.AttackRange > 565f;
 
         private static int PowPowStacks
         {
@@ -253,7 +241,6 @@ namespace Marksman.Champions
                             || enemy.HasBuffOfType(BuffType.Fear)
                             || enemy.HasBuffOfType(BuffType.Slow)
                             || enemy.HasBuffOfType(BuffType.Taunt)
-                            || enemy.HasBuff("zhonyasringshield")
                             || enemy.HasBuff("Recall")))
                     {
                         W.CastIfHitchanceEquals(enemy, HitChance.High);
@@ -283,25 +270,6 @@ namespace Marksman.Champions
             {
                 Q.Cast();
             }
-
-            if (HarassActive)
-            {
-                if (Program.harass["UseQMH"].Cast<CheckBox>().CurrentValue)
-                {
-                    var t = TargetSelector.GetTarget(Q.Range*2, DamageType.Magical);
-                    foreach (var m in ObjectManager.Get<Obj_AI_Minion>().Where(m => m.LSDistance(ObjectManager.Player.Position) < Orbwalking.GetRealAutoAttackRange(null) + QAddRange).OrderBy(m => m.LSDistance(t)))
-                    {
-                        
-                    }
-                }
-            }
-            /*
-            if (GetValue<bool>("SwapQ") && FishBoneActive && (LaneClearActive ||
-                 (HarassActive && TargetSelector.GetTarget(675f + QAddRange, TargetSelector.DamageType.Physical) == null)))
-            {
-                Q.Cast();
-            }
-            */
 
             if ((!ComboActive && !HarassActive) || !Orbwalker.CanMove)
             {
@@ -558,17 +526,20 @@ namespace Marksman.Champions
 
         public override bool MiscMenu(Menu config)
         {
-            config.Add("SwapQ", new CheckBox("Always swap to Minigun", false));
-            config.Add("SwapDistance", new CheckBox("Swap Q for distance"));
-            config.Add("SwapAOE", new CheckBox("Swap Q for AOE", false));
-            config.Add("MinWRange", new Slider("Min W range", 525 + 65 * 2, 0, 1200));
-            config.Add("AutoEI", new CheckBox("Auto-E on immobile"));
-            config.Add("AutoES", new CheckBox("Auto-E on slowed"));
-            config.Add("AutoED", new CheckBox("Auto-E on dashing", false));
-            config.Add("CastR", new KeyBind("Cast R (2000 Range)", false, KeyBind.BindTypes.HoldActive, 'T'));
-            config.Add("ROverKill", new CheckBox("Check R Overkill"));
-            config.Add("MinRRange", new Slider("Min R range", 300, 0, 1500));
-            config.Add("MaxRRange", new Slider("Max R range", 1700, 0, 4000));
+            config.Add("SwapQ", new CheckBox("Q: Always swap to Minigun", false));
+            config.Add("SwapDistance", new CheckBox("Q: Swap for distance"));
+            config.Add("SwapAOE", new CheckBox("Q: Swap for AOE", false));
+            config.AddSeparator();
+            config.Add("MinWRange", new Slider("W: Min. range", 525 + 65 * 2, 0, 1200));
+            config.AddSeparator();
+            config.Add("AutoEI", new CheckBox("E: on immobile"));
+            config.Add("AutoES", new CheckBox("E: on slowed"));
+            config.Add("AutoED", new CheckBox("E: on dashing", false));
+            config.AddSeparator();
+            config.Add("CastR", new KeyBind("R: (2000 Range)", false, KeyBind.BindTypes.HoldActive, 'T'));
+            config.Add("ROverKill", new CheckBox("R: Kill Steal"));
+            config.Add("MinRRange", new Slider("R: Min. range", 300, 0, 1500));
+            config.Add("MaxRRange", new Slider("R: Max. range", 1700, 0, 4000));
             return true;
         }
 
@@ -590,8 +561,7 @@ namespace Marksman.Champions
                         .OrderBy(e => ObjectManager.Player.LSDistance(e)))
             {
                 PredictionOutput ePred = E.GetPrediction(unit);
-                Vector3 eBehind = ePred.CastPosition -
-                                  Vector3.Normalize(unit.ServerPosition - ObjectManager.Player.ServerPosition)*150;
+                Vector3 eBehind = ePred.CastPosition - Vector3.Normalize(unit.ServerPosition - ObjectManager.Player.ServerPosition) * 150;
 
                 if (E.IsReady())
                     E.Cast(eBehind);
