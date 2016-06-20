@@ -403,6 +403,7 @@ namespace YasuoSharpV2
 
         private static void OnCreateObject(GameObject sender, EventArgs args)
         {
+#pragma warning disable 0618
             //wall
             if (sender.IsValid<Obj_SpellLineMissile>())
             {

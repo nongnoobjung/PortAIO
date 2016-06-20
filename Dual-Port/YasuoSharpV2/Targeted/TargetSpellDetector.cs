@@ -69,6 +69,7 @@ namespace YasuoSharpV2
             return missileEffect.Replace("mis.troy", "tar.troy");
         }
 
+#pragma warning disable 0618
         public static void setParticle(Obj_SpellLineMissile part)
         {
             //Should add check if same spell :)
@@ -103,13 +104,13 @@ namespace YasuoSharpV2
                 // TODO: add menu check
                 //Cassiopeia_Base_E_TwinFang_tar.troy
                 //Cassiopeia_Base_E_TwinFang_mis.troy
-               /* foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(args.SData))
-                {
-                    string name = descriptor.Name;
-                    object value = descriptor.GetValue(args.SData);
-                   // if (value == "Cassiopeia_Base_E_TwinFang_mis.troy")
-                     Console.WriteLine("{0}={1}", name, value);
-                }*/
+                /* foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(args.SData))
+                 {
+                     string name = descriptor.Name;
+                     object value = descriptor.GetValue(args.SData);
+                    // if (value == "Cassiopeia_Base_E_TwinFang_mis.troy")
+                      Console.WriteLine("{0}={1}", name, value);
+                 }*/
 
                 var caster = (AIHeroClient)sender;
                 var target = (Obj_AI_Base)args.Target;
@@ -145,7 +146,7 @@ namespace YasuoSharpV2
                     blockBelow = TargetedSpellManager.blockSpellOnHP(caster.ChampionName, args.SData.Name),
                     spellArgs = args,
                     particleName = getParticleName(args.SData.MissileEffectName)
-                
+
                 });
             }
             catch (Exception e)

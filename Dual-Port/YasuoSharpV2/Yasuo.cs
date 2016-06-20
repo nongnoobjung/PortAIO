@@ -50,6 +50,7 @@ namespace YasuoSharpV2
 
         internal class YasWall
         {
+            #pragma warning disable 0618
             public Obj_SpellLineMissile pointL;
             public Obj_SpellLineMissile pointR;
             public float endtime = 0;
