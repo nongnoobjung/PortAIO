@@ -73,7 +73,16 @@ namespace Marksman.Common
             Text.Dispose();
             TextPassive.Dispose();
         }
+        public static Vector3 CenterOfVectors(Vector3[] vectors)
+        {
+            var sum = Vector3.Zero;
+            if (vectors == null || vectors.Length == 0)
+                return sum;
 
+            sum = vectors.Aggregate(sum, (current, vec) => current + vec);
+
+            return sum / vectors.Length;
+        }
         private static void DrawingOnOnPostReset(EventArgs args)
         {
             Text.OnResetDevice();
