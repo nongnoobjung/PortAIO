@@ -687,8 +687,12 @@
                 return;
             }
 
-            if (!getCheckBoxItem(this.Menu, string.Format($"Zhonya{sdata.SDataName}"))
-                || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
+            if (this.Menu[string.Format($"Zhonya{sdata.SDataName}")] == null)
+            {
+                return;
+            }
+
+            if (!getCheckBoxItem(this.Menu, string.Format($"Zhonya{sdata.SDataName}")) || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
             {
                 return;
             }
