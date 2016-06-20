@@ -95,12 +95,18 @@ namespace MasterSharp
 
         private static void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)
         {
-            if (MasterYi.W.IsReady() && getCheckBoxItem(comboMenu, "comboWreset") &&
-                getSliderItem(evadeMenu, "useWatHP") >= MasterYi.player.HealthPercent && target is AIHeroClient &&
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            if (MasterYi.W.IsReady() && getCheckBoxItem(comboMenu, "comboWreset") && getSliderItem(evadeMenu, "useWatHP") >= MasterYi.player.HealthPercent && target is AIHeroClient && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 MasterYi.W.Cast();
-                Utility.DelayAction.Add(100, Orbwalker.ResetAutoAttack);
+                Utility.DelayAction.Add(100, 
+                    () =>
+                    {
+                        Orbwalker.ResetAutoAttack();
+                        Orbwalker.DisableMovement = false;
+                        Orbwalker.OrbwalkTo(Game.CursorPos);
+                        Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                    }
+                    );
             }
         }
 
