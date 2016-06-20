@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using LeagueSharp;
 using LeagueSharp.Common;
+using Orbwalking = Marksman.Orb.Orbwalking;
 
 #endregion
 
@@ -14,7 +15,7 @@ namespace Marksman.Champions
     {
         public Spell Q;
         public Spell R;
-
+        private int LastRCast;
         public Teemo()
         {
             Q = new Spell(SpellSlot.Q, 680);
@@ -30,7 +31,7 @@ namespace Marksman.Champions
                              sender.Buffs.Where(
                                  s =>
                                  sender.Team != ObjectManager.Player.Team
-                                 && sender.LSDistance(ObjectManager.Player.Position) < R.Range)
+                                 && sender.Distance(ObjectManager.Player.Position) < R.Range)
                          from b in new[]
                                            {
                                                "teleport", /* Teleport */ "pantheon_grandskyfall_jump", /* Pantheon */ 
@@ -67,7 +68,7 @@ namespace Marksman.Champions
 
         public override void Drawing_OnDraw(EventArgs args)
         {
-            Spell[] spellList = {Q};
+            Spell[] spellList = { Q };
             foreach (var spell in spellList)
             {
                 var menuItem = GetValue<Circle>("Draw" + spell.Slot);
@@ -78,14 +79,25 @@ namespace Marksman.Champions
 
         public override void Game_OnGameUpdate(EventArgs args)
         {
-             R.Range = 150 + (R.Level*250);
-            
+
+            //var lee = HeroManager.Allies.Find(l => l.ChampionName.ToLower() == "leesin");
+            //if (lee != null && !lee.IsDead)
+            //{
+            //    if (lee.Distance(ObjectManager.Player.Position) > 250 && !ObjectManager.Player.IsRecalling() &&
+            //        Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.None)
+            //    {
+            //        ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, lee.Position);
+            //    }
+            //}
+
+            R.Range = 150 + (R.Level * 250);
+
             if (Q.IsReady() && GetValue<KeyBind>("UseQTH").Active && ToggleActive)
             {
                 if (ObjectManager.Player.HasBuff("Recall"))
                     return;
                 var qTarget = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-                if (Q.IsReady() && qTarget.LSIsValidTarget())
+                if (Q.IsReady() && qTarget.IsValidTarget())
                     Q.CastOnUnit(qTarget);
             }
 
@@ -95,23 +107,32 @@ namespace Marksman.Champions
                 if (useQ)
                 {
                     var qTarget = TargetSelector.GetTarget(Q.Range, TargetSelector.DamageType.Physical);
-                    if (Q.IsReady() && qTarget.LSIsValidTarget())
+                    if (Q.IsReady() && qTarget.IsValidTarget())
                         Q.CastOnUnit(qTarget);
                 }
             }
 
             if (R.IsReady() && ComboActive)
             {
-                foreach (var t in HeroManager.Enemies.Where(hero => hero.LSIsValidTarget(R.Range) && !hero.IsDead))
+                foreach (var t in HeroManager.Enemies.Where(hero => hero.IsValidTarget(R.Range) && !hero.IsDead))
                 {
-                    if (GetValue<bool>("UseRC"))
+                    if (GetValue<bool>("UseRC") && LeagueSharp.Common.Utils.TickCount > LastRCast + 1200)
                     {
-                        R.Cast(t, false, true);
+                        if (t.HealthPercent > ObjectManager.Player.HealthPercent)
+                        //if (t.HealthPercent > ObjectManager.Player.HealthPercent && t.IsFacing(ObjectManager.Player))
+                        {
+                            R.Cast(ObjectManager.Player, false, true);
+                        }
+                        else
+                        {
+                            R.Cast(t, false, true);
+                        }
+                        LastRCast = LeagueSharp.Common.Utils.TickCount;
                     }
 
                     if (GetValue<bool>("AutoRI"))
                     {
-                        if (t.LSIsValidTarget(R.Range) &&
+                        if (t.IsValidTarget(R.Range) &&
                             (t.HasBuffOfType(BuffType.Stun) || t.HasBuffOfType(BuffType.Snare) ||
                              t.HasBuffOfType(BuffType.Taunt) || t.HasBuff("zhonyasringshield") ||
                              t.HasBuff("Recall")))
@@ -146,7 +167,7 @@ namespace Marksman.Champions
                 new MenuItem("UseQTH" + Id, "Use Q (Toggle)").SetValue(new KeyBind("H".ToCharArray()[0],
                     KeyBindType.Toggle))).Permashow(true, "Marksman | Toggle Q");
             return true;
-            }
+        }
 
         public override bool DrawingMenu(Menu config)
         {
@@ -158,7 +179,7 @@ namespace Marksman.Champions
         public override bool MiscMenu(Menu config)
         {
             config.AddItem(new MenuItem("UseQM" + Id, "Use Q KS").SetValue(true));
-            config.AddItem(new MenuItem("AutoRI" + Id, "Use R").SetValue(true));
+            config.AddItem(new MenuItem("AutoRI" + Id, "R: Stun/Snare/Taunt/Zhonya").SetValue(true));
             return true;
         }
 
