@@ -84,11 +84,10 @@ namespace UnderratedAIO.Champions
 
         private static void AfterAttack(AttackableUnit target, EventArgs args)
         {
-            var targetA = target as AIHeroClient;
-            if (Q.IsReady() && getCheckBoxItem(miscMenu, "useqAAA") && !GarenE && target.IsEnemy && !targetA.IsMinion && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && target is AIHeroClient)
+            if (Q.IsReady() && getCheckBoxItem(miscMenu, "useqAAA") && !GarenE && target.IsEnemy && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Q.Cast(getCheckBoxItem(config, "packets"));
-                Player.IssueOrder(GameObjectOrder.AutoAttack, target);
+                Orbwalker.ResetAutoAttack();
             }
         }
 
