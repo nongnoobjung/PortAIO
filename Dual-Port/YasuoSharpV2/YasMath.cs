@@ -34,20 +34,6 @@ namespace YasuoSharpV2
 
         }
 
-        public static bool willColide(Skillshot ss,Vector2 from,float speed, Vector2 direction,float radius)
-        {
-            Vector2 ssVel = ss.Direction.LSNormalized() * ss.SpellData.MissileSpeed;
-            Vector2 dashVel = direction * speed;
-            Vector2 a = ssVel - dashVel;//true direction + speed
-            Vector2 realFrom = from.LSExtend(direction, ss.SpellData.Delay + speed);
-            if (!ss.IsAboutToHit((int) ((dashVel.Length()/475)*1000)+Game.Ping+100, ObjectManager.Player))
-                return false;
-            if (ss.IsAboutToHit(1000, ObjectManager.Player) && interCir(ss.MissilePosition, ss.MissilePosition.LSExtend(ss.MissilePosition + a, ss.SpellData.Range+50), from,
-                radius))
-                return true;
-            return false;
-        }
-
         public static bool interCir(Vector2 E, Vector2 L, Vector2 C, float r)
         {
             Vector2 d = L - E;

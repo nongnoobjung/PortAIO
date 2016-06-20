@@ -11,6 +11,7 @@ using EloBuddy.SDK.Menu;
 using EloBuddy;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK;
+using static EloBuddy.SDK.Spell;
 
 namespace YasuoSharpV2
 {
@@ -21,7 +22,7 @@ namespace YasuoSharpV2
         public const string CharName = "Yasuo";
 
 
-        public static Menu comboMenu, smartR, flee, lasthit, laneclear, harass, drawings, extra, smartW, debug, Config;
+        public static Menu comboMenu, smartR, smartW, flee, lasthit, laneclear, harass, drawings, extra, debug, Config;
 
         public static string lastSpell = "";
 
@@ -112,11 +113,6 @@ namespace YasuoSharpV2
                 //SmartW
                 smartW = Config.AddSubMenu("Wall Usage", "aShots");
                 smartW.Add("smartW", new CheckBox("Smart WW"));
-                smartW.Add("smartEDogue", new CheckBox("E use dogue"));
-                smartW.Add("wwDanger", new CheckBox("WW only dangerous", false));
-                smartW.Add("wwDmg", new Slider("WW if does proc HP", 0, 1, 100));
-                getSkilshotMenu(smartW);
-                TargetedSpellManager.setUp(smartW);
 
                 //Debug
                 debug = Config.AddSubMenu("Debug", "debug");
@@ -125,7 +121,7 @@ namespace YasuoSharpV2
                 debug.Add("exportDash", new KeyBind("export dashes", false, KeyBind.BindTypes.HoldActive, 'P'));
                 debug.Add("deleteDash", new KeyBind("deleteLastDash", false, KeyBind.BindTypes.HoldActive, 'I'));
 
-                TargetSpellDetector.init();
+                Valvrave_Sharp.Program.MainA();
 
                 Drawing.OnDraw += onDraw;
                 Game.OnUpdate += OnGameUpdate;
@@ -138,68 +134,12 @@ namespace YasuoSharpV2
 
                 Game.OnSendPacket += OnGameSendPacket;
                 Game.OnProcessPacket += OnGameProcessPacket;
-
-                SkillshotDetector.OnDetectSkillshot += OnDetectSkillshot;
-                SkillshotDetector.OnDeleteMissile += OnDeleteMissile;
             }
             catch
             {
                 Chat.Print("Oops. Something went wrong with Yasuo - Sharpino");
             }
 
-        }
-
-
-        public static void getSkilshotMenu(Menu m)
-        {
-            m.AddSeparator();
-            //Create the skillshots submenus.
-            m.AddGroupLabel("Enemy Skillshots");
-
-            foreach (var hero in ObjectManager.Get<AIHeroClient>())
-            {
-                if (hero.Team != ObjectManager.Player.Team)
-                {
-                    foreach (var spell in SpellDatabase.Spells)
-                    {
-                        if (spell.ChampionName == hero.ChampionName)
-                        {
-                            m.AddLabel(spell.MenuItemName);
-                            m.Add("DangerLevel" + spell.MenuItemName, new Slider("Danger level", spell.DangerValue, 1, 5));
-                            m.Add("IsDangerous" + spell.MenuItemName, new CheckBox("Is Dangerous", spell.IsDangerous));
-                            m.Add("Draw" + spell.MenuItemName, new CheckBox("Draw"));
-                            m.Add("Enabled" + spell.MenuItemName, new CheckBox("Enabled"));
-                            m.AddSeparator();
-                        }
-                    }
-                }
-            }
-        }
-
-        public static bool skillShotIsDangerous(string Name)
-        {
-            if (smartW["IsDangerous" + Name] != null)
-            {
-                return smartW["IsDangerous" + Name].Cast<CheckBox>().CurrentValue;
-            }
-            return true;
-        }
-
-        public static bool EvadeSpellEnabled(string Name)
-        {
-            if (smartW["Enabled" + Name] != null)
-            {
-                return smartW["Enabled" + Name].Cast<CheckBox>().CurrentValue;
-            }
-            return true;
-        }
-
-        public static void updateSkillshots()
-        {
-            foreach (var ss in DetectedSkillshots)
-            {
-                ss.Game_OnGameUpdate();
-            }
         }
 
         private static void OnGameUpdate(EventArgs args)
@@ -215,7 +155,6 @@ namespace YasuoSharpV2
 
                 //updateSkillshots();
                 //Remove the detected skillshots that have expired.
-                DetectedSkillshots.RemoveAll(skillshot => !skillshot.IsActive());
 
                 AIHeroClient target = TargetSelector.GetTarget((Yasuo.E.IsReady()) ? 1500 : 475, DamageType.Physical);
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
@@ -306,21 +245,8 @@ namespace YasuoSharpV2
                         Yasuo.useQSmart(target, harass["harQ3Only"].Cast<CheckBox>().CurrentValue);
                 }
 
-                foreach (var mis in DetectedSkillshots)
-                {
-                    Yasuo.useWSmart(mis);
-
-                    if (smartW["smartEDogue"].Cast<CheckBox>().CurrentValue && !Yasuo.isSafePoint(Yasuo.Player.Position.LSTo2D(), true).IsSafe)
-                        Yasuo.useEtoSafe(mis);
-                }
-
                 if (smartR["smartR"].Cast<CheckBox>().CurrentValue && Yasuo.R.IsReady())
                     Yasuo.useRSmart();
-
-                Yasuo.processTargetedSpells();
-
-
-
             }
             catch (Exception ex)
             {
@@ -333,9 +259,6 @@ namespace YasuoSharpV2
             if (drawings["disDraw"].Cast<CheckBox>().CurrentValue)
                 return;
 
-
-
-            Drawing.DrawText(100, 100, Color.Red, "targ Spells: " + TargetSpellDetector.ActiveTargeted.Count);
 
             foreach (Obj_AI_Base jun in MinionManager.GetMinions(Yasuo.Player.ServerPosition, 700, MinionTypes.All, MinionTeam.Neutral))
             {
@@ -418,18 +341,6 @@ namespace YasuoSharpV2
                     if (missle.SData.Name == "yasuowmovingwallmisr")
                     {
                         Yasuo.wall.setR(missle);
-                    }
-                }
-            }
-
-            if (sender.IsValid<Obj_SpellLineMissile>() && sender.IsValid)
-            {
-                var s = sender as Obj_SpellLineMissile;
-                if (s != null)
-                {
-                    if ((s).Target.IsMe)
-                    {
-                        TargetSpellDetector.setParticle(s);
                     }
                 }
             }
@@ -549,240 +460,5 @@ namespace YasuoSharpV2
                 }
             }*/
         }
-
-
-
-        private static void OnDeleteMissile(Skillshot skillshot, MissileClient missile)
-        {
-            if (skillshot.SpellData.SpellName == "VelkozQ")
-            {
-                var spellData = SpellDatabase.GetByName("VelkozQSplit");
-                var direction = skillshot.Direction.LSPerpendicular();
-                if (DetectedSkillshots.Count(s => s.SpellData.SpellName == "VelkozQSplit") == 0)
-                {
-                    for (var i = -1; i <= 1; i = i + 2)
-                    {
-                        var skillshotToAdd = new Skillshot(
-                            DetectionType.ProcessSpell, spellData, Environment.TickCount, missile.Position.LSTo2D(),
-                            missile.Position.LSTo2D() + i * direction * spellData.Range, skillshot.Unit);
-                        DetectedSkillshots.Add(skillshotToAdd);
-                    }
-                }
-            }
-        }
-
-        private static void OnDetectSkillshot(Skillshot skillshot)
-        {
-            var alreadyAdded = false;
-
-            foreach (var item in DetectedSkillshots)
-            {
-                if (item.SpellData.SpellName == skillshot.SpellData.SpellName &&
-                    (item.Unit.NetworkId == skillshot.Unit.NetworkId &&
-                     (skillshot.Direction).LSAngleBetween(item.Direction) < 5 &&
-                     (skillshot.Start.LSDistance(item.Start) < 100 || skillshot.SpellData.FromObjects.Length == 0)))
-                {
-                    alreadyAdded = true;
-                }
-            }
-
-            //Check if the skillshot is from an ally.
-            if (skillshot.Unit.Team == ObjectManager.Player.Team)
-            {
-                return;
-            }
-
-            //Check if the skillshot is too far away.
-            if (skillshot.Start.LSDistance(ObjectManager.Player.ServerPosition.LSTo2D()) >
-                (skillshot.SpellData.Range + skillshot.SpellData.Radius + 1000) * 1.5)
-            {
-                return;
-            }
-
-            //Add the skillshot to the detected skillshot list.
-            if (!alreadyAdded)
-            {
-                //Multiple skillshots like twisted fate Q.
-                if (skillshot.DetectionType == DetectionType.ProcessSpell)
-                {
-                    if (skillshot.SpellData.MultipleNumber != -1)
-                    {
-                        var originalDirection = skillshot.Direction;
-
-                        for (var i = -(skillshot.SpellData.MultipleNumber - 1) / 2;
-                            i <= (skillshot.SpellData.MultipleNumber - 1) / 2;
-                            i++)
-                        {
-                            var end = skillshot.Start +
-                                      skillshot.SpellData.Range *
-                                      originalDirection.LSRotated(skillshot.SpellData.MultipleAngle * i);
-                            var skillshotToAdd = new Skillshot(
-                                skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, skillshot.Start, end,
-                                skillshot.Unit);
-
-                            DetectedSkillshots.Add(skillshotToAdd);
-                        }
-                        return;
-                    }
-
-                    if (skillshot.SpellData.SpellName == "UFSlash")
-                    {
-                        skillshot.SpellData.MissileSpeed = 1600 + (int)skillshot.Unit.MoveSpeed;
-                    }
-
-                    if (skillshot.SpellData.Invert)
-                    {
-                        var newDirection = -(skillshot.End - skillshot.Start).LSNormalized();
-                        var end = skillshot.Start + newDirection * skillshot.Start.LSDistance(skillshot.End);
-                        var skillshotToAdd = new Skillshot(
-                            skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, skillshot.Start, end,
-                            skillshot.Unit);
-                        DetectedSkillshots.Add(skillshotToAdd);
-                        return;
-                    }
-
-                    if (skillshot.SpellData.Centered)
-                    {
-                        var start = skillshot.Start - skillshot.Direction * skillshot.SpellData.Range;
-                        var end = skillshot.Start + skillshot.Direction * skillshot.SpellData.Range;
-                        var skillshotToAdd = new Skillshot(
-                            skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, start, end,
-                            skillshot.Unit);
-                        DetectedSkillshots.Add(skillshotToAdd);
-                        return;
-                    }
-
-                    if (skillshot.SpellData.SpellName == "SyndraE" || skillshot.SpellData.SpellName == "syndrae5")
-                    {
-                        var angle = 60;
-                        var edge1 =
-                            (skillshot.End - skillshot.Unit.ServerPosition.LSTo2D()).LSRotated(
-                                -angle / 2 * (float)Math.PI / 180);
-                        var edge2 = edge1.LSRotated(angle * (float)Math.PI / 180);
-
-                        foreach (var minion in ObjectManager.Get<Obj_AI_Minion>())
-                        {
-                            var v = minion.ServerPosition.LSTo2D() - skillshot.Unit.ServerPosition.LSTo2D();
-                            if (minion.Name == "Seed" && edge1.LSCrossProduct(v) > 0 && v.LSCrossProduct(edge2) > 0 &&
-                                minion.LSDistance(skillshot.Unit) < 800 &&
-                                (minion.Team != ObjectManager.Player.Team))
-                            {
-                                var start = minion.ServerPosition.LSTo2D();
-                                var end = skillshot.Unit.ServerPosition.LSTo2D()
-                                    .LSExtend(
-                                        minion.ServerPosition.LSTo2D(),
-                                        skillshot.Unit.LSDistance(minion) > 200 ? 1300 : 1000);
-
-                                var skillshotToAdd = new Skillshot(
-                                    skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, start, end,
-                                    skillshot.Unit);
-                                DetectedSkillshots.Add(skillshotToAdd);
-                            }
-                        }
-                        return;
-                    }
-
-                    if (skillshot.SpellData.SpellName == "AlZaharCalloftheVoid")
-                    {
-                        var start = skillshot.End - skillshot.Direction.LSPerpendicular() * 400;
-                        var end = skillshot.End + skillshot.Direction.LSPerpendicular() * 400;
-                        var skillshotToAdd = new Skillshot(
-                            skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, start, end,
-                            skillshot.Unit);
-                        DetectedSkillshots.Add(skillshotToAdd);
-                        return;
-                    }
-
-                    if (skillshot.SpellData.SpellName == "ZiggsQ")
-                    {
-                        var d1 = skillshot.Start.LSDistance(skillshot.End);
-                        var d2 = d1 * 0.4f;
-                        var d3 = d2 * 0.69f;
-
-
-                        var bounce1SpellData = SpellDatabase.GetByName("ZiggsQBounce1");
-                        var bounce2SpellData = SpellDatabase.GetByName("ZiggsQBounce2");
-
-                        var bounce1Pos = skillshot.End + skillshot.Direction * d2;
-                        var bounce2Pos = bounce1Pos + skillshot.Direction * d3;
-
-                        bounce1SpellData.Delay =
-                            (int)(skillshot.SpellData.Delay + d1 * 1000f / skillshot.SpellData.MissileSpeed + 500);
-                        bounce2SpellData.Delay =
-                            (int)(bounce1SpellData.Delay + d2 * 1000f / bounce1SpellData.MissileSpeed + 500);
-
-                        var bounce1 = new Skillshot(
-                            skillshot.DetectionType, bounce1SpellData, skillshot.StartTick, skillshot.End, bounce1Pos,
-                            skillshot.Unit);
-                        var bounce2 = new Skillshot(
-                            skillshot.DetectionType, bounce2SpellData, skillshot.StartTick, bounce1Pos, bounce2Pos,
-                            skillshot.Unit);
-
-                        DetectedSkillshots.Add(bounce1);
-                        DetectedSkillshots.Add(bounce2);
-                    }
-
-                    if (skillshot.SpellData.SpellName == "ZiggsR")
-                    {
-                        skillshot.SpellData.Delay =
-                            (int)(1500 + 1500 * skillshot.End.LSDistance(skillshot.Start) / skillshot.SpellData.Range);
-                    }
-
-                    if (skillshot.SpellData.SpellName == "JarvanIVDragonStrike")
-                    {
-                        var endPos = new Vector2();
-
-                        foreach (var s in DetectedSkillshots)
-                        {
-                            if (s.Unit.NetworkId == skillshot.Unit.NetworkId && s.SpellData.Slot == SpellSlot.E)
-                            {
-                                endPos = s.End;
-                            }
-                        }
-
-                        foreach (var m in ObjectManager.Get<Obj_AI_Minion>())
-                        {
-                            if (m.BaseSkinName == "jarvanivstandard" && m.Team == skillshot.Unit.Team &&
-                                skillshot.IsDanger(m.Position.LSTo2D()))
-                            {
-                                endPos = m.Position.LSTo2D();
-                            }
-                        }
-
-                        if (!endPos.IsValid())
-                        {
-                            return;
-                        }
-
-                        skillshot.End = endPos + 200 * (endPos - skillshot.Start).LSNormalized();
-                        skillshot.Direction = (skillshot.End - skillshot.Start).LSNormalized();
-                    }
-                }
-
-                if (skillshot.SpellData.SpellName == "OriannasQ")
-                {
-                    var endCSpellData = SpellDatabase.GetByName("OriannaQend");
-
-                    var skillshotToAdd = new Skillshot(
-                        skillshot.DetectionType, endCSpellData, skillshot.StartTick, skillshot.Start, skillshot.End,
-                        skillshot.Unit);
-
-                    DetectedSkillshots.Add(skillshotToAdd);
-                }
-
-
-                //Dont allow fow detection.
-                if (skillshot.SpellData.DisableFowDetection && skillshot.DetectionType == DetectionType.RecvPacket)
-                {
-                    return;
-                }
-#if DEBUG
-                Console.WriteLine(Environment.TickCount + "Adding new skillshot: " + skillshot.SpellData.SpellName);
-#endif
-
-                DetectedSkillshots.Add(skillshot);
-            }
-        }
-
     }
 }

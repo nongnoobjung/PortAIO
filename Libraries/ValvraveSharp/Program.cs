@@ -53,7 +53,14 @@
 
         private static void InitMenu(bool isSupport)
         {
-            _MainMenu = MainMenu.AddMenu("ValvraveSharp", "Valvrave Sharp");
+            if (YasuoPro.YasuoMenu.ComboM != null || YasuoSharpV2.YasuoSharp.comboMenu != null)
+            {
+                _MainMenu = MainMenu.AddMenu("YasuoEvade", "YasEvadee");
+            }
+            else
+            {
+                _MainMenu = MainMenu.AddMenu("ValvraveSharp", "Valvrave Sharp");
+            }
             if (isSupport)
             {
                 Plugins[Player.ChampionName].Invoke();

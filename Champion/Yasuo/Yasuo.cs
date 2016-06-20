@@ -68,7 +68,7 @@
             Q.MinHitChance = Q2.MinHitChance = HitChance.VeryHigh;
             E.CastCondition += () => !posDash.IsValid();
 
-            if (YasuoPro.YasuoMenu.ComboM != null)
+            if (YasuoPro.YasuoMenu.ComboM != null || YasuoSharpV2.YasuoSharp.comboMenu != null)
             {
                 if (EntityManager.Heroes.Enemies.Any())
                 {

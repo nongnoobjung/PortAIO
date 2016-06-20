@@ -10,6 +10,9 @@ using Geometry = LeagueSharp.Common.Geometry;
 using EloBuddy;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK;
+using static EloBuddy.SDK.Spell;
+using EloBuddy.SDK.Enumerations;
+using EloBuddy.SDK.Spells;
 
 namespace YasuoSharpV2
 {
@@ -50,7 +53,7 @@ namespace YasuoSharpV2
 
         internal class YasWall
         {
-            #pragma warning disable 0618
+#pragma warning disable 0618
             public Obj_SpellLineMissile pointL;
             public Obj_SpellLineMissile pointR;
             public float endtime = 0;
@@ -586,7 +589,7 @@ namespace YasuoSharpV2
                 if (canCastFarQ())
                 {
                     PredictionOutput po = QEmp.GetPrediction(target); //QEmp.GetPrediction(target, true);
-                    if (po.Hitchance >= HitChance.Medium)
+                    if (po.Hitchance >= LeagueSharp.Common.HitChance.Medium)
                     {
                         QEmp.Cast(po.CastPosition);
                         return;
@@ -607,7 +610,7 @@ namespace YasuoSharpV2
                 if (canCastFarQ())
                 {
                     PredictionOutput po = Q.GetPrediction(target);
-                    if (po.Hitchance >= HitChance.Medium)
+                    if (po.Hitchance >= LeagueSharp.Common.HitChance.Medium)
                     {
                         Q.Cast(po.CastPosition);
                     }
@@ -633,196 +636,13 @@ namespace YasuoSharpV2
             var result = new IsSafeResult();
             result.SkillshotList = new List<Skillshot>();
             result.casters = new List<Obj_AI_Base>();
-            if (false)
-            {
-                /*
-                bool safe = Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || point.To3D().GetEnemiesInRange(500).Count > Player.HealthPercent % 65;
-                if (!safe)
-                {
-                    result.IsSafe = false;
-                    return result;
-                }
-                */
-            }
-            foreach (var skillshot in YasuoSharp.DetectedSkillshots)
-            {
-                if (skillshot.IsDanger(point) && skillshot.IsAboutToHit(500, Player))
-                {
-                    result.SkillshotList.Add(skillshot);
-                    result.casters.Add(skillshot.Unit);
-                }
-            }
-
             result.IsSafe = (result.SkillshotList.Count == 0);
             return result;
-        }
-
-        public static Obj_AI_Minion GetCandidates(AIHeroClient player, List<Skillshot> skillshots)
-        {
-            float currentDashSpeed = 700 + player.MoveSpeed;//At least has to be like this
-            IEnumerable<Obj_AI_Minion> minions = ObjectManager.Get<Obj_AI_Minion>();
-            Obj_AI_Minion candidate = new Obj_AI_Minion();
-            double closest = 10000000000000;
-            foreach (Obj_AI_Minion minion in minions)
-            {
-                if (Vector2.Distance(player.Position.LSTo2D(), minion.Position.LSTo2D()) < 475 && minion.IsEnemy && enemyIsJumpable(minion) && closest > Vector3.DistanceSquared(Game.CursorPos, minion.Position))
-                {
-                    foreach (Skillshot skillshot in skillshots)
-                    {
-                        //Get intersection point
-                        //  Vector2 intersectionPoint = LineIntersectionPoint(startPos, player.Position.LSTo2D(), endPos, V2E(player.Position, minion.Position, 475));
-                        //Time when yasuo will be in intersection point
-                        //  float arrivingTime = Vector2.LSDistance(player.Position.LSTo2D(), intersectionPoint) / currentDashSpeed;
-                        //Estimated skillshot position
-                        //  Vector2 skillshotPosition = V2E(startPos.To3D(), intersectionPoint.To3D(), speed * arrivingTime);
-                        if (skillshot.IsDanger(V2E(player.Position, minion.Position, 475)))
-                        {
-                            candidate = minion;
-                            closest = Vector3.DistanceSquared(Game.CursorPos, minion.Position);
-                        }
-                    }
-                }
-            }
-            return candidate;
         }
 
         private static Vector2 V2E(Vector3 from, Vector3 direction, float distance)
         {
             return (from + distance * Vector3.Normalize(direction - from)).LSTo2D();
-        }
-
-        public static bool wontHitOnDash(Skillshot ss, Obj_AI_Base jumpOn, Skillshot skillShot, Vector2 dashDir)
-        {
-            float currentDashSpeed = 700 + Player.MoveSpeed;//At least has to be like this
-            //Get intersection point
-            Vector2 intersectionPoint = YasMath.LineIntersectionPoint(Player.Position.LSTo2D(), V2E(Player.Position, jumpOn.Position, 475), ss.Start, ss.End);
-            //Time when yasuo will be in intersection point
-            float arrivingTime = Vector2.Distance(Player.Position.LSTo2D(), intersectionPoint) / currentDashSpeed;
-            //Estimated skillshot position
-            Vector2 skillshotPosition = ss.GetMissilePosition((int)(arrivingTime * 1000));
-            if (Vector2.DistanceSquared(skillshotPosition, intersectionPoint) <
-                (ss.SpellData.Radius + Player.BoundingRadius) && !YasMath.willColide(skillShot, Player.Position.LSTo2D(), 700f + Player.MoveSpeed, dashDir, Player.BoundingRadius + skillShot.SpellData.Radius))
-                return false;
-            return true;
-        }
-
-        public static void useEtoSafe(Skillshot skillShot)
-        {
-            if (!E.IsReady())
-                return;
-            float closest = float.MaxValue;
-            Obj_AI_Base closestTarg = null;
-            float currentDashSpeed = 700 + Player.MoveSpeed;
-            foreach (Obj_AI_Base enemy in ObjectManager.Get<Obj_AI_Base>().Where(ob => ob.NetworkId != skillShot.Unit.NetworkId && enemyIsJumpable(ob) && ob.LSDistance(Player) < E.Range).OrderBy(ene => ene.LSDistance(Game.CursorPos, true)))
-            {
-                var pPos = Player.Position.LSTo2D();
-                Vector2 posAfterE = V2E(Player.Position, enemy.Position, 475);
-                Vector2 dashDir = (posAfterE - Player.Position.LSTo2D()).LSNormalized();
-
-                if (isSafePoint(posAfterE).IsSafe && wontHitOnDash(skillShot, enemy, skillShot, dashDir) /*&& skillShot.IsSafePath(new List<Vector2>() { posAfterE }, 0, (int)currentDashSpeed, 0).IsSafe*/)
-                {
-                    float curDist = Vector2.DistanceSquared(Game.CursorPos.LSTo2D(), posAfterE);
-                    if (curDist < closest)
-                    {
-                        closestTarg = enemy;
-                        closest = curDist;
-                    }
-                }
-            }
-            if (closestTarg != null)
-                useENormal(closestTarg);
-        }
-
-        public static void useWSmart(Skillshot skillShot)
-        {
-            //try douge with E if cant windWall
-
-            if (!W.IsReady() || skillShot.SpellData.Type == SkillShotType.SkillshotCircle || skillShot.SpellData.Type == SkillShotType.SkillshotRing)
-                return;
-            if (skillShot.IsAboutToHit(500, Player))
-            {
-                var sd = SpellDatabase.GetByMissileName(skillShot.SpellData.MissileSpellName);
-                if (sd == null)
-                    return;
-
-                //If enabled
-                if (!YasuoSharp.EvadeSpellEnabled(sd.MenuItemName))
-                    return;
-
-                //if only dangerous
-                if (YasuoSharp.smartW["wwDanger"].Cast<CheckBox>().CurrentValue &&
-                    !YasuoSharp.skillShotIsDangerous(sd.MenuItemName))
-                    return;
-
-                //Console.WriteLine("dmg: " + missle.SpellCaster.LSGetSpellDamage(Player, sd.SpellName));
-                float spellDamage = (float)skillShot.Unit.LSGetSpellDamage(Player, sd.SpellName);
-                int procHp = (int)((spellDamage / Player.MaxHealth) * 100);
-
-                if (procHp < YasuoSharp.smartW["wwDmg"].Cast<Slider>().CurrentValue && Player.Health - spellDamage > 0)
-                    return;
-
-
-                Vector3 blockwhere = Player.ServerPosition + Vector3.Normalize(skillShot.MissilePosition.To3D() - Player.ServerPosition) * 10; // missle.Position; 
-                W.Cast(blockwhere);
-            }
-
-        }
-
-        public static void useWSmartOld(MissileClient missle)
-        {
-            if (!W.IsReady())
-                return;
-            try
-            {
-                if (missle.SpellCaster is AIHeroClient && missle.IsEnemy)
-                {
-                    var sd = SpellDatabase.GetByMissileName(missle.SData.Name);
-                    if (sd == null)
-                        return;
-
-                    //If enabled
-                    if (!YasuoSharp.EvadeSpellEnabled(sd.MenuItemName))
-                        return;
-
-                    //if only dangerous
-                    if (YasuoSharp.smartW["wwDanger"].Cast<CheckBox>().CurrentValue &&
-                        !YasuoSharp.skillShotIsDangerous(sd.MenuItemName))
-                        return;
-
-                    //Console.WriteLine("dmg: " + missle.SpellCaster.LSGetSpellDamage(Player, sd.SpellName));
-                    float spellDamage = (float)missle.SpellCaster.LSGetSpellDamage(Player, sd.SpellName);
-                    int procHp = (int)((spellDamage / Player.MaxHealth) * 100);
-
-                    if (procHp < YasuoSharp.smartW["wwDmg"].Cast<Slider>().CurrentValue && Player.Health - spellDamage > 0)
-                        return;
-
-                    Obj_AI_Base enemHero = missle.SpellCaster;
-                    float dmg = (float)enemHero.LSGetAutoAttackDamage(Player);
-                    //enemHero.BaseAttackDamage + enemHero.FlatPhysicalDamageMod);
-                    if (missle.SData.Name.Contains("Crit"))
-                        dmg *= 2;
-                    if (!missle.SData.Name.Contains("Attack") ||
-                        (enemHero.CombatType == GameObjectCombatType.Ranged && dmg > Player.MaxHealth / 8))
-                    {
-                        if (missleWillHit(missle))
-                        {
-                            Vector3 blockWhere = missle.Position;
-                            if (Player.LSDistance(missle.Position) < 420)
-                            {
-                                if (missle.Target.IsMe || isMissileCommingAtMe(missle))
-                                {
-                                    YasuoSharp.lastSpell = missle.SData.Name;
-                                    W.Cast(blockWhere, true);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
         }
 
         public static bool missleWillHit(MissileClient missle)
@@ -1001,57 +821,6 @@ namespace YasuoSharpV2
         public static float getSpellCastTime(SpellSlot slot)
         {
             return sBook.GetSpell(slot).SData.SpellCastTime;
-        }
-
-        public static void processTargetedSpells()
-        {
-            if (!W.IsReady(300) && (wall == null || !E.IsReady(200) || !wall.isValid()))
-                return;
-            foreach (var targMis in TargetSpellDetector.ActiveTargeted)
-            {
-                if (targMis == null || targMis.particle == null || targMis.blockBelow < Player.HealthPercent)
-                    continue;
-                try
-                {
-                    var misDist = targMis.particle.Position.LSDistance(Player.Position);
-                    if (misDist < 700)
-                    {
-                        if (W.IsReady() && misDist < 500)
-                        {
-                            Vector3 blockwhere = Player.ServerPosition +
-                                                 Vector3.Normalize(targMis.particle.Position - Player.Position) * 150;
-                            W.Cast(blockwhere, true);
-                            return;
-                        }
-                        else if (E.IsReady() && wall != null && wall.isValid(500) &&
-                                 !goesThroughWall(Player.Position, targMis.particle.Position))
-                        {
-                            foreach (
-                                Obj_AI_Base enemy in
-                                    ObjectManager.Get<Obj_AI_Base>()
-                                        .Where(ob => enemyIsJumpable(ob))
-                                        .OrderBy(ene => ene.Position.LSDistance(Game.CursorPos, true)))
-                            {
-                                if (goesThroughWall(Player.Position, Player.Position.LSExtend(enemy.Position, 475)))
-                                {
-                                    E.CastOnUnit(enemy);
-                                    return;
-                                }
-
-                            }
-                        }
-                    }
-                }
-                catch (GameObjectNotFoundException)
-                {
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-
-            }
         }
     }
 }
