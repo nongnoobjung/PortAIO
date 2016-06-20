@@ -123,7 +123,7 @@ namespace NoobJaxReloaded
 
         private static void OnUpdate(EventArgs args)
         {
-            if (Player.IsDead || Player.IsRecalling())
+            if (Player.IsDead || Player.LSIsRecalling())
             {
                 return;
             }
@@ -293,16 +293,16 @@ namespace NoobJaxReloaded
         }
         private static void Killsteal()
         {
-            AIHeroClient qTarget = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (qTarget == null || qTarget.HasBuffOfType(BuffType.Invulnerability))
-                return;
+            foreach (AIHeroClient enemy in AllEnemy)
             {
+                if (enemy == null || enemy.HasBuffOfType(BuffType.Invulnerability))
+                    return;
                 double damage = 0d;
-                damage = ObjectManager.Player.GetSpellDamage(qTarget, SpellSlot.Q);
+                damage = ObjectManager.Player.LSGetSpellDamage(enemy, SpellSlot.Q);
 
-                if (damage > qTarget.Health)
+                if (damage > enemy.Health)
                 {
-                    Q.Cast(qTarget);
+                    Q.Cast(enemy);
                 }
             }
         }
