@@ -16,6 +16,7 @@ using PredictionInput = SebbyLib.Prediction.PredictionInput;
 using PredictionOutput = SebbyLib.Prediction.PredictionOutput;
 using Spell = LeagueSharp.Common.Spell;
 using SPrediction;
+using EloBuddy.SDK.Spells;
 
 namespace SebbyLib
 {
@@ -53,7 +54,7 @@ namespace SebbyLib
             {
                 return !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
                        !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
-                       !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && 
+                       !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) &&
                        !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                        !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee) &&
                        !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit);
@@ -85,6 +86,16 @@ namespace SebbyLib
             return Config[item].Cast<Slider>().CurrentValue;
         }
 
+        internal static List<SpellInfo> _spells;
+
+        public static int getHitChance
+        {
+            get
+            {
+                return getSliderItem("HitChance");
+            }
+        }
+
         public static bool getKeyBindItem(string item)
         {
             return Config[item].Cast<KeyBind>().CurrentValue;
@@ -92,6 +103,8 @@ namespace SebbyLib
         public static bool SPredictionLoad;
         public static void GameOnOnGameLoad()
         {
+            _spells = EloBuddy.SDK.Spells.SpellDatabase.GetSpellInfoList(ObjectManager.Player.BaseSkinName);
+
             enemySpawn = ObjectManager.Get<Obj_SpawnPoint>().FirstOrDefault(x => x.IsEnemy);
             Q = new Spell(SpellSlot.Q);
             E = new Spell(SpellSlot.E);
@@ -111,7 +124,13 @@ namespace SebbyLib
             Config.Add("AIOmode", new Slider("AIO mode (0 : Util & Champ | 1 : Only Champ | 2 : Only Util)", 0, 0, 2));
             AIOmode = getSliderItem("AIOmode");
 
-            Config.Add("PredictionMODE", new Slider("Prediction MODE (0 : Common Pred | 1 : OKTW© PREDICTION | 2 : SPrediction | 3 : SDK)", 0, 0, 3));
+            var slots = new HashSet<SpellSlot>();
+            foreach (var info in _spells)
+            {
+                slots.Add(info.Slot);
+            }
+
+            Config.Add("PredictionMODE", new Slider("Pred Mode (0 : L# Pred | 1 : OKTW Pred | 2 : SPred | 3 : SDK | 4 : EB)", 0, 0, 4));
             Config.Add("HitChance", new Slider("AIO mode (0 : Very High | 1 : High | 2 : Medium)", 0, 0, 2));
             Config.Add("debugPred", new CheckBox("Draw Aiming OKTW© PREDICTION", false));
             Config.Add("harassLaneclear", new CheckBox("Skill-Harass in lane clear"));
@@ -236,7 +255,7 @@ namespace SebbyLib
                     case "Morgana":
                         Morgana.LoadOKTW();
                         break;
-                    case "Quinn":  
+                    case "Quinn":
                         Quinn.LoadOKTW();
                         break;
                     case "TwistedFate":
@@ -272,6 +291,23 @@ namespace SebbyLib
             Game.OnUpdate += OnUpdate;
             Orbwalker.OnPreAttack += Orbwalking_BeforeAttack;
             Drawing.OnDraw += OnDraw;
+            Game.OnTick += Game_OnTick;
+        }
+
+        private static void Game_OnTick(EventArgs args)
+        {
+            if (Player.IsDead || getSliderItem("PredictionMODE") != 4 || (!IsCharging && !Orbwalker.CanMove))
+            {
+                return;
+            }
+            if (_lastChargeTime == 0 && IsCharging)
+            {
+                _lastChargeTime = Core.GameTickCount;
+            }
+            else if (_lastChargeTime > 0 && !IsCharging)
+            {
+                _lastChargeTime = 0;
+            }
         }
 
         public static void debug(string msg)
@@ -321,6 +357,7 @@ namespace SebbyLib
                     Player.Position.LSExtend(DrawSpellPos.CastPosition, 400), Color.Gray);
             }
         }
+        private static int _lastChargeTime;
 
         private static void Orbwalking_BeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
@@ -351,6 +388,73 @@ namespace SebbyLib
         {
             var wts = Drawing.WorldToScreen(Hero);
             Drawing.DrawText(wts[0] - msg.Length * 5, wts[1] + weight, color, msg);
+        }
+
+        public static void Cast(SpellSlot slot)
+        {
+            var first = _spells.FirstOrDefault(spell => spell.Slot == slot && (string.IsNullOrEmpty(spell.SpellName) || string.Equals(Player.Spellbook.GetSpell(slot).Name, spell.SpellName, StringComparison.CurrentCultureIgnoreCase)));
+            if (first != null)
+            {
+                var allowedCollisionCount = int.MaxValue;
+                if (first.Collisions.Contains(CollisionType.AiHeroClient))
+                {
+                    allowedCollisionCount = 0;
+                }
+                else if (first.Collisions.Contains(CollisionType.ObjAiMinion))
+                {
+                    allowedCollisionCount = -1;
+                }
+                var collidesWithWall = first.Collisions.Contains(CollisionType.YasuoWall);
+                SpellBase spell = null;
+                switch (first.Type)
+                {
+                    case EloBuddy.SDK.Spells.SpellType.Self:
+                        spell = new SpellBase(slot, SpellType.Self, first.Range) { Delay = first.Delay + first.MissileFixedTravelTime, Speed = first.MissileSpeed, AllowedCollisionCount = allowedCollisionCount, CollidesWithYasuoWall = collidesWithWall };
+                        break;
+                    case EloBuddy.SDK.Spells.SpellType.Circle:
+                        spell = new SpellBase(slot, SpellType.Circular, first.Range) { Delay = first.Delay + first.MissileFixedTravelTime, Speed = first.MissileSpeed, AllowedCollisionCount = allowedCollisionCount, CollidesWithYasuoWall = collidesWithWall, Width = first.Radius };
+                        break;
+                    case EloBuddy.SDK.Spells.SpellType.Line:
+                        spell = new SpellBase(slot, SpellType.Linear, first.Range) { Delay = first.Delay + first.MissileFixedTravelTime, Speed = first.MissileSpeed, AllowedCollisionCount = allowedCollisionCount, CollidesWithYasuoWall = collidesWithWall, Width = first.Radius };
+                        break;
+                    case EloBuddy.SDK.Spells.SpellType.Cone:
+                        spell = new SpellBase(slot, SpellType.Cone, first.Range) { Delay = first.Delay + first.MissileFixedTravelTime, Speed = first.MissileSpeed, AllowedCollisionCount = allowedCollisionCount, CollidesWithYasuoWall = collidesWithWall, Width = first.Radius };
+                        break;
+                    case EloBuddy.SDK.Spells.SpellType.Ring:
+                        break;
+                    case EloBuddy.SDK.Spells.SpellType.MissileLine:
+                        spell = new SpellBase(slot, SpellType.Linear, first.Range) { Delay = first.Delay + first.MissileFixedTravelTime, Speed = first.MissileSpeed, AllowedCollisionCount = allowedCollisionCount, CollidesWithYasuoWall = collidesWithWall, Width = first.Radius };
+                        break;
+                    case EloBuddy.SDK.Spells.SpellType.MissileAoe:
+                        spell = new SpellBase(slot, SpellType.Circular, first.Range) { Delay = first.Delay + first.MissileFixedTravelTime, Speed = first.MissileSpeed, AllowedCollisionCount = allowedCollisionCount, CollidesWithYasuoWall = collidesWithWall, Width = first.Radius };
+                        break;
+                }
+                if (spell != null)
+                {
+                    if (first.Chargeable)
+                    {
+                        if (IsCharging)
+                        {
+                            var percentageGrowth = Math.Min(1 / 1000f * (Core.GameTickCount - _lastChargeTime - first.CastRangeGrowthStartTime) / first.CastRangeGrowthDuration, 1);
+                            spell.Range = (first.CastRangeGrowthMax - first.CastRangeGrowthMin) * percentageGrowth + first.CastRangeGrowthMin;
+                            spell.ReleaseCast();
+                        }
+                        else
+                        {
+                            spell.StartCast();
+                        }
+                    }
+                    else if (!IsCharging)
+                    {
+                        spell.Cast();
+                    }
+                }
+            }
+        }
+
+        private static bool IsCharging
+        {
+            get { return Player.Spellbook.IsCharging; }
         }
 
         public static void CastSpell(Spell QWER, Obj_AI_Base target)
@@ -515,6 +619,18 @@ namespace SebbyLib
                 else
                 {
                     QWER.CastIfHitchanceEquals(target, LeagueSharp.Common.HitChance.High);
+                }
+            }
+            else if (getSliderItem("PredictionMODE") == 4)
+            {
+                if (target is AIHeroClient && target.IsValid)
+                {
+                    var t = target as AIHeroClient;
+                    Cast(QWER.Slot);
+                }
+                else
+                {
+                    Cast(QWER.Slot);
                 }
             }
         }

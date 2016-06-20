@@ -258,7 +258,7 @@ namespace e.Motion_Katarina
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                     Orbwalker.OrbwalkTo(Game.CursorPos);
                 }
-                if (getCheckBoxItem(miscMenu, "motion.katarina.misc.cancelR") && Player.GetEnemiesInRange(R.Range + 50).Count == 0)
+                if (getCheckBoxItem(miscMenu, "motion.katarina.misc.cancelR") && Player.LSCountEnemiesInRange(R.Range + 50) == 0)
                 {
                     Orbwalker.DisableAttacking = false;
                     Orbwalker.DisableMovement = false;
@@ -321,7 +321,6 @@ namespace e.Motion_Katarina
         static bool HasRBuff()
         {
             return Player.HasBuff("KatarinaR") || Player.IsChannelingImportantSpell() || Player.HasBuff("katarinarsound");
-
         }
 
         static void Combo(bool useq, bool usew, bool usee, bool user, bool anyTarget = false)

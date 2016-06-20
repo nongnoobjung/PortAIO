@@ -1005,6 +1005,7 @@
     <Compile Include="Libraries\SCommon\Orbwalking\Drawings.cs" />
     <Compile Include="Libraries\SCommon\Orbwalking\Orbwalker.cs" />
     <Compile Include="Libraries\Sebby-OKTW\Movement.cs" />
+    <Compile Include="Libraries\Sebby-OKTW\SpellData.cs" />
     <Compile Include="Libraries\ValvraveSharp\Core\Common.cs" />
     <Compile Include="Champion\LeeSin\LeeSin.cs" />
     <Compile Include="Champion\Yasuo\Yasuo.cs" />
