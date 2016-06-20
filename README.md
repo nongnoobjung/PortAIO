@@ -1,5 +1,3 @@
-https://www.elobuddy.net/profile/277-xionlunix/ - This guy is trying to take credit for the PortAIO. Drop this guy.
-
 # Welcome to PortAIO's Official Github
 - https://github.com/berbb/PortAIO is the official GitHub.
 - https://discord.gg/0zNgmm6ziPDoOfbZ is the official PortAIO discord channel.
@@ -7,6 +5,7 @@ https://www.elobuddy.net/profile/277-xionlunix/ - This guy is trying to take cre
 ###### - Berb : Creator of project, porter, github maker maintainer guy, bug fixer and developer
 ###### - Muse30 : Active Porter, supporter, bug fixer and developer, just think of him as a Berb v2
 ###### - SidaRevamped : Active Supporter and bug fixer
+www.elobuddy.net/profile/277-xionlunix - www.github.com/Xionlunix - He's taking credit for the PortAIO. Drop this guy.
 
 ### - Compile Errors
 Make sure you have Berb.Common installed @ https://github.com/berbb/Berb.Common
