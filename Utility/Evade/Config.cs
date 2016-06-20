@@ -57,21 +57,24 @@ namespace EvadeSharp
 
         public static void CreateMenu()
         {
-            Menu = MainMenu.AddMenu("Evade", "Evade");
+            Menu = MainMenu.AddMenu("Evade", "EvadeAASDASD");
             Menu.Add("Enabled", new KeyBind("Enabled", true, KeyBind.BindTypes.PressToggle, 'K'));
             Menu.Add("OnlyDangerous", new KeyBind("Dodge only dangerous", false, KeyBind.BindTypes.HoldActive, 32));
 
             evadeSpells = Menu.AddSubMenu("Evade spells", "evadeSpells");
             foreach (var spell in EvadeSpellDatabase.Spells)
             {
-                evadeSpells.AddGroupLabel(spell.Name);
-                evadeSpells.Add("DangerLevel" + spell.Name, new Slider("Danger level", spell.DangerLevel, 5, 1));
-                if (spell.IsTargetted && spell.ValidTargets.Contains(SpellValidTargets.AllyWards))
+                if (evadeSpells["Enabled" + spell.Name] == null)
                 {
-                    evadeSpells.Add("WardJump" + spell.Name, new CheckBox("WardJump"));
+                    evadeSpells.AddGroupLabel(spell.Name);
+                    evadeSpells.Add("DangerLevel" + spell.Name, new Slider("Danger level", spell.DangerLevel, 5, 1));
+                    if (spell.IsTargetted && spell.ValidTargets.Contains(SpellValidTargets.AllyWards))
+                    {
+                        evadeSpells.Add("WardJump" + spell.Name, new CheckBox("WardJump"));
+                    }
+                    evadeSpells.Add("Enabled" + spell.Name, new CheckBox("Enabled"));
+                    evadeSpells.AddSeparator();
                 }
-                evadeSpells.Add("Enabled" + spell.Name, new CheckBox("Enabled"));
-                evadeSpells.AddSeparator();
             }
 
             skillShots = Menu.AddSubMenu("Skillshots", "Skillshots");
@@ -83,12 +86,15 @@ namespace EvadeSharp
                     {
                         if (String.Equals(spell.ChampionName, hero.ChampionName, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            skillShots.AddGroupLabel(spell.MenuItemName);
-                            skillShots.Add("DangerLevel" + spell.MenuItemName, new Slider("Danger level", spell.DangerValue, 5, 1));
-                            skillShots.Add("IsDangerous" + spell.MenuItemName, new CheckBox("Is Dangerous", spell.IsDangerous));
-                            skillShots.Add("Draw" + spell.MenuItemName, new CheckBox("Draw"));
-                            skillShots.Add("Enabled" + spell.MenuItemName, new CheckBox("Enabled", !spell.DisabledByDefault));
-                            skillShots.AddSeparator();
+                            if (skillShots["Enabled" + spell.MenuItemName] == null)
+                            {
+                                skillShots.AddGroupLabel(spell.MenuItemName);
+                                skillShots.Add("DangerLevel" + spell.MenuItemName, new Slider("Danger level", spell.DangerValue, 5, 1));
+                                skillShots.Add("IsDangerous" + spell.MenuItemName, new CheckBox("Is Dangerous", spell.IsDangerous));
+                                skillShots.Add("Draw" + spell.MenuItemName, new CheckBox("Draw"));
+                                skillShots.Add("Enabled" + spell.MenuItemName, new CheckBox("Enabled", !spell.DisabledByDefault));
+                                skillShots.AddSeparator();
+                            }
                         }
                     }
                 }
@@ -99,7 +105,8 @@ namespace EvadeSharp
             {
                 if (ally.IsAlly && !ally.IsMe)
                 {
-                    shielding.Add("shield" + ally.ChampionName, new CheckBox("Shield " + ally.ChampionName));
+                    if (shielding["shield" + ally.ChampionName] == null)
+                        shielding.Add("shield" + ally.ChampionName, new CheckBox("Shield " + ally.ChampionName));
                 }
             }
 
