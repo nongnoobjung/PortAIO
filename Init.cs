@@ -52,7 +52,6 @@ namespace PortAIO
             LeagueSharp.SDK.Bootstrap.Init();
 
             Notifications.Show(new SimpleNotification("PortAIO", "Welcome to PortAIO, this is a complete AIO made for every single champion. If you experience bugs or have suggestions or just have something to report please go to the github and view the instructions to post a new issue. Enjoy using PortAIO and GLHF!"), 8000);
-            Notifications.Show(new SimpleNotification("Announcement [6/17/16]", "PortAIO doesn't officially support One-For-All. Some chamions/utilites work, some do not. If a utility/champion addon isn't loading correctly drop an issue and we'll check it out."), 10000);
 
             Loader.Menu();
 

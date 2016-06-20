@@ -27,7 +27,7 @@ namespace D_Kayle
 
         private static Menu _config;
 
-        public static Menu comboMenu, utilityMenu, itemMenu, clearMenu, miscMenu, lasthitMenu, jungleMenu, drawMenu, smiteMenu, harassMenu;
+        public static Menu comboMenu, utilityMenu, itemMenu, clearMenu, miscMenu, drawMenu, smiteMenu, harassMenu;
 
         private static AIHeroClient _player;
 
