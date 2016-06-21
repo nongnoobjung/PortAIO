@@ -3,27 +3,78 @@
     using System;
     using System.Linq;
     using System.Net;
+    using System.Collections.Generic;
+    using System.Drawing;
 
     using EloBuddy;
     using LeagueSharp.Common;
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
     using EloBuddy.SDK;
-    using Color = System.Drawing.Color;
     using Spell = LeagueSharp.Common.Spell;
+
 
     internal class Zilean
     {
 
+        #region Constructors and Destructors
+
+        static Zilean()
+        {
+            Spells = new List<InitiatorSpell>
+                         {
+                             new InitiatorSpell { ChampionName = "Monkeyking", SDataName = "monkeykingnimbus" },
+                             new InitiatorSpell { ChampionName = "Monkeyking", SDataName = "monkeykingdecoy" },
+                             new InitiatorSpell { ChampionName = "Monkeyking", SDataName = "monkeykingspintowin" },
+                             new InitiatorSpell { ChampionName = "Olaf", SDataName = "olafragnarok" },
+                             new InitiatorSpell { ChampionName = "Gragas", SDataName = "gragase" },
+                             new InitiatorSpell { ChampionName = "Hecarim", SDataName = "hecarimult" },
+                             new InitiatorSpell { ChampionName = "Ekko", SDataName = "ekkoe" },
+                             new InitiatorSpell { ChampionName = "Malphite", SDataName = "ufslash " },
+                             new InitiatorSpell { ChampionName = "Vi", SDataName = "viq" },
+                             new InitiatorSpell { ChampionName = "Vi", SDataName = "vir" },
+                             new InitiatorSpell { ChampionName = "Volibear", SDataName = "volibearq" },
+                             new InitiatorSpell { ChampionName = "Lissandra", SDataName = "lissandrae" },
+                             new InitiatorSpell { ChampionName = "Gnar", SDataName = "gnare" },
+                             new InitiatorSpell { ChampionName = "Fiora", SDataName = "fioraq" },
+                             new InitiatorSpell { ChampionName = "Sion", SDataName = "sionr" },
+                             new InitiatorSpell { ChampionName = "Zac", SDataName = "zace" },
+                             new InitiatorSpell { ChampionName = "KhaZix", SDataName = "khazixe" },
+                             new InitiatorSpell { ChampionName = "KhaZix", SDataName = "khazixelong" },
+                             new InitiatorSpell { ChampionName = "Kennen", SDataName = "kennenlightningrush" },
+                             new InitiatorSpell { ChampionName = "Jax", SDataName = "jaxleapstrike" },
+                             new InitiatorSpell { ChampionName = "Leona", SDataName = "leonazenithblademissle" },
+                             new InitiatorSpell { ChampionName = "Shen", SDataName = "shene" },
+                             new InitiatorSpell { ChampionName = "Ryze", SDataName = "ryzer" },
+                             new InitiatorSpell { ChampionName = "Lucian", SDataName = "luciane" },
+                             new InitiatorSpell { ChampionName = "Elise", SDataName = "elisespidereinitial" },
+                             new InitiatorSpell { ChampionName = "Diana", SDataName = "dianateleport" },
+                             new InitiatorSpell { ChampionName = "Akali", SDataName = "akalishadowdance" },
+                             new InitiatorSpell { ChampionName = "Renekton", SDataName = "renektonsliceanddice" },
+                             new InitiatorSpell { ChampionName = "Thresh", SDataName = "threshqleap" },
+                             new InitiatorSpell { ChampionName = "Rengar", SDataName = "rengarr" },
+                             new InitiatorSpell { ChampionName = "Shyvana", SDataName = "shyvanatransformcast" },
+                             new InitiatorSpell { ChampionName = "Shyvana", SDataName = "shyvanatransformleap" },
+                             new InitiatorSpell { ChampionName = "Shyvana", SDataName = "ShyvanaImmolationAura" },
+                             new InitiatorSpell { ChampionName = "Udyr", SDataName = "udyrbearstance" },
+                             new InitiatorSpell { ChampionName = "Kassadin", SDataName = "riftwalk" },
+                             new InitiatorSpell { ChampionName = "JarvanIV", SDataName = "jarvanivdragonstrike" },
+                             new InitiatorSpell { ChampionName = "Irelia", SDataName = "ireliagatotsu" },
+                         };
+        }
+
+        #endregion
+
         #region Public Properties
 
+
         /// <summary>
-        ///     Gets or sets the slot.
+        ///     Gets or sets the spells.
         /// </summary>
         /// <value>
-        ///     The Smitespell
+        ///     The spells.
         /// </value>
-        private static Spell IgniteSpell { get; set; }
+        public static List<InitiatorSpell> Spells { get; set; }
 
         #endregion
 
@@ -38,13 +89,26 @@
         private static Spell E { get; set; }
 
         /// <summary>
+        ///     Check if Zilean has speed passive
+        /// </summary>
+        private static bool HasSpeedBuff => Player.Buffs.Any(x => x.Name.ToLower().Contains("timewarp"));
+
+        /// <summary>
+        ///     Gets or sets the slot.
+        /// </summary>
+        /// <value>
+        ///     The Smitespell
+        /// </value>
+        private static Spell IgniteSpell { get; set; }
+
+        /// <summary>
         ///     Gets or sets the menu
         /// </summary>
         /// <value>
         ///     The menu
         /// </value>
         private static Menu Menu { get; set; }
-        public static Menu comboMenu, harassMenu, fleeMenu, ultMenu, laneMenu, drawingsMenu, miscMenu;
+        public static Menu comboMenu, harassMenu, fleeMenu, ultMenu, laneMenu, drawingsMenu, miscMenu, initiatorMenu;
 
         /// <summary>
         ///     Gets the player.
@@ -53,11 +117,6 @@
         ///     The player.
         /// </value>
         private static AIHeroClient Player => ObjectManager.Player;
-
-        /// <summary>
-        ///     Check if Zilean has speed passive
-        /// </summary>
-        private static bool HasSpeedBuff => Player.Buffs.Any(x => x.Name.ToLower().Contains("timewarp"));
 
         /// <summary>
         ///     Gets or sets the Q spell
@@ -127,6 +186,7 @@
                 Game.OnUpdate += OnUpdate;
                 Drawing.OnDraw += OnDraw;
                 Interrupter2.OnInterruptableTarget += OnInterruptableTarget;
+                Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             }
             catch (Exception exception)
             {
@@ -137,27 +197,6 @@
         #endregion
 
         #region Methods
-
-
-        private static void OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
-        {
-            try
-            {
-                if (sender != null && sender.IsValid && sender.IsEnemy &&
-                    args.DangerLevel == Interrupter2.DangerLevel.High && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
-                {
-                    if (Q.IsReady())
-                    {
-                        Q.Cast(sender.ServerPosition);
-                    }
-                    LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
-        }
 
         /// <summary>
         ///     Creates the menu
@@ -210,6 +249,17 @@
                     laneMenu.Add("ElZilean.laneclear.QMouse", new CheckBox("Cast Q to mouse", false));
                 }
 
+
+                initiatorMenu = Menu.AddSubMenu("Initiators", "Initiators");
+                {
+                    // todo filter out champs that have no speed stuff
+                    foreach (var x in HeroManager.Allies)
+                    {
+                        initiatorMenu.Add($"Initiator{x.CharData.BaseSkinName}", new CheckBox("Initiator E: " + x.ChampionName, true));
+                    }
+                }
+
+
                 fleeMenu = Menu.AddSubMenu("Flee", "Flee");
                 {
                     fleeMenu.Add("ElZilean.Flee.Key", new KeyBind("Flee key", false, KeyBind.BindTypes.HoldActive, 'Z'));
@@ -253,30 +303,19 @@
         }
 
         /// <summary>
-        ///     Called when the game draws itself.
+        ///     Gets the stun duration
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private static void OnDraw(EventArgs args)
+        private static float GetStunDuration(Obj_AI_Base target)
         {
-            try
-            {
-                if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Off"))
-                {
-                    return;
-                }
-
-                if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Q"))
-                {
-                    if (Q.Level > 0)
-                    {
-                        Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.DodgerBlue);
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
+            return
+                target.Buffs.Where(
+                    b =>
+                    b.IsActive && Game.Time < b.EndTime
+                    && (b.Type == BuffType.Charm || b.Type == BuffType.Knockback || b.Type == BuffType.Stun
+                        || b.Type == BuffType.Invulnerability || b.Type == BuffType.Suppression
+                        || b.Type == BuffType.Snare)).Aggregate(0f, (current, buff) => Math.Max(current, buff.EndTime))
+                - Game.Time;
         }
         /// <summary>
         ///     The ignite killsteal logic
@@ -340,11 +379,13 @@
 
                     E.Cast(closestEnemy);
                 }
+
                 if (Player.GetAlliesInRange(E.Range).Any() && Player.GetEnemiesInRange(800f).Count >= 1)
                 {
-                    var closestToTarget = Player.GetAlliesInRange(E.Range)
-                      .OrderByDescending(h => (h.PhysicalDamageDealtPlayer + h.MagicDamageDealtPlayer))
-                      .FirstOrDefault();
+                    var closestToTarget =
+                        Player.GetAlliesInRange(E.Range)
+                            .OrderByDescending(h => (h.PhysicalDamageDealtPlayer + h.MagicDamageDealtPlayer))
+                            .FirstOrDefault();
 
                     E.Cast(closestToTarget);
                 }
@@ -371,9 +412,8 @@
             }
 
             // Check if target has a bomb
-            var isBombed =
-            HeroManager.Enemies
-                .FirstOrDefault(x => x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(Q.Range));
+            var isBombed = HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.IsValidTarget(Q.Range));
+
             if (!isBombed.LSIsValidTarget())
             {
                 return;
@@ -407,6 +447,33 @@
                         Player.Spellbook.CastSpell(IgniteSpell.Slot, isBombed);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Called when the game draws itself.
+        /// </summary>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private static void OnDraw(EventArgs args)
+        {
+            try
+            {
+                if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Off"))
+                {
+                    return;
+                }
+
+                if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Q"))
+                {
+                    if (Q.Level > 0)
+                    {
+                        Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.DodgerBlue);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
             }
         }
 
@@ -473,8 +540,7 @@
 
                 // Check if target has a bomb
                 var isBombed =
-                HeroManager.Enemies
-                    .Find(x => x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(Q.Range));
+                    HeroManager.Enemies.FirstOrDefault(x => x.HasBuff("ZileanQEnemyBomb") && x.IsValidTarget(Q.Range));
 
                 if (isBombed.LSIsValidTarget())
                 {
@@ -487,6 +553,26 @@
             catch (Exception e)
             {
                 Console.WriteLine(e);
+            }
+        }
+
+        private static void OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
+        {
+            try
+            {
+                if (sender != null && sender.IsValid && sender.IsEnemy
+                    && args.DangerLevel == Interrupter2.DangerLevel.High && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
+                {
+                    if (Q.IsReady())
+                    {
+                        Q.Cast(sender.ServerPosition);
+                    }
+                    LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
             }
         }
 
@@ -509,10 +595,10 @@
                 }
 
                 var farmLocation =
-                   MinionManager.GetBestCircularFarmLocation(
-                       MinionManager.GetMinions(Q.Range).Select(x => x.ServerPosition.LSTo2D()).ToList(),
-                       Q.Width,
-                       Q.Range);
+                    MinionManager.GetBestCircularFarmLocation(
+                        MinionManager.GetMinions(Q.Range).Select(x => x.ServerPosition.LSTo2D()).ToList(),
+                        Q.Width,
+                        Q.Range);
 
                 if (farmLocation.MinionsHit == 0)
                 {
@@ -524,8 +610,8 @@
                     Q.Cast(Game.CursorPos);
                 }
 
-                if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.Q") && Q.IsReady()
-                    && !getCheckBoxItem(laneMenu, "ElZilean.laneclear.QMouse") && farmLocation.MinionsHit >= 3)
+                if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.Q") && Q.IsReady() && !getCheckBoxItem(laneMenu, "ElZilean.laneclear.QMouse")
+                    && farmLocation.MinionsHit >= 3)
                 {
                     Q.Cast(farmLocation.Position.To3D());
                 }
@@ -542,20 +628,43 @@
         }
 
         /// <summary>
-        ///     Gets the stun duration
+        ///     Fired when the game processes a spell cast.
         /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        private static float GetStunDuration(Obj_AI_Base target)
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
+        private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            return target.Buffs.Where(b => b.IsActive && Game.Time < b.EndTime &&
-                (b.Type == BuffType.Charm ||
-                b.Type == BuffType.Knockback ||
-                b.Type == BuffType.Stun ||
-                b.Type == BuffType.Invulnerability ||
-                b.Type == BuffType.Suppression ||
-                b.Type == BuffType.Snare)).Aggregate(0f, (current, buff) => Math.Max(current, buff.EndTime)) -
-                Game.Time;
+            try
+            {
+                var hero = sender as AIHeroClient;
+                if (!sender.IsAlly || hero == null || !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}"))
+                {
+                    return;
+                }
+
+                var initiatorChampionSpell =
+                    Spells.FirstOrDefault(x => x.SDataName.Equals(args.SData.Name, StringComparison.OrdinalIgnoreCase));
+
+                if (initiatorChampionSpell != null)
+                {
+                    if (args.Start.Distance(Player.Position) <= E.Range && args.End.LSDistance(Player.Position) <= E.Range
+                        && HeroManager.Enemies.Any(
+                            e =>
+                            !e.IsDead
+                            && (e.Position.Distance(args.End) < 600f || e.Position.LSDistance(args.Start) < 800f)))
+                    {
+                        if (E.IsReady() && E.IsInRange(hero))
+                        {
+                            E.CastOnUnit(hero);
+                            Console.WriteLine($"Cast for: {hero.ChampionName} - Spell: {args.SData.Name}");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: '{0}'", e);
+            }
         }
 
         /// <summary>
@@ -596,7 +705,9 @@
 
                 if (getCheckBoxItem(miscMenu, "ElZilean.Q.Stun"))
                 {
-                    var target = HeroManager.Enemies.FirstOrDefault(h => h.LSIsValidTarget(Q.Range) && GetStunDuration(h) >= Q.Delay);
+                    var target =
+                        HeroManager.Enemies.FirstOrDefault(
+                            h => h.LSIsValidTarget(Q.Range) && GetStunDuration(h) >= Q.Delay);
                     if (target != null)
                     {
                         if (Q.IsReady())
@@ -609,15 +720,15 @@
 
                 foreach (var ally in HeroManager.Allies)
                 {
-                    if (!getCheckBoxItem(ultMenu, $"R{ally.ChampionName}") || ally.LSIsRecalling()
-                        || ally.IsInvulnerable)
+                    if (!getCheckBoxItem(ultMenu, $"R{ally.ChampionName}") || ally.LSIsRecalling() || ally.IsInvulnerable)
                     {
                         return;
                     }
 
                     var enemies = ally.LSCountEnemiesInRange(750f);
                     var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
-                    if (ally.HealthPercent <= getSliderItem(ultMenu, "min-health") && !ally.IsDead && enemies >= 1)
+                    if (ally.HealthPercent <= getSliderItem(ultMenu, "min-health") && !ally.IsDead
+                        && enemies >= 1)
                     {
                         if ((int)(totalDamage / ally.Health) > getSliderItem(ultMenu, "min-damage")
                             || ally.HealthPercent < getSliderItem(ultMenu, "min-health"))
@@ -634,5 +745,31 @@
         }
 
         #endregion
+
+        /// <summary>
+        ///     Represents a spell that an item should be casted on.
+        /// </summary>
+        public class InitiatorSpell
+        {
+            #region Public Properties
+
+            /// <summary>
+            ///     Gets or sets the name of the champion.
+            /// </summary>
+            /// <value>
+            ///     The name of the champion.
+            /// </value>
+            public string ChampionName { get; set; }
+
+            /// <summary>
+            ///     Gets or sets the name of the s data.
+            /// </summary>
+            /// <value>
+            ///     The name of the s data.
+            /// </value>
+            public string SDataName { get; set; }
+
+            #endregion
+        }
     }
 }
