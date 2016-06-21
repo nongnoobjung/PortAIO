@@ -270,7 +270,7 @@
                 {
                     miscMenu.Add("ElZilean.Q.Stun", new CheckBox("Auto Q on stunned targets", true));
                     miscMenu.Add("ElZilean.Q.Interrupt", new CheckBox("Interrupt spells with Q", true));
-
+                    miscMenu.Add("ElZilean.E.Slow", new CheckBox("Speed up slowed allies", true));
                 }
 
                 drawingsMenu = Menu.AddSubMenu("Drawings", "Drawings");
@@ -691,6 +691,17 @@
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
                 {
                     OnLaneclear();
+                }
+
+                if (getCheckBoxItem(miscMenu, "ElZilean.E.Slow"))
+                {
+                    foreach (var slowedAlly in HeroManager.Allies.Where(x => x.HasBuffOfType(BuffType.Slow)))
+                    {
+                        if (E.IsReady() && E.IsInRange(slowedAlly))
+                        {
+                            E.CastOnUnit(slowedAlly);
+                        }
+                    }
                 }
 
                 if (getCheckBoxItem(comboMenu, "ElZilean.Ignite"))
