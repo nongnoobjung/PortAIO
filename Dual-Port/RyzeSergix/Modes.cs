@@ -42,7 +42,7 @@ namespace RyzeAssembly
             var laneclearE = Menu._laneclearMenu["EL"].Cast<CheckBox>().CurrentValue;
             var laneclearR = Menu._laneclearMenu["RL"].Cast<CheckBox>().CurrentValue;
             var minion = MinionManager.GetMinions(ryze.Spells.Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth).FirstOrDefault();
-            if (ryze.Hero.ManaPercent <= Mana)
+            if (ryze.Hero.ManaPercent > Mana)
             {
                 if (minion != null)
                 {
@@ -75,7 +75,7 @@ namespace RyzeAssembly
             var jungleclearE = Menu._jungleclearMenu["EJ"].Cast<CheckBox>().CurrentValue;
             var jungleclearR = Menu._jungleclearMenu["RJ"].Cast<CheckBox>().CurrentValue;
             var minion = MinionManager.GetMinions(ryze.Spells.Q.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth).FirstOrDefault();
-            if (ryze.Hero.ManaPercent <= Mana)
+            if (ryze.Hero.ManaPercent > Mana)
             {
                 if (minion != null)
                 {
@@ -103,7 +103,7 @@ namespace RyzeAssembly
         {
             var Q = Menu._harrashMenu["QH"].Cast<CheckBox>().CurrentValue;
             var Mana = Menu._harrashMenu["ManaH"].Cast<Slider>().CurrentValue;
-            if (ryze.Hero.ManaPercent <= Mana)
+            if (ryze.Hero.ManaPercent > Mana)
                 if (Q)
                     ryze.Spells.qCastPred();
         }
@@ -151,6 +151,7 @@ namespace RyzeAssembly
         }
         public void Combo(RyzeMain ryze)
         {
+            var Heal = Menu._miscMenu["%R"].Cast<Slider>().CurrentValue;
             if (functions != null)
             {
                 if (i < functions.Count)
@@ -172,6 +173,13 @@ namespace RyzeAssembly
                     rev = false;
                 }
 
+            }
+            else
+            {
+                if (ryze.Hero.HealthPercent <= Heal)
+                {
+                    ryze.Spells.R.Cast();
+                }
             }
 
             var target = TargetSelector.GetTarget(600, DamageType.Magical);

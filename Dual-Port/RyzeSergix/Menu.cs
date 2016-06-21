@@ -12,7 +12,7 @@ namespace RyzeAssembly
 {
     class Menu
     {
-        public static EloBuddy.SDK.Menu.Menu _drawSettingsMenu, _laneclearMenu, _jungleclearMenu, _harrashMenu;
+        public static EloBuddy.SDK.Menu.Menu _drawSettingsMenu, _laneclearMenu, _jungleclearMenu, _harrashMenu, _miscMenu;
         public EloBuddy.SDK.Menu.Menu menu;
         public Menu()
         {
@@ -27,6 +27,7 @@ namespace RyzeAssembly
             loadDrawings();
             loadJungleClear();
             loadHarassh();
+            loadMisc();
         }
         public void loadHarassh()
         {
@@ -69,6 +70,14 @@ namespace RyzeAssembly
                 _drawSettingsMenu.Add("Draw Q Range", new CheckBox("Draw Q Range"));
                 _drawSettingsMenu.Add("Draw W Range", new CheckBox("Draw W Range"));
                 _drawSettingsMenu.Add("Draw E Range", new CheckBox("Draw E Range"));
+            }
+        }
+
+        public void loadMisc()
+        {
+            _miscMenu = menu.AddSubMenu("Misc", "Misc");
+            {
+                _miscMenu.Add("%R", new Slider("% R heal ", 30, 0, 100));
             }
         }
     }
