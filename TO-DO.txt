@@ -6,7 +6,6 @@ Akali, Amumu, Cassiopeia, Corki, Draven, Evelynn, Ezreal, Jinx, Kalista, Kog'Maw
 
 Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
 - Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
-- RAREKarthus/Zyra/Twisted Fate [https://github.com/KyonLeague/RAREScripts/tree/master]
 - Karma - the Englightned One [https://github.com/SwipeDan/LeagueSharp/tree/master/Karma%20%20%20%E2%80%93%20%20the%20Enlightened%20One]
 - Syndra/Soraka [https://github.com/SephLeague/LeagueSharp]
 - Hikicarry Draven (A really nice manual Draven) [https://github.com/HikigayaAss/hikiMarksman/tree/master/hikiMarksmanRework/hikiMarksmanRework]
@@ -55,5 +54,6 @@ AIOS in an AIO :
 - EloFactory
 - TroopAIO
 - Sharpy AIO
+- RARESeries
 
 ------------------------------------------------------------------------
