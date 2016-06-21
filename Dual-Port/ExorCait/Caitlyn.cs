@@ -83,14 +83,62 @@ namespace ExorSDK.Champions.Caitlyn
         }
 
         /// <summary>
+        ///     Called on do-cast.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The args.</param>
+        public static void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender.IsMe &&
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            {
+                switch (args.SData.Name)
+                {
+                    case "CaitlynEntrapment":
+                    case "CaitlynEntrapmentMissile":
+                        if (Vars.W.IsReady() &&
+                            Vars.getCheckBoxItem(Vars.WMenu, "combo"))
+                        {
+                            Vars.W.Cast(Vars.W.GetPrediction(Targets.Target).CastPosition);
+                        }
+                        break;
+
+                    case "CaitlynYordleTrap":
+                        if (Vars.Q.IsReady() &&
+                            Vars.getCheckBoxItem(Vars.QMenu, "combo"))
+                        {
+                            Vars.Q.Cast(Targets.Target.ServerPosition);
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
         /// <param name="sender">The object.</param>
         /// <param name="args">The <see cref="Events.GapCloserEventArgs" /> instance containing the event data.</param>
         public static void OnGapCloser(object sender, Events.GapCloserEventArgs args)
         {
+            if (Vars.E.IsReady() &&
+                args.IsDirectedToPlayer &&
+                args.Sender.LSIsValidTarget(Vars.E.Range) &&
+                !Invulnerable.Check(args.Sender, DamageType.Magical, false) &&
+                Vars.getCheckBoxItem(Vars.EMenu, "gapcloser"))
+            {
+                if (!Vars.E.GetPrediction(args.Sender).CollisionObjects.Any())
+                {
+                    Vars.E.Cast(args.Sender.ServerPosition);
+                    return;
+                }
+            }
+
             if (Vars.W.IsReady() &&
-                args.Sender.LSIsValidTarget(Vars.W.Range) &&
+                args.Sender.IsValidTarget(Vars.W.Range) &&
                 !Invulnerable.Check(args.Sender, DamageType.Magical, false) &&
                 Vars.getCheckBoxItem(Vars.WMenu, "gapcloser"))
             {
@@ -100,18 +148,44 @@ namespace ExorSDK.Champions.Caitlyn
                         m.CharData.BaseSkinName.Equals("caitlyntrap")))
                 {
                     Vars.W.Cast(args.End);
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Called on interruptable spell.
+        /// </summary>
+        /// <param name="sender">The object.</param>
+        /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
+        public static void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
+        {
+            if (Invulnerable.Check(args.Sender, DamageType.Magical, false))
+            {
+                return;
+            }
+
+            if (Vars.E.IsReady() &&
+                args.Sender.IsValidTarget(Vars.E.Range) &&
+                Vars.getCheckBoxItem(Vars.EMenu, "interrupter"))
+            {
+                if (!Vars.E.GetPrediction(args.Sender).CollisionObjects.Any())
+                {
+                    Vars.E.Cast(Vars.E.GetPrediction(args.Sender).UnitPosition);
                     return;
                 }
             }
 
-            if (Vars.E.IsReady() &&
-                args.IsDirectedToPlayer &&
-                args.Sender.LSIsValidTarget(Vars.E.Range) &&
-                !Invulnerable.Check(args.Sender, DamageType.Magical, false) &&
-                Vars.getCheckBoxItem(Vars.EMenu, "gapcloser"))
+            if (Vars.W.IsReady() &&
+                args.Sender.IsValidTarget(Vars.W.Range) &&
+                Vars.getCheckBoxItem(Vars.WMenu, "interrupter"))
             {
-                if (!Vars.E.GetPrediction(args.Sender).CollisionObjects.Any())
-                    Vars.E.Cast(args.Sender.ServerPosition);
+                if (!ObjectManager.Get<Obj_AI_Minion>().Any(
+                    m =>
+                        m.CharData.BaseSkinName.Equals("caitlyntrap") &&
+                        m.Distance(Vars.W.GetPrediction(args.Sender).CastPosition) < 100f))
+                {
+                    Vars.W.Cast(Vars.W.GetPrediction(args.Sender).CastPosition);
+                }
             }
         }
     }

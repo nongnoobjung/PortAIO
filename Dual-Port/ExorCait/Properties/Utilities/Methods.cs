@@ -15,7 +15,9 @@ namespace ExorSDK.Champions.Caitlyn
         public static void Initialize()
         {
             Game.OnUpdate += Caitlyn.OnUpdate;
+            Obj_AI_Base.OnSpellCast += Caitlyn.OnDoCast;
             Events.OnGapCloser += Caitlyn.OnGapCloser;
+            Events.OnInterruptableTarget += Caitlyn.OnInterruptableTarget;
         }
     }
 }

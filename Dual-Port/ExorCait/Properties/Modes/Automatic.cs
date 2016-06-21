@@ -70,12 +70,18 @@ namespace ExorSDK.Champions.Caitlyn
             if (Vars.R.IsReady() &&
                 Vars.getCheckBoxItem(Vars.RMenu, "bool"))
             {
-                if (GameObjects.EnemyHeroes.Any(t => t.LSIsValidTarget(Vars.R.Range)) &&
+                if (GameObjects.EnemyHeroes.Any(
+                    t =>
+                    !Invulnerable.Check(t) &&
+                    t.LSIsValidTarget(Vars.R.Range)) &&
                     Vars.getKeyBindItem(Vars.RMenu, "key"))
                 {
                     Vars.R.CastOnUnit(
                         GameObjects.EnemyHeroes
-                            .Where(t => t.LSIsValidTarget(Vars.R.Range))
+                            .Where(
+                            t =>
+                                !Invulnerable.Check(t) &&
+                                t.LSIsValidTarget(Vars.R.Range))
                             .OrderBy(o => o.Health)
                             .LastOrDefault());
                 }

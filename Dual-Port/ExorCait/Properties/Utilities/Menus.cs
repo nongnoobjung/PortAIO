@@ -18,6 +18,7 @@ namespace ExorSDK.Champions.Caitlyn
             /// </summary>
             Vars.QMenu = Vars.Menu.AddSubMenu("Use Q to:", "Q");
             {
+                Vars.QMenu.Add("combo", new CheckBox("Combo", true));
                 Vars.QMenu.Add("logical", new CheckBox("Logical", true));
                 Vars.QMenu.Add("killsteal", new CheckBox("KillSteal", true));
                 Vars.QMenu.Add("clear", new Slider("Clear / if Mana >= x%", 50, 0, 101));
@@ -28,8 +29,10 @@ namespace ExorSDK.Champions.Caitlyn
             /// </summary>
             Vars.WMenu = Vars.Menu.AddSubMenu("Use W to:", "W");
             {
+                Vars.WMenu.Add("combo", new CheckBox("Combo", true));
                 Vars.WMenu.Add("logical", new CheckBox("Logical", true));
                 Vars.WMenu.Add("gapcloser", new CheckBox("Anti-Gapcloser", true));
+                Vars.WMenu.Add("interrupter", new CheckBox("Channelling Targets", true));
             }
 
             /// <summary>
@@ -39,6 +42,7 @@ namespace ExorSDK.Champions.Caitlyn
             {
                 Vars.EMenu.Add("combo", new CheckBox("Combo", true));
                 Vars.EMenu.Add("gapcloser", new CheckBox("Anti-Gapcloser", true));
+                Vars.EMenu.Add("interrupter", new CheckBox("Channelling Targets", true));
             }
 
             /// <summary>
@@ -47,6 +51,8 @@ namespace ExorSDK.Champions.Caitlyn
             Vars.RMenu = Vars.Menu.AddSubMenu("Use R to:", "r");
             {
                 Vars.RMenu.Add("killsteal", new CheckBox("KillSteal", true));
+                Vars.RMenu.AddSeparator();
+                Vars.RMenu.AddLabel("The Semi-Automatic R will automatically ult the lowest on health non-invulnerable enemy in range.");
                 Vars.RMenu.Add("bool", new CheckBox("Semi-Automatic R", true));
                 Vars.RMenu.Add("key", new KeyBind("Key (Semi-Auto) : ", false, KeyBind.BindTypes.HoldActive, 'T'));
             }

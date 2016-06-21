@@ -33,21 +33,14 @@ namespace ExorSDK.Champions.Caitlyn
                 foreach (var target in
                     GameObjects.EnemyHeroes.Where(
                         t =>
-                            t.LSIsValidTarget(550f) &&
+                            t.LSIsValidTarget(700f) &&
                             !Invulnerable.Check(t) &&
                             !t.HasBuff("caitlynyordletrapinternal")))
                 {
                     if (!Vars.E.GetPrediction(target).CollisionObjects.Any() &&
-						Vars.E.GetPrediction(target).Hitchance >= HitChance.Medium)
+                        Vars.E.GetPrediction(target).Hitchance >= HitChance.Medium)
                     {
                         Vars.E.Cast(Vars.E.GetPrediction(target).UnitPosition);
-
-                        if (Vars.Q.IsReady() &&
-                            Vars.getCheckBoxItem(Vars.QMenu, "logical"))
-                        {
-                            Vars.Q.Cast(target.ServerPosition);
-                        }
-
                     }
                 }
             }
