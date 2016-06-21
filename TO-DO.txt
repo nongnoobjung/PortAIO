@@ -7,7 +7,6 @@ Graves, Jax, Quinn = Port these for ExorAIO SDK
 Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
 - SkyLv Tristana/AurelionSol [https://github.com/EloFactory/SkyLv_SoLuTiON]
 - Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
-- Sharpy AIO Zed [https://github.com/deop7138/Sharpy-AIO/tree/master/Sharpy%20AIO]
 - RAREKarthus/Zyra/Twisted Fate [https://github.com/KyonLeague/RAREScripts/tree/master]
 - Karma - the Englightned One [https://github.com/SwipeDan/LeagueSharp/tree/master/Karma%20%20%20%E2%80%93%20%20the%20Enlightened%20One]
 - Syndra/Soraka [https://github.com/SephLeague/LeagueSharp]
@@ -19,12 +18,10 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - xQx Wukong [https://github.com/CPMSoft/xQx-LeagueSharp]
 - Geass Tristana
 - SoloVayne
-- TroopAIO
 - Dicaste's Ashe/Urgot
 - Shen Hand of God
 - [RE-PORT] Nechrito Riven - Some Big Changes Happened and it's all different now
 - Lee Is Back [https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Lee%20is%20Back]
-- Sharpshooter
 - Korean Zed [Will need to be fixed afterwards]
 
 Utility Ports [Only doing after Champions are completed] :
@@ -38,7 +35,7 @@ Utility Ports [Only doing after Champions are completed] :
 - AutoSharp - Once working again
 - AutoJungle - Once working again
 
-Notes : 
+AIOS in an AIO : 
 - Finish Up ExorAIO
 - Finish Up Marksman
 - Challenger Series
@@ -58,5 +55,7 @@ Notes :
 - SharpShooter
 - SkyLv
 - EloFactory
+- TroopAIO
+- Sharpy AIO
 
 ------------------------------------------------------------------------
