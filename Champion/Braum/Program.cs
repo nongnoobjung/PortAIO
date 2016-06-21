@@ -52,7 +52,7 @@ namespace PortAIO.Champion.Braum
             drawMenu.Add("notif", new CheckBox("Notification (timers)"));
             drawMenu.Add("noti", new CheckBox("Show KS notification"));
             drawMenu.Add("qRange", new CheckBox("Q range"));
-            drawMenu.Add("eRange", new CheckBox("E range"));
+            drawMenu.Add("wRange", new CheckBox("W range"));
             drawMenu.Add("rRange", new CheckBox("R range"));
             drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
 
@@ -282,15 +282,15 @@ namespace PortAIO.Champion.Braum
                     LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.Cyan, 1, 1);
             }
 
-            if (getCheckBoxItem(drawMenu, "eRange"))
+            if (getCheckBoxItem(drawMenu, "wRange"))
             {
                 if (getCheckBoxItem(drawMenu, "onlyRdy"))
                 {
-                    if (E.IsReady())
-                        LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, E.Range, Color.Yellow, 1, 1);
+                    if (W.IsReady())
+                        LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, W.Range, Color.Orange, 1, 1);
                 }
                 else
-                    LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, E.Range, Color.Yellow, 1, 1);
+                    LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, W.Range, Color.Orange, 1, 1);
             }
 
             if (getCheckBoxItem(drawMenu, "rRange"))
