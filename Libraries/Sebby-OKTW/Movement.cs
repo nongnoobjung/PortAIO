@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SharpDX;
-using LeagueSharp;
 using LeagueSharp.Common;
-using EloBuddy;
+using System.Globalization;
 
 namespace SebbyLib.Movement
 {
@@ -28,7 +27,7 @@ namespace SebbyLib.Movement
         SkillshotCone
     }
 
-    public enum CollisionableObjects
+    public enum CollisionableObject
     {
         Minions,
         Heroes,
@@ -45,55 +44,150 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     Set to true make the prediction hit as many enemy heroes as posible.
         /// </summary>
-        public bool Aoe = false;
+        private bool _aoe; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+
+        public bool Aoe
+        {
+            get
+            {
+                return _aoe;
+            }
+            set
+            {
+                _aoe = value;
+            }
+        }
 
         /// <summary>
         ///     Set to true if the unit collides with units.
         /// </summary>
-        public bool Collision = false;
+        private bool _collision; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+
+        public bool Collision
+        {
+            get
+            {
+                return _collision;
+            }
+            set
+            {
+                _collision = value;
+            }
+        }
 
         /// <summary>
         ///     Array that contains the unit types that the skillshot can collide with.
         /// </summary>
-        public CollisionableObjects[] CollisionObjects =
+        private CollisionableObject[] _collisionObjects = {
+            CollisionableObject.Minions, CollisionableObject.YasuoWall
+        }; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+
+        public CollisionableObject[] CollisionObjects
         {
-            CollisionableObjects.Minions, CollisionableObjects.YasuoWall
-        };
+            get
+            {
+                return _collisionObjects;
+            }
+            set
+            {
+                _collisionObjects = value;
+            }
+        }
 
         /// <summary>
         ///     The skillshot delay in seconds.
         /// </summary>
-        public float Delay;
+        private float _delay; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+
+        public float Delay
+        {
+            get
+            {
+                return _delay;
+            }
+            set
+            {
+                _delay = value;
+            }
+        }
 
         /// <summary>
         ///     The skillshot width's radius or the angle in case of the cone skillshots.
         /// </summary>
-        public float Radius = 1f;
+        private float _radius = 1f; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+
+        public float Radius
+        {
+            get
+            {
+                return _radius;
+            }
+            set
+            {
+                _radius = value;
+            }
+        }
 
         /// <summary>
         ///     The skillshot range in units.
         /// </summary>
-        public float Range = float.MaxValue;
+        private float _range = float.MaxValue; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+
+        public float Range
+        {
+            get
+            {
+                return _range;
+            }
+            set
+            {
+                _range = value;
+            }
+        }
 
         /// <summary>
         ///     The skillshot speed in units per second.
         /// </summary>
-        public float Speed = float.MaxValue;
+        private float _speed = float.MaxValue; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+
+        public float Speed
+        {
+            get
+            {
+                return _speed;
+            }
+            set
+            {
+                _speed = value;
+            }
+        }
 
         /// <summary>
         ///     The skillshot type.
         /// </summary>
-        public SkillshotType Type = SkillshotType.SkillshotLine;
+        private SkillshotType _type = SkillshotType.SkillshotLine; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+
+        public SkillshotType Type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                _type = value;
+            }
+        }
 
         /// <summary>
         ///     The unit that the prediction will made for.
         /// </summary>
-        public Obj_AI_Base Unit = ObjectManager.Player;
+        public EloBuddy.Obj_AI_Base Unit = EloBuddy.ObjectManager.Player;
 
         /// <summary>
         ///     Source unit for the prediction 
         /// </summary>
-        public Obj_AI_Base Source = ObjectManager.Player;
+        public EloBuddy.Obj_AI_Base Source = EloBuddy.ObjectManager.Player;
 
         /// <summary>
         ///     Set to true to increase the prediction radius by the unit bounding radius.
@@ -105,7 +199,7 @@ namespace SebbyLib.Movement
         /// </summary>
         public Vector3 From
         {
-            get { return _from.LSTo2D().IsValid() ? _from : ObjectManager.Player.ServerPosition; }
+            get { return _from.LSTo2D().IsValid() ? _from : EloBuddy.ObjectManager.Player.ServerPosition; }
             set { _from = value; }
         }
 
@@ -118,7 +212,7 @@ namespace SebbyLib.Movement
             {
                 return _rangeCheckFrom.LSTo2D().IsValid()
                     ? _rangeCheckFrom
-                    : (From.LSTo2D().IsValid() ? From : ObjectManager.Player.ServerPosition);
+                    : (From.LSTo2D().IsValid() ? From : EloBuddy.ObjectManager.Player.ServerPosition);
             }
             set { _rangeCheckFrom = value; }
         }
@@ -138,12 +232,12 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     The list of the targets that the spell will hit (only if aoe was enabled).
         /// </summary>
-        public List<AIHeroClient> AoeTargetsHit = new List<AIHeroClient>();
+        public List<EloBuddy.AIHeroClient> AoeTargetsHit = new List<EloBuddy.AIHeroClient>();
 
         /// <summary>
         ///     The list of the units that the skillshot will collide with.
         /// </summary>
-        public List<Obj_AI_Base> CollisionObjects = new List<Obj_AI_Base>();
+        public List<EloBuddy.Obj_AI_Base> CollisionObjects = new List<EloBuddy.Obj_AI_Base>();
 
         /// <summary>
         ///     Returns the hitchance.
@@ -189,26 +283,26 @@ namespace SebbyLib.Movement
     /// </summary>
     public static class Prediction
     {
-        public static PredictionOutput GetPrediction(Obj_AI_Base unit, float delay)
+        public static PredictionOutput GetPrediction(EloBuddy.Obj_AI_Base unit, float delay)
         {
             return GetPrediction(new PredictionInput { Unit = unit, Delay = delay });
         }
 
-        public static PredictionOutput GetPrediction(Obj_AI_Base unit, float delay, float radius)
+        public static PredictionOutput GetPrediction(EloBuddy.Obj_AI_Base unit, float delay, float radius)
         {
             return GetPrediction(new PredictionInput { Unit = unit, Delay = delay, Radius = radius });
         }
 
-        public static PredictionOutput GetPrediction(Obj_AI_Base unit, float delay, float radius, float speed)
+        public static PredictionOutput GetPrediction(EloBuddy.Obj_AI_Base unit, float delay, float radius, float speed)
         {
             return GetPrediction(new PredictionInput { Unit = unit, Delay = delay, Radius = radius, Speed = speed });
         }
 
-        public static PredictionOutput GetPrediction(Obj_AI_Base unit,
+        public static PredictionOutput GetPrediction(EloBuddy.Obj_AI_Base unit,
             float delay,
             float radius,
             float speed,
-            CollisionableObjects[] collisionable)
+            CollisionableObject[] collisionable)
         {
             return
                 GetPrediction(
@@ -239,7 +333,7 @@ namespace SebbyLib.Movement
             if (ft)
             {
                 //Increase the delay due to the latency and server tick:
-                input.Delay += Game.Ping / 2000f + 0.06f;
+                input.Delay += EloBuddy.Game.Ping / 2000f + 0.06f;
 
                 if (input.Aoe)
                 {
@@ -327,7 +421,7 @@ namespace SebbyLib.Movement
 
         internal static HitChance GetHitChance(PredictionInput input)
         {
-            var hero = input.Unit as AIHeroClient;
+            var hero = input.Unit as EloBuddy.AIHeroClient;
 
 
             if (hero == null || input.Radius <= 1f)
@@ -409,7 +503,7 @@ namespace SebbyLib.Movement
                 return HitChance.VeryHigh;
             }
 
-            if (hero.HealthPercent < 20 || ObjectManager.Player.HealthPercent < 20)
+            if (hero.HealthPercent < 20 || EloBuddy.ObjectManager.Player.HealthPercent < 20)
             {
                 return HitChance.VeryHigh;
             }
@@ -507,7 +601,7 @@ namespace SebbyLib.Movement
             return GetPositionOnPath(input, input.Unit.GetWaypoints(), speed);
         }
 
-        internal static double GetAngle(Vector3 from, Obj_AI_Base target)
+        internal static double GetAngle(Vector3 from, EloBuddy.Obj_AI_Base target)
         {
             var C = target.ServerPosition.LSTo2D();
             var A = target.GetWaypoints().Last();
@@ -524,17 +618,17 @@ namespace SebbyLib.Movement
             return Math.Cos((AB + BC - AC) / (2 * Math.Sqrt(AB) * Math.Sqrt(BC))) * 180 / Math.PI;
         }
 
-        internal static double UnitIsImmobileUntil(Obj_AI_Base unit)
+        internal static double UnitIsImmobileUntil(EloBuddy.Obj_AI_Base unit)
         {
             var result =
                 unit.Buffs.Where(
                     buff =>
-                        buff.IsActive && Game.Time <= buff.EndTime &&
-                        (buff.Type == BuffType.Charm || buff.Type == BuffType.Knockup || buff.Type == BuffType.Stun ||
-                         buff.Type == BuffType.Suppression || buff.Type == BuffType.Snare || buff.Type == BuffType.Fear
-                         || buff.Type == BuffType.Taunt || buff.Type == BuffType.Knockback))
+                        buff.IsActive && EloBuddy.Game.Time <= buff.EndTime &&
+                        (buff.Type == EloBuddy.BuffType.Charm || buff.Type == EloBuddy.BuffType.Knockup || buff.Type == EloBuddy.BuffType.Stun ||
+                         buff.Type == EloBuddy.BuffType.Suppression || buff.Type == EloBuddy.BuffType.Snare || buff.Type == EloBuddy.BuffType.Fear
+                         || buff.Type == EloBuddy.BuffType.Taunt || buff.Type == EloBuddy.BuffType.Knockback))
                     .Aggregate(0d, (current, buff) => Math.Max(current, buff.EndTime));
-            return (result - Game.Time);
+            return (result - EloBuddy.Game.Time);
         }
 
         internal static PredictionOutput GetPositionOnPath(PredictionInput input, List<Vector2> path, float speed = -1)
@@ -672,6 +766,9 @@ namespace SebbyLib.Movement
                     return Cone.GetPrediction(input);
                 case SkillshotType.SkillshotLine:
                     return Line.GetPrediction(input);
+                default:
+                    // do the default action
+                    break;
             }
             return new PredictionOutput();
         }
@@ -696,7 +793,7 @@ namespace SebbyLib.Movement
             return result;
         }
 
-        public static class Circle
+        private static class Circle
         {
             public static PredictionOutput GetPrediction(PredictionInput input)
             {
@@ -722,7 +819,7 @@ namespace SebbyLib.Movement
                     {
                         return new PredictionOutput
                         {
-                            AoeTargetsHit = posibleTargets.Select(h => (AIHeroClient)h.Unit).ToList(),
+                            AoeTargetsHit = posibleTargets.Select(h => (EloBuddy.AIHeroClient)h.Unit).ToList(),
                             CastPosition = mecCircle.Center.To3D(),
                             UnitPosition = mainTargetPrediction.UnitPosition,
                             Hitchance = mainTargetPrediction.Hitchance,
@@ -749,7 +846,7 @@ namespace SebbyLib.Movement
             }
         }
 
-        public static class Cone
+        private static class Cone
         {
             internal static int GetHits(Vector2 end, double range, float angle, List<Vector2> points)
             {
@@ -832,7 +929,7 @@ namespace SebbyLib.Movement
             }
         }
 
-        public static class Line
+        private static class Line
         {
             internal static IEnumerable<Vector2> GetHits(Vector2 start, Vector2 end, double radius, List<Vector2> points)
             {
@@ -950,7 +1047,7 @@ namespace SebbyLib.Movement
         internal class PossibleTarget
         {
             public Vector2 Position;
-            public Obj_AI_Base Unit;
+            public EloBuddy.Obj_AI_Base Unit;
         }
     }
 
@@ -965,7 +1062,7 @@ namespace SebbyLib.Movement
         ///     Returns the list of the units that the skillshot will hit before reaching the set positions.
         /// </summary>
         /// 
-        private static bool MinionIsDead(PredictionInput input, Obj_AI_Base minion, float distance)
+        private static bool MinionIsDead(PredictionInput input, EloBuddy.Obj_AI_Base minion, float distance)
         {
             float delay = (distance / input.Speed) + input.Delay;
 
@@ -992,7 +1089,7 @@ namespace SebbyLib.Movement
                 {
                     switch (objectType)
                     {
-                        case CollisionableObjects.Minions:
+                        case CollisionableObject.Minions:
                             foreach (var minion in Cache.GetMinions(input.From, Math.Min(input.Range + input.Radius + 100, 2000)))
                             {
                                 input.Unit = minion;
@@ -1033,7 +1130,7 @@ namespace SebbyLib.Movement
                                 }
                             }
                             break;
-                        case CollisionableObjects.Heroes:
+                        case CollisionableObject.Heroes:
                             foreach (var hero in
                                 HeroManager.Enemies.FindAll(
                                     hero =>
@@ -1053,16 +1150,19 @@ namespace SebbyLib.Movement
                             }
                             break;
 
-                        case CollisionableObjects.Walls:
+                        case CollisionableObject.Walls:
                             var step = position.LSDistance(input.From) / 20;
                             for (var i = 0; i < 20; i++)
                             {
                                 var p = input.From.LSTo2D().LSExtend(position.LSTo2D(), step * i);
-                                if (NavMesh.GetCollisionFlags(p.X, p.Y).HasFlag(CollisionFlags.Wall))
+                                if (EloBuddy.NavMesh.GetCollisionFlags(p.X, p.Y).HasFlag(EloBuddy.CollisionFlags.Wall))
                                 {
                                     return true;
                                 }
                             }
+                            break;
+                        default:
+                            // do the default action
                             break;
                     }
                 }
@@ -1097,7 +1197,7 @@ namespace SebbyLib.Movement
     internal static class UnitTracker
     {
         public static List<UnitTrackerInfo> UnitTrackerInfoList = new List<UnitTrackerInfo>();
-        private static List<AIHeroClient> Champion = new List<AIHeroClient>();
+        private static List<EloBuddy.AIHeroClient> Champion = new List<EloBuddy.AIHeroClient>();
         private static List<Spells> spells = new List<Spells>();
         private static List<PathInfo> PathBank = new List<PathInfo>();
         static UnitTracker()
@@ -1128,27 +1228,19 @@ namespace SebbyLib.Movement
             spells.Add(new Spells() { name = "velkozr", duration = 0.5 }); //Velkoz R 
             spells.Add(new Spells() { name = "jhinr", duration = 2 }); //Velkoz R 
 
-            foreach (var hero in ObjectManager.Get<AIHeroClient>())
+            foreach (var hero in EloBuddy.ObjectManager.Get<EloBuddy.AIHeroClient>())
             {
                 Champion.Add(hero);
                 UnitTrackerInfoList.Add(new UnitTrackerInfo() { NetworkId = hero.NetworkId, AaTick = Utils.TickCount, StopMoveTick = Utils.TickCount, NewPathTick = Utils.TickCount, SpecialSpellFinishTick = Utils.TickCount, LastInvisableTick = Utils.TickCount });
             }
 
-            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
-            Obj_AI_Base.OnNewPath += AIHeroClient_OnNewPath;
-            AttackableUnit.OnCreate += Obj_AI_Base_OnEnterLocalVisiblityClient;
+            EloBuddy.Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
+            EloBuddy.Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
         }
 
-        private static void Obj_AI_Base_OnEnterLocalVisiblityClient(GameObject sender, EventArgs args)
+        private static void Obj_AI_Hero_OnNewPath(EloBuddy.Obj_AI_Base sender, EloBuddy.GameObjectNewPathEventArgs args)
         {
-            if (sender.Type != GameObjectType.AIHeroClient || !sender.IsVisible) return;
-
-            UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId).LastInvisableTick = Utils.TickCount;
-        }
-
-        private static void AIHeroClient_OnNewPath(Obj_AI_Base sender, GameObjectNewPathEventArgs args)
-        {
-            if (sender.Type != GameObjectType.AIHeroClient) return;
+            if (sender.Type != EloBuddy.GameObjectType.AIHeroClient) return;
 
             var info = UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId);
 
@@ -1157,21 +1249,21 @@ namespace SebbyLib.Movement
             if (args.Path.Count() == 1 && !sender.IsMoving) // STOP MOVE DETECTION
                 UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId).StopMoveTick = Utils.TickCount;
             else // SPAM CLICK LOGIC
-                info.PathBank.Add(new PathInfo() { Position = args.Path.Last().LSTo2D(), Time = Game.Time });
+                info.PathBank.Add(new PathInfo() { Position = args.Path.Last().LSTo2D(), Time = EloBuddy.Game.Time });
 
             if (info.PathBank.Count > 3)
                 info.PathBank.Remove(info.PathBank.First());
         }
 
-        private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private static void Obj_AI_Base_OnProcessSpellCast(EloBuddy.Obj_AI_Base sender, EloBuddy.GameObjectProcessSpellCastEventArgs args)
         {
-            if (!(sender is AIHeroClient)) return;
+            if (!(sender is EloBuddy.AIHeroClient)) return;
 
             if (args.SData.IsAutoAttack())
                 UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId).AaTick = Utils.TickCount;
             else
             {
-                var foundSpell = spells.Find(x => args.SData.Name.ToLower() == x.name.ToLower());
+                var foundSpell = spells.Find(x => args.SData.Name.ToLower() == x.name.ToLower(CultureInfo.CurrentCulture));
                 if (foundSpell != null)
                 {
                     UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId).SpecialSpellFinishTick = Utils.TickCount + (int)(foundSpell.duration * 1000);
@@ -1179,14 +1271,14 @@ namespace SebbyLib.Movement
             }
         }
 
-        public static bool SpamSamePlace(Obj_AI_Base unit)
+        public static bool SpamSamePlace(EloBuddy.Obj_AI_Base unit)
         {
             var TrackerUnit = UnitTrackerInfoList.Find(x => x.NetworkId == unit.NetworkId);
             if (TrackerUnit.PathBank.Count < 3)
                 return false;
 
             if (TrackerUnit.PathBank[2].Time - TrackerUnit.PathBank[1].Time < 0.2f
-                && TrackerUnit.PathBank[2].Time + 0.1f < Game.Time
+                && TrackerUnit.PathBank[2].Time + 0.1f < EloBuddy.Game.Time
                 && TrackerUnit.PathBank[1].Position.LSDistance(TrackerUnit.PathBank[2].Position) < 100)
             {
                 return true;
@@ -1195,13 +1287,13 @@ namespace SebbyLib.Movement
                 return false;
         }
 
-        public static bool PathCalc(Obj_AI_Base unit)
+        public static bool PathCalc(EloBuddy.Obj_AI_Base unit)
         {
             var TrackerUnit = UnitTrackerInfoList.Find(x => x.NetworkId == unit.NetworkId);
             if (TrackerUnit.PathBank.Count < 3)
                 return false;
 
-            if (TrackerUnit.PathBank[2].Time - TrackerUnit.PathBank[0].Time < 0.4f && Game.Time - TrackerUnit.PathBank[2].Time < 0.1
+            if (TrackerUnit.PathBank[2].Time - TrackerUnit.PathBank[0].Time < 0.4f && EloBuddy.Game.Time - TrackerUnit.PathBank[2].Time < 0.1
                 && TrackerUnit.PathBank[2].Position.LSDistance(unit.Position) < 300
                 && TrackerUnit.PathBank[1].Position.LSDistance(unit.Position) < 300
                 && TrackerUnit.PathBank[0].Position.LSDistance(unit.Position) < 300)
@@ -1216,7 +1308,7 @@ namespace SebbyLib.Movement
                 return false;
         }
 
-        public static List<Vector2> GetPathWayCalc(Obj_AI_Base unit)
+        public static List<Vector2> GetPathWayCalc(EloBuddy.Obj_AI_Base unit)
         {
             var TrackerUnit = UnitTrackerInfoList.Find(x => x.NetworkId == unit.NetworkId);
             List<Vector2> points = new List<Vector2>();
@@ -1224,32 +1316,25 @@ namespace SebbyLib.Movement
             return points;
         }
 
-        public static double GetSpecialSpellEndTime(Obj_AI_Base unit)
+        public static double GetSpecialSpellEndTime(EloBuddy.Obj_AI_Base unit)
         {
             var TrackerUnit = UnitTrackerInfoList.Find(x => x.NetworkId == unit.NetworkId);
             return (TrackerUnit.SpecialSpellFinishTick - Utils.TickCount) / 1000d;
         }
 
-        public static double GetLastAutoAttackTime(Obj_AI_Base unit)
+        public static double GetLastAutoAttackTime(EloBuddy.Obj_AI_Base unit)
         {
             var TrackerUnit = UnitTrackerInfoList.Find(x => x.NetworkId == unit.NetworkId);
             return (Utils.TickCount - TrackerUnit.AaTick) / 1000d;
         }
 
-        public static double GetLastNewPathTime(Obj_AI_Base unit)
+        public static double GetLastNewPathTime(EloBuddy.Obj_AI_Base unit)
         {
             var TrackerUnit = UnitTrackerInfoList.Find(x => x.NetworkId == unit.NetworkId);
             return (Utils.TickCount - TrackerUnit.NewPathTick) / 1000d;
         }
 
-        public static double GetLastVisableTime(Obj_AI_Base unit)
-        {
-            var TrackerUnit = UnitTrackerInfoList.Find(x => x.NetworkId == unit.NetworkId);
-
-            return (Utils.TickCount - TrackerUnit.LastInvisableTick) / 1000d;
-        }
-
-        public static double GetLastStopMoveTime(Obj_AI_Base unit)
+        public static double GetLastStopMoveTime(EloBuddy.Obj_AI_Base unit)
         {
             var TrackerUnit = UnitTrackerInfoList.Find(x => x.NetworkId == unit.NetworkId);
 
