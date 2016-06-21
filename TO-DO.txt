@@ -5,7 +5,6 @@
 Akali, Amumu, Cassiopeia, Corki, Draven, Evelynn, Ezreal, Jinx, Kalista, Kog'Maw, Lucian, Lux, Tristana, Udyr, Vayne, Veigar, Warwick = Port these for ExorAIO SDK
 
 Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
-- SkyLv Tristana/AurelionSol [https://github.com/EloFactory/SkyLv_SoLuTiON]
 - Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
 - RAREKarthus/Zyra/Twisted Fate [https://github.com/KyonLeague/RAREScripts/tree/master]
 - Karma - the Englightned One [https://github.com/SwipeDan/LeagueSharp/tree/master/Karma%20%20%20%E2%80%93%20%20the%20Enlightened%20One]
