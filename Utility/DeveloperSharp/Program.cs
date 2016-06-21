@@ -16,8 +16,6 @@ namespace DeveloperSharp
     class Program
     {
         private static Menu Config;
-        private static Menu Types;
-        private static int _lastUpdateTick = 0;
         private static int _lastMovementTick = 0;
         public static void Init()
         {
