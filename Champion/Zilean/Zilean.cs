@@ -227,6 +227,7 @@
                     comboMenu.Add("ElZilean.Combo.E", new CheckBox("Use E", true));
                     comboMenu.Add("ElZilean.Ignite", new CheckBox("Use Ignite", true));
                     comboMenu.Add("ElZilean.Combo.W2", new CheckBox("Always reset Q", false));
+                    comboMenu.Add("ElZilean.DoubleBombMouse", new KeyBind("Double bomb to mouse", false, KeyBind.BindTypes.HoldActive, 'Y'));
                 }
 
 
@@ -271,7 +272,6 @@
 
                 fleeMenu = Menu.AddSubMenu("Flee", "Flee");
                 {
-                    fleeMenu.Add("ElZilean.Flee.Key", new KeyBind("Flee key", false, KeyBind.BindTypes.HoldActive, 'Z'));
                     fleeMenu.Add("ElZilean.Flee.Mana", new Slider("Minimum mana", 20, 0, 100));
                 }
 
@@ -417,7 +417,6 @@
                 }
 
                 W.Cast();
-                Console.WriteLine("ALWAYS RESET Q");
             }
 
             // Check if target has a bomb
@@ -496,11 +495,6 @@
                 if (E.IsReady() && Player.Mana > getSliderItem(fleeMenu, "ElZilean.Flee.Mana"))
                 {
                     E.Cast();
-                }
-
-                if (HasSpeedBuff)
-                {
-                    EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                 }
 
                 if (!E.IsReady() && W.IsReady())
@@ -718,7 +712,12 @@
                     HandleIgnite();
                 }
 
-                if (getKeyBindItem(fleeMenu, "ElZilean.Flee.Key"))
+                if (getKeyBindItem(comboMenu, "ElZilean.DoubleBombMouse"))
+                {
+                    MouseCombo();
+                }
+
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
                 {
                     OnFlee();
                 }
@@ -727,7 +726,7 @@
                 {
                     var target =
                         HeroManager.Enemies.FirstOrDefault(
-                            h => h.LSIsValidTarget(Q.Range) && GetStunDuration(h) >= Q.Delay);
+                            h => h.LSIsValidTarget(Q.Range) && h.HasBuffOfType(BuffType.Slow) || h.HasBuffOfType(BuffType.Charm) || h.HasBuffOfType(BuffType.Stun));
                     if (target != null)
                     {
                         if (Q.IsReady())
@@ -761,6 +760,17 @@
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
+            }
+        }
+
+        private static void MouseCombo()
+        {
+            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+
+            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && Q.IsReady())
+            {
+                Q.Cast(Game.CursorPos);
+                LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
             }
         }
 
