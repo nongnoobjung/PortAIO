@@ -4,6 +4,7 @@ using ExorSDK.Champions.Caitlyn;
 using ExorSDK.Champions.Darius;
 using ExorSDK.Champions.DrMundo;
 using ExorSDK.Champions.Graves;
+using ExorSDK.Champions.Jax;
 using ExorSDK.Champions.Jhin;
 using ExorSDK.Champions.Nautilus;
 using ExorSDK.Champions.Nunu;
@@ -74,6 +75,9 @@ namespace ExorSDK.Core
                     break;
                 case "Karma":
                     new ExorSDK.Champions.Karma.Karma().OnLoad();
+                    break;
+                case "Jax":
+                    new Jax().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

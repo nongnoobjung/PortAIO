@@ -885,6 +885,9 @@ namespace PortAIO
                             case 1:
                                 NoobJaxReloaded.Program.Game_OnGameLoad();
                                 break;
+                            case 2:
+                                ExorSDK.AIO.OnLoad();
+                                break;
                             default:
                                 JaxQx.Program.Game_OnGameLoad();
                                 break;

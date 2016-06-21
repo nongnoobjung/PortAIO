@@ -17,7 +17,7 @@ namespace ExorSDK.Champions.Jhin
             /// <summary>
             ///     Sets the menu for the Q.
             /// </summary>
-            Vars.QMenu = Vars.Menu.AddSubMenu("q", "Use Q to:");
+            Vars.QMenu = Vars.Menu.AddSubMenu("Use Q to:");
             {
                 Vars.QMenu.Add("combo", new CheckBox("Combo", true));
                 Vars.QMenu.Add("killsteal", new CheckBox("KillSteal", true));
@@ -29,7 +29,7 @@ namespace ExorSDK.Champions.Jhin
             /// <summary>
             ///     Sets the menu for the W.
             /// </summary>
-            Vars.WMenu = Vars.Menu.AddSubMenu("w", "Use W to:");
+            Vars.WMenu = Vars.Menu.AddSubMenu("Use W to:");
             {
                 Vars.WMenu.Add("logical", new CheckBox("Logical", true));
                 Vars.WMenu.Add("killsteal", new CheckBox("KillSteal", true));
@@ -39,7 +39,7 @@ namespace ExorSDK.Champions.Jhin
             /// <summary>
             ///     Sets the menu for the W Whitelist.
             /// </summary>
-            Vars.WhiteListMenu = Vars.Menu.AddSubMenu("whitelist", "W: Whitelist Menu");
+            Vars.WhiteListMenu = Vars.Menu.AddSubMenu("W: Whitelist Menu");
             {
                 foreach (var target in GameObjects.EnemyHeroes)
                 {
@@ -50,7 +50,7 @@ namespace ExorSDK.Champions.Jhin
             /// <summary>
             ///     Sets the menu for the E.
             /// </summary>
-            Vars.EMenu = Vars.Menu.AddSubMenu("e", "Use E to:");
+            Vars.EMenu = Vars.Menu.AddSubMenu("Use E to:");
             {
                 Vars.EMenu.Add("logical", new CheckBox("Logical", true));
                 Vars.EMenu.Add("gapcloser", new CheckBox("Anti-Gapcloser", true));
@@ -59,7 +59,7 @@ namespace ExorSDK.Champions.Jhin
             /// <summary>
             ///     Sets the menu for the R.
             /// </summary>
-            Vars.RMenu = Vars.Menu.AddSubMenu("r", "Use R to:");
+            Vars.RMenu = Vars.Menu.AddSubMenu("Use R to:");
             {
                 Vars.RMenu.Add("combo", new CheckBox("Combo", true));
                 Vars.RMenu.Add("killsteal", new CheckBox("KillSteal", true));
@@ -70,7 +70,7 @@ namespace ExorSDK.Champions.Jhin
             /// <summary>
             ///     Sets the menu for the R Whitelist.
             /// </summary>
-            Vars.WhiteList2Menu = Vars.Menu.AddSubMenu("whitelist", "R: Whitelist Menu");
+            Vars.WhiteList2Menu = Vars.Menu.AddSubMenu("R: Whitelist Menu");
             {
                 foreach (var target in GameObjects.EnemyHeroes)
                 {
@@ -81,7 +81,7 @@ namespace ExorSDK.Champions.Jhin
             /// <summary>
             ///     Sets the drawings menu.
             /// </summary>
-            Vars.DrawingsMenu = Vars.Menu.AddSubMenu("drawings", "Drawings");
+            Vars.DrawingsMenu = Vars.Menu.AddSubMenu("Drawings");
             {
                 Vars.DrawingsMenu.Add("q", new CheckBox("Q Range"));
                 Vars.DrawingsMenu.Add("w", new CheckBox("W Range"));

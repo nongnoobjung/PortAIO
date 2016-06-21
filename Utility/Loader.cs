@@ -331,7 +331,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[30]))
                 {
-                    Miscc.Add("jax", new ComboBox("Use addon for Jax : ", 0, "xQx Jax", "NoobJaxReloaded"));
+                    Miscc.Add("jax", new ComboBox("Use addon for Jax : ", 0, "xQx Jax", "NoobJaxReloaded", "ExorSDK"));
                 }
                 if (Player.ChampionName.Equals(Champion[31]))
                 {
