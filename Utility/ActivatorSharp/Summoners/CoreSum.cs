@@ -119,6 +119,7 @@ namespace Activators.Summoners
                     Menu.Add("selflowhp" + Name + "pct", new Slider("Use on Hero HP % <=", 20));
                     Menu.Add("selfmuchhp" + Name + "pct", new Slider("Use on Hero Dmg Dealt % >=", 45));
                     Menu.Add("use" + Name + "ulti", new CheckBox("Use on Dangerous (Ultimates Only)"));
+                    Menu.Add("f" + Name, new CheckBox("-> Force Barrier", false));
                     Menu.Add("use" + Name + "tower", new CheckBox("Include Tower Damage"));
                     Menu.Add("mode" + Name, new ComboBox("Mode: ", 1, "Always", "Combo"));
                     Menu.AddSeparator();
@@ -129,8 +130,8 @@ namespace Activators.Summoners
                     Activator.UseEnemyMenu = true;
                     Menu.Add("a" + Name + "pct", new Slider("Exhaust on ally HP %", 35));
                     Menu.Add("e" + Name + "pct", new Slider("Exhaust on enemy HP %", 45));
-                    Menu.Add("f" + Name, new CheckBox("Force Exhaust (Dangerous)"));
                     Menu.Add("use" + Name + "ulti", new CheckBox("Use on Dangerous (Utimates Only)"));
+                    Menu.Add("f" + Name, new CheckBox("-> Force Exhaust"));
                     Menu.Add("mode" + Name, new ComboBox("Mode: ", 0, "Always", "Combo"));
                     Menu.AddSeparator();
                 }
@@ -173,7 +174,7 @@ namespace Activators.Summoners
                 ExtraNames.Any(exname => Player.GetSpellSlot(exname).IsReady());
         }
 
-        public string[] Excluded = { "summonerexhaust", "summonerboost" };
+        public string[] Excluded = { "summonerexhaust" };
 
         public void UseSpell(bool combo = false)
         {

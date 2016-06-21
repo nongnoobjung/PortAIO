@@ -45,9 +45,31 @@ namespace Activators.Summoners
                     Menu["selfmuchhp" + Name + "pct"].Cast<Slider>().CurrentValue)
                     UseSpell(Menu["mode" + Name].Cast<ComboBox>().CurrentValue == 1);
 
-                if (Menu["use" + Name + "ulti"].Cast<CheckBox>().CurrentValue &&
-                    hero.IncomeDamage > 0 && hero.HitTypes.Contains(HitType.Ultimate))
-                    UseSpell();
+                if (Menu["use" + Name + "ulti"].Cast<CheckBox>().CurrentValue)
+                {
+                    if (hero.HitTypes.Contains(HitType.Ultimate))
+                    {
+                        if (Menu["f" + Name].Cast<CheckBox>().CurrentValue)
+                            UseSpell();
+
+                        else if (hero.IncomeDamage / hero.Player.MaxHealth * 100 >=
+                                 Menu["selfmuchhp" + Name + "pct"].Cast<Slider>().CurrentValue)
+                        {
+                            UseSpell();
+                        }
+
+                        else if (hero.Player.Health / hero.Player.MaxHealth * 100 <=
+                                 Math.Min(100, Menu["selflowhp" + Name + "pct"].Cast<Slider>().CurrentValue + 20))
+                        {
+                            UseSpell();
+                        }
+
+                        else if (hero.IncomeDamage >= hero.Player.Health)
+                        {
+                            UseSpell();
+                        }
+                    }
+                }
             }
         }
     }
