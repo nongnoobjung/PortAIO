@@ -1186,7 +1186,7 @@ namespace PortAIO
                         switch (Loader.riven)
                         {
                             case 0:
-                                NechritoRiven.Program.OnGameLoad();
+                                NechritoRiven.Program.Init();
                                 break;
                             case 1:
                                 HeavenStrikeRiven.Program.OnStart();
@@ -1195,7 +1195,7 @@ namespace PortAIO
                                 KurisuRiven.Program.Game_OnGameLoad();
                                 break;
                             default:
-                                NechritoRiven.Program.OnGameLoad();
+                                NechritoRiven.Program.Init();
                                 break;
                         }
                         break;
