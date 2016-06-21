@@ -9,6 +9,8 @@ using ExorSDK.Champions.Jhin;
 using ExorSDK.Champions.Nautilus;
 using ExorSDK.Champions.Nunu;
 using ExorSDK.Champions.Olaf;
+using ExorSDK.Champions.Pantheon;
+using ExorSDK.Champions.Quinn;
 using ExorSDK.Champions.Renekton;
 using ExorSDK.Champions.Ryze;
 using ExorSDK.Champions.Sivir;
@@ -78,6 +80,12 @@ namespace ExorSDK.Core
                     break;
                 case "Jax":
                     new Jax().OnLoad();
+                    break;
+                case "Quinn":
+                    new Quinn().OnLoad();
+                    break;
+                case "Pantheon":
+                    new Pantheon().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

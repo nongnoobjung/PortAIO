@@ -1166,6 +1166,9 @@ namespace PortAIO
                             case 1:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
+                            case 2:
+                                ExorSDK.AIO.OnLoad();
+                                break;
                             default:
                                 GFUELQuinn.Quinn.OnGameLoad();
                                 break;
