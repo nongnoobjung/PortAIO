@@ -726,7 +726,7 @@
                 {
                     var target =
                         HeroManager.Enemies.FirstOrDefault(
-                            h => h.LSIsValidTarget(Q.Range) && h.HasBuffOfType(BuffType.Slow) || h.HasBuffOfType(BuffType.Charm) || h.HasBuffOfType(BuffType.Stun));
+                            h => h.LSIsValidTarget(Q.Range) && h.HasBuffOfType(BuffType.Slow) || h.HasBuffOfType(BuffType.Knockup) || h.HasBuffOfType(BuffType.Charm) || h.HasBuffOfType(BuffType.Stun));
                     if (target != null)
                     {
                         if (Q.IsReady())
