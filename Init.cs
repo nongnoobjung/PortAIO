@@ -234,6 +234,11 @@ namespace PortAIO
                     Mastery_Badge_Spammer.Program.Init();
                 }
 
+                if (Loader.dev)
+                {
+                    DeveloperSharp.Program.Init();
+                }
+
                 //if (Loader.orbwalker)
                 //{
                 //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();

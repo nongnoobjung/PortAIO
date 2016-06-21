@@ -1394,6 +1394,7 @@
     <Compile Include="Utility\BlackFeeder2.0\SRShopAI\Item.cs" />
     <Compile Include="Utility\BlackFeeder2.0\SRShopAI\Main.cs" />
     <Compile Include="Utility\ChatLogger\Program.cs" />
+    <Compile Include="Utility\DeveloperSharp\Program.cs" />
     <Compile Include="Utility\DZAwareness\DZAwareness.cs" />
     <Compile Include="Utility\DZAwareness\DZAwarenessBoostrap.cs" />
     <Compile Include="Utility\DZAwareness\Modules\ModuleBase.cs" />
