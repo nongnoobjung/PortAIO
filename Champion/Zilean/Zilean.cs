@@ -65,6 +65,10 @@
                              new InitiatorSpell { ChampionName = "MasterYi", SDataName = "Highlander" },
                              new InitiatorSpell { ChampionName = "Shaco", SDataName = "Deceive" },
                              new InitiatorSpell { ChampionName = "Ahri", SDataName = "AhriTumble" },
+                             new InitiatorSpell { ChampionName = "LeeSin", SDataName = "blindmonkqtwo" },
+                             new InitiatorSpell { ChampionName = "Yasuo", SDataName = "yasuorknockupcombow" },
+                             new InitiatorSpell { ChampionName = "Evelynn", SDataName = "evelynnw" },
+                             new InitiatorSpell { ChampionName = "FiddleSticks", SDataName = "Crowstorm" },
                          };
         }
 
