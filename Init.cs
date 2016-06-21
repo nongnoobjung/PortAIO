@@ -224,6 +224,11 @@ namespace PortAIO
                     Toxic_Player_Reform_Program.Program.Main();
                 }
 
+                if (Loader.feed)
+                {
+                    BlackFeeder.Program.Init();
+                }
+
                 //if (Loader.orbwalker)
                 //{
                 //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();

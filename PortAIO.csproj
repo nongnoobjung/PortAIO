@@ -1319,6 +1319,14 @@
     <Compile Include="Utility\AntiAlistar\AntiAlistar.cs" />
     <Compile Include="Utility\AutoFF\Program.cs" />
     <Compile Include="Utility\AutoLevel\Program.cs" />
+    <Compile Include="Utility\BlackFeeder2.0\ChampWrapper.cs" />
+    <Compile Include="Utility\BlackFeeder2.0\Entry.cs" />
+    <Compile Include="Utility\BlackFeeder2.0\InitializeMenu.cs" />
+    <Compile Include="Utility\BlackFeeder2.0\Program.cs" />
+    <Compile Include="Utility\BlackFeeder2.0\SRShopAI\BuyItemEvent.cs" />
+    <Compile Include="Utility\BlackFeeder2.0\SRShopAI\CustomEvents.cs" />
+    <Compile Include="Utility\BlackFeeder2.0\SRShopAI\Item.cs" />
+    <Compile Include="Utility\BlackFeeder2.0\SRShopAI\Main.cs" />
     <Compile Include="Utility\ChatLogger\Program.cs" />
     <Compile Include="Utility\DZAwareness\DZAwareness.cs" />
     <Compile Include="Utility\DZAwareness\DZAwarenessBoostrap.cs" />
