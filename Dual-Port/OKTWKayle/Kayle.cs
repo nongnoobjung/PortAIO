@@ -52,6 +52,22 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             rMenu.Add("autoR", new CheckBox("Auto R", true));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsAlly))
                 rMenu.Add("Rally" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+            rMenu.AddSeparator();
+            rMenu.AddGroupLabel("Spell Manager :");
+            rMenu.AddLabel("----------------------------------");
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
+            {
+                rMenu.AddGroupLabel(enemy.ChampionName);
+                for (int i = 0; i < 4; i++)
+                {
+                    var spell = enemy.Spellbook.Spells[i];
+                    if (spell.SData.TargettingType != SpellDataTargetType.Self && spell.SData.TargettingType != SpellDataTargetType.SelfAndUnit)
+                    {
+                        rMenu.Add("spell" + spell.SData.Name, new CheckBox(spell.Name, false));
+                    }
+                }
+                rMenu.AddSeparator();
+            }
 
             harassMenu = Config.AddSubMenu("Harass");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
@@ -64,6 +80,35 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
+            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
+        }
+
+        private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (!R.IsReady() || sender.IsMinion || !sender.IsEnemy || args.SData.IsAutoAttack() || !getCheckBoxItem(rMenu, "autoR")
+                 || !sender.IsValid<AIHeroClient>() || args.SData.Name.ToLower() == "tormentedsoil")
+                return;
+
+            if (rMenu["spell" + args.SData.Name] == null || !getCheckBoxItem(rMenu, "spell" + args.SData.Name))
+                return;
+
+            if (args.Target != null)
+            {
+                if (args.Target.IsAlly)
+                {
+                    var ally = args.Target as AIHeroClient;
+                    if (ally != null && getCheckBoxItem(rMenu, "Rally" + ally.ChampionName))
+                        R.CastOnUnit(ally);
+                }
+            }
+            else
+            {
+                foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && ally.HealthPercent < 70 && Player.ServerPosition.LSDistance(ally.ServerPosition) < R.Range && getCheckBoxItem(rMenu, "Rally" + ally.ChampionName)))
+                {
+                    if (OktwCommon.CanHitSkillShot(ally, args))
+                        R.CastOnUnit(ally);
+                }
+            }
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -111,7 +156,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && ally.HealthPercent < 70 && Player.ServerPosition.LSDistance(ally.ServerPosition) < R.Range && getCheckBoxItem(rMenu, "Rally" + ally.ChampionName)))
             {
                 double dmg = OktwCommon.GetIncomingDamage(ally, 1);
-                var enemys = ally.CountEnemiesInRange(800);
+                var enemys = ally.LSCountEnemiesInRange(800);
 
                 if (dmg == 0 && enemys == 0)
                     continue;
@@ -142,7 +187,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void LogicW()
         {
-            if (!Player.InFountain() && !Player.HasBuff("Recall") && !Player.IsRecalling())
+            if (!Player.InFountain() && !Player.HasBuff("Recall") && !Player.LSIsRecalling())
             {
                 AIHeroClient lowest = Player;
 
@@ -176,9 +221,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void LogicE()
         {
-            if (Program.Combo && Player.Mana > WMANA + EMANA && Player.CountEnemiesInRange(700) > 0)
+            if (Program.Combo && Player.Mana > WMANA + EMANA && Player.LSCountEnemiesInRange(700) > 0)
                 E.Cast();
-            else if (Program.Farm && getCheckBoxItem(eMenu, "harrasE") && Player.Mana > WMANA + EMANA + QMANA && Player.CountEnemiesInRange(500) > 0)
+            else if (Program.Farm && getCheckBoxItem(eMenu, "harrasE") && Player.Mana > WMANA + EMANA + QMANA && Player.LSCountEnemiesInRange(500) > 0)
                 E.Cast();
             else if (Program.LaneClear && getCheckBoxItem(eMenu, "farmE") && Player.Mana > WMANA + EMANA + QMANA && FarmE())
                 E.Cast();
