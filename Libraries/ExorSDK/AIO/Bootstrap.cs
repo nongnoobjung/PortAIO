@@ -1,4 +1,5 @@
 using ExorSDK.Champions.Anivia;
+using ExorSDK.Champions.Ashe;
 using ExorSDK.Champions.Caitlyn;
 using ExorSDK.Champions.Darius;
 using ExorSDK.Champions.DrMundo;
@@ -63,6 +64,9 @@ namespace ExorSDK.Core
                     break;
                 case "DrMundo":
                     new DrMundo().OnLoad();
+                    break;
+                case "Ashe":
+                    new Ashe().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;
