@@ -217,7 +217,7 @@ namespace KurisuMorgana
                     var poutput = _q.GetPrediction(qtarget);
                     if (poutput.Hitchance >= (HitChance) getSliderItem(menuQ, "hitchanceq") + 2)
                     {
-                        _q.Cast(qtarget);
+                        _q.Cast(poutput.CastPosition);
                     }
                 }
             }
@@ -232,7 +232,7 @@ namespace KurisuMorgana
                         var poutput = _w.GetPrediction(wtarget);
                         if (poutput.Hitchance >= (HitChance) getSliderItem(menuW, "hitchancew") + 2)
                         {
-                            _w.Cast(wtarget);
+                            _w.Cast(poutput.CastPosition);
                         }
                     }
                 }

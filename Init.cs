@@ -239,6 +239,11 @@ namespace PortAIO
                     DeveloperSharp.Program.Init();
                 }
 
+                if (Loader.cursor)
+                {
+                    VCursor.Program.Game_OnGameLoad();
+                }
+
                 //if (Loader.orbwalker)
                 //{
                 //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();

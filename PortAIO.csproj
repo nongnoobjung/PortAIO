@@ -1612,6 +1612,15 @@
     <Compile Include="Utility\UniversalPingBlock\Program.cs" />
     <Compile Include="Utility\UniversalRecallTracker\Program.cs" />
     <Compile Include="Utility\URF Spell Spammer\Program.cs" />
+    <Compile Include="Utility\VCursor\BezierCurve.cs" />
+    <Compile Include="Utility\VCursor\Cursor.cs" />
+    <Compile Include="Utility\VCursor\FakeClicks.cs" />
+    <Compile Include="Utility\VCursor\MouseManager.cs" />
+    <Compile Include="Utility\VCursor\NormalDistribution.cs" />
+    <Compile Include="Utility\VCursor\PathGenerator.cs" />
+    <Compile Include="Utility\VCursor\Program.cs" />
+    <Compile Include="Utility\VCursor\Utility.cs" />
+    <Compile Include="Utility\VCursor\VirtualCursor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

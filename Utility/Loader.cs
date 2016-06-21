@@ -119,6 +119,7 @@ namespace PortAIO.Utility
         public static bool feed { get { return Miscc["feed"].Cast<CheckBox>().CurrentValue; } }
         public static bool mes { get { return Miscc["mes"].Cast<CheckBox>().CurrentValue; } }
         public static bool dev { get { return Miscc["dev"].Cast<CheckBox>().CurrentValue; } }
+        public static bool cursor { get { return Miscc["cursor"].Cast<CheckBox>().CurrentValue; } }
 
         public static Menu Miscc;
 
@@ -533,6 +534,7 @@ namespace PortAIO.Utility
             Miscc.Add("mes", new CheckBox("Enable Mastery Emote Spammer?", false));
             Miscc.Add("dev", new CheckBox("Enable Developer Sharp?", false));
             Miscc.AddSeparator();
+            Miscc.Add("cursor", new CheckBox("Enable VCursor?", false));
 
             var credits = Miscc.AddSubMenu("Credits");
             credits.AddLabel("Nathan or jQuery");
