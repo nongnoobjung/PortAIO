@@ -566,7 +566,7 @@
                 if (sender != null && sender.IsValid && sender.IsEnemy
                     && args.DangerLevel == Interrupter2.DangerLevel.High && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
                 {
-                    if (Q.IsReady())
+                    if (Q.IsReady() && sender.LSIsValidTarget(Q.Range))
                     {
                         Q.Cast(sender.ServerPosition);
                     }
