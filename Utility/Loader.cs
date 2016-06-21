@@ -379,7 +379,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[42]))
                 {
-                    Miscc.Add("Graves", new ComboBox("Use addon for Graves : ", 0, "OKTW", "D-Graves", "Marksman II"));
+                    Miscc.Add("Graves", new ComboBox("Use addon for Graves : ", 0, "OKTW", "D-Graves", "Marksman II", "ExorSDK"));
                 }
                 if (Player.ChampionName.Equals(Champion[43]))
                 {

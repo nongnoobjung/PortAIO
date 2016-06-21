@@ -3,6 +3,7 @@ using ExorSDK.Champions.Ashe;
 using ExorSDK.Champions.Caitlyn;
 using ExorSDK.Champions.Darius;
 using ExorSDK.Champions.DrMundo;
+using ExorSDK.Champions.Graves;
 using ExorSDK.Champions.Jhin;
 using ExorSDK.Champions.Nautilus;
 using ExorSDK.Champions.Nunu;
@@ -67,6 +68,12 @@ namespace ExorSDK.Core
                     break;
                 case "Ashe":
                     new Ashe().OnLoad();
+                    break;
+                case "Graves":
+                    new Graves().OnLoad();
+                    break;
+                case "Karma":
+                    new ExorSDK.Champions.Karma.Karma().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;
