@@ -1,6 +1,7 @@
 using ExorSDK.Champions.Anivia;
 using ExorSDK.Champions.Caitlyn;
 using ExorSDK.Champions.Darius;
+using ExorSDK.Champions.DrMundo;
 using ExorSDK.Champions.Jhin;
 using ExorSDK.Champions.Nautilus;
 using ExorSDK.Champions.Nunu;
@@ -59,6 +60,9 @@ namespace ExorSDK.Core
                     break;
                 case "Jhin":
                     new Jhin().OnLoad();
+                    break;
+                case "DrMundo":
+                    new DrMundo().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;
