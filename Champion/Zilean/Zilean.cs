@@ -44,7 +44,7 @@
         ///     The menu
         /// </value>
         private static Menu Menu { get; set; }
-        public static Menu comboMenu, harassMenu, fleeMenu, ultMenu, laneMenu, drawingsMenu;
+        public static Menu comboMenu, harassMenu, fleeMenu, ultMenu, laneMenu, drawingsMenu, miscMenu;
 
         /// <summary>
         ///     Gets the player.
@@ -120,11 +120,13 @@
                 E = new Spell(SpellSlot.E, 700f);
                 R = new Spell(SpellSlot.R, 900f);
 
-                Q.SetSkillshot(0.7f, 140f, int.MaxValue, false, SkillshotType.SkillshotCircle);
+                Q.SetSkillshot(0.7f, 140f - 25f, int.MaxValue, false, SkillshotType.SkillshotCircle);
 
                 GenerateMenu();
 
                 Game.OnUpdate += OnUpdate;
+                Drawing.OnDraw += OnDraw;
+                Interrupter2.OnInterruptableTarget += OnInterruptableTarget;
             }
             catch (Exception exception)
             {
@@ -135,6 +137,27 @@
         #endregion
 
         #region Methods
+
+
+        private static void OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
+        {
+            try
+            {
+                if (sender != null && sender.IsValid && sender.IsEnemy &&
+                    args.DangerLevel == Interrupter2.DangerLevel.High && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
+                {
+                    if (Q.IsReady())
+                    {
+                        Q.Cast(sender.ServerPosition);
+                    }
+                    LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+        }
 
         /// <summary>
         ///     Creates the menu
@@ -193,6 +216,12 @@
                     fleeMenu.Add("ElZilean.Flee.Mana", new Slider("Minimum mana", 20, 0, 100));
                 }
 
+                miscMenu = Menu.AddSubMenu("Misc", "Misc");
+                {
+                    miscMenu.Add("ElZilean.Q.Stun", new CheckBox("Auto Q on stunned targets", true));
+                    miscMenu.Add("ElZilean.Q.Interrupt", new CheckBox("Interrupt spells with Q", true));
+
+                }
 
                 drawingsMenu = Menu.AddSubMenu("Drawings", "Drawings");
                 {
@@ -513,6 +542,23 @@
         }
 
         /// <summary>
+        ///     Gets the stun duration
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        private static float GetStunDuration(Obj_AI_Base target)
+        {
+            return target.Buffs.Where(b => b.IsActive && Game.Time < b.EndTime &&
+                (b.Type == BuffType.Charm ||
+                b.Type == BuffType.Knockback ||
+                b.Type == BuffType.Stun ||
+                b.Type == BuffType.Invulnerability ||
+                b.Type == BuffType.Suppression ||
+                b.Type == BuffType.Snare)).Aggregate(0f, (current, buff) => Math.Max(current, buff.EndTime)) -
+                Game.Time;
+        }
+
+        /// <summary>
         ///     Called when the game updates
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
@@ -546,6 +592,19 @@
                 if (getKeyBindItem(fleeMenu, "ElZilean.Flee.Key"))
                 {
                     OnFlee();
+                }
+
+                if (getCheckBoxItem(miscMenu, "ElZilean.Q.Stun"))
+                {
+                    var target = HeroManager.Enemies.FirstOrDefault(h => h.LSIsValidTarget(Q.Range) && GetStunDuration(h) >= Q.Delay);
+                    if (target != null)
+                    {
+                        if (Q.IsReady())
+                        {
+                            Q.Cast(target.ServerPosition);
+                        }
+                        LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
+                    }
                 }
 
                 foreach (var ally in HeroManager.Allies)
