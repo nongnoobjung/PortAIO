@@ -23,6 +23,7 @@ using EloBuddy.SDK;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
+using LeagueSharp.SDK.Enumerations;
 
 namespace Challenger_Series.Plugins
 {

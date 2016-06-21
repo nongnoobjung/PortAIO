@@ -12,6 +12,7 @@ namespace Challenger_Series.Plugins
     using EloBuddy.SDK;
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
+    using LeagueSharp.SDK.Enumerations;
     public class Lucian : CSPlugin
     {
         #region Spells
@@ -287,7 +288,7 @@ namespace Challenger_Series.Plugins
 
         private void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && this.UseEGapclose && args.DangerLevel == LeagueSharp.SDK.DangerLevel.High && args.Sender.Distance(ObjectManager.Player) < 400)
+            if (E.IsReady() && this.UseEGapclose && args.DangerLevel == DangerLevel.High && args.Sender.Distance(ObjectManager.Player) < 400)
             {
                 var pos = ObjectManager.Player.Position.LSExtend(args.Sender.Position, -Misc.GiveRandomInt(300, 600));
                 if (pos.IsUnderEnemyTurret() && !ObjectManager.Player.IsUnderEnemyTurret())

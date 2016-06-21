@@ -3,6 +3,7 @@ using ExorSDK.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using EloBuddy;
+using LeagueSharp.SDK.Enumerations;
 
 namespace ExorSDK.Champions.Pantheon
 {

@@ -7,6 +7,7 @@
 
     #endregion
     using EloBuddy;
+    using LeagueSharp.Data.Enumerations;
     public class SpellData
     {
         #region Fields

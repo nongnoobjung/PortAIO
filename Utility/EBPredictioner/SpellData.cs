@@ -160,11 +160,14 @@ namespace EBPredictioner
         {
             if (Chat.IsOpen || !IsReady || (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && Orbwalker.ShouldWait))
             {
+                Console.WriteLine("C1");
                 return;
             }
             AIHeroClient target;
+            Console.WriteLine("C2");
             if ((MyHero.Hero == Champion.Viktor && Slot == SpellSlot.E) || (MyHero.Hero == Champion.Rumble && Slot == SpellSlot.R))
             {
+                Console.WriteLine("C3");
                 const float realRange = 525f;
                 Range += realRange;
                 target = Target;
@@ -187,26 +190,34 @@ namespace EBPredictioner
                 }
                 return;
             }
+            Console.WriteLine("C4");
             target = Target;
             if (target == null)
             {
+                Console.WriteLine("C5");
                 return;
             }
             if (!IsInRange(target))
             {
+                Console.WriteLine("C6");
                 return;
             }
             if (Type == SpellType.Linear || Type == SpellType.Circular || Type == SpellType.Cone)
             {
+                Console.WriteLine("C7");
                 var pred = GetPrediction(target);
                 if (pred.HitChancePercent >= HitChancePercent)
                 {
+                    Console.WriteLine("C8");
                     if (WillHitYasuoWall(pred.CastPosition) || !PredictedPosInRange(target, pred.CastPosition))
                     {
+                        Console.WriteLine("C9");
                         return;
                     }
+                    Console.WriteLine("C3123");
                     if (Player.Instance.Spellbook.CastSpell(Slot, pred.CastPosition))
                     {
+                        Console.WriteLine("3");
                         LastCastSpellAttempt = Core.GameTickCount;
                     }
                 }

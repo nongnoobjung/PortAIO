@@ -37,7 +37,9 @@ namespace EBPredictioner
                 if (!handleEvent[(int)slot])
                 {
                     if (SPredictioner._spells[(int)slot] != null)
+                    {
                         handleEvent[(int)slot] = true;
+                    }
                 }
             }
         }
@@ -71,7 +73,7 @@ namespace EBPredictioner
         {
             if (sender.Owner.IsMe)
             {
-                if (getCheckBoxItem(menu, "ENABLED") && (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)))
+                if (getCheckBoxItem(menu, "ENABLED"))
                 {
                     if (menu[String.Format("{0}{1}", ObjectManager.Player.ChampionName, args.Slot)] == null)
                         return;
@@ -96,6 +98,7 @@ namespace EBPredictioner
 
                         if (enemy != null)
                         {
+                            Console.WriteLine("1");
                             SPredictioner.Cast(args.Slot);
                         }
                     }

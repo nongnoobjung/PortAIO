@@ -21,6 +21,7 @@
     using Color = System.Drawing.Color;
     using Skillshot = Valvrave_Sharp.Evade.Skillshot;
     using LeagueSharp.Data.Enumerations;
+    using LeagueSharp.SDK.Enumerations;
     #endregion
 
     internal class Yasuo : Program
@@ -345,7 +346,7 @@
             }
             var posCast = new Vector3();
             foreach (var pred in
-                targets.Select(i => Q2.GetPrediction(i, true, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall))
+                targets.Select(i => Q2.GetPrediction(i, true, -1, CollisionableObjects.YasuoWall))
                     .Where(
                         i =>
                         i.Hitchance >= Q2.MinHitChance || (i.Hitchance >= HitChance.High && i.AoeTargetsHitCount > 1))
@@ -667,7 +668,7 @@
                                 return;
                             }
                         }
-                        else if (Q2.Casting(target, false, LeagueSharp.SDK.CollisionableObjects.YasuoWall).IsCasted())
+                        else if (Q2.Casting(target, false, CollisionableObjects.YasuoWall).IsCasted())
                         {
                             return;
                         }
@@ -846,7 +847,7 @@
                             i =>
                             (i.IsMinion() || i.IsPet(false)) && i.LSIsValidTarget(Q2.Range - i.BoundingRadius / 2)
                             && Q2.CanLastHit(i, GetQDmg(i))).MaxOrDefault(i => i.MaxHealth);
-                    if (minion != null && Q2.Casting(minion, false, LeagueSharp.SDK.CollisionableObjects.YasuoWall).IsCasted())
+                    if (minion != null && Q2.Casting(minion, false, CollisionableObjects.YasuoWall).IsCasted())
                     {
                         return;
                     }

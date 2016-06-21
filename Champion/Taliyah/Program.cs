@@ -7,7 +7,8 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using LeagueSharp.SDK.Core.Utils;
-using SkillshotType = LeagueSharp.SDK.SkillshotType;
+using SkillshotType = LeagueSharp.SDK.Enumerations.SkillshotType;
+using LeagueSharp.SDK.Enumerations;
 
 namespace Taliyah
 {

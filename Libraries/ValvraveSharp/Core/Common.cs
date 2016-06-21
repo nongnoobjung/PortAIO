@@ -14,6 +14,7 @@ namespace Valvrave_Sharp.Core
     using Collision = LeagueSharp.SDK.Collision;
     using EloBuddy;
     using LeagueSharp.SDK.Core.Utils;
+    using LeagueSharp.SDK.Enumerations;
     #endregion
 
     internal static class Common
@@ -40,11 +41,11 @@ namespace Valvrave_Sharp.Core
             return hpPred > 0 && hpPred - subDmg < dmg;
         }
 
-        internal static CastStates Casting(
+        internal static LeagueSharp.SDK.Enumerations.CastStates Casting(
             this Spell spell,
             Obj_AI_Base unit,
             bool aoe = false,
-            LeagueSharp.SDK.CollisionableObjects collisionable = LeagueSharp.SDK.CollisionableObjects.Minions | LeagueSharp.SDK.CollisionableObjects.YasuoWall)
+            CollisionableObjects collisionable = CollisionableObjects.Minions | CollisionableObjects.YasuoWall)
         {
             if (!unit.LSIsValidTarget())
             {
@@ -83,7 +84,7 @@ namespace Valvrave_Sharp.Core
         internal static CastStates CastingBestTarget(
             this Spell spell,
             bool aoe = false,
-            LeagueSharp.SDK.CollisionableObjects collisionable = LeagueSharp.SDK.CollisionableObjects.Minions | LeagueSharp.SDK.CollisionableObjects.YasuoWall)
+            CollisionableObjects collisionable = CollisionableObjects.Minions | CollisionableObjects.YasuoWall)
         {
             return spell.Casting(spell.GetTarget(spell.Width / 2), aoe, collisionable);
         }
@@ -103,7 +104,7 @@ namespace Valvrave_Sharp.Core
             this Spell spell,
             Obj_AI_Base target,
             List<Vector3> to,
-            LeagueSharp.SDK.CollisionableObjects collisionable = LeagueSharp.SDK.CollisionableObjects.Minions)
+            CollisionableObjects collisionable = CollisionableObjects.Minions)
         {
             var col = Collision.GetCollision(
                 to,

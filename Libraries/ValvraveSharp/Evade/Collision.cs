@@ -13,7 +13,7 @@
     using EloBuddy.SDK.Menu.Values;
     using EloBuddy.SDK.Menu;
     using SharpDX;
-
+    using LeagueSharp.Data.Enumerations;
     #endregion
 
     internal class FastPredResult

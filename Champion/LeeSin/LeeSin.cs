@@ -22,6 +22,7 @@
     using EloBuddy.SDK;
     using LeagueSharp.Data.Enumerations;
     using EloBuddy.SDK.Enumerations;
+    using LeagueSharp.SDK.Enumerations;
     internal class LeeSin : Program
     {
         #region Constants
@@ -86,7 +87,7 @@
             R2 = new LeagueSharp.SDK.Spell(R.Slot).SetSkillshot(0.325f, 0, 950, false, SkillshotType.SkillshotLine);
             Q.DamageType = Q2.DamageType = W.DamageType = R.DamageType = DamageType.Physical;
             E.DamageType = DamageType.Magical;
-            Q.MinHitChance = LeagueSharp.SDK.HitChance.VeryHigh;
+            Q.MinHitChance = LeagueSharp.SDK.Enumerations.HitChance.VeryHigh;
 
             WardManager.Init();
             Insec.Init();
@@ -337,7 +338,7 @@
 
         private static void CastQSmite(AIHeroClient target)
         {
-            var pred = Q.GetPrediction(target, false, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
+            var pred = Q.GetPrediction(target, false, -1, CollisionableObjects.YasuoWall);
             var predS = QS.GetPrediction(target);
             if (pred.Hitchance < Q.MinHitChance)
             {
@@ -785,7 +786,7 @@
                 Q.Casting(
                     i,
                     false,
-                    LeagueSharp.SDK.CollisionableObjects.Heroes | LeagueSharp.SDK.CollisionableObjects.Minions | LeagueSharp.SDK.CollisionableObjects.YasuoWall));
+                    CollisionableObjects.Heroes | CollisionableObjects.Minions | CollisionableObjects.YasuoWall));
         }
 
         private static void OnDraw(EventArgs args)
@@ -1327,7 +1328,7 @@
                 var minDist = CanWardFlash ? RangeWardFlash : RangeNormal;
                 if (IsQOne)
                 {
-                    var pred = Q.GetPrediction(target, false, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
+                    var pred = Q.GetPrediction(target, false, -1, CollisionableObjects.YasuoWall);
                     var predS = QS.GetPrediction(target);
                     if (pred.Hitchance >= Q.MinHitChance)
                     {

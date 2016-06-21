@@ -12,6 +12,7 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using Prediction = Challenger_Series.Utils.Prediction;
 using Challenger_Series.Utils;
+using LeagueSharp.SDK.Enumerations;
 
 namespace Challenger_Series.Plugins
 {

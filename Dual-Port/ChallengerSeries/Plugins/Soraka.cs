@@ -24,6 +24,7 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using Prediction = Challenger_Series.Utils.Prediction;
+using LeagueSharp.SDK.Enumerations;
 
 namespace Challenger_Series
 {
@@ -63,7 +64,7 @@ namespace Challenger_Series
                 var sdata = SpellDatabase.GetByName(args.SData.Name);
                 if (sdata != null && args.End.Distance(ObjectManager.Player.ServerPosition) < 900 &&
                     sdata.SpellTags != null &&
-                    sdata.SpellTags.Any(st => st == LeagueSharp.SDK.SpellTags.Dash || st == LeagueSharp.SDK.SpellTags.Blink || st == LeagueSharp.SDK.SpellTags.Interruptable))
+                    sdata.SpellTags.Any(st => st == SpellTags.Dash || st == SpellTags.Blink || st == SpellTags.Interruptable))
                 {
                     E.Cast(args.Start.LSExtend(args.End, sdata.Range - this._rand.Next(5, 50)));
                 }

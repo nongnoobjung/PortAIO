@@ -5,6 +5,7 @@ using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy;
 using EloBuddy.SDK.Menu.Values;
+using LeagueSharp.SDK.Enumerations;
 
 namespace NabbActivator
 {

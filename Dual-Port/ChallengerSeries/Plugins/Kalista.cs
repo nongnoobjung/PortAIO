@@ -17,6 +17,7 @@ using EloBuddy;
 namespace Challenger_Series.Plugins
 {
     using LeagueSharp.SDK.Core.Utils;
+    using LeagueSharp.SDK.Enumerations;
     using Plugins;
     using Collision = LeagueSharp.SDK.Collision;
 
@@ -89,7 +90,7 @@ namespace Challenger_Series.Plugins
                 foreach (var enemy in ValidTargets.Where(e => e.Distance(ObjectManager.Player) < 900))
                 {
                     var pred = Q.GetPrediction(enemy);
-                    if (pred.Hitchance >= LeagueSharp.SDK.HitChance.High && !pred.CollisionObjects.Any())
+                    if (pred.Hitchance >= LeagueSharp.SDK.Enumerations.HitChance.High && !pred.CollisionObjects.Any())
                     {
                         Q.Cast(enemy);
                     }
@@ -232,7 +233,7 @@ namespace Challenger_Series.Plugins
                         if (hero.IsHPBarRendered)
                         {
                             var pred = Q.GetPrediction(hero);
-                            if (pred.Hitchance >= LeagueSharp.SDK.HitChance.High)
+                            if (pred.Hitchance >= LeagueSharp.SDK.Enumerations.HitChance.High)
                             {
                                 Q.Cast(hero);
                                 return;
@@ -246,7 +247,7 @@ namespace Challenger_Series.Plugins
                             if (ObjectManager.Player.ManaPercent > UseQManaSlider)
                             {
                                 var pred = Q.GetPrediction(tar);
-                                if (pred.Hitchance >= LeagueSharp.SDK.HitChance.High)
+                                if (pred.Hitchance >= LeagueSharp.SDK.Enumerations.HitChance.High)
                                 {
                                     Q.Cast(hero);
                                     return;
@@ -264,7 +265,7 @@ namespace Challenger_Series.Plugins
                         foreach (var enemy in ValidTargets.Where(en => en.Distance(ObjectManager.Player) < 900))
                         {
                             var pred = Q.GetPrediction(enemy, false);
-                            if (pred.Hitchance >= LeagueSharp.SDK.HitChance.High
+                            if (pred.Hitchance >= LeagueSharp.SDK.Enumerations.HitChance.High
                                 && pred.CollisionObjects.All(co => co is Obj_AI_Minion && co.Health < Q.GetDamage(co))
                                 && pred.CollisionObjects.Any(m => m.NetworkId == target.NetworkId))
                             {
@@ -333,12 +334,12 @@ namespace Challenger_Series.Plugins
                         if (UseRCounterEngageBool && sdata != null &&
                             (args.End.Distance(ObjectManager.Player.ServerPosition) < 550 || args.Target.IsMe) &&
                             sdata.SpellTags != null &&
-                            sdata.SpellTags.Any(st => st == LeagueSharp.SDK.SpellTags.Dash || st == LeagueSharp.SDK.SpellTags.Blink))
+                            sdata.SpellTags.Any(st => st == SpellTags.Dash || st == SpellTags.Blink))
                         {
                             R.Cast();
                         }
                         if (UseRInterruptBool && sdata != null && sdata.SpellTags != null &&
-                            sdata.SpellTags.Any(st => st == LeagueSharp.SDK.SpellTags.Interruptable) && sender.Distance(ObjectManager.Player.ServerPosition) < sdata.Range)
+                            sdata.SpellTags.Any(st => st == SpellTags.Interruptable) && sender.Distance(ObjectManager.Player.ServerPosition) < sdata.Range)
                         {
                             R.Cast();
                         }

@@ -138,6 +138,7 @@ namespace EBPredictioner
                     }
                     else if (!IsCharging)
                     {
+                        Console.WriteLine("2");
                         spell.Cast();
                     }
                 }

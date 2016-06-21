@@ -8,6 +8,7 @@ using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Menu;
+using LeagueSharp.SDK.Enumerations;
 
 namespace hJhin.Extensions
 {

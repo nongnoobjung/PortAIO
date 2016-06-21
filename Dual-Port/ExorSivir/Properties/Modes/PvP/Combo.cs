@@ -3,6 +3,7 @@ using ExorSDK.Utilities;
 using LeagueSharp.SDK;
 using SharpDX;
 using LeagueSharp.SDK.Core.Utils;
+using LeagueSharp.SDK.Enumerations;
 
 namespace ExorSDK.Champions.Sivir
 {

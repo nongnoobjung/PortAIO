@@ -147,8 +147,8 @@ namespace VayneHunter_Reborn.External
                         var d1 = skillshot.Start.LSDistance(skillshot.End);
                         var d2 = d1 * 0.4f;
                         var d3 = d2 * 0.69f;
-                        var bounce1SpellData = SpellDatabase.GetByName("ZiggsQBounce1");
-                        var bounce2SpellData = SpellDatabase.GetByName("ZiggsQBounce2");
+                        var bounce1SpellData = Evade.SpellDatabase.GetByName("ZiggsQBounce1");
+                        var bounce2SpellData = Evade.SpellDatabase.GetByName("ZiggsQBounce2");
                         var bounce1Pos = skillshot.End + skillshot.Direction * d2;
                         var bounce2Pos = bounce1Pos + skillshot.Direction * d3;
                         bounce1SpellData.Delay =
@@ -197,7 +197,7 @@ namespace VayneHunter_Reborn.External
                 }
                 if (skillshot.SpellData.SpellName == "OriannasQ")
                 {
-                    var endCSpellData = SpellDatabase.GetByName("OriannaQend");
+                    var endCSpellData = Evade.SpellDatabase.GetByName("OriannaQend");
                     var skillshotToAdd = new Skillshot(
                         skillshot.DetectionType, endCSpellData, skillshot.StartTick, skillshot.Start, skillshot.End,
                         skillshot.Caster);
@@ -216,7 +216,7 @@ namespace VayneHunter_Reborn.External
         {
             if (skillshot.SpellData.SpellName == "VelkozQ")
             {
-                var spellData = SpellDatabase.GetByName("VelkozQSplit");
+                var spellData = Evade.SpellDatabase.GetByName("VelkozQSplit");
                 var direction = skillshot.Direction.Perpendicular();
                 if (EvadeDetectedSkillshots.Count(s => s.SpellData.SpellName == "VelkozQSplit") == 0)
                 {

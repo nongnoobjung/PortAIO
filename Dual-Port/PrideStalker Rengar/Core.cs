@@ -1,6 +1,7 @@
 ﻿using EloBuddy;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using LeagueSharp.SDK.Enumerations;
 using SharpDX;
 using System;
 using System.Linq;

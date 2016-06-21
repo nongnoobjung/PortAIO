@@ -14,6 +14,7 @@
     using SharpDX;
     using EloBuddy;
     using Color = System.Drawing.Color;
+    using LeagueSharp.Data.Enumerations;
     #endregion
     internal class Evade
     {

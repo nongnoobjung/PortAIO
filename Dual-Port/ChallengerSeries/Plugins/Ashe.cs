@@ -11,6 +11,7 @@ using EloBuddy.SDK;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
+using LeagueSharp.SDK.Enumerations;
 
 namespace Challenger_Series.Plugins
 {
@@ -56,7 +57,7 @@ namespace Challenger_Series.Plugins
 
         private void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
         {
-            if (R.IsReady() && args.DangerLevel >= LeagueSharp.SDK.DangerLevel.Medium && args.Sender.Distance(ObjectManager.Player) < 1300)
+            if (R.IsReady() && args.DangerLevel >= LeagueSharp.Data.Enumerations.DangerLevel.Medium && args.Sender.Distance(ObjectManager.Player) < 1300)
             {
                 R.Cast(args.Sender.ServerPosition);
             }

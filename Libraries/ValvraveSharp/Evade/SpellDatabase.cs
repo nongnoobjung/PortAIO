@@ -8,6 +8,7 @@ namespace Valvrave_Sharp.Evade
 
     using LeagueSharp.SDK;
     using EloBuddy;
+    using LeagueSharp.Data.Enumerations;
     #endregion
 
     public static class SpellDatabase

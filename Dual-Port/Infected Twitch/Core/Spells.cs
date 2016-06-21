@@ -2,6 +2,7 @@
 
 using EloBuddy;
 using LeagueSharp.SDK;
+using LeagueSharp.SDK.Enumerations;
 using Spell = LeagueSharp.SDK.Spell;
 
 #endregion

@@ -4,6 +4,7 @@ using ExorSDK.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using LeagueSharp.SDK.Enumerations;
 
 namespace ExorSDK.Champions.Caitlyn
 {

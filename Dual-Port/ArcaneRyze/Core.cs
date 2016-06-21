@@ -6,6 +6,7 @@ using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core;
 using Spell = LeagueSharp.SDK.Spell;
 using EloBuddy.SDK;
+using LeagueSharp.SDK.Enumerations;
 #endregion
 
 namespace Arcane_Ryze

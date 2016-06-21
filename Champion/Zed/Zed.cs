@@ -22,6 +22,7 @@
     using EloBuddy.SDK.Menu.Values;
     using LeagueSharp.SDK.Modes;
     using EloBuddy.SDK;
+    using LeagueSharp.SDK.Enumerations;
     #endregion
 
     internal class Zed : Program
@@ -351,7 +352,7 @@
             {
                 return;
             }
-            Q.CastingBestTarget(true, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
+            Q.CastingBestTarget(true, CollisionableObjects.YasuoWall);
         }
 
         private static SpellSlot CanW(AIHeroClient target)
@@ -396,7 +397,7 @@
             {
                 return;
             }
-            var pred = Q.GetPrediction(target, true, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
+            var pred = Q.GetPrediction(target, true, -1, CollisionableObjects.YasuoWall);
             if (pred.Hitchance >= Q.MinHitChance)
             {
                 Q.Cast(pred.CastPosition);
@@ -407,12 +408,12 @@
                 if (WShadowCanQ)
                 {
                     Q2.UpdateSourcePosition(wShadow.ServerPosition, wShadow.ServerPosition);
-                    predShadow = Q2.GetPrediction(target, true, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
+                    predShadow = Q2.GetPrediction(target, true, -1, CollisionableObjects.YasuoWall);
                 }
                 else if (IsCastingW)
                 {
                     Q2.UpdateSourcePosition(wMissile.EndPosition, wMissile.EndPosition);
-                    predShadow = Q2.GetPrediction(target, true, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
+                    predShadow = Q2.GetPrediction(target, true, -1, CollisionableObjects.YasuoWall);
                 }
                 if (predShadow != null && predShadow.Hitchance >= Q.MinHitChance)
                 {
@@ -421,7 +422,7 @@
                 else if (RShadowCanQ)
                 {
                     Q2.UpdateSourcePosition(rShadow.ServerPosition, rShadow.ServerPosition);
-                    predShadow = Q2.GetPrediction(target, true, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
+                    predShadow = Q2.GetPrediction(target, true, -1, CollisionableObjects.YasuoWall);
                     if (predShadow.Hitchance >= Q.MinHitChance)
                     {
                         Q.Cast(predShadow.CastPosition);
@@ -432,7 +433,7 @@
 
         private static bool CastQKill(LeagueSharp.SDK.Spell spell, Obj_AI_Base target)
         {
-            var pred = spell.GetPrediction(target, false, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
+            var pred = spell.GetPrediction(target, false, -1, CollisionableObjects.YasuoWall);
             if (pred.Hitchance < Q.MinHitChance)
             {
                 return false;
@@ -440,7 +441,7 @@
             var col = spell.GetCollision(
                 target,
                 new List<Vector3> { pred.UnitPosition, target.Position },
-                LeagueSharp.SDK.CollisionableObjects.Heroes | LeagueSharp.SDK.CollisionableObjects.Minions);
+                CollisionableObjects.Heroes | CollisionableObjects.Minions);
             if (col.Count == 0)
             {
                 return Q.Cast(pred.CastPosition);
