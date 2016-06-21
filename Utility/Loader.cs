@@ -309,7 +309,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[25]))
                 {
-                    Miscc.Add("lux", new ComboBox("Use addon for Lux : ", 0, "MoonLux", "OKTW"));
+                    Miscc.Add("lux", new ComboBox("Use addon for Lux : ", 0, "MoonLux", "OKTW", "ElLux"));
                 }
                 if (Player.ChampionName.Equals(Champion[26]))
                 {

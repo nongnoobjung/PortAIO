@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.Globalization;
     using System.Linq;
 
     using ElUtilitySuite.Vendor.SFX;
@@ -444,7 +445,7 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: '{0}'", e);
+                Console.WriteLine($"An error occurred: {e}");
             }
         }
 
@@ -483,7 +484,7 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: '{0}'", e);
+                Console.WriteLine($"An error occurred: {e}");
             }
         }
 
@@ -576,7 +577,7 @@
                                         hpBarPosition.X - 22 + (float)(barWidth * x),
                                         hpBarPosition.Y - 5,
                                         Color.Chartreuse,
-                                        sDamage.ToString());
+                                        sDamage.ToString(CultureInfo.InvariantCulture));
                                     break;
 
                                 case "SRU_Dragon_Air":
@@ -594,7 +595,7 @@
                                         hpBarPosition.X - 22 + (float)(barWidth * x),
                                         hpBarPosition.Y - 5,
                                         Color.Chartreuse,
-                                        sDamage.ToString());
+                                        sDamage.ToString(CultureInfo.InvariantCulture));
                                     break;
 
                                 case "SRU_Red":
@@ -609,7 +610,7 @@
                                         hpBarPosition.X - 22 + (float)(barWidth * x),
                                         hpBarPosition.Y - 5,
                                         Color.Chartreuse,
-                                        sDamage.ToString());
+                                        sDamage.ToString(CultureInfo.InvariantCulture));
                                     break;
 
                                 case "SRU_Baron":
@@ -623,7 +624,7 @@
                                         hpBarPosition.X - 22 + (float)(barWidth * x),
                                         hpBarPosition.Y - 3,
                                         Color.Chartreuse,
-                                        sDamage.ToString());
+                                        sDamage.ToString(CultureInfo.InvariantCulture));
                                     break;
 
                                 case "SRU_Gromp":
@@ -637,7 +638,7 @@
                                         hpBarPosition.X + (float)(barWidth * x),
                                         hpBarPosition.Y - 15,
                                         Color.Chartreuse,
-                                        sDamage.ToString());
+                                        sDamage.ToString(CultureInfo.InvariantCulture));
                                     break;
 
                                 case "SRU_Murkwolf":
@@ -651,7 +652,7 @@
                                         hpBarPosition.X + (float)(barWidth * x),
                                         hpBarPosition.Y - 15,
                                         Color.Chartreuse,
-                                        sDamage.ToString());
+                                        sDamage.ToString(CultureInfo.InvariantCulture));
                                     break;
 
                                 case "Sru_Crab":
@@ -665,7 +666,7 @@
                                         hpBarPosition.X + (float)(barWidth * x),
                                         hpBarPosition.Y - 15,
                                         Color.Chartreuse,
-                                        sDamage.ToString());
+                                        sDamage.ToString(CultureInfo.InvariantCulture));
                                     break;
 
                                 case "SRU_Razorbeak":
@@ -679,7 +680,7 @@
                                         hpBarPosition.X + (float)(barWidth * x),
                                         hpBarPosition.Y - 15,
                                         Color.Chartreuse,
-                                        sDamage.ToString());
+                                        sDamage.ToString(CultureInfo.InvariantCulture));
                                     break;
 
                                 case "SRU_Krug":
@@ -693,7 +694,7 @@
                                         hpBarPosition.X + (float)(barWidth * x),
                                         hpBarPosition.Y - 15,
                                         Color.Chartreuse,
-                                        sDamage.ToString());
+                                        sDamage.ToString(CultureInfo.InvariantCulture));
                                     break;
                             }
                         }
@@ -724,7 +725,7 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: '{0}'", e);
+                Console.WriteLine($"An error occurred: {e}");
             }
         }
 
@@ -736,12 +737,7 @@
         {
             try
             {
-                if (this.Player.IsDead || this.SmiteSpell == null)
-                {
-                    return;
-                }
-
-                if (!getKeyBindItem(this.Menu, "ElSmite.Activated"))
+                if (this.Player.IsDead || this.SmiteSpell == null || !this.Menu["ElSmite.Activated"].Cast<KeyBind>().CurrentValue)
                 {
                     return;
                 }
@@ -782,7 +778,7 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: '{0}'", e);
+                Console.WriteLine($"An error occurred: {e}");
             }
         }
 
@@ -796,7 +792,7 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: '{0}'", e);
+                Console.WriteLine($"An error occurred: {e}");
             }
 
             return 0;
@@ -817,7 +813,7 @@
                     && this.ComboModeActive)
                 {
                     var smiteComboEnemy =
-                        HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(500));
+                        HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(500f));
                     if (smiteComboEnemy != null)
                     {
                         this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, smiteComboEnemy);
@@ -834,8 +830,7 @@
                 {
                     var kSableEnemy =
                         HeroManager.Enemies.FirstOrDefault(
-                            hero =>
-                            !hero.IsZombie && hero.LSIsValidTarget(SmiteRange) && 20 + 8 * this.Player.Level >= hero.Health);
+                            hero => !hero.IsZombie && hero.LSIsValidTarget(SmiteRange) && this.SmiteSpell.GetDamage(hero) >= hero.Health);
                     if (kSableEnemy != null)
                     {
                         this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, kSableEnemy);
@@ -844,7 +839,7 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: '{0}'", e);
+                Console.WriteLine($"An error occurred: {e}");
             }
         }
 

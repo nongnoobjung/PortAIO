@@ -1096,6 +1096,9 @@ namespace PortAIO
                             case 1:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
+                            case 2:
+                                ElLux.Program.Init();
+                                break;
                             default:
                                 MoonLux.Program.GameOnOnGameLoad();
                                 break;

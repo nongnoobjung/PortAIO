@@ -331,6 +331,9 @@
     <Compile Include="Dual-Port\ElEkko\ElEkko.cs" />
     <Compile Include="Dual-Port\ElEkko\ElEkkoMenu.cs" />
     <Compile Include="Dual-Port\ElEkko\Program.cs" />
+    <Compile Include="Dual-Port\ElLux\ElLux.cs" />
+    <Compile Include="Dual-Port\ElLux\ElLuxMenu.cs" />
+    <Compile Include="Dual-Port\ElLux\Program.cs" />
     <Compile Include="Dual-Port\ElRumble\ElRumbleMenu.cs" />
     <Compile Include="Dual-Port\ElRumble\Rumble.cs" />
     <Compile Include="Dual-Port\ElXerath\Drawings.cs" />
