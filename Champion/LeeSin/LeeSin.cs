@@ -44,6 +44,8 @@
 
         private static Obj_AI_Base objQ;
 
+        private static Vector3 posBubbaKush;
+
         private static EloBuddy.SDK.Menu.Menu config = Program._MainMenu;
 
         #endregion
@@ -76,7 +78,7 @@
 
         public LeeSin()
         {
-            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 1100).SetSkillshot(0.25f, 60, 1800, true, SkillshotType.SkillshotLine);
+            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 1095).SetSkillshot(0.25f, 60, 1800, true, SkillshotType.SkillshotLine);
             QS = new LeagueSharp.Common.Spell(SpellSlot.Q, 1100);
             QS.SetSkillshot(0.275f, 60f, 1850f, true, LeagueSharp.Common.SkillshotType.SkillshotLine);
             Q2 = new LeagueSharp.SDK.Spell(Q.Slot, 1300);
@@ -84,7 +86,8 @@
             E = new LeagueSharp.SDK.Spell(SpellSlot.E, 425).SetTargetted(0.25f, float.MaxValue);
             E2 = new LeagueSharp.SDK.Spell(E.Slot, 570);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 375);
-            R2 = new LeagueSharp.SDK.Spell(R.Slot).SetSkillshot(0.325f, 0, 950, false, SkillshotType.SkillshotLine);
+            R2 = new LeagueSharp.SDK.Spell(R.Slot, RKickRange).SetSkillshot(0.325f, 0, 950, false, SkillshotType.SkillshotLine);
+            R3 = new LeagueSharp.SDK.Spell(R.Slot, R.Range).SetSkillshot(R2.Delay, 0, R2.Speed, false, R2.Type);
             Q.DamageType = Q2.DamageType = W.DamageType = R.DamageType = DamageType.Physical;
             E.DamageType = DamageType.Magical;
             Q.MinHitChance = LeagueSharp.SDK.Enumerations.HitChance.VeryHigh;
@@ -101,13 +104,17 @@
             comboMenu = config.AddSubMenu("Combo", "Combo");
             comboMenu.Add("Ignite", new CheckBox("Use Ignite"));
             comboMenu.Add("Item", new CheckBox("Use Item"));
-            comboMenu.Add("W", new CheckBox("Use W", false));
-            comboMenu.Add("E", new CheckBox("Use E"));
             comboMenu.AddGroupLabel("Q Settings");
             comboMenu.Add("Q", new CheckBox("Use Q"));
             comboMenu.Add("Q2", new CheckBox("Also Q2"));
             comboMenu.Add("Q2Obj", new CheckBox("Q2 Even Miss", false));
             comboMenu.Add("QCol", new CheckBox("Smite Collision"));
+            comboMenu.AddGroupLabel("W Settings");
+            comboMenu.Add("W", new CheckBox("Use W", false));
+            comboMenu.Add("W2", new CheckBox("Also W2", false));
+            comboMenu.AddGroupLabel("E Settings");
+            comboMenu.Add("E", new CheckBox("Use E"));
+            comboMenu.Add("E2", new CheckBox("Also E2"));
             comboMenu.AddGroupLabel("Star Combo Settings");
             comboMenu.Add("Star", new KeyBind("Star Combo", false, KeyBind.BindTypes.HoldActive, 'X'));
             comboMenu.Add("StarKill", new CheckBox("Auto Star Combo If Killable", false));
@@ -124,9 +131,11 @@
             lhMenu.Add("Q", new CheckBox("Use Q1"));
 
             ksMenu = config.AddSubMenu("KillSteal", "Kill Steal");
-            ksMenu.Add("Q", new CheckBox("Use Q"));
             ksMenu.Add("E", new CheckBox("Use E"));
             ksMenu.Add("R", new CheckBox("Use R"));
+            ksMenu.AddGroupLabel("Q Settings");
+            ksMenu.Add("Q", new CheckBox("Use Q"));
+            ksMenu.Add("Q2", new CheckBox("Also Q2"));
             ksMenu.AddGroupLabel("Extra R Settings");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
             {
@@ -143,6 +152,7 @@
             miscMenu = config.AddSubMenu("Misc", "Misc");
             miscMenu.Add("FleeW", new KeyBind("Use W To Flee", false, KeyBind.BindTypes.HoldActive, 'C'));
             miscMenu.Add("RFlash", new KeyBind("R-Flash To Mouse", false, KeyBind.BindTypes.HoldActive, 'Z'));
+            miscMenu.Add("RAdv", new KeyBind("Bubba Kush (R-Flash)", false, KeyBind.BindTypes.HoldActive, 'Y'));
 
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
@@ -234,14 +244,10 @@
             {
                 return;
             }
-            var multiR = GetMultiR(Player.ServerPosition);
-            if (multiR.Item2 == null)
+            var multiR = GetMultiR();
+            if (multiR.Item1 != null && (multiR.Item2 == -1 || multiR.Item2 >= getSliderItem(kuMenu, "RAutoCountA") + 1))
             {
-                return;
-            }
-            if (multiR.Item1 == -1 || multiR.Item1 >= getSliderItem(kuMenu, "RAutoCountA") + 1)
-            {
-                R.CastOnUnit(multiR.Item2);
+                R.CastOnUnit(multiR.Item1);
             }
         }
 
@@ -296,7 +302,7 @@
                     E.Cast();
                 }
             }
-            else
+            else if (getCheckBoxItem(comboMenu, "E2"))
             {
                 var target = GameObjects.EnemyHeroes.Where(i => i.LSIsValidTarget(E2.Range) && HaveE(i)).ToList();
                 if (target.Count == 0)
@@ -364,6 +370,10 @@
             {
                 pos = Game.CursorPos;
             }
+            else if (getKeyBindItem(miscMenu, "RAdv"))
+            {
+                pos = posBubbaKush;
+            }
             else if (getKeyBindItem(insecMenu, "Insec")
                      && Variables.TickCount - Insec.LastRFlashTime < 5000)
             {
@@ -389,6 +399,10 @@
                 minion = minions.FirstOrDefault(i => i.InAutoAttackRange());
             }
             if (hero == null && minion == null)
+            {
+                return;
+            }
+            if (hero != null && !IsWOne && !getCheckBoxItem(comboMenu, "W2"))
             {
                 return;
             }
@@ -532,16 +546,72 @@
             }
         }
 
-        private static Tuple<int, AIHeroClient> GetMultiR(Vector3 from)
+        private static Tuple<AIHeroClient, Vector3, Vector3> GetBubbaKush()
         {
             var bestHit = 0;
             AIHeroClient bestTarget = null;
-            foreach (var targetKick in
+            Vector3 bestPos = new Vector3(), startPos = new Vector3();
+            var targetKicks =
                 GameObjects.EnemyHeroes.Where(
                     i =>
-                    i.LSIsValidTarget(R.Range, true, from) && i.Health + i.AttackShield > R.GetDamage(i)
+                    i.LSIsValidTarget(R.Range) && i.Health + i.AttackShield > R.GetDamage(i)
                     && !i.HasBuffOfType(BuffType.SpellShield) && !i.HasBuffOfType(BuffType.SpellImmunity))
-                    .OrderByDescending(i => i.AllShield))
+                    .OrderByDescending(i => i.AllShield)
+                    .ToList();
+            foreach (var targetKick in targetKicks)
+            {
+                var posTarget = targetKick.ServerPosition;
+                R3.Width = targetKick.BoundingRadius;
+                R3.Range = RKickRange + R3.Width / 2;
+                R3.UpdateSourcePosition(posTarget, posTarget);
+                var targetHits =
+                    GameObjects.EnemyHeroes.Where(
+                        i => i.LSIsValidTarget(R3.Range + R3.Width / 2, true, R3.From) && !i.Compare(targetKick)).ToList();
+                if (targetHits.Count == 0)
+                {
+                    continue;
+                }
+                var cHit = 1;
+                var pos = new Vector3();
+                foreach (var targetHit in targetHits)
+                {
+                    var pred = R3.GetPrediction(targetHit);
+                    if (pred.Hitchance < LeagueSharp.SDK.Enumerations.HitChance.High)
+                    {
+                        continue;
+                    }
+                    cHit++;
+                    pos = pred.CastPosition;
+                    var dmgR = GetRColDmg(targetKick, targetHit);
+                    if (targetHit.Health + targetHit.AttackShield <= dmgR
+                        && !Invulnerable.Check(targetHit, R.DamageType, true, dmgR))
+                    {
+                        return new Tuple<AIHeroClient, Vector3, Vector3>(targetKick, pos, posTarget);
+                    }
+                }
+                if (bestHit == 0 || bestHit < cHit)
+                {
+                    bestHit = cHit;
+                    bestTarget = targetKick;
+                    bestPos = pos;
+                    startPos = posTarget;
+                }
+            }
+            return new Tuple<AIHeroClient, Vector3, Vector3>(bestTarget, bestPos, startPos);
+        }
+
+        private static Tuple<AIHeroClient, int> GetMultiR()
+        {
+            var bestHit = 0;
+            AIHeroClient bestTarget = null;
+            var targetKicks =
+                GameObjects.EnemyHeroes.Where(
+                    i =>
+                    i.LSIsValidTarget(R.Range) && i.Health + i.AttackShield > R.GetDamage(i)
+                    && !i.HasBuffOfType(BuffType.SpellShield) && !i.HasBuffOfType(BuffType.SpellImmunity))
+                    .OrderByDescending(i => i.AllShield)
+                    .ToList();
+            foreach (var targetKick in targetKicks)
             {
                 var posTarget = targetKick.ServerPosition;
                 R2.Width = targetKick.BoundingRadius;
@@ -549,31 +619,29 @@
                 R2.UpdateSourcePosition(posTarget, posTarget);
                 var targetHits =
                     GameObjects.EnemyHeroes.Where(
-                        i => i.LSIsValidTarget(R2.Range, true, R2.From) && !i.Compare(targetKick)).ToList();
+                        i => i.LSIsValidTarget(R2.Range + R2.Width / 2, true, R2.From) && !i.Compare(targetKick)).ToList();
                 if (targetHits.Count == 0)
                 {
                     continue;
                 }
                 var cHit = 1;
-                foreach (var targetHit in from target in targetHits
-                                          let posPred = R2.GetPredPosition(target)
-                                          let project = posPred.ProjectOn(R2.From, R2.From.LSExtend(@from, -R2.Range))
-                                          where
-                                              project.IsOnSegment
-                                              && project.SegmentPoint.Distance(posPred)
-                                              <= R2.Width + target.BoundingRadius / 2
-                                          select target)
+                foreach (var targetHit in targetHits)
                 {
+                    var pred = R2.GetPrediction(targetHit);
+                    if (pred.Hitchance < LeagueSharp.SDK.Enumerations.HitChance.High)
+                    {
+                        continue;
+                    }
+                    cHit++;
                     if (getCheckBoxItem(kuMenu, "RAutoKill"))
                     {
                         var dmgR = GetRColDmg(targetKick, targetHit);
                         if (targetHit.Health + targetHit.AttackShield <= dmgR
                             && !Invulnerable.Check(targetHit, R.DamageType, true, dmgR))
                         {
-                            return new Tuple<int, AIHeroClient>(-1, targetKick);
+                            return new Tuple<AIHeroClient, int>(targetKick, -1);
                         }
                     }
-                    cHit++;
                 }
                 if (bestHit == 0 || bestHit < cHit)
                 {
@@ -581,7 +649,7 @@
                     bestTarget = targetKick;
                 }
             }
-            return new Tuple<int, AIHeroClient>(bestHit, bestTarget);
+            return new Tuple<AIHeroClient, int>(bestTarget, bestHit);
         }
 
         private static double GetQ2Dmg(Obj_AI_Base target, double subHp)
@@ -616,7 +684,9 @@
 
         private static void KillSteal()
         {
-            if (getCheckBoxItem(ksMenu, "Q") && Q.IsReady())
+            var ksQ1 = getCheckBoxItem(ksMenu, "Q");
+            var ksQ2 = getCheckBoxItem(ksMenu, "Q2");
+            if (ksQ1 && Q.IsReady())
             {
                 if (IsQOne)
                 {
@@ -624,7 +694,8 @@
                     var predS = QS.GetPrediction(target);
                     if (target != null
                         && (target.Health + target.AttackShield <= Q.GetDamage(target)
-                            || (target.Health + target.AttackShield
+                            || (ksQ2
+                            && target.Health + target.AttackShield
                                 <= GetQ2Dmg(target, Q.GetDamage(target)) + Player.GetAutoAttackDamage(target)
                                 && Player.Mana - Q.Instance.SData.Mana >= 30))
                         && Q.Cast(predS.CastPosition))
@@ -632,7 +703,7 @@
                         return;
                     }
                 }
-                else if (!IsDashing)
+                else if (ksQ2 && !IsDashing)
                 {
                     var target = objQ as AIHeroClient;
                     if (target != null
@@ -658,7 +729,7 @@
                     {
                         R.CastOnUnit(targetR);
                     }
-                    else if (getCheckBoxItem(ksMenu, "Q") && Q.IsReady() && !IsQOne)
+                    else if (ksQ1 && ksQ2 && Q.IsReady() && !IsQOne)
                     {
                         var targetQ2R =
                             targetList.FirstOrDefault(
@@ -840,6 +911,11 @@
 
             Orbwalker.DisableAttacking = getKeyBindItem(insecMenu, "Insec");
 
+            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+            {
+                Orbwalker.ForcedTarget = null;
+            }
+
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Combo();
@@ -872,6 +948,19 @@
                         if (target != null && R.CastOnUnit(target))
                         {
                             Orbwalker.ForcedTarget = target;
+                        }
+                    }
+                }
+                else if (getKeyBindItem(miscMenu, "RAdv"))
+                {
+                    Orbwalker.MoveTo(Game.CursorPos);
+                    if (R.IsReady() && Flash.IsReady())
+                    {
+                        var bubbaKush = GetBubbaKush();
+                        if (bubbaKush.Item1 != null && bubbaKush.Item2.IsValid() && R.CastOnUnit(bubbaKush.Item1))
+                        {
+                            posBubbaKush = bubbaKush.Item2;
+                            Orbwalker.ForcedTarget = bubbaKush.Item1;
                         }
                     }
                 }
@@ -977,7 +1066,7 @@
         {
             #region Constants
 
-            private const int DistWard = 200, DistFlash = 130;
+            private const int DistWard = 230, DistFlash = 130;
 
             #endregion
 
@@ -1348,7 +1437,7 @@
                             .Where(
                                 i =>
                                 !i.Compare(target) && i.LSIsValidTarget(Q.Range)
-                                && Q.GetHealthPrediction(i) > Q.GetDamage(i) && i.Distance(target) < minDist - 50)
+                                && Q.GetHealthPrediction(i) > Q.GetDamage(i) && i.Distance(target) < minDist - 100)
                             .OrderBy(i => i.Distance(target))
                             .ThenByDescending(i => i.Health)
                             .ToList();
@@ -1359,7 +1448,7 @@
                     nearObj.ForEach(i => Q.Casting(i));
                 }
                 else if (target.DistanceToPlayer() > minDist
-                         && (HaveQ(target) || (objQ.LSIsValidTarget(Q2.Range) && target.Distance(objQ) < minDist - 50))
+                         && (HaveQ(target) || (objQ.LSIsValidTarget(Q2.Range) && target.Distance(objQ) < minDist - 100))
                          && ((WardManager.CanWardJump && Player.Mana >= 80)
                              || (getCheckBoxItem(insecMenu, "Flash") && Flash.IsReady())) && Q2.Cast())
                 {

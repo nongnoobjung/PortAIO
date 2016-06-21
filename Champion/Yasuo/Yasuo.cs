@@ -28,7 +28,7 @@
     {
         #region Constants
 
-        private const float QDelay = 0.38f, Q2Delay = 0.35f, QDelays = 0.19f, Q2Delays = 0.285f;
+        private const float QDelay = 0.38f, Q2Delay = 0.35f, QDelays = 0.19f, Q2Delays = 0.29f;
 
         private const int RWidth = 400;
 
@@ -61,8 +61,8 @@
             Q2 = new LeagueSharp.SDK.Spell(Q.Slot, 1100).SetSkillshot(Q2Delay, 90, 1200, true, Q.Type);
             Q3 = new LeagueSharp.SDK.Spell(Q.Slot, 250).SetTargetted(0.005f, float.MaxValue);
             W = new LeagueSharp.SDK.Spell(SpellSlot.W, 400);
-            E = new LeagueSharp.SDK.Spell(SpellSlot.E, 475).SetTargetted(0, 1050);
-            E2 = new LeagueSharp.SDK.Spell(E.Slot).SetTargetted(E.Delay + Q3.Delay, E.Speed);
+            E = new LeagueSharp.SDK.Spell(SpellSlot.E, 475).SetTargetted(0, 1040);
+            E2 = new LeagueSharp.SDK.Spell(E.Slot, E.Range).SetTargetted(Q3.Delay, E.Speed);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 1200);
             Q.DamageType = Q2.DamageType = R.DamageType = DamageType.Physical;
             E.DamageType = DamageType.Magical;
@@ -168,7 +168,7 @@
                     }
                     Q.Delay = GetQDelay(false);
                     Q2.Delay = GetQDelay(true);
-                    E.Speed = E2.Speed = 1045 + (Player.MoveSpeed - 345);
+                    E.Speed = E2.Speed = 1040 + (Player.MoveSpeed - 345);
                 };
             Orbwalker.OnPostAttack += (sender, args) =>
                 {
@@ -208,6 +208,18 @@
                         case "YasuoDashScalar":
                             cDash = 1;
                             break;
+                        case "yasuoeqcombosoundmiss":
+                        case "YasuoEQComboSoundHit":
+                            DelayAction.Add(
+                                100,
+                                () =>
+                                {
+                                    Orbwalker.ResetAutoAttack();
+                                    EloBuddy.Player.IssueOrder(
+                                        GameObjectOrder.AttackTo,
+                                        Player.ServerPosition.LSExtend(Game.CursorPos, Player.BoundingRadius));
+                                });
+                            break;
                     }
                 };
             Obj_AI_Base.OnBuffUpdate += (sender, args) =>
@@ -234,18 +246,6 @@
                             break;
                     }
                 };
-            Obj_AI_Base.OnSpellCast += (sender, args) =>
-            {
-                if (!sender.IsMe || !args.SData.Name.StartsWith("YasuoQ") || args.SData.Name.EndsWith("Mis"))
-                {
-                    return;
-                }
-                if (args.SData.Name.EndsWith("W"))
-                {
-                    DelayAction.Add(50, Orbwalker.ResetAutoAttack);
-                }
-                EloBuddy.Player.IssueOrder(GameObjectOrder.AttackTo, Player.ServerPosition.LSExtend(args.End, -(Player.BoundingRadius * 2)));
-            };
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -638,7 +638,7 @@
 
         private static bool IsInRangeQ(Obj_AI_Minion minion)
         {
-            return minion.LSIsValidTarget(Math.Max(475 + minion.BoundingRadius / 3 - 5, 475));
+            return minion.LSIsValidTarget(Math.Max(475 + minion.BoundingRadius / 3 - 7, 475));
         }
 
         private static void KillSteal()

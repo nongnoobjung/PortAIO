@@ -35,7 +35,7 @@
 
         internal static AIHeroClient Player;
 
-        internal static Spell Q, Q2, Q3, W, E, E2, R, R2;
+        internal static Spell Q, Q2, Q3, W, E, E2, R, R2, R3;
 
         private static readonly Dictionary<string, Func<object>> Plugins = new Dictionary<string, Func<object>>
                                                                                {
