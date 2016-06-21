@@ -230,7 +230,15 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 var cc = !Program.None && Player.Mana > RMANA + QMANA + EMANA;
                 var harass = Program.Farm && Player.ManaPercent > getSliderItem(harassMenu, "HarassMana") && OktwCommon.CanHarras();
-                var combo = Program.Combo && Player.Mana > RMANA + QMANA;
+
+                if (Program.Combo && Player.Mana > RMANA + QMANA)
+                {
+                    var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+
+                    if (t.LSIsValidTarget())
+                        Program.CastSpell(Q, t);
+                }
+
                 foreach (var t in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range)).OrderBy(t => t.Health))
                 {
                     var qDmg = OktwCommon.GetKsDamage(t, Q);
@@ -245,9 +253,7 @@ namespace OneKeyToWin_AIO_Sebby
                     if (cc && !OktwCommon.CanMove(t))
                         Q.Cast(t);
 
-                    if (combo)
-                        Program.CastSpell(Q, t);
-                    else if (harass && getCheckBoxItem(harassMenu, "haras" + t.NetworkId))
+                    if (harass && getCheckBoxItem(harassMenu, "haras" + t.NetworkId))
                         Program.CastSpell(Q, t);
                 }
             }
@@ -258,7 +264,7 @@ namespace OneKeyToWin_AIO_Sebby
                     farmQ();
                     lag = Game.Time;
                 }
-                else if (getCheckBoxItem(miscMenu, "stack") && Utils.TickCount - Q.LastCastAttemptT > 4000 && !Player.HasBuff("Recall") && Player.Mana > Player.MaxMana*0.95 && Program.None && (Items.HasItem(Tear) || Items.HasItem(Manamune)))
+                else if (getCheckBoxItem(miscMenu, "stack") && Utils.TickCount - Q.LastCastAttemptT > 4000 && !Player.HasBuff("Recall") && Player.Mana > Player.MaxMana * 0.95 && Program.None && (Items.HasItem(Tear) || Items.HasItem(Manamune)))
                 {
                     Q.Cast(Player.Position.LSExtend(Game.CursorPos, 500));
                 }
@@ -272,7 +278,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 if (Program.Combo && Player.Mana > RMANA + WMANA + EMANA)
                     Program.CastSpell(W, t);
-                else if (Program.Farm && getCheckBoxItem(wMenu, "harrasW") && getCheckBoxItem(harassMenu, "haras" + t.NetworkId) && (Player.Mana > Player.MaxMana*0.8 || getCheckBoxItem(miscMenu, "apEz")) && Player.ManaPercent > getSliderItem(harassMenu, "HarassMana") && OktwCommon.CanHarras())
+                else if (Program.Farm && getCheckBoxItem(wMenu, "harrasW") && getCheckBoxItem(harassMenu, "haras" + t.NetworkId) && (Player.Mana > Player.MaxMana * 0.8 || getCheckBoxItem(miscMenu, "apEz")) && Player.ManaPercent > getSliderItem(harassMenu, "HarassMana") && OktwCommon.CanHarras())
                     Program.CastSpell(W, t);
                 else
                 {
@@ -398,14 +404,14 @@ namespace OneKeyToWin_AIO_Sebby
             var direction = output.CastPosition.LSTo2D() - Player.Position.LSTo2D();
             direction.Normalize();
             var enemies = ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy && x.LSIsValidTarget()).ToList();
-            var dmg = (from enemy in enemies let prediction = R.GetPrediction(enemy) let predictedPosition = prediction.CastPosition let v = output.CastPosition - Player.ServerPosition let w = predictedPosition - Player.ServerPosition let c1 = Vector3.Dot(w, v) let c2 = Vector3.Dot(v, v) let b = c1/(double) c2 let pb = Player.ServerPosition + (float) b*v let length = Vector3.Distance(predictedPosition, pb) where length < R.Width + 100 + enemy.BoundingRadius/2 && Player.LSDistance(predictedPosition) < Player.LSDistance(target.ServerPosition) select enemy).Count();
+            var dmg = (from enemy in enemies let prediction = R.GetPrediction(enemy) let predictedPosition = prediction.CastPosition let v = output.CastPosition - Player.ServerPosition let w = predictedPosition - Player.ServerPosition let c1 = Vector3.Dot(w, v) let c2 = Vector3.Dot(v, v) let b = c1 / (double)c2 let pb = Player.ServerPosition + (float)b * v let length = Vector3.Distance(predictedPosition, pb) where length < R.Width + 100 + enemy.BoundingRadius / 2 && Player.LSDistance(predictedPosition) < Player.LSDistance(target.ServerPosition) select enemy).Count();
             var allMinionsR = Cache.GetMinions(ObjectManager.Player.ServerPosition, R.Range);
-            dmg += (from minion in allMinionsR let prediction = R.GetPrediction(minion) let predictedPosition = prediction.CastPosition let v = output.CastPosition - Player.ServerPosition let w = predictedPosition - Player.ServerPosition let c1 = Vector3.Dot(w, v) let c2 = Vector3.Dot(v, v) let b = c1/(double) c2 let pb = Player.ServerPosition + (float) b*v let length = Vector3.Distance(predictedPosition, pb) where length < R.Width + 100 + minion.BoundingRadius/2 && Player.LSDistance(predictedPosition) < Player.LSDistance(target.ServerPosition) select minion).Count();
+            dmg += (from minion in allMinionsR let prediction = R.GetPrediction(minion) let predictedPosition = prediction.CastPosition let v = output.CastPosition - Player.ServerPosition let w = predictedPosition - Player.ServerPosition let c1 = Vector3.Dot(w, v) let c2 = Vector3.Dot(v, v) let b = c1 / (double)c2 let pb = Player.ServerPosition + (float)b * v let length = Vector3.Distance(predictedPosition, pb) where length < R.Width + 100 + minion.BoundingRadius / 2 && Player.LSDistance(predictedPosition) < Player.LSDistance(target.ServerPosition) select minion).Count();
             if (dmg == 0)
                 return rDmg;
             if (dmg > 7)
-                return rDmg*0.7;
-            return rDmg - rDmg*0.1*dmg;
+                return rDmg * 0.7;
+            return rDmg - rDmg * 0.1 * dmg;
         }
 
         private static float GetPassiveTime()
@@ -514,12 +520,12 @@ namespace OneKeyToWin_AIO_Sebby
                     }
                     else
                     {
-                        var DmgSec = (DragonDmg - mob.Health)*(Math.Abs(DragonTime - Game.Time)/3);
+                        var DmgSec = (DragonDmg - mob.Health) * (Math.Abs(DragonTime - Game.Time) / 3);
                         //SebbyLib.Program.debug("DS  " + DmgSec);
                         if (DragonDmg - mob.Health > 0)
                         {
                             var timeTravel = GetUltTravelTime(Player, R.Speed, R.Delay, mob.Position);
-                            var timeR = (mob.Health - R.GetDamage(mob))/(DmgSec/3);
+                            var timeR = (mob.Health - R.GetDamage(mob)) / (DmgSec / 3);
                             //SebbyLib.Program.debug("timeTravel " + timeTravel + "timeR " + timeR + "d " + R.GetDamage(mob));
                             if (timeTravel > timeR)
                                 R.Cast(mob.Position);
@@ -537,7 +543,7 @@ namespace OneKeyToWin_AIO_Sebby
             var distance = Vector3.Distance(source.ServerPosition, targetpos);
             var missilespeed = speed;
 
-            return distance/missilespeed + delay;
+            return distance / missilespeed + delay;
         }
 
         private static void SetMana()
@@ -556,7 +562,7 @@ namespace OneKeyToWin_AIO_Sebby
             EMANA = E.Instance.SData.Mana;
 
             if (!R.IsReady())
-                RMANA = QMANA - Player.PARRegenRate*Q.Instance.Cooldown;
+                RMANA = QMANA - Player.PARRegenRate * Q.Instance.Cooldown;
             else
                 RMANA = R.Instance.SData.Mana;
         }
@@ -564,7 +570,7 @@ namespace OneKeyToWin_AIO_Sebby
         public static void drawText(string msg, AIHeroClient Hero, Color color)
         {
             var wts = Drawing.WorldToScreen(Hero.Position);
-            Drawing.DrawText(wts[0] - msg.Length*5, wts[1], color, msg);
+            Drawing.DrawText(wts[0] - msg.Length * 5, wts[1], color, msg);
         }
 
         private static void Drawing_OnDraw(EventArgs args)
@@ -617,24 +623,24 @@ namespace OneKeyToWin_AIO_Sebby
                 if (target.LSIsValidTarget())
                 {
                     var poutput = Q.GetPrediction(target);
-                    if ((int) poutput.Hitchance == 5)
+                    if ((int)poutput.Hitchance == 5)
                         Render.Circle.DrawCircle(poutput.CastPosition, 50, Color.YellowGreen);
                     if (Q.GetDamage(target) > target.Health)
                     {
                         Render.Circle.DrawCircle(target.ServerPosition, 200, Color.Red);
-                        Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.4f, Color.Red,
+                        Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.4f, Color.Red,
                             "Q kill: " + target.ChampionName + " have: " + target.Health + "hp");
                     }
                     else if (Q.GetDamage(target) + W.GetDamage(target) > target.Health)
                     {
                         Render.Circle.DrawCircle(target.ServerPosition, 200, Color.Red);
-                        Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.4f, Color.Red,
+                        Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.4f, Color.Red,
                             "Q + W kill: " + target.ChampionName + " have: " + target.Health + "hp");
                     }
                     else if (Q.GetDamage(target) + W.GetDamage(target) + E.GetDamage(target) > target.Health)
                     {
                         Render.Circle.DrawCircle(target.ServerPosition, 200, Color.Red);
-                        Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.4f, Color.Red,
+                        Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.4f, Color.Red,
                             "Q + W + E kill: " + target.ChampionName + " have: " + target.Health + "hp");
                     }
                 }
