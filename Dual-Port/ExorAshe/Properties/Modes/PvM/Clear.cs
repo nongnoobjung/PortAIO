@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using ExorSDK.Utilities;
 using LeagueSharp.SDK;
+using EloBuddy;
+using EloBuddy.SDK;
 
 namespace ExorSDK.Champions.Ashe
 {
@@ -60,6 +62,32 @@ namespace ExorSDK.Champions.Ashe
                 {
                     Vars.W.Cast(Targets.JungleMinions[0].ServerPosition);
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Fired when the game is updated.
+        /// </summary>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
+        public static void BuildingClear(EventArgs args)
+        {
+            if (Orbwalker.LastTarget as Obj_HQ == null &&
+                Orbwalker.LastTarget as Obj_AI_Turret == null &&
+                Orbwalker.LastTarget as Obj_BarracksDampener == null)
+            {
+                return;
+            }
+
+            /// <summary>
+            ///     The Q BuildingClear Logic.
+            /// </summary>
+            if (Vars.Q.IsReady() &&
+                GameObjects.Player.HasBuff("AsheQCastReady") &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "buildings")) &&
+                Vars.getSliderItem(Vars.QMenu, "buildings") != 101)
+            {
+                Vars.Q.Cast();
             }
         }
     }

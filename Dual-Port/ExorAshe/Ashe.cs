@@ -76,6 +76,7 @@ namespace ExorSDK.Champions.Ashe
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 Logics.Clear(args);
+                Logics.BuildingClear(args);
             }
         }
 

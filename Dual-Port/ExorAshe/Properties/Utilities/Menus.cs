@@ -22,6 +22,7 @@ namespace ExorSDK.Champions.Ashe
             {
                 Vars.QMenu.Add("combo", new CheckBox("Combo", true));
                 Vars.QMenu.Add("clear", new Slider("Clear / if Mana >= x%", 50, 0, 101));
+                Vars.QMenu.Add("buildings", new Slider("Buildings / If Mana >= x%", 50, 0, 101));
             }
 
             /// <summary>
@@ -54,6 +55,8 @@ namespace ExorSDK.Champions.Ashe
                 Vars.RMenu.Add("killsteal", new CheckBox("KillSteal", true));
                 Vars.RMenu.Add("gapcloser", new CheckBox("Anti-Gapcloser", true));
                 Vars.RMenu.Add("interrupter", new CheckBox("Interrupt Enemy Channels", true));
+                Vars.RMenu.Add("bool", new CheckBox("Semi-Automatic R", true));
+                Vars.RMenu.Add("key", new KeyBind("Key:", false, KeyBind.BindTypes.HoldActive, 'T'));
                 {
                     /// <summary>
                     ///     Sets the menu for the R Whitelist.

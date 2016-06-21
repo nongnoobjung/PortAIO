@@ -144,7 +144,7 @@ namespace ExorSDK.Champions.Olaf
             /// </summary>
             if (Vars.W.IsReady() &&
                 GameObjects.Player.ManaPercent >
-                    ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.WMenu, "buildings")) &&
+                    ManaManager.GetNeededMana(Vars.W.Slot, Vars.getSliderItem(Vars.WMenu, "buildings")) &&
                 Vars.getSliderItem(Vars.WMenu, "buildings") != 101)
             {
                 Vars.W.Cast();

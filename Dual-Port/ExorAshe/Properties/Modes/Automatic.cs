@@ -69,6 +69,27 @@ namespace ExorSDK.Champions.Ashe
                     }
                 }
             }
+
+            /// <summary>
+            ///     The E -> R Combo Logics.
+            /// </summary>
+            if (Vars.R.IsReady() &&
+                Vars.getCheckBoxItem(Vars.RMenu, "bool") &&
+                Vars.getKeyBindItem(Vars.RMenu, "key") &&
+                !Invulnerable.Check(Targets.Target, DamageType.Magical, false) &&
+                Vars.getCheckBoxItem(Vars.WhiteListMenu, Targets.Target.ChampionName.ToLower()))
+            {
+                if (!Vars.R.GetPrediction(Targets.Target).CollisionObjects.Any())
+                {
+                    if (Vars.E.IsReady() &&
+                        Vars.getCheckBoxItem(Vars.EMenu, "logical"))
+                    {
+                        Vars.E.Cast(Vars.E.GetPrediction(Targets.Target).UnitPosition);
+                    }
+
+                    Vars.R.Cast(Vars.R.GetPrediction(Targets.Target).UnitPosition);
+                }
+            }
         }
     }
 }

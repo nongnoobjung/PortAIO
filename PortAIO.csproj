@@ -1013,7 +1013,6 @@
     <Compile Include="Libraries\ExorSDK\AIO\Utilities\Bools.cs" />
     <Compile Include="Libraries\ExorSDK\AIO\Utilities\Helpers\Drawings.cs" />
     <Compile Include="Libraries\ExorSDK\AIO\Utilities\Helpers\Geometry.cs" />
-    <Compile Include="Libraries\ExorSDK\AIO\Utilities\Helpers\Healthbars.cs" />
     <Compile Include="Libraries\ExorSDK\AIO\Utilities\Helpers\ManaManager.cs" />
     <Compile Include="Libraries\ExorSDK\AIO\Utilities\Vars.cs" />
     <Compile Include="Libraries\ExorSDK\ExorAIO.cs" />
