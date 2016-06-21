@@ -29,6 +29,7 @@
                              new InitiatorSpell { ChampionName = "Olaf", SDataName = "olafragnarok" },
                              new InitiatorSpell { ChampionName = "Gragas", SDataName = "gragase" },
                              new InitiatorSpell { ChampionName = "Hecarim", SDataName = "hecarimult" },
+                             new InitiatorSpell { ChampionName = "Hecarim", SDataName = "HecarimRamp" },
                              new InitiatorSpell { ChampionName = "Ekko", SDataName = "ekkoe" },
                              new InitiatorSpell { ChampionName = "Malphite", SDataName = "ufslash " },
                              new InitiatorSpell { ChampionName = "Vi", SDataName = "viq" },
@@ -60,6 +61,10 @@
                              new InitiatorSpell { ChampionName = "Kassadin", SDataName = "riftwalk" },
                              new InitiatorSpell { ChampionName = "JarvanIV", SDataName = "jarvanivdragonstrike" },
                              new InitiatorSpell { ChampionName = "Irelia", SDataName = "ireliagatotsu" },
+                             new InitiatorSpell { ChampionName = "DrMundo", SDataName = "Sadism" },
+                             new InitiatorSpell { ChampionName = "MasterYi", SDataName = "Highlander" },
+                             new InitiatorSpell { ChampionName = "Shaco", SDataName = "Deceive" },
+                             new InitiatorSpell { ChampionName = "Ahri", SDataName = "AhriTumble" },
                          };
         }
 
