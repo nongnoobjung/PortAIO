@@ -79,7 +79,7 @@ namespace SebbyLib
 
         public static bool CanHarras()
         {
-            if (!Player.UnderTurret(true) && ( !Orbwalking.CanAttack() || !ShouldWait()))
+            if (!Player.Spellbook.IsAutoAttacking && !Player.UnderTurret(true) && Orbwalker.CanMove)
                 return true;
             return false;
         }
