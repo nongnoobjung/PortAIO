@@ -229,6 +229,11 @@ namespace PortAIO
                     BlackFeeder.Program.Init();
                 }
 
+                if (Loader.mes)
+                {
+                    Mastery_Badge_Spammer.Program.Init();
+                }
+
                 //if (Loader.orbwalker)
                 //{
                 //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();

@@ -37,7 +37,6 @@ Utility Ports [Only doing after Champions are completed] :
 - AioCaster
 - AutoSharp - Once working again
 - AutoJungle - Once working again
-- Emote Spammer [https://github.com/myo/LeagueSharp]
 
 Notes : 
 - Finish Up ExorAIO

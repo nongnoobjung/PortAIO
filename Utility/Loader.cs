@@ -117,6 +117,7 @@ namespace PortAIO.Utility
         public static int trackerCB { get { return Miscc["trackerCB"].Cast<ComboBox>().CurrentValue; } }
         public static int mundo { get { return Miscc["mundo"].Cast<ComboBox>().CurrentValue; } }
         public static bool feed { get { return Miscc["feed"].Cast<CheckBox>().CurrentValue; } }
+        public static bool mes { get { return Miscc["mes"].Cast<CheckBox>().CurrentValue; } }
 
         public static Menu Miscc;
 
@@ -528,6 +529,7 @@ namespace PortAIO.Utility
             Miscc.AddSeparator();
             Miscc.Add("ping", new CheckBox("Enable Ping Block?", false));
             Miscc.Add("feed", new CheckBox("Enable Black Feeder 2.0?", false));
+            Miscc.Add("mes", new CheckBox("Enable Mastery Emote Spammer?", false));
 
             var credits = Miscc.AddSubMenu("Credits");
             credits.AddLabel("Nathan or jQuery");

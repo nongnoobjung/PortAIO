@@ -1485,6 +1485,9 @@
     <Compile Include="Utility\Humanizer\Program.cs" />
     <Compile Include="Utility\LimitedShat\Program.cs" />
     <Compile Include="Utility\Loader.cs" />
+    <Compile Include="Utility\Mastery Emote Spammer\Program.cs" />
+    <Compile Include="Utility\Mastery Emote Spammer\SpellData.cs" />
+    <Compile Include="Utility\Mastery Emote Spammer\SpellDatabase.cs" />
     <Compile Include="Utility\NabbTracker\NabbTracker.cs" />
     <Compile Include="Utility\NabbTracker\Program.cs" />
     <Compile Include="Utility\NabbTracker\Tracker\ExpTracker.cs" />
