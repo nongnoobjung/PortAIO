@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using LeagueSharp.SDK;
 using SharpDX;
 using EloBuddy;
@@ -22,7 +23,7 @@ namespace Taliyah
         private static bool EWCasting = false;
         private static GameObject selectedGObj = null;
         private static bool pull_push_enemy = false;
-        private static Menu comboMenu, harassMenu, laneclearMenu;
+        private static Menu comboMenu, harassMenu, laneclearMenu, drawing;
 
         public static void OnLoad()
         {
@@ -47,6 +48,11 @@ namespace Taliyah
             laneclearMenu.Add("taliyah.laneclear.minew", new Slider("Min. EW Hit", 5, 1, 6));
             laneclearMenu.Add("taliyah.laneclear.manaperc", new Slider("Min. Mana", 40));
 
+            drawing = main_menu.AddSubMenu("Drawings", "taliyah.drawing");
+            drawing.Add("taliyah.drawing.drawq", new CheckBox("Draw Q", true));
+            drawing.Add("taliyah.drawing.draww", new CheckBox("Draw W", true));
+            drawing.Add("taliyah.drawing.drawe", new CheckBox("Draw E", true));
+            drawing.Add("taliyah.drawing.drawr", new CheckBox("Draw R Minimap", true));
 
             main_menu.Add("taliyah.onlyq5", new CheckBox("Only cast 5x Q", false));
             main_menu.Add("taliyah.antigap", new CheckBox("Auto E to Gapclosers"));
@@ -72,6 +78,36 @@ namespace Taliyah
             Events.OnInterruptableTarget += Events_OnInterruptableTarget;
             GameObject.OnCreate += GameObject_OnCreate;
             GameObject.OnDelete += GameObject_OnDelete;
+            Drawing.OnEndScene += Drawing_OnEndScene;
+        }
+
+        private static void Drawing_OnEndScene(EventArgs args)
+        {
+            if (drawing["taliyah.drawing.drawr"].Cast<CheckBox>().CurrentValue && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).IsReady())
+            {
+                float radius = 3000f + 1500f * (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Level - 1);
+                var pointList = new List<Vector3>();
+                for (var i = 0; i < 23; i++)
+                {
+                    var angle = i * Math.PI * 2 / 23;
+                    pointList.Add(
+                        new Vector3(
+                            ObjectManager.Player.ServerPosition.X + radius * (float)Math.Cos(angle), ObjectManager.Player.ServerPosition.Y + radius * (float)Math.Sin(angle),
+                            ObjectManager.Player.ServerPosition.Z));
+                }
+
+                for (var i = 0; i < pointList.Count; i++)
+                {
+                    var a = pointList[i];
+                    var b = pointList[i == pointList.Count - 1 ? 0 : i + 1];
+
+                    var aonScreen = Drawing.WorldToMinimap(a);
+                    var bonScreen = Drawing.WorldToMinimap(b);
+
+                    Drawing.DrawLine(aonScreen.X, aonScreen.Y, bonScreen.X, bonScreen.Y, 1, System.Drawing.Color.White);
+                }
+
+            }
         }
 
         private static void Game_OnWndProc(WndEventArgs args)
@@ -84,23 +120,14 @@ namespace Taliyah
 
         private static void Drawing_OnDraw(EventArgs args)
         {
-            if (selectedGObj != null)
-            {
-                if (selectedGObj.Distance(ObjectManager.Player) < 1000)
-                {
-                    Drawing.DrawCircle(selectedGObj.Position, 200, System.Drawing.Color.Gray);
-                    Drawing.DrawText(selectedGObj.Position.X, selectedGObj.Position.Y, System.Drawing.Color.Gray, "push position");
-                    return;
-                }
-            }
-            selectedGObj = null;
-            if (TargetSelector.SelectedTarget != null && TargetSelector.SelectedTarget.LSIsValidTarget(1000))
-            {
-                Vector3 pos = TargetSelector.SelectedTarget.ServerPosition + (TargetSelector.SelectedTarget.ServerPosition - ObjectManager.Player.ServerPosition).Normalized() * 50f;
-                Drawing.DrawCircle(pos, 200, System.Drawing.Color.Gray);
-                Drawing.DrawText(pos.X, pos.Y, System.Drawing.Color.Gray, "push position");
+            if (drawing["taliyah.drawing.drawq"].Cast<CheckBox>().CurrentValue)
+                Drawing.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.Red);
 
-            }
+            if (drawing["taliyah.drawing.draww"].Cast<CheckBox>().CurrentValue)
+                Drawing.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.Green);
+
+            if (drawing["taliyah.drawing.drawe"].Cast<CheckBox>().CurrentValue)
+                Drawing.DrawCircle(ObjectManager.Player.Position, E.Range, System.Drawing.Color.Blue);
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -292,7 +319,7 @@ namespace Taliyah
             {
                 EWCasting = false;
             }
-               
+
         }
 
         private static void Events_OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs e)
