@@ -31,7 +31,7 @@ namespace PortAIO
             //Console.WriteLine(Orbwalker.ActiveModesFlags.ToString());
         }
 
-        private static LeagueSharp.Common.Render.Sprite Intro;
+        //private static LeagueSharp.Common.Render.Sprite Intro;
         private static float IntroTimer = Game.Time;
         public static SCommon.PluginBase.Champion Champion;
         public static List<string> RandomUltChampsList = new List<string>(new[] { "Ezreal", "Jinx", "Ashe", "Draven", "Gangplank", "Ziggs", "Lux", "Xerath" });
@@ -55,6 +55,7 @@ namespace PortAIO
 
             Loader.Menu();
 
+            /*
             if (false)
             {
                 Intro = new LeagueSharp.Common.Render.Sprite(LoadImg("PortLogo"), new Vector2((Drawing.Width / 2) - 175, (Drawing.Height / 2) - 300));
@@ -62,6 +63,7 @@ namespace PortAIO
                 Intro.OnDraw();
                 LeagueSharp.Common.Utility.DelayAction.Add(5000, () => Intro.Remove());
             }
+            */
 
             if (!Loader.champOnly)
             {

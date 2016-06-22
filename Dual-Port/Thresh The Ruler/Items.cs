@@ -20,7 +20,7 @@ namespace ThreshTherulerofthesoul
 
         static List<Item> ItemList = new List<Item>();
         private static Menu config = Program.config;
-        public static Menu ItemMenu, Randuinmenu, Mountainmenu, Mikaelmenu, BuffTypemenu, Allymenu, Sloarimenu;
+        public static Menu ItemMenu, BuffTypemenu, Allymenu;
         static Items()
         {
             #region Locket of the Iron Solari
