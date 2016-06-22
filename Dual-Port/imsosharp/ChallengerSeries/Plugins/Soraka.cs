@@ -281,7 +281,7 @@ namespace Challenger_Series
 
         public bool CanW()
         {
-            return !ObjectManager.Player.InFountain() && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level >= 1 &&
+            return (!ObjectManager.Player.InFountain() || ObjectManager.Player.CountEnemyHeroesInRange(1200) > 0) && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Level >= 1 &&
                    ObjectManager.Player.Health - GetWHealthCost() >
                    getSliderItem(MainMenu, "wmyhp") / 100f * ObjectManager.Player.MaxHealth;
         }
