@@ -624,7 +624,7 @@
             try
             {
                 var hero = sender as AIHeroClient;
-                if (!sender.IsAlly || hero == null || !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}"))
+                if (!sender.IsAlly || hero == null || !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}") && !sender.LSIsValidTarget(E.Range, false))
                 {
                     return;
                 }
@@ -682,7 +682,7 @@
 
                 if (getCheckBoxItem(miscMenu, "ElZilean.E.Slow"))
                 {
-                    foreach (var slowedAlly in HeroManager.Allies.Where(x => x.HasBuffOfType(BuffType.Slow)))
+                    foreach (var slowedAlly in HeroManager.Allies.Where(x => x.HasBuffOfType(BuffType.Slow) && x.LSIsValidTarget(Q.Range, false)))
                     {
                         if (E.IsReady() && E.IsInRange(slowedAlly))
                         {
