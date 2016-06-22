@@ -48,12 +48,7 @@ namespace Sion
             comboMenu.Add("UseWCombo", new CheckBox("Use W"));
             comboMenu.Add("UseECombo", new CheckBox("Use E"));
 
-            rMenu = Config.AddSubMenu("R", "R");
-            rMenu.Add("AntiCamLock", new CheckBox("Avoid locking camera"));
-            rMenu.Add("MoveToMouse", new CheckBox("Move to mouse (Exploit)", false));
-
             Game.OnUpdate += Game_OnGameUpdate;
-            Game.OnProcessPacket += Game_OnGameProcessPacket;
             Drawing.OnDraw += Drawing_OnDraw;
             Obj_AI_Base.OnProcessSpellCast += ObjAiHeroOnOnProcessSpellCast;
         }
@@ -92,26 +87,8 @@ namespace Sion
             LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.White);
         }
 
-        private static void Game_OnGameProcessPacket(GamePacketEventArgs args)
-        {
-            if (getCheckBoxItem(rMenu, "AntiCamLock") && args.PacketData[0] == 0x83 && args.PacketData[7] == 0x47 && args.PacketData[8] == 0x47)
-            {
-                args.Process = false;
-            }
-        }
-
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            //Casting R
-            if (ObjectManager.Player.HasBuff("SionR"))
-            {
-                if (getCheckBoxItem(rMenu, "MoveToMouse"))
-                {
-                    var p = ObjectManager.Player.Position.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), 500);
-                    EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, p.To3D());
-                }
-                return;
-            }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {

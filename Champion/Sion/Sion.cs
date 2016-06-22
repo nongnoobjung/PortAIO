@@ -42,7 +42,6 @@ namespace UnderratedAIO.Champions
             Game.OnUpdate += Game_OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += Game_ProcessSpell;
             AntiGapcloser.OnEnemyGapcloser += OnEnemyGapcloser;
-            Game.OnProcessPacket += Game_OnProcessPacket;
             Game.OnWndProc += Game_OnWndProc;
         }
 
@@ -66,15 +65,6 @@ namespace UnderratedAIO.Champions
             if (args.Msg == (uint) WindowsMessages.WM_RBUTTONDOWN && Q.IsCharging)
             {
                 Q.Cast(Game.CursorPos);
-            }
-        }
-
-        private void Game_OnProcessPacket(GamePacketEventArgs args)
-        {
-            if (getCheckBoxItem(menuM, "NoRlock") && args.PacketData[0] == 0x83 && args.PacketData[7] == 0x47 &&
-                args.PacketData[8] == 0x47)
-            {
-                args.Process = false;
             }
         }
 
@@ -594,7 +584,6 @@ namespace UnderratedAIO.Champions
             menuM.Add("wMinAggro", new Slider("W: On aggro", 3, 1, 8));
             menuM.Add("AshieldDmg", new Slider("W: Min dmg in shield %", 100, 1));
             menuM.Add("minmanaAgg", new Slider("W: Min mana", 50, 1));
-            menuM.Add("NoRlock", new CheckBox("Disable camera lock", false));
 
             config.Add("packets", new CheckBox("Use Packets", false));
         }
