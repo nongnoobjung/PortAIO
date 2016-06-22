@@ -263,9 +263,9 @@
                 initiatorMenu = Menu.AddSubMenu("Initiators", "Initiators");
                 {
                     // todo filter out champs that have no speed stuff
-                    foreach (var x in HeroManager.Allies)
+                    foreach (var ally in HeroManager.Allies)
                     {
-                        initiatorMenu.Add($"Initiator{x.CharData.BaseSkinName}", new CheckBox("Initiator E: " + x.ChampionName, true));
+                        initiatorMenu.Add($"Initiator{ally.CharData.BaseSkinName}", new CheckBox("Initiator E: " + ally.ChampionName, true));
                     }
                 }
 
@@ -311,21 +311,6 @@
             return m[item].Cast<KeyBind>().CurrentValue;
         }
 
-        /// <summary>
-        ///     Gets the stun duration
-        /// </summary>
-        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private static float GetStunDuration(Obj_AI_Base target)
-        {
-            return
-                target.Buffs.Where(
-                    b =>
-                    b.IsActive && Game.Time < b.EndTime
-                    && (b.Type == BuffType.Charm || b.Type == BuffType.Knockback || b.Type == BuffType.Stun
-                        || b.Type == BuffType.Invulnerability || b.Type == BuffType.Suppression
-                        || b.Type == BuffType.Snare)).Aggregate(0f, (current, buff) => Math.Max(current, buff.EndTime))
-                - Game.Time;
-        }
         /// <summary>
         ///     The ignite killsteal logic
         /// </summary>
@@ -411,7 +396,7 @@
 
             if (getCheckBoxItem(comboMenu, "ElZilean.Combo.W") && getCheckBoxItem(comboMenu, "ElZilean.Combo.W2") && W.IsReady() && !Q.IsReady())
             {
-                if (Q.Instance.CooldownExpires - Game.Time < 3)
+                if (Q.Instance.CooldownExpires - Game.Time < 3 || HeroManager.Enemies.Any(x => x.Health > Q.GetDamage(x) && x.LSIsValidTarget(Q.Range)))
                 {
                     return;
                 }
@@ -431,7 +416,6 @@
             {
                 if (Q.Instance.CooldownExpires - Game.Time < 3)
                 {
-                    Console.WriteLine("3");
                     return;
                 }
 
