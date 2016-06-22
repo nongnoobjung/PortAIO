@@ -52,6 +52,18 @@ namespace Azir_Creator_of_Elo
         }
         public void castQ(AzirMain azir, AIHeroClient target, bool useQ, int nSoldiersToQ)
         {
+            if (target.isRunningOfYou())
+            {
+                if (azir.Spells.Q.IsKillable(target))
+                {
+                    var pred = azir.Spells.Q.GetPrediction(target);
+                    if (pred.Hitchance >= HitChance.High)
+                    {
+                        if (useQ)
+                            azir.Spells.Q.Cast(pred.CastPosition);
+                    }
+                }
+            }
             if (!azir.soldierManager.SoldiersAttacking(azir) && azir.soldierManager.ActiveSoldiers.Count >= nSoldiersToQ)
             {
                 if (target.isRunningOfYou())
