@@ -23,7 +23,7 @@ namespace Sion
 
         public static Vector2 QCastPos = new Vector2();
 
-        public static Menu comboMenu, rMenu;
+        public static Menu comboMenu;
 
         public static void Game_OnGameLoad()
         {
