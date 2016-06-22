@@ -292,7 +292,18 @@ namespace PortAIO
                         }
                         break;
                     case "akali": // Akali by xQx
-                        PortAIO.Champion.Akali.Program.Main();
+                        switch (Loader.akali)
+                        {
+                            case 0:
+                                PortAIO.Champion.Akali.Program.Main();
+                                break;
+                            case 1:
+                                ExorAIO.AIO.OnLoad();
+                                break;
+                            default:
+                                PortAIO.Champion.Akali.Program.Main();
+                                break;
+                        }
                         break;
                     case "alistar": // El Alistar
                         PortAIO.Champion.Alistar.Program.OnGameLoad();
