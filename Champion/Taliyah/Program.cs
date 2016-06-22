@@ -20,7 +20,8 @@ namespace Taliyah
         private static int lastETick = Environment.TickCount;
         private static bool Q5x = true;
         private static bool EWCasting = false;
-
+        private static GameObject selectedGObj = null;
+        private static bool pull_push_enemy = false;
         private static Menu comboMenu, harassMenu, laneclearMenu;
 
         public static void OnLoad()
@@ -50,6 +51,8 @@ namespace Taliyah
             main_menu.Add("taliyah.onlyq5", new CheckBox("Only cast 5x Q", false));
             main_menu.Add("taliyah.antigap", new CheckBox("Auto E to Gapclosers"));
             main_menu.Add("taliyah.interrupt", new CheckBox("Auto W to interrupt spells"));
+            main_menu.Add("taliyah.pullenemy", new KeyBind("Pull Selected Target", false, KeyBind.BindTypes.HoldActive, 'T'));
+            main_menu.Add("taliyah.pushenemy", new KeyBind("Push Selected Target", false, KeyBind.BindTypes.HoldActive, 'G'));
 
 
             Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 900f);
@@ -61,13 +64,43 @@ namespace Taliyah
             E = new LeagueSharp.SDK.Spell(SpellSlot.E, 700f);
             E.SetSkillshot(0.25f, 150f, 2000f, false, SkillshotType.SkillshotLine);
 
+            Game.OnWndProc += Game_OnWndProc;
             Game.OnUpdate += Game_OnUpdate;
+            Drawing.OnDraw += Drawing_OnDraw;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
             Events.OnGapCloser += Events_OnGapCloser;
             Events.OnInterruptableTarget += Events_OnInterruptableTarget;
             GameObject.OnCreate += GameObject_OnCreate;
             GameObject.OnDelete += GameObject_OnDelete;
+        }
 
+        private static void Game_OnWndProc(WndEventArgs args)
+        {
+            if (args.Msg == (uint)WindowsMessages.LBUTTONDOWN)
+            {
+                selectedGObj = ObjectManager.Get<Obj_AI_Base>().Where(p => p.IsValid && !p.IsMe && !p.IsDead && p.Distance(Game.CursorPos.ToVector2()) < 200 && p.IsAlly).FirstOrDefault();
+            }
+        }
+
+        private static void Drawing_OnDraw(EventArgs args)
+        {
+            if (selectedGObj != null)
+            {
+                if (selectedGObj.Distance(ObjectManager.Player) < 1000)
+                {
+                    Drawing.DrawCircle(selectedGObj.Position, 200, System.Drawing.Color.Gray);
+                    Drawing.DrawText(selectedGObj.Position.X, selectedGObj.Position.Y, System.Drawing.Color.Gray, "push position");
+                    return;
+                }
+            }
+            selectedGObj = null;
+            if (TargetSelector.SelectedTarget != null && TargetSelector.SelectedTarget.LSIsValidTarget(1000))
+            {
+                Vector3 pos = TargetSelector.SelectedTarget.ServerPosition + (TargetSelector.SelectedTarget.ServerPosition - ObjectManager.Player.ServerPosition).Normalized() * 50f;
+                Drawing.DrawCircle(pos, 200, System.Drawing.Color.Gray);
+                Drawing.DrawText(pos.X, pos.Y, System.Drawing.Color.Gray, "push position");
+
+            }
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -205,7 +238,32 @@ namespace Taliyah
                     DelayAction.Add(250, () => ObjectManager.Player.Spellbook.CastSpell(SpellSlot.W, lastE, false));
                 }
             }
+        }
 
+        private static void CheckKeyBindings()
+        {
+            if (!pull_push_enemy && TargetSelector.SelectedTarget != null && TargetSelector.SelectedTarget.IsValidTarget(W.Range))
+            {
+                Vector3 push_position = ObjectManager.Player.ServerPosition;
+
+                if (main_menu["taliyah.pullenemy"].Cast<KeyBind>().CurrentValue || main_menu["taliyah.pushenemy"].Cast<KeyBind>().CurrentValue)
+                {
+                    if (main_menu["taliyah.pushenemy"].Cast<KeyBind>().CurrentValue)
+                    {
+                        if (selectedGObj != null && selectedGObj.Distance(ObjectManager.Player) < 1000)
+                            push_position = selectedGObj.Position;
+                        else
+                            push_position = TargetSelector.SelectedTarget.ServerPosition + (TargetSelector.SelectedTarget.ServerPosition - ObjectManager.Player.ServerPosition).Normalized() * 50f;
+                    }
+                    var pred = W.GetPrediction(TargetSelector.SelectedTarget);
+                    if (pred.Hitchance >= HitChance.High)
+                    {
+                        pull_push_enemy = true;
+                        W.Cast(pred.UnitPosition);
+                        DelayAction.Add(250, () => { ObjectManager.Player.Spellbook.CastSpell(SpellSlot.W, push_position, false); pull_push_enemy = false; });
+                    }
+                }
+            }
         }
 
         private static void Game_OnUpdate(EventArgs args)
@@ -223,6 +281,11 @@ namespace Taliyah
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
                 LaneClear();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+            {
+                CheckKeyBindings();
             }
 
             if (W.Instance.Name == "TaliyahWNoClick")
