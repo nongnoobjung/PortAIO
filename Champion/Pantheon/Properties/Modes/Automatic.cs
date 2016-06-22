@@ -1,10 +1,10 @@
 using System;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp.SDK;
 using EloBuddy.SDK;
 using EloBuddy;
 
-namespace ExorSDK.Champions.Pantheon
+namespace ExorAIO.Champions.Pantheon
 {
     /// <summary>
     ///     The logics class.

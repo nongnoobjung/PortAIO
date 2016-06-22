@@ -1,9 +1,9 @@
 using EloBuddy;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 
-namespace ExorSDK.Champions.Nunu
+namespace ExorAIO.Champions.Nunu
 {
     /// <summary>
     ///     The spells class.

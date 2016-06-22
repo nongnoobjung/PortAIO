@@ -1,9 +1,9 @@
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp.SDK;
 
-namespace ExorSDK.Champions.Nautilus
+namespace ExorAIO.Champions.Nautilus
 {
     /// <summary>
     ///     The menu class.

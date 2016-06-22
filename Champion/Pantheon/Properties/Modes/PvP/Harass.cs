@@ -1,9 +1,9 @@
 using System;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorSDK.Champions.Pantheon
+namespace ExorAIO.Champions.Pantheon
 {
     /// <summary>
     ///     The logics class.

@@ -1,7 +1,7 @@
 using EloBuddy.SDK.Menu.Values;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 
-namespace ExorSDK.Champions.Tryndamere
+namespace ExorAIO.Champions.Tryndamere
 {
     /// <summary>
     ///     The menu class.

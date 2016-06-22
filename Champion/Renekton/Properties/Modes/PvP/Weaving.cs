@@ -1,11 +1,11 @@
 using System.Linq;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorSDK.Champions.Renekton
+namespace ExorAIO.Champions.Renekton
 {
     /// <summary>
     ///     The logics class.

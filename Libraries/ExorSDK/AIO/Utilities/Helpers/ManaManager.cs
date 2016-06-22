@@ -2,7 +2,7 @@ using EloBuddy;
 using LeagueSharp;
 using LeagueSharp.SDK;
 
-namespace ExorSDK.Utilities
+namespace ExorAIO.Utilities
 {
     /// <summary>
     ///     The Mana manager class.

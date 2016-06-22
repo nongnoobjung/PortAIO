@@ -307,7 +307,7 @@ namespace PortAIO
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
                             case 1:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             case 2:
                                 Challenger_Series.Program.Main();
@@ -350,7 +350,7 @@ namespace PortAIO
                                 Marksman.Program.Game_OnGameLoad();
                                 break;
                             case 3:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
@@ -432,7 +432,7 @@ namespace PortAIO
                                 Marksman.Program.Game_OnGameLoad();
                                 break;
                             case 3:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
@@ -461,7 +461,7 @@ namespace PortAIO
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
                             case 1:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
@@ -475,7 +475,7 @@ namespace PortAIO
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
                             case 1:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             case 2:
                                 iSivir.Sivir.OnLoad();
@@ -632,13 +632,13 @@ namespace PortAIO
                         switch (Loader.darius)
                         {
                             case 0:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             case 1:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
                             default:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                         }
                         break;
@@ -646,35 +646,35 @@ namespace PortAIO
                         switch (Loader.olaf)
                         {
                             case 0:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             case 1:
                                 OlafxQx.Program.Init();
                                 break;
                             default:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                         }
                         break;
                     case "nautilus":
                     case "nunu":
                     case "pantheon":
-                        ExorSDK.AIO.OnLoad();
+                        ExorAIO.AIO.OnLoad();
                         break;
                     case "tryndamere":
-                        ExorSDK.AIO.OnLoad();
+                        ExorAIO.AIO.OnLoad();
                         break;
                     case "renekton":
                         switch (Loader.renekton)
                         {
                             case 0:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             case 1:
                                 UnderratedAIO.Champions.Renekton.OnLoad();
                                 break;
                             default:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                         }
                         break;
@@ -682,7 +682,7 @@ namespace PortAIO
                         switch (Loader.ryze)
                         {
                             case 0:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             case 1:
                                 ElEasy.Plugins.Ryze f = new ElEasy.Plugins.Ryze();
@@ -698,7 +698,7 @@ namespace PortAIO
                                 RyzeAssembly.Program.Init();
                                 break;
                             default:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                         }
                         break;
@@ -723,7 +723,7 @@ namespace PortAIO
                                 Mundo.Mundo.OnLoad();
                                 break;
                             case 1:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 Mundo.Mundo.OnLoad();
@@ -896,7 +896,7 @@ namespace PortAIO
                                 NoobJaxReloaded.Program.Game_OnGameLoad();
                                 break;
                             case 2:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 JaxQx.Program.Game_OnGameLoad();
@@ -919,7 +919,7 @@ namespace PortAIO
                                 Marksman.Program.Game_OnGameLoad();
                                 break;
                             case 4:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 Jhin___The_Virtuoso.Jhin.JhinOnLoad();
@@ -956,7 +956,7 @@ namespace PortAIO
                                 Karma.Program.Game_OnGameLoad();
                                 break;
                             case 2:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 Spirit_Karma.Program.Load();
@@ -1177,7 +1177,7 @@ namespace PortAIO
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
                             case 2:
-                                ExorSDK.AIO.OnLoad();
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 GFUELQuinn.Quinn.OnGameLoad();

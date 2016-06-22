@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
 
-namespace ExorSDK.Champions.Tryndamere
+namespace ExorAIO.Champions.Tryndamere
 {
     /// <summary>
     ///     The targets class.

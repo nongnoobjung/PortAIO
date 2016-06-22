@@ -1,9 +1,9 @@
 using EloBuddy;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorSDK.Champions.Nautilus
+namespace ExorAIO.Champions.Nautilus
 {
     /// <summary>
     ///     The logics class.

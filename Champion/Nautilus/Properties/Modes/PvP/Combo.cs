@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy;
 
-namespace ExorSDK.Champions.Nautilus
+namespace ExorAIO.Champions.Nautilus
 {
     /// <summary>
     ///     The logics class.

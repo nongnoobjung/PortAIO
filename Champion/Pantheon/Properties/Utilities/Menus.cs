@@ -1,7 +1,7 @@
 using EloBuddy.SDK.Menu.Values;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 
-namespace ExorSDK.Champions.Pantheon
+namespace ExorAIO.Champions.Pantheon
 {
     /// <summary>
     ///     The menu class.

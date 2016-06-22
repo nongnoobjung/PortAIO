@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using EloBuddy;
@@ -8,7 +8,7 @@ using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
 using LeagueSharp.SDK.Enumerations;
 
-namespace ExorSDK.Champions.Nunu
+namespace ExorAIO.Champions.Nunu
 {
     /// <summary>
     ///     The logics class.

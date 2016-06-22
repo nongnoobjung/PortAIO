@@ -1,6 +1,6 @@
 using System;
 
-namespace ExorSDK.Champions.Renekton
+namespace ExorAIO.Champions.Renekton
 {
     /// <summary>
     ///     The logics class.

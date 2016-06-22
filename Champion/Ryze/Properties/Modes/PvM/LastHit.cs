@@ -1,6 +1,6 @@
 using System;
 
-namespace ExorSDK.Champions.Ryze
+namespace ExorAIO.Champions.Ryze
 {
     /// <summary>
     ///     The logics class.

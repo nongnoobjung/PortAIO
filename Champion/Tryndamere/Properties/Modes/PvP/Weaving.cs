@@ -1,7 +1,7 @@
 using EloBuddy;
 using LeagueSharp;
 
-namespace ExorSDK.Champions.Tryndamere
+namespace ExorAIO.Champions.Tryndamere
 {
     /// <summary>
     ///     The logics class.

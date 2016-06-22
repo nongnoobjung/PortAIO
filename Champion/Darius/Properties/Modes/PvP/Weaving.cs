@@ -1,10 +1,10 @@
 using EloBuddy;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorSDK.Champions.Darius
+namespace ExorAIO.Champions.Darius
 {
     /// <summary>
     ///     The logics class.

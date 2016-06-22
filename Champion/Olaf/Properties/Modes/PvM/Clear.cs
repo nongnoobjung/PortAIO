@@ -1,15 +1,15 @@
 using System;
 using System.Linq;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using SharpDX;
-using Geometry = ExorSDK.Utilities.Geometry;
+using Geometry = ExorAIO.Utilities.Geometry;
 using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
 
-namespace ExorSDK.Champions.Olaf
+namespace ExorAIO.Champions.Olaf
 {
     /// <summary>
     ///     The logics class.

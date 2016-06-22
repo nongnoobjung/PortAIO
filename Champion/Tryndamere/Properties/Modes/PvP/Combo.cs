@@ -1,9 +1,9 @@
 using System;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorSDK.Champions.Tryndamere
+namespace ExorAIO.Champions.Tryndamere
 {
     /// <summary>
     ///     The logics class.

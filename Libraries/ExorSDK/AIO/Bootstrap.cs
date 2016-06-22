@@ -1,25 +1,25 @@
-using ExorSDK.Champions.Anivia;
-using ExorSDK.Champions.Ashe;
-using ExorSDK.Champions.Caitlyn;
-using ExorSDK.Champions.Darius;
-using ExorSDK.Champions.DrMundo;
-using ExorSDK.Champions.Graves;
-using ExorSDK.Champions.Jax;
-using ExorSDK.Champions.Jhin;
-using ExorSDK.Champions.Nautilus;
-using ExorSDK.Champions.Nunu;
-using ExorSDK.Champions.Olaf;
-using ExorSDK.Champions.Pantheon;
-using ExorSDK.Champions.Quinn;
-using ExorSDK.Champions.Renekton;
-using ExorSDK.Champions.Ryze;
-using ExorSDK.Champions.Sivir;
-using ExorSDK.Champions.Tryndamere;
-using ExorSDK.Utilities;
+using ExorAIO.Champions.Anivia;
+using ExorAIO.Champions.Ashe;
+using ExorAIO.Champions.Caitlyn;
+using ExorAIO.Champions.Darius;
+using ExorAIO.Champions.DrMundo;
+using ExorAIO.Champions.Graves;
+using ExorAIO.Champions.Jax;
+using ExorAIO.Champions.Jhin;
+using ExorAIO.Champions.Nautilus;
+using ExorAIO.Champions.Nunu;
+using ExorAIO.Champions.Olaf;
+using ExorAIO.Champions.Pantheon;
+using ExorAIO.Champions.Quinn;
+using ExorAIO.Champions.Renekton;
+using ExorAIO.Champions.Ryze;
+using ExorAIO.Champions.Sivir;
+using ExorAIO.Champions.Tryndamere;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 
-namespace ExorSDK.Core
+namespace ExorAIO.Core
 {
     /// <summary>
     ///     The bootstrap class.
@@ -76,7 +76,7 @@ namespace ExorSDK.Core
                     new Graves().OnLoad();
                     break;
                 case "Karma":
-                    new ExorSDK.Champions.Karma.Karma().OnLoad();
+                    new ExorAIO.Champions.Karma.Karma().OnLoad();
                     break;
                 case "Jax":
                     new Jax().OnLoad();

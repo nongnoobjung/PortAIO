@@ -1,6 +1,6 @@
 using System;
 
-namespace ExorSDK.Champions.Darius
+namespace ExorAIO.Champions.Darius
 {
     /// <summary>
     ///     The logics class.

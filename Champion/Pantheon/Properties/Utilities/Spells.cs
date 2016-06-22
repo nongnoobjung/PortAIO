@@ -1,11 +1,11 @@
 using System;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using EloBuddy;
 using LeagueSharp.SDK.Enumerations;
 
-namespace ExorSDK.Champions.Pantheon
+namespace ExorAIO.Champions.Pantheon
 {
     /// <summary>
     ///     The spells class.

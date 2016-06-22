@@ -2,7 +2,7 @@ using EloBuddy;
 using LeagueSharp;
 using LeagueSharp.SDK;
 
-namespace ExorSDK.Champions.Ryze
+namespace ExorAIO.Champions.Ryze
 {
     /// <summary>
     ///     The methods class.

@@ -1,7 +1,7 @@
 using EloBuddy;
 using LeagueSharp;
 
-namespace ExorSDK.Champions.Ryze
+namespace ExorAIO.Champions.Ryze
 {
     /// <summary>
     ///     The logics class.

@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using EloBuddy;
 using EloBuddy.SDK;
 
-namespace ExorSDK.Champions.Ryze
+namespace ExorAIO.Champions.Ryze
 {
     /// <summary>
     ///     The logics class.

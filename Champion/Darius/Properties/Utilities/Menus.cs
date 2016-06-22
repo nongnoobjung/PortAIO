@@ -1,8 +1,8 @@
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 
-namespace ExorSDK.Champions.Darius
+namespace ExorAIO.Champions.Darius
 {
     /// <summary>
     ///     The menu class.

@@ -2,7 +2,7 @@ using EloBuddy;
 using LeagueSharp;
 using LeagueSharp.SDK;
 
-namespace ExorSDK.Champions.Darius
+namespace ExorAIO.Champions.Darius
 {
     /// <summary>
     ///     The methods class.

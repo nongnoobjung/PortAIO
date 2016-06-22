@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using EloBuddy;
 using EloBuddy.SDK;
 
-namespace ExorSDK.Champions.Darius
+namespace ExorAIO.Champions.Darius
 {
     /// <summary>
     ///     The targets class.

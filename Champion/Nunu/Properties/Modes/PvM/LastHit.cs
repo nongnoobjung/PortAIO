@@ -1,6 +1,6 @@
 using System;
 
-namespace ExorSDK.Champions.Nunu
+namespace ExorAIO.Champions.Nunu
 {
     /// <summary>
     ///     The logics class.

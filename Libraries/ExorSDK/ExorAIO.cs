@@ -1,10 +1,10 @@
 ﻿using EloBuddy.SDK.Menu;
-using ExorSDK.Core;
-using ExorSDK.Utilities;
+using ExorAIO.Core;
+using ExorAIO.Utilities;
 using LeagueSharp.SDK;
 using System.Security.Permissions;
 
-namespace ExorSDK
+namespace ExorAIO
 {
     /// <summary>
     ///     The AIO class.

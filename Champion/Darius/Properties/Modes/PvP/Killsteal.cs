@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.Data.Enumerations;
 using LeagueSharp.SDK.Core.Utils;
@@ -9,7 +9,7 @@ using LeagueSharp.Common;
 using EloBuddy.SDK;
 using System.Collections.Generic;
 
-namespace ExorSDK.Champions.Darius
+namespace ExorAIO.Champions.Darius
 {
     /// <summary>
     ///     The logics class.

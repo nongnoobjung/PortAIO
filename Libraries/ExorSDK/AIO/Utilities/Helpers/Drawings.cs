@@ -5,7 +5,7 @@ using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK.Menu.Values;
 
-namespace ExorSDK.Utilities
+namespace ExorAIO.Utilities
 {
     /// <summary>
     ///     The drawings class.

@@ -1,9 +1,9 @@
 using System;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp.SDK;
 using EloBuddy.SDK;
 
-namespace ExorSDK.Champions.Nunu
+namespace ExorAIO.Champions.Nunu
 {
     /// <summary>
     ///     The champion class.

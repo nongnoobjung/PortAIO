@@ -1,12 +1,12 @@
 using System;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy;
 using EloBuddy.SDK;
 
-namespace ExorSDK.Champions.Pantheon
+namespace ExorAIO.Champions.Pantheon
 {
     /// <summary>
     ///     The champion class.

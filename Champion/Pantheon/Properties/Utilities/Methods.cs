@@ -2,7 +2,7 @@ using EloBuddy;
 using LeagueSharp;
 using LeagueSharp.SDK;
 
-namespace ExorSDK.Champions.Pantheon
+namespace ExorAIO.Champions.Pantheon
 {
     /// <summary>
     ///     The methods class.

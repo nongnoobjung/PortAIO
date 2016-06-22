@@ -1,7 +1,7 @@
 using EloBuddy;
 using LeagueSharp;
 
-namespace ExorSDK.Champions.Olaf
+namespace ExorAIO.Champions.Olaf
 {
     /// <summary>
     ///     The methods class.

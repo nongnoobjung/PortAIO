@@ -1,7 +1,7 @@
 using EloBuddy.SDK.Menu.Values;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 
-namespace ExorSDK.Champions.Olaf
+namespace ExorAIO.Champions.Olaf
 {
     /// <summary>
     ///     The menu class.

@@ -6,7 +6,7 @@ using SharpDX;
 using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorSDK.Utilities
+namespace ExorAIO.Utilities
 {
     /// <summary>
     ///     The Bools class.

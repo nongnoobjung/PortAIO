@@ -1,9 +1,9 @@
 using EloBuddy;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 
-namespace ExorSDK.Champions.Renekton
+namespace ExorAIO.Champions.Renekton
 {
     /// <summary>
     ///     The spell class.

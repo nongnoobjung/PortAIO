@@ -1,10 +1,10 @@
 using EloBuddy;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Enumerations;
 
-namespace ExorSDK.Champions.Olaf
+namespace ExorAIO.Champions.Olaf
 {
     /// <summary>
     ///     The spell class.

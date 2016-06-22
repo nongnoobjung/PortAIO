@@ -1,10 +1,10 @@
 using System;
 using LeagueSharp;
 using LeagueSharp.SDK;
-using ExorSDK.Utilities;
+using ExorAIO.Utilities;
 using EloBuddy;
 
-namespace ExorSDK.Champions.Tryndamere
+namespace ExorAIO.Champions.Tryndamere
 {
     /// <summary>
     ///     The logics class.
