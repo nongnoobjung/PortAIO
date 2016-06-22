@@ -4,6 +4,7 @@ using ExorAIO.Champions.Anivia;
 using ExorAIO.Champions.Ashe;
 using ExorAIO.Champions.Caitlyn;
 using ExorAIO.Champions.Cassiopeia;
+using ExorAIO.Champions.Corki;
 using ExorAIO.Champions.Darius;
 using ExorAIO.Champions.DrMundo;
 using ExorAIO.Champions.Graves;
@@ -98,6 +99,9 @@ namespace ExorAIO.Core
                     break;
                 case "Cassiopeia":
                     new Cassiopeia().OnLoad();
+                    break;
+                case "Corki":
+                    new Corki().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

@@ -301,7 +301,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[20]))
                 {
-                    Miscc.Add("corki", new ComboBox("Use addon for Corki : ", 0, "ElCorki", "OKTW", "D-Corki", "Marksman II"));
+                    Miscc.Add("corki", new ComboBox("Use addon for Corki : ", 0, "ElCorki", "OKTW", "D-Corki", "Marksman II", "ExorAIO"));
                 }
                 if (Player.ChampionName.Equals(Champion[21]))
                 {

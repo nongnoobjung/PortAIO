@@ -2,7 +2,7 @@
 
 -Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
 
-Corki, Draven, Evelynn, Ezreal, Jinx, Kalista, Kog'Maw, Lucian, Lux, Twitch, Tristana, Udyr, Vayne, Veigar, Warwick = Port these for ExorAIO SDK
+Draven, Evelynn, Ezreal, Jinx, Kalista, Kog'Maw, Lucian, Lux, Twitch, Tristana, Udyr, Vayne, Veigar, Warwick = Port these for ExorAIO SDK
 
 Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
 - Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne

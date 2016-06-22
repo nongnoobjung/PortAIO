@@ -1628,7 +1628,8 @@ namespace Vayne1
             CondemnSettings.AddLabel("7 : Prada Legacy | 8 : Fastest | 9 : Old Prada");
             CondemnSettings.AddLabel("10 : Synx Auto Carry | 11 : OKTW | 12 : Shine - HikiCarry");
             CondemnSettings.AddLabel("13 : Asuna - Hikicarry | 14 : 360 - Hikicarry | 15 : SergixCondemn");
-            CondemnSettings.Add("emode", new Slider("E Mode: ", 2, 1, 15)); // EModeStringList
+            CondemnSettings.AddLabel("16 : Accurate | 17 : Fast");
+            CondemnSettings.Add("emode", new Slider("E Mode: ", 2, 1, 17)); // EModeStringList
             CondemnSettings.AddSeparator();
             CondemnSettings.Add("onlyCondemnTarget", new CheckBox("Only Condemn Current Target", false));
                 // UseEInterruptBool
@@ -2012,7 +2013,104 @@ namespace Vayne1
                 }
             }
 
+            if (mode == 16 || mode == 17) // Accurate & Fast
+            {
+                return CanICastE(target, EPushDistanceSlider);
+            }
+
             return false;
+        }
+
+        /// <summary>
+        /// Gets if enemy is vurnerable to condemn
+        /// </summary>
+        /// <param name="unit">Target</param>
+        /// <returns>Returns true if E can be used on an enemy</returns>
+        public static bool IsECastableOnEnemy(this AIHeroClient unit)
+        {
+            return E.IsReady() && !unit.IsDead && !unit.IsZombie &&
+                   unit.IsValidTarget(E.Range) &&
+                   !unit.HasBuffOfType(BuffType.Invulnerability) && !unit.HasBuffOfType(BuffType.SpellImmunity) &&
+                   !unit.HasBuffOfType(BuffType.SpellShield);
+        }
+
+        public static bool CanICastE(AIHeroClient unit, float range)
+        {
+            if (unit == null || !unit.IsECastableOnEnemy() || unit.IsDashing())
+                return false;
+
+            var accuracy = EModeStringList;
+            var position = Prediction.Position.PredictUnitPosition(unit, 200);
+
+            if (!unit.CanMove)
+            {
+                for (var i = 25; i < range + 50; i += 50)
+                {
+                    var vec = unit.ServerPosition.Extend(Player.Instance.ServerPosition, -Math.Min(i, range));
+                    if (vec.IsWall())
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                switch (accuracy)
+                {
+                    case 16:
+                        {
+                            for (var i = EPushDistanceSlider; i >= 100; i -= 100)
+                            {
+                                var vec = position.Extend(Player.Instance.ServerPosition, -i);
+                                var left = new Vector2[5];
+                                var right = new Vector2[5];
+                                var var = 18 * i / 100;
+
+                                for (var x = 0; x < 5; x++)
+                                {
+                                    left[x] =
+                                        position.Extend(
+                                            vec + (position - vec).Normalized().Rotated((float)ToRadian(Math.Max(0, var))) *
+                                            Math.Abs(i < 200 ? 50 : 45 * x), i);
+                                    right[x] =
+                                        position.Extend(
+                                            vec +
+                                            (position - vec).Normalized().Rotated((float)ToRadian(-Math.Max(0, var))) *
+                                            Math.Abs(i < 200 ? 50 : 45 * x), i);
+                                }
+                                if (left[0].IsWall() && right[0].IsWall() && left[1].IsWall() && right[1].IsWall() &&
+                                    left[2].IsWall() && right[2].IsWall() && left[3].IsWall() && right[3].IsWall() &&
+                                    left[4].IsWall() && right[4].IsWall() && vec.IsWall())
+                                {
+                                    return true;
+                                }
+                            }
+                            break;
+                        }
+                    case 17:
+                        {
+                            for (var i = 25; i < range + 50; i += 50)
+                            {
+                                var vec = position.Extend(Player.Instance.ServerPosition, -Math.Min(i, range));
+                                if (vec.IsWall())
+                                {
+                                    return true;
+                                }
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            return false;
+                        }
+                }
+            }
+            return false;
+        }
+
+        public static double ToRadian(int degree)
+        {
+            return Math.PI / 180 * degree;
         }
 
         public static Vector3 Efinishpos(Obj_AI_Base ts)

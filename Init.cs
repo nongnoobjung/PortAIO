@@ -660,6 +660,9 @@ namespace PortAIO
                             case 3:
                                 Marksman.Program.Game_OnGameLoad();
                                 break;
+                            case 4:
+                                ExorAIO.AIO.OnLoad();
+                                break;
                             default:
                                 ElCorki.Corki.Game_OnGameLoad();
                                 break;
