@@ -171,8 +171,8 @@ namespace UnderratedAIO.Champions
                 }
                 var start = ObjectManager.Player.ServerPosition.LSTo2D();
                 var end = start.LSExtend(QCastPos, Q.Range);
-                var direction = (end - start).Normalized();
-                var normal = direction.Perpendicular();
+                var direction = (end - start).LSNormalized();
+                var normal = direction.LSPerpendicular();
 
                 var points = new List<Vector2>();
                 var hitBox = qTarget.BoundingRadius;
@@ -327,8 +327,8 @@ namespace UnderratedAIO.Champions
             {
                 var start = ObjectManager.Player.ServerPosition.LSTo2D();
                 var end = start.LSExtend(QCastPos, Q.Range);
-                var direction = (end - start).Normalized();
-                var normal = direction.Perpendicular();
+                var direction = (end - start).LSNormalized();
+                var normal = direction.LSPerpendicular();
 
                 var points = new List<Vector2>();
                 var hitBox = qTarget.BoundingRadius;
@@ -400,19 +400,19 @@ namespace UnderratedAIO.Champions
         private Geometry.Polygon GetPoly(Vector3 pos)
         {
             var POS = player.ServerPosition.LSExtend(pos, Q.ChargedMaxRange);
-            var direction = (POS.LSTo2D() - player.ServerPosition.LSTo2D()).Normalized();
+            var direction = (POS.LSTo2D() - player.ServerPosition.LSTo2D()).LSNormalized();
 
-            var pos1 = (player.ServerPosition.LSTo2D() - direction.Perpendicular()*qWidth/2f).To3D();
+            var pos1 = (player.ServerPosition.LSTo2D() - direction.LSPerpendicular()*qWidth/2f).To3D();
 
             var pos2 =
-                (POS.LSTo2D() + (POS.LSTo2D() - player.ServerPosition.LSTo2D()).Normalized() +
-                 direction.Perpendicular()*qWidth/2f).To3D();
+                (POS.LSTo2D() + (POS.LSTo2D() - player.ServerPosition.LSTo2D()).LSNormalized() +
+                 direction.LSPerpendicular()*qWidth/2f).To3D();
 
-            var pos3 = (player.ServerPosition.LSTo2D() + direction.Perpendicular()*qWidth/2f).To3D();
+            var pos3 = (player.ServerPosition.LSTo2D() + direction.LSPerpendicular()*qWidth/2f).To3D();
 
             var pos4 =
-                (POS.LSTo2D() + (POS.LSTo2D() - player.ServerPosition.LSTo2D()).Normalized() -
-                 direction.Perpendicular()*qWidth/2f).To3D();
+                (POS.LSTo2D() + (POS.LSTo2D() - player.ServerPosition.LSTo2D()).LSNormalized() -
+                 direction.LSPerpendicular()*qWidth/2f).To3D();
             var poly = new Geometry.Polygon();
             poly.Add(pos1);
             poly.Add(pos3);
@@ -456,7 +456,7 @@ namespace UnderratedAIO.Champions
             double damage = 0;
             if (activatedP)
             {
-                return player.GetAutoAttackDamage(hero, true);
+                return (float)player.LSGetAutoAttackDamage(hero, true);
             }
             if (Q.IsReady())
             {
