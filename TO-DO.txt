@@ -23,6 +23,8 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Hoola Lucian
 - Zac Secret Flubber
 - OAnnie
+- Jinx Genesis Edition
+- Flowers Riven
 
 Utility Ports [Only doing after Champions are completed] :
 - OneKeyToBrain [https://github.com/OneKeyToWin/LeagueRepo/tree/master/OneKeyToBrain]
@@ -61,5 +63,7 @@ AIOS in an AIO :
 - https://github.com/xcsoftforlsharp/SDK - These
 - Badao Kingdom
 - EasyAssemblies 
+- Synx's Auto Carry
+- xSalice Religion
 
 ------------------------------------------------------------------------
