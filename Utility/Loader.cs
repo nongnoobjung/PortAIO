@@ -123,6 +123,7 @@ namespace PortAIO.Utility
         public static int akali { get { return Miscc["akali"].Cast<ComboBox>().CurrentValue; } }
         public static int thresh { get { return Miscc["thresh"].Cast<ComboBox>().CurrentValue; } }
         public static int amumu { get { return Miscc["amumu"].Cast<ComboBox>().CurrentValue; } }
+        public static int azir { get { return Miscc["azir"].Cast<ComboBox>().CurrentValue; } }
 
         public static Menu Miscc;
 
@@ -205,6 +206,7 @@ namespace PortAIO.Utility
             "Akali", //68
             "Thresh", //69
             "Amumu", //70
+            "Azir", // 71
         });
 
         public static void Menu()
@@ -500,6 +502,10 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[70]))
                 {
                     Miscc.Add("amumu", new ComboBox("Use addon for Amumu : ", 0, "Shine#", "ExorAIO"));
+                }
+                if (Player.ChampionName.Equals(Champion[71]))
+                {
+                    Miscc.Add("azir", new ComboBox("Use addon for Azir : ", 0, "HeavenStrikeAzir", "Creator Of Elo"));
                 }
             }
             else

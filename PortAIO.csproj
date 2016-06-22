@@ -290,6 +290,16 @@
     <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Utilities\Methods.cs" />
     <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Utilities\Spells.cs" />
     <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Utilities\Targets.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\AzirMain.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\AzirMenu.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\AzirModes.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\Extensions.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\Jump.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\Menu.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\Modes.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\Program.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\SoldierManager.cs" />
+    <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\Spells.cs" />
     <Compile Include="Dual-Port\Thresh The Ruler\EscapeDetector.cs" />
     <Compile Include="Dual-Port\Thresh The Ruler\Extensions.cs" />
     <Compile Include="Dual-Port\Thresh The Ruler\Helper.cs" />

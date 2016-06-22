@@ -564,7 +564,18 @@ namespace PortAIO
                         SebbyLib.Program.GameOnOnGameLoad();
                         break;
                     case "azir": // HeavenStrike
-                        HeavenStrikeAzir.Program.Game_OnGameLoad();
+                        switch (Loader.azir)
+                        {
+                            case 0:
+                                HeavenStrikeAzir.Program.Game_OnGameLoad();
+                                break;
+                            case 1:
+                                Azir_Creator_of_Elo.Program.Init();
+                                break;
+                            default:
+                                HeavenStrikeAzir.Program.Game_OnGameLoad();
+                                break;
+                        }
                         break;
                     case "bard": // Dreamless Wanderer & FreshBooster
                         switch (Loader.bard)
