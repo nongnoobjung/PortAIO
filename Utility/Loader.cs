@@ -289,7 +289,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[17]))
                 {
-                    Miscc.Add("ezreal", new ComboBox("Use addon for Ezreal : ", 0, "OKTW", "iDzEzreal", "Marksman II"));
+                    Miscc.Add("ezreal", new ComboBox("Use addon for Ezreal : ", 0, "OKTW", "iDzEzreal", "Marksman II", "ExorAIO"));
                 }
                 if (Player.ChampionName.Equals(Champion[18]))
                 {

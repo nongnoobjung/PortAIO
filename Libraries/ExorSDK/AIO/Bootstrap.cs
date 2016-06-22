@@ -8,6 +8,7 @@ using ExorAIO.Champions.Corki;
 using ExorAIO.Champions.Darius;
 using ExorAIO.Champions.Draven;
 using ExorAIO.Champions.DrMundo;
+using ExorAIO.Champions.Ezreal;
 using ExorAIO.Champions.Graves;
 using ExorAIO.Champions.Jax;
 using ExorAIO.Champions.Jhin;
@@ -106,6 +107,9 @@ namespace ExorAIO.Core
                     break;
                 case "Draven":
                     new Draven().OnLoad();
+                    break;
+                case "Ezreal":
+                    new Ezreal().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;
