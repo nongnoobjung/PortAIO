@@ -55,7 +55,7 @@ namespace PortAIO
 
             Loader.Menu();
 
-            if (Loader.intro)
+            if (false)
             {
                 Intro = new LeagueSharp.Common.Render.Sprite(LoadImg("PortLogo"), new Vector2((Drawing.Width / 2) - 175, (Drawing.Height / 2) - 300));
                 Intro.Add(0);
