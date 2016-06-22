@@ -44,7 +44,7 @@ namespace Azir_Creator_of_Elo
         }
         public void loadLaneClearMenu()
         {
-            _laneClearMenu = menu.AddSubMenu("JungleClear Menu", "JungleClear Menu");
+            _laneClearMenu = menu.AddSubMenu("Laneclear Menu", "Laneclear Menu");
             {
                 _laneClearMenu.Add("LQ", new CheckBox("Use Q"));
                 _laneClearMenu.Add("LW", new CheckBox("Use W"));
@@ -53,7 +53,7 @@ namespace Azir_Creator_of_Elo
         }
         public void loadJungleClearMenu()
         {
-            _JungleClearMenu = menu.AddSubMenu("Laneclear Menu", "Laneclear Menu");
+            _JungleClearMenu = menu.AddSubMenu("JungleClear Menu", "JungleClear Menu");
             {
                 _JungleClearMenu.Add("JW", new CheckBox("Use W"));
 
