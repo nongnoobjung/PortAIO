@@ -5,7 +5,7 @@
 ###### - Berb : Creator of project, porter, github maker maintainer guy, bug fixer and developer
 ###### - Muse30 : Active Porter, supporter, bug fixer and developer, just think of him as a Berb v2
 ###### - SidaRevamped : Active Supporter and bug fixer
-www.elobuddy.net/profile/277-xionlunix - www.github.com/X10NLUN1X/X10NLUN1XPrivat - He's taking credit for the PortAIO. Drop this guy.
+www.elobuddy.net/profile/277-xionlunix - www.github.com/X10NLUN1X/ - He's taking credit for the PortAIO. Drop this guy.
 
 ### - Compile Errors
 Make sure you have Berb.Common installed @ https://github.com/berbb/Berb.Common
