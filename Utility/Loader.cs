@@ -121,6 +121,7 @@ namespace PortAIO.Utility
         public static bool dev { get { return Miscc["dev"].Cast<CheckBox>().CurrentValue; } }
         public static bool cursor { get { return Miscc["cursor"].Cast<CheckBox>().CurrentValue; } }
         public static int akali { get { return Miscc["akali"].Cast<ComboBox>().CurrentValue; } }
+        public static int thresh { get { return Miscc["thresh"].Cast<ComboBox>().CurrentValue; } }
 
         public static Menu Miscc;
 
@@ -201,6 +202,8 @@ namespace PortAIO.Utility
             "MissFortune", //66
             "DrMundo", //67
             "Akali", //68
+            "Thresh", //69
+
         });
 
         public static void Menu()
@@ -485,9 +488,13 @@ namespace PortAIO.Utility
                 {
                     Miscc.Add("mundo", new ComboBox("Use addon for Dr.Mundo : ", 0, "Hestia's Mundo", "ExorAIO"));
                 }
-                if (Player.ChampionName.Equals(Champion[67]))
+                if (Player.ChampionName.Equals(Champion[68]))
                 {
                     Miscc.Add("akali", new ComboBox("Use addon for Akali : ", 0, "xQx Akali", "ExorAIO"));
+                }
+                if (Player.ChampionName.Equals(Champion[69]))
+                {
+                    Miscc.Add("thresh", new ComboBox("Use addon for Thresh : ", 0, "OKTW", "Thesh the Ruler"));
                 }
             }
             else

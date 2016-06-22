@@ -541,8 +541,7 @@ namespace PortAIO
                                 break;
                         }
                         break;
-                    case "thresh": // OKTW - Sebby - All Seeby champs go down here
-                    case "annie":
+                    case "annie": // OKTW - Sebby - All Seeby champs go down here
                     case "karthus":
                     case "malzahar":
                     case "orianna":
@@ -1209,6 +1208,20 @@ namespace PortAIO
                                 break;
                             default:
                                 Taliyah.Program.OnLoad();
+                                break;
+                        }
+                        break;
+                    case "thresh":
+                        switch (Loader.thresh) // OKTW && Thresh the Ruler
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                ThreshTherulerofthesoul.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
                                 break;
                         }
                         break;

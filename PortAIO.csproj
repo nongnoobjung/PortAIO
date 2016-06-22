@@ -266,6 +266,12 @@
     <Compile Include="Dual-Port\Exory\ExorAkali\Properties\Utilities\Methods.cs" />
     <Compile Include="Dual-Port\Exory\ExorAkali\Properties\Utilities\Spells.cs" />
     <Compile Include="Dual-Port\Exory\ExorAkali\Properties\Utilities\Targets.cs" />
+    <Compile Include="Dual-Port\Thresh The Ruler\EscapeDetector.cs" />
+    <Compile Include="Dual-Port\Thresh The Ruler\Extensions.cs" />
+    <Compile Include="Dual-Port\Thresh The Ruler\Helper.cs" />
+    <Compile Include="Dual-Port\Thresh The Ruler\Items.cs" />
+    <Compile Include="Dual-Port\Thresh The Ruler\Program.cs" />
+    <Compile Include="Dual-Port\Thresh The Ruler\Turret.cs" />
     <Compile Include="Dual-Port\`LSStaff\AhriSharp\Ahri.cs" />
     <Compile Include="Dual-Port\`LSStaff\AhriSharp\Helper.cs" />
     <Compile Include="Dual-Port\`LSStaff\AhriSharp\Program.cs" />
