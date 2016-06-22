@@ -285,7 +285,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[16]))
                 {
-                    Miscc.Add("draven", new ComboBox("Use addon for Draven : ", 0, "Sharp Shooter/Exor", "Tyler1", "Marksman II"));
+                    Miscc.Add("draven", new ComboBox("Use addon for Draven : ", 0, "Sharp Shooter/Exor", "Tyler1", "Marksman II", "ExorAIO"));
                 }
                 if (Player.ChampionName.Equals(Champion[17]))
                 {

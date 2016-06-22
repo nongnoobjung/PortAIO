@@ -782,6 +782,9 @@ namespace PortAIO
                             case 2:
                                 Marksman.Program.Game_OnGameLoad();
                                 break;
+                            case 3:
+                                ExorAIO.AIO.OnLoad();
+                                break;
                             default:
                                 RevampedDraven.Program.OnLoad();
                                 break;

@@ -6,6 +6,7 @@ using ExorAIO.Champions.Caitlyn;
 using ExorAIO.Champions.Cassiopeia;
 using ExorAIO.Champions.Corki;
 using ExorAIO.Champions.Darius;
+using ExorAIO.Champions.Draven;
 using ExorAIO.Champions.DrMundo;
 using ExorAIO.Champions.Graves;
 using ExorAIO.Champions.Jax;
@@ -102,6 +103,9 @@ namespace ExorAIO.Core
                     break;
                 case "Corki":
                     new Corki().OnLoad();
+                    break;
+                case "Draven":
+                    new Draven().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;
