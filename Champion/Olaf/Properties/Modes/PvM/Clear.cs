@@ -8,6 +8,7 @@ using Geometry = ExorAIO.Utilities.Geometry;
 using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
+using LeagueSharp.SDK.Enumerations;
 
 namespace ExorAIO.Champions.Olaf
 {
@@ -51,7 +52,10 @@ namespace ExorAIO.Champions.Olaf
                     /// <summary>
                     ///     The Aggressive LaneClear Q Logic.
                     /// </summary>
-                    if (GameObjects.EnemyHeroes.Any(t => !Invulnerable.Check(t) && t.LSIsValidTarget(Vars.Q.Range)))
+                    if (GameObjects.EnemyHeroes.Any(
+                        t =>
+                            !Invulnerable.Check(t) &&
+                            t.LSIsValidTarget(Vars.Q.Range)))
                     {
                         if (Vars.Q.GetLineFarmLocation(Targets.Minions).MinionsHit >= 3 &&
                             !new Geometry.Rectangle(
@@ -98,6 +102,26 @@ namespace ExorAIO.Champions.Olaf
             {
                 Vars.W.Cast();
             }
+
+            /// <summary>
+            ///     The E LaneClear Logics.
+            /// </summary>
+            if (Vars.E.IsReady() &&
+                Vars.getSliderItem(Vars.EMenu, "clear") != 101)
+            {
+                foreach (var minion in Targets.Minions.Where(
+                    m =>
+                        m.LSIsValidTarget(Vars.E.Range) &&
+                        Vars.GetRealHealth(m) <
+                            (float)GameObjects.Player.LSGetSpellDamage(m, SpellSlot.E)))
+                {
+                    if (minion.GetMinionType() == MinionTypes.Siege ||
+                        minion.GetMinionType() == MinionTypes.Super)
+                    {
+                        Vars.E.CastOnUnit(minion);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -118,8 +142,8 @@ namespace ExorAIO.Champions.Olaf
             /// </summary>
             if (Vars.E.IsReady() &&
                 GameObjects.Player.HealthPercent >
-                    ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.EMenu, "jungleclear")) &&
-                Vars.getSliderItem(Vars.EMenu, "jungleclear") != 101)
+                    ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.EMenu, "clear")) &&
+                Vars.getSliderItem(Vars.EMenu, "clear") != 101)
             {
                 Vars.E.CastOnUnit(Targets.JungleMinions[0]);
             }
@@ -132,9 +156,9 @@ namespace ExorAIO.Champions.Olaf
         /// <param name="args">The args.</param>
         public static void BuildingClear(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (Orbwalker.LastTarget as Obj_HQ == null &&
-                Orbwalker.LastTarget as Obj_AI_Turret  == null &&
-                Orbwalker.LastTarget as Obj_BarracksDampener == null)
+            if (!(Orbwalker.LastTarget is Obj_HQ) &&
+                !(Orbwalker.LastTarget is Obj_AI_Turret) &&
+                !(Orbwalker.LastTarget is Obj_BarracksDampener))
             {
                 return;
             }

@@ -72,9 +72,9 @@ namespace ExorAIO.Champions.Darius
         /// <param name="args">The args.</param>
         public static void BuildingClear(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (Orbwalker.LastTarget as Obj_HQ == null &&
-                Orbwalker.LastTarget as Obj_AI_Turret == null &&
-                Orbwalker.LastTarget as Obj_BarracksDampener == null)
+            if (!(Orbwalker.LastTarget is Obj_HQ) &&
+                !(Orbwalker.LastTarget is Obj_AI_Turret) &&
+                !(Orbwalker.LastTarget is Obj_BarracksDampener))
             {
                 return;
             }

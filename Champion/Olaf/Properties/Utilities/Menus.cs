@@ -40,7 +40,8 @@ namespace ExorAIO.Champions.Olaf
             Vars.EMenu = Vars.Menu.AddSubMenu("Use E to:");
             {
                 Vars.EMenu.Add("combo", new CheckBox("Combo", true));
-                Vars.EMenu.Add("jungleclear", new Slider("JungleClear / if Health >= x%", 25, 0, 101));
+                Vars.EMenu.Add("lasthit", new CheckBox("LastHit", true));
+                Vars.EMenu.Add("clear", new Slider("Clear  / if Health >= x%", 25, 0, 101));
             }
 
             /// <summary>

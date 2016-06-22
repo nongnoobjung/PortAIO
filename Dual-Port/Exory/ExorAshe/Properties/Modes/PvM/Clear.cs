@@ -71,9 +71,9 @@ namespace ExorAIO.Champions.Ashe
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void BuildingClear(EventArgs args)
         {
-            if (Orbwalker.LastTarget as Obj_HQ == null &&
-                Orbwalker.LastTarget as Obj_AI_Turret == null &&
-                Orbwalker.LastTarget as Obj_BarracksDampener == null)
+            if (!(Orbwalker.LastTarget is Obj_HQ) &&
+                !(Orbwalker.LastTarget is Obj_AI_Turret) &&
+                !(Orbwalker.LastTarget is Obj_BarracksDampener))
             {
                 return;
             }

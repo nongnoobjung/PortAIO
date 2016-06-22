@@ -6,6 +6,7 @@ using EloBuddy.SDK.Menu;
 using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK.Menu.Values;
+using LeagueSharp.SDK.Polygons;
 
 namespace ExorAIO.Utilities
 {
@@ -92,6 +93,11 @@ namespace ExorAIO.Utilities
         public static Vector3 End { internal get; set; } = Vector3.Zero;
 
         /// <summary>
+        ///     The args End.
+        /// </summary>
+        public static SectorPoly JhinCone { internal get; set; } = new SectorPoly(GameObjects.Player.ServerPosition, Vars.End, 45, -4050, 1);
+
+        /// <summary>
         ///     Gets or sets the Q Spell.
         /// </summary>
         public static Spell Q { internal get; set; }
@@ -135,6 +141,8 @@ namespace ExorAIO.Utilities
         ///     Gets or sets the Q Spell menu.
         /// </summary>
         public static Menu QMenu { internal get; set; }
+
+        public static int ShotsCount { get; internal set; }
 
         /// <summary>
         ///     Gets or sets the Q2 Spell menu.
@@ -207,11 +215,6 @@ namespace ExorAIO.Utilities
             internal int XOffset;
             internal int YOffset;
         }
-
-        /// <returns>
-        ///     The Jhin's shot count.
-        /// </returns>
-        public static int ShotsCount { get ; internal set; }
 
         /// <summary>
         ///     Gets the health with Blitzcrank's Shield support.
