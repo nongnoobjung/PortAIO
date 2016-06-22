@@ -547,8 +547,12 @@
         {
             try
             {
-                if (sender != null && sender.IsValid && sender.IsEnemy
-                    && args.DangerLevel == Interrupter2.DangerLevel.High && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
+                if (sender == null || !sender.IsValidTarget(Q.Range) || !sender.IsEnemy)
+                {
+                    return;
+                }
+
+                if (sender.IsValid && args.DangerLevel == Interrupter2.DangerLevel.High && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
                 {
                     if (Q.IsReady() && sender.LSIsValidTarget(Q.Range))
                     {
@@ -680,17 +684,6 @@
                     OnLaneclear();
                 }
 
-                if (getCheckBoxItem(miscMenu, "ElZilean.E.Slow"))
-                {
-                    foreach (var slowedAlly in HeroManager.Allies.Where(x => x.HasBuffOfType(BuffType.Slow) && x.LSIsValidTarget(Q.Range, false)))
-                    {
-                        if (E.IsReady() && E.IsInRange(slowedAlly))
-                        {
-                            E.CastOnUnit(slowedAlly);
-                        }
-                    }
-                }
-
                 if (getCheckBoxItem(comboMenu, "ElZilean.Ignite"))
                 {
                     HandleIgnite();
@@ -706,33 +699,55 @@
                     OnFlee();
                 }
 
+                if (getCheckBoxItem(miscMenu, "ElZilean.E.Slow"))
+                {
+                    foreach (var slowedAlly in HeroManager.Allies.Where(x => x.HasBuffOfType(BuffType.Slow) && x.IsValidTarget(Q.Range, false)))
+                    {
+                        Console.WriteLine($"Slowed: {slowedAlly.ChampionName}");
+                        if (E.IsReady() && E.IsInRange(slowedAlly))
+                        {
+                            E.CastOnUnit(slowedAlly);
+                        }
+                    }
+                }
+
                 if (getCheckBoxItem(miscMenu, "ElZilean.Q.Stun"))
                 {
                     var target =
                         HeroManager.Enemies.FirstOrDefault(
-                            h => h.LSIsValidTarget(Q.Range) && h.HasBuffOfType(BuffType.Slow) || h.HasBuffOfType(BuffType.Knockup) || h.HasBuffOfType(BuffType.Charm) || h.HasBuffOfType(BuffType.Stun));
+                            h => h.LSIsValidTarget(Q.Range) && h.HasBuffOfType(BuffType.Slow)
+                            || h.HasBuffOfType(BuffType.Knockup) || h.HasBuffOfType(BuffType.Charm) || h.HasBuffOfType(BuffType.Stun));
+
                     if (target != null)
                     {
-                        if (Q.IsReady())
+                        Console.WriteLine($"Zilean Q stun: {target.ChampionName}");
+                        if (Q.IsReady() && target.LSIsValidTarget(Q.Range))
                         {
-                            Q.Cast(target.ServerPosition);
+                            var prediction = Q.GetPrediction(target);
+                            if (prediction.Hitchance >= HitChance.VeryHigh)
+                            {
+                                Q.Cast(prediction.CastPosition);
+                            }
                         }
+
                         LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
                     }
                 }
 
-                foreach (var ally in HeroManager.Allies)
+                foreach (var ally in HeroManager.Allies.Where(a => a.LSIsValidTarget(R.Range, false)))
                 {
-                    if (!getCheckBoxItem(ultMenu, $"R{ally.ChampionName}") || ally.LSIsRecalling() || ally.IsInvulnerable)
+                    if (!getCheckBoxItem(ultMenu, $"R{ally.ChampionName}") || ally.LSIsRecalling() || ally.IsInvulnerable || !ally.LSIsValidTarget(R.Range, false))
                     {
                         return;
                     }
 
                     var enemies = ally.LSCountEnemiesInRange(750f);
                     var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
-                    if (ally.HealthPercent <= getSliderItem(ultMenu, "min-health") && !ally.IsDead
-                        && enemies >= 1)
+                    if (ally.HealthPercent <= getSliderItem(ultMenu, "min-health")
+                        && !ally.IsDead
+                        && enemies >= 1 && ally.IsValidTarget(R.Range, false))
                     {
+                        Console.WriteLine($"Low ally ult: {ally.ChampionName}");
                         if ((int)(totalDamage / ally.Health) > getSliderItem(ultMenu, "min-damage")
                             || ally.HealthPercent < getSliderItem(ultMenu, "min-health"))
                         {
