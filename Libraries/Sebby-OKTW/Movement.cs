@@ -44,7 +44,7 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     Set to true make the prediction hit as many enemy heroes as posible.
         /// </summary>
-        private bool _aoe; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+        private bool _aoe; 
 
         public bool Aoe
         {
@@ -61,7 +61,7 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     Set to true if the unit collides with units.
         /// </summary>
-        private bool _collision; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+        private bool _collision; 
 
         public bool Collision
         {
@@ -97,7 +97,7 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     The skillshot delay in seconds.
         /// </summary>
-        private float _delay; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+        private float _delay;
 
         public float Delay
         {
@@ -114,7 +114,7 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     The skillshot width's radius or the angle in case of the cone skillshots.
         /// </summary>
-        private float _radius = 1f; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+        private float _radius = 1f; 
 
         public float Radius
         {
@@ -131,7 +131,7 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     The skillshot range in units.
         /// </summary>
-        private float _range = float.MaxValue; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+        private float _range = float.MaxValue; 
 
         public float Range
         {
@@ -148,7 +148,7 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     The skillshot speed in units per second.
         /// </summary>
-        private float _speed = float.MaxValue; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+        private float _speed = float.MaxValue;
 
         public float Speed
         {
@@ -165,7 +165,7 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     The skillshot type.
         /// </summary>
-        private SkillshotType _type = SkillshotType.SkillshotLine; // ENCAPSULATE FIELD BY CODEIT.RIGHT
+        private SkillshotType _type = SkillshotType.SkillshotLine; 
 
         public SkillshotType Type
         {
@@ -187,12 +187,12 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     Source unit for the prediction 
         /// </summary>
-        public EloBuddy.Obj_AI_Base Source = EloBuddy.ObjectManager.Player;
+        private EloBuddy.Obj_AI_Base Source = EloBuddy.ObjectManager.Player;
 
         /// <summary>
         ///     Set to true to increase the prediction radius by the unit bounding radius.
         /// </summary>
-        public bool UseBoundingRadius = true;
+        private bool UseBoundingRadius = true;
 
         /// <summary>
         ///     The position from where the skillshot missile gets fired.
@@ -237,7 +237,7 @@ namespace SebbyLib.Movement
         /// <summary>
         ///     The list of the units that the skillshot will collide with.
         /// </summary>
-        public List<EloBuddy.Obj_AI_Base> CollisionObjects = new List<EloBuddy.Obj_AI_Base>();
+        private List<EloBuddy.Obj_AI_Base> CollisionObjects = new List<EloBuddy.Obj_AI_Base>();
 
         /// <summary>
         ///     Returns the hitchance.
@@ -611,9 +611,9 @@ namespace SebbyLib.Movement
 
             var B = from.LSTo2D();
 
-            var AB = Math.Pow((double)A.X - (double)B.X, 2) + Math.Pow((double)A.Y - (double)B.Y, 2);
-            var BC = Math.Pow((double)B.X - (double)C.X, 2) + Math.Pow((double)B.Y - (double)C.Y, 2);
-            var AC = Math.Pow((double)A.X - (double)C.X, 2) + Math.Pow((double)A.Y - (double)C.Y, 2);
+            var AB = Math.Pow(A.X - (double)B.X, 2) + Math.Pow(A.Y - (double)B.Y, 2);
+            var BC = Math.Pow(B.X - (double)C.X, 2) + Math.Pow(B.Y - (double)C.Y, 2);
+            var AC = Math.Pow(A.X - (double)C.X, 2) + Math.Pow(A.Y - (double)C.Y, 2);
 
             return Math.Cos((AB + BC - AC) / (2 * Math.Sqrt(AB) * Math.Sqrt(BC))) * 180 / Math.PI;
         }
@@ -1240,7 +1240,11 @@ namespace SebbyLib.Movement
 
         private static void Obj_AI_Hero_OnNewPath(EloBuddy.Obj_AI_Base sender, EloBuddy.GameObjectNewPathEventArgs args)
         {
-            if (sender.Type != EloBuddy.GameObjectType.AIHeroClient) return;
+            if (sender.Type != EloBuddy.GameObjectType.AIHeroClient)
+            {
+                return;
+            }
+
 
             var info = UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId);
 
@@ -1257,13 +1261,17 @@ namespace SebbyLib.Movement
 
         private static void Obj_AI_Base_OnProcessSpellCast(EloBuddy.Obj_AI_Base sender, EloBuddy.GameObjectProcessSpellCastEventArgs args)
         {
-            if (!(sender is EloBuddy.AIHeroClient)) return;
+            if (!(sender is EloBuddy.AIHeroClient))
+            {
+                return;
+            }
+
 
             if (args.SData.IsAutoAttack())
                 UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId).AaTick = Utils.TickCount;
             else
             {
-                var foundSpell = spells.Find(x => args.SData.Name.ToLower() == x.name.ToLower(CultureInfo.CurrentCulture));
+                var foundSpell = spells.Find(x => args.SData.Name.ToLower(CultureInfo.CurrentCulture) == x.name.ToLower(CultureInfo.CurrentCulture));
                 if (foundSpell != null)
                 {
                     UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId).SpecialSpellFinishTick = Utils.TickCount + (int)(foundSpell.duration * 1000);
