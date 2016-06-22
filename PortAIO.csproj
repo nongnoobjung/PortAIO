@@ -266,6 +266,30 @@
     <Compile Include="Dual-Port\Exory\ExorAkali\Properties\Utilities\Methods.cs" />
     <Compile Include="Dual-Port\Exory\ExorAkali\Properties\Utilities\Spells.cs" />
     <Compile Include="Dual-Port\Exory\ExorAkali\Properties\Utilities\Targets.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Amumu.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Modes\Automatic.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Modes\PvM\Clear.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Modes\PvM\LastHit.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Modes\PvP\Combo.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Modes\PvP\Harass.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Modes\PvP\Killsteal.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Modes\PvP\Weaving.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Utilities\Menus.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Utilities\Methods.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Utilities\Spells.cs" />
+    <Compile Include="Dual-Port\Exory\ExorAmumu\Properties\Utilities\Targets.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Cassiopeia.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Modes\Automatic.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Modes\PvM\Clear.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Modes\PvM\LastHit.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Modes\PvP\Combo.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Modes\PvP\Harass.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Modes\PvP\Killsteal.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Modes\PvP\Weaving.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Utilities\Menus.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Utilities\Methods.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Utilities\Spells.cs" />
+    <Compile Include="Dual-Port\Exory\ExorCassiopeia\Properties\Utilities\Targets.cs" />
     <Compile Include="Dual-Port\Thresh The Ruler\EscapeDetector.cs" />
     <Compile Include="Dual-Port\Thresh The Ruler\Extensions.cs" />
     <Compile Include="Dual-Port\Thresh The Ruler\Helper.cs" />
@@ -1822,7 +1846,6 @@
     <None Include="Resources\RecallBar.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Dual-Port\Exory\ExorAmumu\" />
     <Folder Include="Libraries\ValvraveSharp\Plugin\" />
   </ItemGroup>
   <ItemGroup>

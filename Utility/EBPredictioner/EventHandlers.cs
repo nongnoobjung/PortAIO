@@ -73,7 +73,7 @@ namespace EBPredictioner
         {
             if (sender.Owner.IsMe)
             {
-                if (getCheckBoxItem(menu, "ENABLED"))
+                if (getCheckBoxItem(menu, "ENABLED") && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
                 {
                     if (menu[String.Format("{0}{1}", ObjectManager.Player.ChampionName, args.Slot)] == null)
                         return;
@@ -98,7 +98,6 @@ namespace EBPredictioner
 
                         if (enemy != null)
                         {
-                            Console.WriteLine("1");
                             SPredictioner.Cast(args.Slot);
                         }
                     }

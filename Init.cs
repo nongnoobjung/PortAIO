@@ -311,7 +311,18 @@ namespace PortAIO
                         PortAIO.Champion.Alistar.Program.OnGameLoad();
                         break;
                     case "amumu": // Shine#
-                        PortAIO.Champion.Amumu.Program.OnLoad();
+                        switch (Loader.amumu)
+                        {
+                            case 0:
+                                PortAIO.Champion.Amumu.Program.OnLoad();
+                                break;
+                            case 1:
+                                ExorAIO.AIO.OnLoad();
+                                break;
+                            default:
+                                PortAIO.Champion.Amumu.Program.OnLoad();
+                                break;
+                        }
                         break;
                     case "caitlyn":
                         switch (Loader.cait)
@@ -611,6 +622,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 SephCassiopeia.Cassiopeia.CassMain();
+                                break;
+                            case 2:
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 Champion = new SAutoCarry.Champions.Cassiopeia();

@@ -1,6 +1,9 @@
+using ExorAIO.Champions.Akali;
+using ExorAIO.Champions.Amumu;
 using ExorAIO.Champions.Anivia;
 using ExorAIO.Champions.Ashe;
 using ExorAIO.Champions.Caitlyn;
+using ExorAIO.Champions.Cassiopeia;
 using ExorAIO.Champions.Darius;
 using ExorAIO.Champions.DrMundo;
 using ExorAIO.Champions.Graves;
@@ -86,6 +89,15 @@ namespace ExorAIO.Core
                     break;
                 case "Pantheon":
                     new Pantheon().OnLoad();
+                    break;
+                case "Amumu":
+                    new Amumu().OnLoad();
+                    break;
+                case "Akali":
+                    new Akali().OnLoad();
+                    break;
+                case "Cassiopeia":
+                    new Cassiopeia().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;
