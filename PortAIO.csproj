@@ -1868,6 +1868,14 @@
     <None Include="Resources\RecallBar.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Dual-Port\Exory\ExorDraven\" />
+    <Folder Include="Dual-Port\Exory\ExorEzreal\" />
+    <Folder Include="Dual-Port\Exory\ExorJinx\" />
+    <Folder Include="Dual-Port\Exory\ExorKalista\" />
+    <Folder Include="Dual-Port\Exory\ExorKog\" />
+    <Folder Include="Dual-Port\Exory\ExorLucian\" />
+    <Folder Include="Dual-Port\Exory\ExorTristana\" />
+    <Folder Include="Dual-Port\Exory\ExorVayne\" />
     <Folder Include="Libraries\ValvraveSharp\Plugin\" />
   </ItemGroup>
   <ItemGroup>
