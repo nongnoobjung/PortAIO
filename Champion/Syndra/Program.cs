@@ -1,118 +1,85 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu;
-using EloBuddy.SDK.Menu.Values;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
 using SebbyLib;
-using HealthPrediction = SebbyLib.HealthPrediction;
-using Prediction = SebbyLib.Prediction.Prediction;
-using PredictionInput = SebbyLib.Prediction.PredictionInput;
-using Spell = LeagueSharp.Common.Spell;
-using Utility = LeagueSharp.Common.Utility;
+using EloBuddy.SDK.Menu;
+using EloBuddy;
+using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
-    internal class Syndra
+    class Syndra
     {
-        private static readonly Menu Config = Program.Config;
-        private static Spell E, Q, R, W, EQ, Eany;
-        private static float QMANA, WMANA, EMANA, RMANA;
-        private static readonly List<Obj_AI_Minion> BallsList = new List<Obj_AI_Minion>();
-        private static bool EQcastNow;
-        private static SpellSlot IgniteSlot;
-
-        public static Menu draw, q, w, e, r, harass, farm;
-
-        public static AIHeroClient Player
+        private Menu Config = Program.Config;
+        public AIHeroClient Player { get { return ObjectManager.Player; } }
+        private LeagueSharp.Common.Spell E, Q, R, W, EQ, Eany;
+        private float QMANA = 0, WMANA = 0, EMANA = 0, RMANA = 0;
+        private static List<Obj_AI_Minion> BallsList = new List<Obj_AI_Minion>();
+        private bool EQcastNow = false;
+        public void LoadOKTW()
         {
-            get { return ObjectManager.Player; }
-        }
-
-        public static bool getCheckBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(Menu m, string item)
-        {
-            return m[item].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool getKeyBindItem(Menu m, string item)
-        {
-            return m[item].Cast<KeyBind>().CurrentValue;
-        }
-
-        public static int getBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<ComboBox>().CurrentValue;
-        }
-
-        public static void LoadOKTW()
-        {
-            Q = new Spell(SpellSlot.Q, 790);
-            W = new Spell(SpellSlot.W, 950);
-            E = new Spell(SpellSlot.E, 700);
-            EQ = new Spell(SpellSlot.Q, Q.Range + 400);
-            Eany = new Spell(SpellSlot.Q, Q.Range + 400);
-            R = new Spell(SpellSlot.R, 675);
+            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 790);
+            W = new LeagueSharp.Common.Spell(SpellSlot.W, 950);
+            E = new LeagueSharp.Common.Spell(SpellSlot.E, 700);
+            EQ = new LeagueSharp.Common.Spell(SpellSlot.Q, Q.Range + 400);
+            Eany = new LeagueSharp.Common.Spell(SpellSlot.Q, Q.Range + 400);
+            R = new LeagueSharp.Common.Spell(SpellSlot.R, 675);
 
             Q.SetSkillshot(0.6f, 125f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             W.SetSkillshot(0.25f, 140f, 1600f, false, SkillshotType.SkillshotCircle);
             E.SetSkillshot(0.25f, 100, 2500f, false, SkillshotType.SkillshotLine);
             EQ.SetSkillshot(0.6f, 100f, 2500f, false, SkillshotType.SkillshotLine);
             Eany.SetSkillshot(0.30f, 50f, 2500f, false, SkillshotType.SkillshotLine);
-            IgniteSlot = ObjectManager.Player.GetSpellSlot("SummonerDot");
-            draw = Config.AddSubMenu("Draw");
-            draw.Add("qRange", new CheckBox("Q range", false));
-            draw.Add("wRange", new CheckBox("W range", false));
-            draw.Add("eRange", new CheckBox("E range", false));
-            draw.Add("rRange", new CheckBox("R range", false));
-            draw.Add("onlyRdy", new CheckBox("Draw when skill rdy"));
 
-            q = Config.AddSubMenu("Q Config");
-            q.Add("autoQ", new CheckBox("Auto Q"));
-            q.Add("harrasQ", new CheckBox("Harass Q"));
-            q.Add("QHarassMana", new Slider("Harass Mana", 30));
+            drawMenu = Config.AddSubMenu("Drawings");
+            drawMenu.Add("qRange", new CheckBox("Q range", false));
+            drawMenu.Add("wRange", new CheckBox("W range", false));
+            drawMenu.Add("eRange", new CheckBox("E range", false));
+            drawMenu.Add("rRange", new CheckBox("R range", false));
+            drawMenu.Add("onlyRdy", new CheckBox("Draw when skill rdy", true));
 
-            w = Config.AddSubMenu("W Config");
-            w.Add("autoW", new CheckBox("Auto W"));
-            w.Add("harrasW", new CheckBox("Harass W"));
+            qMenu = Config.AddSubMenu("Q Config");
+            qMenu.Add("autoQ", new CheckBox("Auto Q", true));
+            qMenu.Add("harrasQ", new CheckBox("Harass Q", true));
+            qMenu.Add("QHarassMana", new Slider("Harass Mana", 30, 0, 100));
 
-            e = Config.AddSubMenu("E Config");
-            e.Add("autoE", new CheckBox("Auto Q + E combo, ks"));
-            e.Add("harrasE", new CheckBox("Harass Q + E", false));
-            e.Add("EInterrupter", new CheckBox("Auto Q + E Interrupter"));
-            e.Add("useQE", new KeyBind("Semi-manual Q + E near mouse key", false, KeyBind.BindTypes.PressToggle, 'T'));
-            //32 == space
+            wMenu = Config.AddSubMenu("W Config");
+            wMenu.Add("autoW", new CheckBox("Auto W", true));
+            wMenu.Add("harrasW", new CheckBox("Harass W", true));
+
+            eMenu = Config.AddSubMenu("E Config");
+            eMenu.Add("autoE", new CheckBox("Auto Q + E combo, ks", true));
+            eMenu.Add("harrasE", new CheckBox("Harass Q + E", false));
+            eMenu.Add("EInterrupter", new CheckBox("Auto Q + E Interrupter", true));
+            eMenu.Add("useQE", new KeyBind("Semi-manual Q + E near mouse key", false, KeyBind.BindTypes.HoldActive, 'T'));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                e.Add("Egapcloser" + enemy.NetworkId, new CheckBox("Q + E Gap : " + enemy.ChampionName));
+                eMenu.Add("Egapcloser" + enemy.ChampionName, new CheckBox("Q>E Gap : " + enemy.ChampionName, true));
+            eMenu.AddSeparator();
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                e.Add("Eon" + enemy.NetworkId, new CheckBox("Q + E :" + enemy.ChampionName));
+                eMenu.Add("Eon" + enemy.ChampionName, new CheckBox("Q + E : " + enemy.ChampionName, true));
 
-            r = Config.AddSubMenu("R Config");
-            r.Add("autoR", new CheckBox("Auto R KS"));
-            r.Add("Rcombo", new CheckBox("Extra combo dmg calculation"));
+            rMenu = Config.AddSubMenu("R Config");
+            rMenu.Add("autoR", new CheckBox("Auto R KS", true));
+            rMenu.Add("Rcombo", new CheckBox("Extra combo dmg calculation", true));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                r.Add("Rmode" + enemy.NetworkId,
-                    new ComboBox("Use on : " + enemy.ChampionName, 0, "KS", "Always", "Never"));
+                rMenu.Add("Rmode" + enemy.ChampionName, new ComboBox("R : " + enemy.ChampionName, 0, "Only To KS", "Always ", "Never"));
 
-            harass = Config.AddSubMenu("Harass");
+            harassMenu = Config.AddSubMenu("Harass");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                harass.Add("harras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
+                harassMenu.Add("harras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
 
-            farm = Config.AddSubMenu("Farm");
-            farm.Add("farmQout", new CheckBox("Last hit Q minion out range AA"));
-            farm.Add("farmQ", new CheckBox("Lane clear Q"));
-            farm.Add("farmW", new CheckBox("Lane clear W"));
-            farm.Add("Mana", new Slider("LaneClear Mana", 80));
-            farm.Add("LCminions", new Slider(" LaneClear minimum minions", 2, 0, 10));
-            farm.Add("jungleQ", new CheckBox("Jungle clear Q"));
-            farm.Add("jungleW", new CheckBox("Jungle clear W"));
+            farmMenu = Config.AddSubMenu("Farm");
+            farmMenu.Add("farmQout", new CheckBox("Last hit Q minion out range AA", true));
+            farmMenu.Add("farmQ", new CheckBox("Lane clear Q", true));
+            farmMenu.Add("farmW", new CheckBox("Lane clear W", true));
+            farmMenu.Add("Mana", new Slider("LaneClear Mana", 80, 0, 100));
+            farmMenu.Add("LCminions", new Slider(" LaneClear minimum minions", 2, 0, 10));
+            farmMenu.Add("jungleQ", new CheckBox("Jungle clear Q", true));
+            farmMenu.Add("jungleW", new CheckBox("Jungle clear W", true));
 
             Game.OnUpdate += Game_OnGameUpdate;
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
@@ -122,19 +89,20 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
         }
 
-        private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        public static Menu farmMenu, harassMenu, rMenu, eMenu, wMenu, qMenu, drawMenu;
+
+        private void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (sender.IsMe && args.Slot == SpellSlot.Q && EQcastNow && E.IsReady())
             {
-                var customeDelay = Q.Delay - (E.Delay + Player.LSDistance(args.End) / E.Speed);
-                Utility.DelayAction.Add((int)(customeDelay * 1000), () => E.Cast(args.End));
+                var customeDelay = Q.Delay - (E.Delay + ((Player.LSDistance(args.End)) / E.Speed));
+                LeagueSharp.Common.Utility.DelayAction.Add((int)(customeDelay * 1000), () => E.Cast(args.End));
             }
         }
 
-        private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender,
-            Interrupter2.InterruptableTargetEventArgs args)
+        private void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && getCheckBoxItem(e, "EInterrupter"))
+            if (E.IsReady() && eMenu["EInterrupter"].Cast<CheckBox>().CurrentValue)
             {
                 if (sender.LSIsValidTarget(E.Range))
                 {
@@ -147,9 +115,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
+        private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (E.IsReady() && getCheckBoxItem(e, "Egapcloser" + gapcloser.Sender.NetworkId))
+            if (E.IsReady() && eMenu["Egapcloser" + gapcloser.Sender.ChampionName].Cast<CheckBox>().CurrentValue)
             {
                 if (Q.IsReady())
                 {
@@ -163,7 +131,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private static void Obj_AI_Base_OnCreate(GameObject sender, EventArgs args)
+        private void Obj_AI_Base_OnCreate(GameObject sender, EventArgs args)
         {
             if (sender.IsAlly && sender.Type == GameObjectType.obj_AI_Minion && sender.Name == "Seed")
             {
@@ -172,7 +140,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private static void Game_OnGameUpdate(EventArgs args)
+        private void Game_OnGameUpdate(EventArgs args)
         {
             if (!E.IsReady())
                 EQcastNow = false;
@@ -184,20 +152,20 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 Jungle();
             }
 
-            if (Program.LagFree(1) && E.IsReady() && getCheckBoxItem(e, "autoE"))
+            if (Program.LagFree(1) && E.IsReady() && eMenu["autoE"].Cast<CheckBox>().CurrentValue)
                 LogicE();
 
-            if (Program.LagFree(2) && Q.IsReady() && getCheckBoxItem(q, "autoQ"))
+            if (Program.LagFree(2) && Q.IsReady() && qMenu["autoQ"].Cast<CheckBox>().CurrentValue)
                 LogicQ();
 
-            if (Program.LagFree(3) && W.IsReady() && getCheckBoxItem(w, "autoW"))
+            if (Program.LagFree(3) && W.IsReady() && wMenu["autoW"].Cast<CheckBox>().CurrentValue)
                 LogicW();
 
-            if (Program.LagFree(4) && R.IsReady() && getCheckBoxItem(r, "autoR"))
+            if (Program.LagFree(4) && R.IsReady() && rMenu["autoR"].Cast<CheckBox>().CurrentValue)
                 LogicR();
         }
 
-        private static void TryBallE(AIHeroClient t)
+        private void TryBallE(AIHeroClient t)
         {
             if (Q.IsReady())
             {
@@ -219,9 +187,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private static void LogicE()
+        private void LogicE()
         {
-            if (getKeyBindItem(e, "useQE"))
+            if (eMenu["useQE"].Cast<KeyBind>().CurrentValue)
             {
                 var mouseTarget = Program.Enemies.Where(enemy =>
                     enemy.LSIsValidTarget(Eany.Range)).OrderBy(enemy => enemy.LSDistance(Game.CursorPos)).FirstOrDefault();
@@ -238,102 +206,52 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 if (OktwCommon.GetKsDamage(t, E) + Q.GetDamage(t) > t.Health)
                     TryBallE(t);
-                if (Program.Combo && Player.Mana > RMANA + EMANA + QMANA && getCheckBoxItem(e, "Eon" + t.NetworkId))
+                if (Program.Combo && Player.Mana > RMANA + EMANA + QMANA && eMenu["Eon" + t.ChampionName].Cast<CheckBox>().CurrentValue)
                     TryBallE(t);
-                if (Program.Farm && Player.Mana > RMANA + EMANA + QMANA + WMANA && getCheckBoxItem(e, "harrasE") &&
-                    getCheckBoxItem(harass, "harras" + t.NetworkId))
+                if (Program.Farm && Player.Mana > RMANA + EMANA + QMANA + WMANA && eMenu["harrasE"].Cast<CheckBox>().CurrentValue && harassMenu["harras" + t.ChampionName].Cast<CheckBox>().CurrentValue)
                     TryBallE(t);
             }
         }
 
-        private static void LogicR()
+        private void LogicR()
         {
             R.Range = R.Level == 3 ? 750 : 675;
-            var Rcombo = getCheckBoxItem(r, "Rcombo");
 
-            foreach (
-                var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(R.Range) && OktwCommon.ValidUlt(enemy)))
+            bool Rcombo = rMenu["Rcombo"].Cast<CheckBox>().CurrentValue;
+
+            foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(R.Range) && OktwCommon.ValidUlt(enemy)))
             {
-                var Rmode = getBoxItem(r, "Rmode" + enemy.NetworkId);
+                int Rmode = rMenu["Rmode" + enemy.ChampionName].Cast<ComboBox>().CurrentValue;
 
                 if (Rmode == 2)
                     continue;
-                if (Rmode == 1)
+                else if (Rmode == 1)
                     R.Cast(enemy);
 
-                var comboDMG = GetComboDamage(enemy, true, true, true, true);
-                if (enemy.Health + enemy.HPRegenRate < comboDMG)
+                var comboDMG = OktwCommon.GetKsDamage(enemy, R);
+                comboDMG += (R.GetDamage(enemy, 1) * (R.Instance.Ammo - 3));
+                comboDMG += OktwCommon.GetEchoLudenDamage(enemy);
+
+                if (Rcombo)
                 {
-                    if (IgniteSlot.IsReady())
-                    {
-                        ObjectManager.Player.Spellbook.CastSpell(IgniteSlot, enemy);
-                    }
+                    if (Q.IsReady() && enemy.LSIsValidTarget(600))
+                        comboDMG += Q.GetDamage(enemy);
+
+                    if (E.IsReady())
+                        comboDMG += E.GetDamage(enemy);
+
+                    if (W.IsReady())
+                        comboDMG += W.GetDamage(enemy);
+                }
+
+                if (enemy.Health < comboDMG)
+                {
                     R.Cast(enemy);
                 }
             }
         }
 
-        public static float GetComboDamage(Obj_AI_Base enemy, bool UseQ, bool UseW, bool UseE, bool UseR)
-        {
-            if (enemy == null)
-                return 0f;
-            var damage = 0d;
-            var combomana = 0d;
-            var useR = getCheckBoxItem(r, "Rcombo");
-
-            //Add R Damage
-            if (R.IsReady() && UseR && useR)
-            {
-                combomana += ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.Mana;
-                if (combomana <= ObjectManager.Player.Mana) damage += GetRDamage(enemy);
-                else combomana -= ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).SData.Mana;
-            }
-
-            //Add Q Damage
-            if (Q.IsReady() && UseQ)
-            {
-                combomana += ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.Mana;
-                if (combomana <= ObjectManager.Player.Mana) damage += ObjectManager.Player.GetSpellDamage(enemy, SpellSlot.Q);
-                else combomana -= ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.Mana;
-            }
-
-            //Add E Damage
-            if (E.IsReady() && UseE)
-            {
-                combomana += ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).SData.Mana;
-                if (combomana <= ObjectManager.Player.Mana) damage += ObjectManager.Player.GetSpellDamage(enemy, SpellSlot.E);
-                else combomana -= ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).SData.Mana;
-            }
-
-            //Add W Damage
-            if (W.IsReady() && UseW)
-            {
-                combomana += ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.Mana;
-                if (combomana <= ObjectManager.Player.Mana) damage += ObjectManager.Player.GetSpellDamage(enemy, SpellSlot.W);
-                else combomana -= ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).SData.Mana;
-            }
-
-            return (float)damage;
-        }
-        public static double GetRDamage(Obj_AI_Base enemy)
-        {
-            if (!R.IsReady()) return 0f;
-            var damage = 0d;
-            if (IgniteSlot.IsReady())
-                damage += GetIgniteDamage(enemy);
-            if (R.IsReady())
-                damage += Math.Min(7, ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo) *
-                    LeagueSharp.Common.Damage.LSGetSpellDamage(Player, enemy, SpellSlot.R, 1);
-            return (float)damage;
-        }
-        public static float GetIgniteDamage(Obj_AI_Base enemy)
-        {
-            if (IgniteSlot == SpellSlot.Unknown || ObjectManager.Player.Spellbook.CanUseSpell(IgniteSlot) != SpellState.Ready)
-                return 0f;
-            return (float)ObjectManager.Player.GetSummonerSpellDamage(enemy, LeagueSharp.Common.Damage.SummonerSpell.Ignite);
-        }
-
-        private static void LogicW()
+        private void LogicW()
         {
             if (W.Instance.ToggleState == 1)
             {
@@ -342,9 +260,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     if (Program.Combo && Player.Mana > RMANA + QMANA + WMANA)
                         CatchW(t);
-                    else if (Program.Farm && getCheckBoxItem(w, "harrasW") &&
-                             getCheckBoxItem(harass, "harras" + t.NetworkId)
-                             && Player.ManaPercent > getSliderItem(q, "QHarassMana") && OktwCommon.CanHarras())
+                    else if (Program.Farm && wMenu["harrasW"].Cast<CheckBox>().CurrentValue && harassMenu["harras" + t.ChampionName].Cast<CheckBox>().CurrentValue
+                        && Player.ManaPercent > qMenu["QHarassMana"].Cast<Slider>().CurrentValue && OktwCommon.CanHarras())
                     {
                         CatchW(t);
                     }
@@ -352,20 +269,16 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         CatchW(t);
                     else if (Player.Mana > RMANA + WMANA)
                     {
-                        foreach (
-                            var enemy in
-                                Program.Enemies.Where(
-                                    enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
                             CatchW(t);
                     }
                 }
-                else if (Program.LaneClear && !Q.IsReady() && Player.ManaPercent > getSliderItem(farm, "Mana") &&
-                         getCheckBoxItem(farm, "farmW"))
+                else if (Program.LaneClear && !Q.IsReady() && Player.ManaPercent > farmMenu["Mana"].Cast<Slider>().CurrentValue && farmMenu["farmW"].Cast<CheckBox>().CurrentValue)
                 {
                     var allMinions = Cache.GetMinions(Player.ServerPosition, W.Range);
                     var farmPos = W.GetCircularFarmLocation(allMinions, W.Width);
 
-                    if (farmPos.MinionsHit >= getSliderItem(farm, "LCminions"))
+                    if (farmPos.MinionsHit >= farmMenu["LCminions"].Cast<Slider>().CurrentValue)
                         CatchW(allMinions.FirstOrDefault());
                 }
             }
@@ -376,7 +289,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     Program.CastSpell(W, t);
                 }
-                else if (Program.LaneClear && getCheckBoxItem(farm, "farmW"))
+                else if (Program.LaneClear && farmMenu["farmW"].Cast<CheckBox>().CurrentValue)
                 {
                     var allMinions = Cache.GetMinions(Player.ServerPosition, W.Range);
                     var farmPos = W.GetCircularFarmLocation(allMinions, W.Width);
@@ -387,47 +300,36 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private static void LogicQ()
+        private void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
             if (t.LSIsValidTarget())
             {
                 if (Program.Combo && Player.Mana > RMANA + QMANA + EMANA && !E.IsReady())
                     Program.CastSpell(Q, t);
-                else if (Program.Farm && getCheckBoxItem(q, "harrasQ") &&
-                         getCheckBoxItem(harass, "harras" + t.NetworkId) &&
-                         Player.ManaPercent > getSliderItem(q, "QHarassMana") && OktwCommon.CanHarras())
+                else if (Program.Farm && qMenu["harrasQ"].Cast<CheckBox>().CurrentValue && harassMenu["harras" + t.ChampionName].Cast<CheckBox>().CurrentValue && Player.ManaPercent > qMenu["QHarassMana"].Cast<Slider>().CurrentValue && OktwCommon.CanHarras())
                     Program.CastSpell(Q, t);
                 else if (OktwCommon.GetKsDamage(t, Q) > t.Health)
                     Program.CastSpell(Q, t);
                 else if (Player.Mana > RMANA + QMANA)
                 {
-                    foreach (
-                        var enemy in
-                            Program.Enemies.Where(
-                                enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Program.CastSpell(Q, t);
                 }
             }
 
-            if (Orbwalker.IsAutoAttacking)
+            if (Player.Spellbook.IsAutoAttacking)
                 return;
 
-            if (!Program.None && !Program.Combo && Player.ManaPercent > getSliderItem(farm, "Mana"))
+            if (!Program.None && !Program.Combo && Player.ManaPercent > farmMenu["Mana"].Cast<Slider>().CurrentValue)
             {
                 var allMinions = Cache.GetMinions(Player.ServerPosition, Q.Range);
 
-                if (getCheckBoxItem(farm, "farmQout"))
+                if (farmMenu["farmQout"].Cast<CheckBox>().CurrentValue)
                 {
-                    foreach (
-                        var minion in
-                            allMinions.Where(
-                                minion =>
-                                    minion.LSIsValidTarget(Q.Range) &&
-                                    (!Player.IsInAutoAttackRange(minion) ||
-                                     (!minion.UnderTurret(true) && minion.UnderTurret()))))
+                    foreach (var minion in allMinions.Where(minion => minion.LSIsValidTarget(Q.Range) && (!Player.IsInAutoAttackRange(minion) || (!minion.UnderTurret(true) && minion.UnderTurret()))))
                     {
-                        var hpPred = HealthPrediction.GetHealthPrediction(minion, 600);
+                        var hpPred = SebbyLib.HealthPrediction.GetHealthPrediction(minion, 600);
                         if (hpPred < Q.GetDamage(minion) && hpPred > minion.Health - hpPred * 2)
                         {
                             Q.Cast(minion);
@@ -435,16 +337,16 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         }
                     }
                 }
-                if (Program.LaneClear && getCheckBoxItem(farm, "farmQ"))
+                if (Program.LaneClear && farmMenu["farmQ"].Cast<CheckBox>().CurrentValue)
                 {
                     var farmPos = Q.GetCircularFarmLocation(allMinions, Q.Width);
-                    if (farmPos.MinionsHit >= getSliderItem(farm, "LCminions"))
+                    if (farmPos.MinionsHit >= farmMenu["LCminions"].Cast<Slider>().CurrentValue)
                         Q.Cast(farmPos.Position);
                 }
             }
         }
 
-        private static void Jungle()
+        private void Jungle()
         {
             if (Program.LaneClear && Player.Mana > RMANA + QMANA)
             {
@@ -452,24 +354,25 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (mobs.Count > 0)
                 {
                     var mob = mobs[0];
-                    if (Q.IsReady() && getCheckBoxItem(farm, "jungleQ"))
+                    if (Q.IsReady() && farmMenu["jungleQ"].Cast<CheckBox>().CurrentValue)
                     {
                         Q.Cast(mob.ServerPosition);
+                        return;
                     }
-                    else if (W.IsReady() && getCheckBoxItem(farm, "jungleW") &&
-                             Utils.TickCount - Q.LastCastAttemptT > 900)
+                    else if (W.IsReady() && farmMenu["jungleW"].Cast<CheckBox>().CurrentValue && Utils.TickCount - Q.LastCastAttemptT > 900)
                     {
                         W.Cast(mob.ServerPosition);
+                        return;
                     }
                 }
             }
         }
 
-        private static void CastQE(Obj_AI_Base target)
+        private void CastQE(Obj_AI_Base target)
         {
-            var CoreType2 = SebbyLib.Prediction.SkillshotType.SkillshotLine;
+            SebbyLib.Prediction.SkillshotType CoreType2 = SebbyLib.Prediction.SkillshotType.SkillshotLine;
 
-            var predInput2 = new PredictionInput
+            var predInput2 = new SebbyLib.Prediction.PredictionInput
             {
                 Aoe = false,
                 Collision = EQ.Collision,
@@ -482,33 +385,35 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 Type = CoreType2
             };
 
-            var poutput2 = Prediction.GetPrediction(predInput2);
+            var poutput2 = SebbyLib.Prediction.Prediction.GetPrediction(predInput2);
 
             if (OktwCommon.CollisionYasuo(Player.ServerPosition, poutput2.CastPosition))
                 return;
 
-            var castQpos = poutput2.CastPosition;
+            Vector3 castQpos = poutput2.CastPosition;
 
             if (Player.LSDistance(castQpos) > Q.Range)
                 castQpos = Player.Position.LSExtend(castQpos, Q.Range);
 
-            if (Program.getSliderItem("HitChance") == 0)
+            if (Program.getHitChance == 0)
             {
                 if (poutput2.Hitchance >= SebbyLib.Prediction.HitChance.VeryHigh)
                 {
                     EQcastNow = true;
                     Q.Cast(castQpos);
                 }
+
             }
-            else if (Program.getSliderItem("HitChance") == 1)
+            else if (Program.getHitChance == 1)
             {
                 if (poutput2.Hitchance >= SebbyLib.Prediction.HitChance.High)
                 {
                     EQcastNow = true;
                     Q.Cast(castQpos);
                 }
+
             }
-            else if (Program.getSliderItem("HitChance") == 2)
+            else if (Program.getHitChance == 2)
             {
                 if (poutput2.Hitchance >= SebbyLib.Prediction.HitChance.Medium)
                 {
@@ -518,53 +423,53 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private static void Drawing_OnDraw(EventArgs args)
+        private void Drawing_OnDraw(EventArgs args)
         {
-            if (getCheckBoxItem(draw, "qRange"))
+            if (drawMenu["qRange"].Cast<CheckBox>().CurrentValue)
             {
-                if (getCheckBoxItem(draw, "onlyRdy"))
+                if (drawMenu["onlyRdy"].Cast<CheckBox>().CurrentValue)
                 {
                     if (Q.IsReady())
-                        Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.Cyan, 1, 1);
+                        LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.Cyan, 1, 1);
                 }
                 else
-                    Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.Cyan, 1, 1);
+                    LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, Q.Range, System.Drawing.Color.Cyan, 1, 1);
             }
-            if (getCheckBoxItem(draw, "wRange"))
+            if (drawMenu["wRange"].Cast<CheckBox>().CurrentValue)
             {
-                if (getCheckBoxItem(draw, "onlyRdy"))
+                if (drawMenu["onlyRdy"].Cast<CheckBox>().CurrentValue)
                 {
                     if (W.IsReady())
-                        Utility.DrawCircle(ObjectManager.Player.Position, W.Range, Color.Orange, 1, 1);
+                        LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.Orange, 1, 1);
                 }
                 else
-                    Utility.DrawCircle(ObjectManager.Player.Position, W.Range, Color.Orange, 1, 1);
+                    LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, W.Range, System.Drawing.Color.Orange, 1, 1);
             }
-            if (getCheckBoxItem(draw, "eRange"))
+            if (drawMenu["eRange"].Cast<CheckBox>().CurrentValue)
             {
-                if (getCheckBoxItem(draw, "onlyRdy"))
+                if (drawMenu["onlyRdy"].Cast<CheckBox>().CurrentValue)
                 {
                     if (E.IsReady())
-                        Utility.DrawCircle(ObjectManager.Player.Position, EQ.Range, Color.Yellow, 1, 1);
+                        LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, EQ.Range, System.Drawing.Color.Yellow, 1, 1);
                 }
                 else
-                    Utility.DrawCircle(ObjectManager.Player.Position, EQ.Range, Color.Yellow, 1, 1);
+                    LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, EQ.Range, System.Drawing.Color.Yellow, 1, 1);
             }
-            if (getCheckBoxItem(draw, "rRange"))
+            if (drawMenu["rRange"].Cast<CheckBox>().CurrentValue)
             {
-                if (getCheckBoxItem(draw, "onlyRdy"))
+                if (drawMenu["onlyRdy"].Cast<CheckBox>().CurrentValue)
                 {
                     if (R.IsReady())
-                        Utility.DrawCircle(ObjectManager.Player.Position, R.Range, Color.Gray, 1, 1);
+                        LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, R.Range, System.Drawing.Color.Gray, 1, 1);
                 }
                 else
-                    Utility.DrawCircle(ObjectManager.Player.Position, R.Range, Color.Gray, 1, 1);
+                    LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, R.Range, System.Drawing.Color.Gray, 1, 1);
             }
         }
 
-        private static void SetMana()
+        private void SetMana()
         {
-            if ((Program.getCheckBoxItem("manaDisable") && Program.Combo) || Player.HealthPercent < 20)
+            if ((Program.Config["manaDisable"].Cast<CheckBox>().CurrentValue && Program.Combo) || Player.HealthPercent < 20)
             {
                 QMANA = 0;
                 WMANA = 0;
@@ -583,7 +488,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 RMANA = R.Instance.SData.Mana;
         }
 
-        private static void BallCleaner()
+        private void BallCleaner()
         {
             if (BallsList.Count > 0)
             {
@@ -591,8 +496,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private static void CatchW(Obj_AI_Base t, bool onlyMinin = false)
+        private void CatchW(Obj_AI_Base t, bool onlyMinin = false)
         {
+
             if (Utils.TickCount - W.LastCastAttemptT < 150)
                 return;
 
@@ -604,17 +510,12 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
             if (obj == null)
             {
-                obj =
-                    MinionManager.GetMinions(Player.ServerPosition, catchRange, MinionTypes.All, MinionTeam.NotAlly,
-                        MinionOrderTypes.MaxHealth).FirstOrDefault();
+                obj = MinionManager.GetMinions(Player.ServerPosition, catchRange, MinionTypes.All, MinionTeam.NotAlly, MinionOrderTypes.MaxHealth).FirstOrDefault();
             }
 
             if (obj != null)
             {
-                foreach (
-                    var minion in
-                        MinionManager.GetMinions(Player.ServerPosition, catchRange, MinionTypes.All, MinionTeam.NotAlly,
-                            MinionOrderTypes.MaxHealth))
+                foreach (var minion in MinionManager.GetMinions(Player.ServerPosition, catchRange, MinionTypes.All, MinionTeam.NotAlly, MinionOrderTypes.MaxHealth))
                 {
                     if (t.LSDistance(minion) < t.LSDistance(obj))
                         obj = minion;

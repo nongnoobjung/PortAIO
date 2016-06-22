@@ -20,6 +20,7 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Shen Hand of God
 - Lee Is Back [https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Lee%20is%20Back]
 - Korean Zed [Will need to be fixed afterwards]
+- EliseGod
 
 Utility Ports [Only doing after Champions are completed] :
 - OneKeyToBrain [https://github.com/OneKeyToWin/LeagueRepo/tree/master/OneKeyToBrain]

@@ -20,14 +20,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
-//using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using LeagueSharp.Common;
 using SharpDX;
 using Spell = LeagueSharp.Common.Spell;
-//using EloBuddy.SDK;
 
 namespace SPrediction
 {
@@ -388,7 +386,7 @@ namespace SPrediction
                     }
                 }
 
-                if (target.IsDashing()) //if unit is dashing
+                if (target.LSIsDashing()) //if unit is dashing
                     return GetDashingPrediction(target, width, delay, missileSpeed, range, collisionable, type, from, rangeCheckFrom);
 
                 if (Utility.IsImmobileTarget(target)) //if unit is immobile
@@ -676,8 +674,8 @@ namespace SPrediction
             if (path.Count <= 1 || (target is AIHeroClient && ((AIHeroClient)target).IsChannelingImportantSpell()) || Utility.IsImmobileTarget(target))
                 return target.ServerPosition.LSTo2D();
 
-            if (target.IsDashing())
-                return target.GetDashInfo().Path.Last();
+            if (target.LSIsDashing())
+                return target.LSGetDashInfo().Path.Last();
 
             float distance = distanceSet;
 
@@ -734,8 +732,8 @@ namespace SPrediction
             if (path.Count <= 1 || (target is AIHeroClient && ((AIHeroClient)target).IsChannelingImportantSpell()) || Utility.IsImmobileTarget(target))
                 return target.ServerPosition.LSTo2D();
 
-            if (target.IsDashing())
-                return target.GetDashInfo().Path.Last();
+            if (target.LSIsDashing())
+                return target.LSGetDashInfo().Path.Last();
 
             float distance = distanceSet;
 
