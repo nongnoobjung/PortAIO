@@ -3603,20 +3603,21 @@ namespace ezEvade
 
             });
 
-            //Spells.Add(
-            //new SpellData
-            //{
-            //    charName = "Zyra",
-            //    dangerlevel = 2,
-            //    name = "Deadly Bloom",
-            //    radius = 260,
-            //    range = 825,
-            //    spellDelay = 800,
-            //    spellKey = SpellSlot.Q,
-            //    spellName = "ZyraQFissure",
-            //    spellType = SpellType.Circular,
-
-            //});
+            Spells.Add(
+            new SpellData
+            {
+                charName = "Zyra",
+                dangerlevel = 2,
+                name = "Deadly Bloom",
+                radius = 140,
+                range = 800,
+                spellDelay = 850,
+                spellKey = SpellSlot.Q,
+                spellName = "ZyraQ",
+                spellType = SpellType.Line,
+                isPerpendicular = true,
+                secondaryRadius = 400
+            });
 
             /*Spells.Add(
             new SpellData

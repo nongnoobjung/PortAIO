@@ -137,7 +137,7 @@ namespace ezEvade
                 miscMenu.Add("ContinueMovement", new CheckBox("Continue Last Movement"));
                 miscMenu.Add("CalculateWindupDelay", new CheckBox("Calculate Windup Delay"));
                 miscMenu.Add("CheckSpellCollision", new CheckBox("Check Spell Collision", false));
-                miscMenu.Add("DodgeCheckHP", new CheckBox("Check Ignored HP %", false));
+                miscMenu.Add("DodgeCheckHP", new CheckBox("Check My Hero HP%", false));
                 miscMenu.Add("PreventDodgingUnderTower", new CheckBox("Prevent Dodging Under Tower", false));
                 miscMenu.Add("PreventDodgingNearEnemy", new CheckBox("Prevent Dodging Near Enemies"));
                 miscMenu.Add("AdvancedSpellDetection", new CheckBox("Advanced Spell Detection", false));

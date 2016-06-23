@@ -439,6 +439,12 @@ namespace ezEvade
                     endPosition = startPosition + dir * startPosition.LSDistance(endPosition);
                 }
 
+                if (spellData.isPerpendicular)
+                {
+                    startPosition = spellEndPos.LSTo2D() - direction.LSPerpendicular() * spellData.secondaryRadius;
+                    endPosition = spellEndPos.LSTo2D() + direction.LSPerpendicular() * spellData.secondaryRadius;
+                }
+
                 endTick += extraEndTick;
 
                 Spell newSpell = new Spell();
