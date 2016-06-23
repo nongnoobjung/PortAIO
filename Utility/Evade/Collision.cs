@@ -80,7 +80,7 @@ namespace EvadeSharp
             var d = tDelay * unit.MoveSpeed;
             var path = unit.GetWaypoints();
 
-            if (path.PathLength() > d)
+            if (path.LSPathLength() > d)
             {
                 return new FastPredResult
                 {

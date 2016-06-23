@@ -308,7 +308,7 @@ namespace Marksman.Champions
                         reticle =>
                             reticle.ReticlePos.LSDistance(cursor) <= Program.misc["CatchRadius"].Cast<Slider>().CurrentValue &&
                             reticle.Object.IsValid &&
-                            myHero.GetPath(reticle.ReticlePos).ToList().LSTo2D().PathLength() / myHero.MoveSpeed + Game.Time <
+                            myHero.GetPath(reticle.ReticlePos).ToList().LSTo2D().LSPathLength() / myHero.MoveSpeed + Game.Time <
                             reticle.ExpireTime);
 
             return reticles != null && myHero.LSDistance(reticles.ReticlePos) >= 100 ? reticles.ReticlePos : cursor;

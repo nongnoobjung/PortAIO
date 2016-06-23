@@ -78,7 +78,7 @@ namespace GosuMechanicsYasuo
             var moveSpeedF = tickDelay * unitAiBase.MoveSpeed;
             var path = unitAiBase.GetWaypoints();
 
-            if (path.PathLength() > moveSpeedF)
+            if (path.LSPathLength() > moveSpeedF)
             {
                 return new FastPredictionResult
                 {

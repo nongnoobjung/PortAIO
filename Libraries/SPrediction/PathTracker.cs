@@ -139,7 +139,7 @@ namespace SPrediction
                     if (!enemy.IsStopped)
                     {
                         enemy.AvgTick = (enemy.Count * enemy.AvgTick + (Environment.TickCount - enemy.LastWaypointTick)) / ++enemy.Count;
-                        enemy.AvgPathLenght = ((enemy.Count - 1) * enemy.AvgPathLenght + wp.PathLength()) / enemy.Count;
+                        enemy.AvgPathLenght = ((enemy.Count - 1) * enemy.AvgPathLenght + wp.LSPathLength()) / enemy.Count;
                     }
                     enemy.LastWaypointTick = Environment.TickCount;
                     enemy.IsStopped = false;

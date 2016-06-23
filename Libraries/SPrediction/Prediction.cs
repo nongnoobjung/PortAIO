@@ -375,7 +375,7 @@ namespace SPrediction
                     }
 
                     //to do: find a fuking logic
-                    if (avgp < 400 && movt < 100 && path.PathLength() <= avgp)
+                    if (avgp < 400 && movt < 100 && path.LSPathLength() <= avgp)
                     {
                         result.HitChance = HitChance.High;
                         result.CastPosition = path.Last();

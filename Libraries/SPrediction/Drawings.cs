@@ -86,7 +86,7 @@ namespace SPrediction
 
                         var pos = Drawing.WorldToScreen(waypoints[waypoints.Count - 1].To3D());
                         Drawing.DrawText(pos.X, pos.Y, Color.Black,
-                            (waypoints.PathLength()/enemy.MoveSpeed).ToString("0.00")); //arrival time
+                            (waypoints.LSPathLength()/enemy.MoveSpeed).ToString("0.00")); //arrival time
                     }
                 }
 

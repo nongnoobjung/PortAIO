@@ -542,7 +542,7 @@ namespace SebbyLib.Movement
                 }
 
                 //At the end of the dash:
-                if (dashData.Path.PathLength() > 200)
+                if (dashData.Path.LSPathLength() > 200)
                 {
                     var timeToPoint = input.Delay / 2f + input.From.LSTo2D().LSDistance(endP) / input.Speed - 0.25f;
                     if (timeToPoint <=
@@ -646,7 +646,7 @@ namespace SebbyLib.Movement
                 };
             }
 
-            var pLength = path.PathLength();
+            var pLength = path.LSPathLength();
 
             //Skillshots with only a delay
             if (pLength >= input.Delay * speed - input.RealRadius && Math.Abs(input.Speed - float.MaxValue) < float.Epsilon)
