@@ -64,7 +64,6 @@ namespace Azir_Creator_of_Elo
             if (target != null)
             {
 
-                checkauto(azir, target);
                 if (target.Distance(azir.Hero.ServerPosition) < 450)
                 {
                     var pred = azir.Spells.W.GetPrediction(target);
@@ -98,7 +97,6 @@ namespace Azir_Creator_of_Elo
             var minion = MinionManager.GetMinions(azir.Spells.Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth).FirstOrDefault();
             if (minion != null)
             {
-                checkautoMin(azir, minion);
                 if (azir.Spells.W.IsInRange(minion))
                 {
                     var pred = azir.Spells.W.GetPrediction(minion);
@@ -126,7 +124,6 @@ namespace Azir_Creator_of_Elo
             var minion = MinionManager.GetMinions(azir.Spells.Q.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth).FirstOrDefault();
             if (minion != null)
             {
-                checkautoMin(azir, minion);
                 if (azir.Spells.W.IsInRange(minion))
                 {
                     var pred = azir.Spells.W.GetPrediction(minion);
@@ -140,26 +137,7 @@ namespace Azir_Creator_of_Elo
                 }
             }
         }
-        public void checkauto(AzirMain azir, AIHeroClient target)
-        {
-            foreach (var soldier in azir.soldierManager.ActiveSoldiers)
-            {
-                if (soldier.LSDistance(target) <= 325)
-                {
-                    EloBuddy.Player.IssueOrder(GameObjectOrder.AutoAttack, target);
-                }
-            }
-        }
-        public void checkautoMin(AzirMain azir, Obj_AI_Base target)
-        {
-            foreach (var soldier in azir.soldierManager.ActiveSoldiers)
-            {
-                if (soldier.LSDistance(target) <= 325)
-                {
-                    EloBuddy.Player.IssueOrder(GameObjectOrder.AutoAttack, target);
-                }
-            }
-        }
+
         public override void Combo(AzirMain azir)
         {
 
@@ -170,7 +148,6 @@ namespace Azir_Creator_of_Elo
             var target = TargetSelector.GetTarget(900, DamageType.Magical);
             if (target != null)
             {
-                checkauto(azir, target);
                 if (target.Distance(azir.Hero.ServerPosition) < 450)
                 {
                     if (target.isRunningOfYou())
