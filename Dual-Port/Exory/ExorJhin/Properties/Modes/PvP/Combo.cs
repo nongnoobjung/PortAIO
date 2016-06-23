@@ -26,26 +26,41 @@ namespace ExorAIO.Champions.Jhin
                 Vars.R.Instance.Name.Equals("JhinRShot") &&
                 Vars.getCheckBoxItem(Vars.RMenu, "combo"))
             {
-                if (Targets.RTargets.Any())
+                if (GameObjects.EnemyHeroes.Any(
+                    t =>
+                        Vars.Cone.IsInside(t) &&
+                        t.LSIsValidTarget(Vars.R.Range)))
                 {
-                    if (Vars.getCheckBoxItem(Vars.RMenu, "nearmouse"))
+                    foreach (var target in GameObjects.EnemyHeroes.Where(
+                        t =>
+                            Vars.Cone.IsInside(t) &&
+                            t.LSIsValidTarget(Vars.R.Range)))
                     {
-                        Vars.R.Cast(Vars.R.GetPrediction(Targets.RTargets.OrderBy(t => t.Distance(Game.CursorPos)).FirstOrDefault()).UnitPosition);
-                    }
-                    else
-                    {
-                        Vars.R.Cast(Vars.R.GetPrediction(Targets.RTargets.FirstOrDefault()).UnitPosition);
+                        if (Vars.getCheckBoxItem(Vars.RMenu, "nearmouse"))
+                        {
+                            Vars.R.Cast(Vars.R.GetPrediction(GameObjects.EnemyHeroes.Where(
+                                t =>
+                                    Vars.Cone.IsInside(t) &&
+                                    t.LSIsValidTarget(Vars.R.Range)).OrderBy(
+                                        o =>
+                                            o.Distance(Game.CursorPos)).FirstOrDefault()).UnitPosition);
+                        }
+                        else
+                        {
+                            Vars.R.Cast(Vars.R.GetPrediction(target).UnitPosition);
+                        }
                     }
                 }
-				else
-				{
-					Vars.R.Cast(Game.CursorPos);
-				}
+                else
+                {
+                    Vars.R.Cast(Game.CursorPos);
+                }
             }
 
             if (Bools.HasSheenBuff() ||
 				!Targets.Target.LSIsValidTarget() ||
-                Invulnerable.Check(Targets.Target))
+                Invulnerable.Check(Targets.Target) ||
+                Vars.R.Instance.Name.Equals("JhinRShot"))
             {
                 return;
             }

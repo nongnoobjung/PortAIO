@@ -31,22 +31,6 @@ namespace ExorAIO.Champions.Jhin
                 return;
             }
 
-            /*
-            /// <summary>
-            ///     The Automatic R Logic.
-            /// </summary>
-            if (!Targets.Target.LSIsValidTarget() &&
-                Vars.R.Instance.Name.Equals("JhinRShot"))
-            {
-                GameObjects.Player.IssueOrder(GameObjectOrder.MoveTo, GameObjects.Player.ServerPosition);
-            }
-            */
-
-            if (Vars.R.Instance.Name.Equals("JhinRShot"))
-            {
-                return;
-            }
-
             /// <summary>
             ///     The Automatic Q LastHit Logic.
             /// </summary>
