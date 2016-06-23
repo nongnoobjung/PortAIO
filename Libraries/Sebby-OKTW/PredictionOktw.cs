@@ -512,6 +512,14 @@ namespace SebbyLib.Prediction
             return result;
         }
 
+        public static bool PointInLineSegment(Vector2 segmentStart, Vector2 segmentEnd, Vector2 point)
+        {
+            var distanceStartEnd = segmentStart.LSDistance(segmentEnd, true);
+            var distanceStartPoint = segmentStart.LSDistance(point, true);
+            var distanceEndPoint = segmentEnd.LSDistance(point, true);
+            return !(distanceEndPoint > distanceStartEnd || distanceStartPoint > distanceStartEnd);
+        }
+
         internal static PredictionOutput WayPointAnalysis(PredictionOutput result, PredictionInput input)
         {
             if (!(input.Unit is EloBuddy.AIHeroClient) || input.Radius == 1)
@@ -532,8 +540,10 @@ namespace SebbyLib.Prediction
 
             // PREPARE MATH ///////////////////////////////////////////////////////////////////////////////////
 
-            result.Hitchance = HitChance.Medium;
-            var lastWaypiont = input.Unit.GetWaypoints().Last().To3D();
+            var path = input.Unit.GetWaypoints();
+
+
+            var lastWaypiont = path.Last().To3D();
 
             var distanceUnitToWaypoint = lastWaypiont.LSDistance(input.Unit.ServerPosition);
             var distanceFromToUnit = input.From.LSDistance(input.Unit.ServerPosition);
@@ -659,6 +669,15 @@ namespace SebbyLib.Prediction
             else if (distanceFromToWaypoint < 250)
             {
                 OktwCommon.debug("PRED: SPECIAL CASES ON WAY");
+                result.Hitchance = HitChance.VeryHigh;
+                return result;
+            }
+
+            // LONG TIME ///////////////////////////////////////////////////////////////////////////////////
+
+            if (UnitTracker.GetLastNewPathTime(input.Unit) > 250)
+            {
+                OktwCommon.debug("PRED: LONG TIME");
                 result.Hitchance = HitChance.VeryHigh;
                 return result;
             }
@@ -1426,6 +1445,10 @@ namespace SebbyLib.Prediction
                     if (foundSpell != null)
                     {
                         UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId).SpecialSpellFinishTick = Utils.TickCount + (int)(foundSpell.duration * 1000);
+                    }
+                    else if (sender.Spellbook.IsAutoAttacking || sender.IsRooted || !sender.CanMove)
+                    {
+                        UnitTrackerInfoList.Find(x => x.NetworkId == sender.NetworkId).SpecialSpellFinishTick = Utils.TickCount + 100;
                     }
                 }
             }

@@ -1151,6 +1151,9 @@ namespace PortAIO
                             case 3:
                                 Marksman.Program.Game_OnGameLoad();
                                 break;
+                            case 4:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;;
                             default:
                                 LCS_Lucian.Program.OnLoad();
                                 break;

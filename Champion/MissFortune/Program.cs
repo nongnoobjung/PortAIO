@@ -307,7 +307,7 @@ namespace OneKeyToWin_AIO_Sebby
                     {
                         Program.debug("dupa");
                         if (minions.Exists(x =>
-                        InCone(x.Position, posExt, minion.ServerPosition, getSliderItem(qMenu, "qMinionWidth") + 10)
+                        InCone(x.Position, posExt, minion.ServerPosition, getSliderItem(qMenu, "qMinionWidth"))
                         ))
                             continue;
                         Q.Cast(minion);

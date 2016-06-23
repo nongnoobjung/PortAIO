@@ -326,6 +326,7 @@
     <Compile Include="Dual-Port\Exory\ExorEzreal\Properties\Utilities\Methods.cs" />
     <Compile Include="Dual-Port\Exory\ExorEzreal\Properties\Utilities\Spells.cs" />
     <Compile Include="Dual-Port\Exory\ExorEzreal\Properties\Utilities\Targets.cs" />
+    <Compile Include="Dual-Port\Sebby\OKTWLucian\Lucian.cs" />
     <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\AzirMain.cs" />
     <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\AzirMenu.cs" />
     <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\AzirModes.cs" />
@@ -336,12 +337,12 @@
     <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\Program.cs" />
     <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\SoldierManager.cs" />
     <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\Spells.cs" />
-    <Compile Include="Dual-Port\Thresh The Ruler\EscapeDetector.cs" />
-    <Compile Include="Dual-Port\Thresh The Ruler\Extensions.cs" />
-    <Compile Include="Dual-Port\Thresh The Ruler\Helper.cs" />
-    <Compile Include="Dual-Port\Thresh The Ruler\Items.cs" />
-    <Compile Include="Dual-Port\Thresh The Ruler\Program.cs" />
-    <Compile Include="Dual-Port\Thresh The Ruler\Turret.cs" />
+    <Compile Include="Dual-Port\Kaiser\Thresh The Ruler\EscapeDetector.cs" />
+    <Compile Include="Dual-Port\Kaiser\Thresh The Ruler\Extensions.cs" />
+    <Compile Include="Dual-Port\Kaiser\Thresh The Ruler\Helper.cs" />
+    <Compile Include="Dual-Port\Kaiser\Thresh The Ruler\Items.cs" />
+    <Compile Include="Dual-Port\Kaiser\Thresh The Ruler\Program.cs" />
+    <Compile Include="Dual-Port\Kaiser\Thresh The Ruler\Turret.cs" />
     <Compile Include="Dual-Port\`LSStaff\AhriSharp\Ahri.cs" />
     <Compile Include="Dual-Port\`LSStaff\AhriSharp\Helper.cs" />
     <Compile Include="Dual-Port\`LSStaff\AhriSharp\Program.cs" />

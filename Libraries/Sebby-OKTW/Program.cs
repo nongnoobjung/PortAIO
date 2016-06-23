@@ -189,6 +189,9 @@ namespace SebbyLib
                     case "Karthus":
                         Karthus.LoadOKTW();
                         break;
+                    case "Lucian":
+                        Lucian.LoadOKTW();
+                        break;
                     case "MissFortune":
                         MissFortune.LoadOKTW();
                         break;
