@@ -83,7 +83,7 @@ namespace ExorAIO.Champions.Caitlyn
                                 !Invulnerable.Check(t) &&
                                 t.LSIsValidTarget(Vars.R.Range))
                             .OrderBy(o => o.Health)
-                            .LastOrDefault());
+                            .FirstOrDefault());
                 }
             }
         }
