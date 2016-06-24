@@ -329,6 +329,8 @@
     <Compile Include="Dual-Port\God\EliseGod\Program.cs" />
     <Compile Include="Dual-Port\Hoola\HpBarIndicator.cs" />
     <Compile Include="Dual-Port\Hoola\Program.cs" />
+    <Compile Include="Dual-Port\Sebby\GENESIS Jinx\PredictionOktw.cs" />
+    <Compile Include="Dual-Port\Sebby\GENESIS Jinx\Program.cs" />
     <Compile Include="Dual-Port\Sebby\OKTWLucian\Lucian.cs" />
     <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\AzirMain.cs" />
     <Compile Include="Dual-Port\Sergix\AzirCreatorOfElo\AzirMenu.cs" />
