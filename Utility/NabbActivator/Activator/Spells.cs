@@ -128,6 +128,46 @@ namespace NabbActivator
                 }
 
                 /// <summary>
+                ///     The Jungle Smite Logic.
+                /// </summary>
+                foreach (var minion in Targets.JungleMinions.Where(
+                    m =>
+                        m.LSIsValidTarget(Vars.Smite.Range)))
+                {
+                    if (minion.Health > GameObjects.Player.GetBuffCount(GameObjects.Player.Buffs.FirstOrDefault(
+                        b =>
+                            b.Name.ToLower().Contains("smitedamagetracker")).Name))
+                    {
+                        return;
+                    }
+
+                    if (Vars.SmiteMiscMenu["limit"].Cast<CheckBox>().CurrentValue)
+                    {
+                        if (!minion.CharData.BaseSkinName.Equals("SRU_Baron") &&
+                            !minion.CharData.BaseSkinName.Equals("SRU_RiftHerald") &&
+                            !minion.CharData.BaseSkinName.Contains("SRU_Dragon"))
+                        {
+                            return;
+                        }
+                    }
+
+                    if (Vars.SmiteMiscMenu["stacks"].Cast<CheckBox>().CurrentValue)
+                    {
+                        if (GameObjects.Player.Spellbook.GetSpell(Vars.Smite.Slot).Ammo == 1)
+                        {
+                            if (!minion.CharData.BaseSkinName.Equals("SRU_Baron") &&
+                                !minion.CharData.BaseSkinName.Equals("SRU_RiftHerald") &&
+                                !minion.CharData.BaseSkinName.Contains("SRU_Dragon"))
+                            {
+                                return;
+                            }
+                        }
+                    }
+
+                    Vars.Smite.CastOnUnit(minion);
+                }
+
+                /// <summary>
                 ///     The Combo Smite Logic.
                 /// </summary>
                 if (Vars.SmiteMiscMenu["combo"].Cast<CheckBox>().CurrentValue)
@@ -168,47 +208,6 @@ namespace NabbActivator
                             }
                         }
                     }
-                }
-
-                /// <summary>
-                ///     The Jungle Smite Logic.
-                /// </summary>
-                foreach (var minion in Targets.JungleMinions.Where(
-                    m =>
-                        m.LSIsValidTarget(Vars.Smite.Range)))
-                        //Vars.Menu["smite"]["whitelist"][m.CharData.BaseSkinName.ToLower()].GetValue<MenuBool>().Value))
-                {
-                    if (minion.Health > GameObjects.Player.GetBuffCount(GameObjects.Player.Buffs.FirstOrDefault(
-                        b =>
-                            b.Name.ToLower().Contains("smitedamagetracker")).Name))
-                    {
-                        return;
-                    }
-
-                    if (Vars.SmiteMiscMenu["limit"].Cast<CheckBox>().CurrentValue)
-                    {
-                        if (!minion.CharData.BaseSkinName.Equals("SRU_Baron") &&
-                            !minion.CharData.BaseSkinName.Equals("SRU_RiftHerald") &&
-                            !minion.CharData.BaseSkinName.Contains("SRU_Dragon"))
-                        {
-                            return;
-                        }
-                    }
-
-                    if (Vars.SmiteMiscMenu["stacks"].Cast<CheckBox>().CurrentValue)
-                    {
-                        if (GameObjects.Player.Spellbook.GetSpell(Vars.Smite.Slot).Ammo == 1)
-                        {
-                            if (!minion.CharData.BaseSkinName.Equals("SRU_Baron") &&
-                                !minion.CharData.BaseSkinName.Equals("SRU_RiftHerald") &&
-                                !minion.CharData.BaseSkinName.Contains("SRU_Dragon"))
-                            {
-                                return;
-                            }
-                        }
-                    }
-
-                    Vars.Smite.CastOnUnit(minion);
                 }
             }
 

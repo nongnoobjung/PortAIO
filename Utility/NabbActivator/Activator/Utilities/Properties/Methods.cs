@@ -14,7 +14,6 @@ namespace NabbActivator
         {
             Game.OnUpdate += Index.OnUpdate;
             Obj_AI_Base.OnSpellCast += Index.OnDoCast;
-            Obj_AI_Base.OnProcessSpellCast += Index.OnProcessSpellCast;
         }
     }
 }
