@@ -26,18 +26,6 @@ namespace ExorAIO.Champions.Nunu
                 return;
             }
 
-
-            /// <summary>
-            ///     The Support Mode Option.
-            /// </summary>
-            if (Orbwalker.LastTarget != null &&
-                Orbwalker.LastTarget is Obj_AI_Minion &&
-                GameObjects.AllyHeroes.Any(a => a.Distance(GameObjects.Player) < 2500) &&
-                Vars.getCheckBoxItem(Vars.MiscMenu, "support"))
-            {
-                Orbwalker.DisableAttacking = Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass);
-            }
-
             /// <summary>
             ///     The Semi-Automatic R Management.
             /// </summary>

@@ -2,6 +2,8 @@ using System;
 using ExorAIO.Utilities;
 using LeagueSharp.SDK;
 using EloBuddy.SDK;
+using EloBuddy;
+using System.Linq;
 
 namespace ExorAIO.Champions.Nunu
 {
@@ -80,6 +82,26 @@ namespace ExorAIO.Champions.Nunu
                 Logics.Clear(args);
             }
 
+        }
+
+        /// <summary>
+        ///     Called on orbwalker action.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="OrbwalkingActionArgs" /> instance containing the event data.</param>
+        public static void OnAction(AttackableUnit target, Orbwalker.PreAttackArgs args)
+        {
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            {
+                if (Vars.getCheckBoxItem(Vars.MiscMenu, "support"))
+                {
+                    if (Orbwalker.LastTarget is Obj_AI_Minion &&
+                        GameObjects.AllyHeroes.Any(a => a.Distance(GameObjects.Player) < 2500))
+                    {
+                        args.Process = false;
+                    }
+                }
+            }
         }
     }
 }

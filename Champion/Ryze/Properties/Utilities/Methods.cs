@@ -1,4 +1,5 @@
 using EloBuddy;
+using EloBuddy.SDK;
 using LeagueSharp;
 using LeagueSharp.SDK;
 
@@ -16,6 +17,7 @@ namespace ExorAIO.Champions.Ryze
         {
             Game.OnUpdate += Ryze.OnUpdate;
             Events.OnGapCloser += Ryze.OnGapCloser;
+            Orbwalker.OnPreAttack += Ryze.OnAction;
         }
     }
 }

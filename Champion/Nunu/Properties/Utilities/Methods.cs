@@ -1,4 +1,5 @@
 using EloBuddy;
+using EloBuddy.SDK;
 using LeagueSharp;
 
 namespace ExorAIO.Champions.Nunu
@@ -14,6 +15,7 @@ namespace ExorAIO.Champions.Nunu
         public static void Initialize()
         {
             Game.OnUpdate += Nunu.OnUpdate;
+            Orbwalker.OnPreAttack += Nunu.OnAction;
         }
     }
 }
