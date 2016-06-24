@@ -73,7 +73,7 @@ namespace EBPredictioner
         {
             if (sender.Owner.IsMe)
             {
-                if (getCheckBoxItem(menu, "ENABLED") && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+                if (getCheckBoxItem(menu, "ENABLED") && (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)))
                 {
                     if (menu[String.Format("{0}{1}", ObjectManager.Player.ChampionName, args.Slot)] == null)
                         return;
