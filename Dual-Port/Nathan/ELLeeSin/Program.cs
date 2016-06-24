@@ -85,9 +85,9 @@ namespace ElLeeSin
 
         private static readonly bool castWardAgain = true;
 
-        private static readonly int[] SmiteBlue = {3706, 1403, 1402, 1401, 1400};
+        private static readonly int[] SmiteBlue = { 3706, 1403, 1402, 1401, 1400 };
 
-        private static readonly int[] SmiteRed = {3715, 1415, 1414, 1413, 1412};
+        private static readonly int[] SmiteRed = { 3715, 1415, 1414, 1413, 1412 };
 
         private static readonly string[] SpellNames =
         {
@@ -326,7 +326,7 @@ namespace ElLeeSin
                 if (ClicksecEnabled && getCheckBoxItem(InitMenu.insecMenu, "clickInsec"))
                 {
                     InsecLinePos = Drawing.WorldToScreen(InsecClickPos);
-                    return V2E(InsecClickPos, target.Position, target.LSDistance(InsecClickPos) + 230).To3D();
+                    return V2E(InsecClickPos, target.Position, target.ELDistance(InsecClickPos) + 230).To3D();
                 }
                 if (isNullInsecPos)
                 {
@@ -343,27 +343,27 @@ namespace ElLeeSin
                                 GetAllyHeroes(target, 2000 + getSliderItem(InitMenu.insecMenu, "bonusRangeA"))));
 
                     InsecLinePos = Drawing.WorldToScreen(insecPosition);
-                    return V2E(insecPosition, target.Position, target.LSDistance(insecPosition) + 230).To3D();
+                    return V2E(insecPosition, target.Position, target.ELDistance(insecPosition) + 230).To3D();
                 }
 
                 var tower =
                     ObjectManager.Get<Obj_AI_Turret>()
                         .Where(
                             turret =>
-                                turret.LSDistance(target) - 725 <= 950 && turret.IsAlly && turret.IsVisible
-                                && turret.Health > 0 && turret.LSDistance(target) <= 1300 && turret.LSDistance(target) > 400)
-                        .MinOrDefault(i => target.LSDistance(Player));
+                                turret.ELDistance(target) - 725 <= 950 && turret.IsAlly && turret.IsVisible
+                                && turret.Health > 0 && turret.ELDistance(target) <= 1300 && turret.ELDistance(target) > 400)
+                        .MinOrDefault(i => target.ELDistance(Player));
 
                 if (tower != null)
                 {
                     InsecLinePos = Drawing.WorldToScreen(tower.Position);
-                    return V2E(tower.Position, target.Position, target.LSDistance(tower.Position) + 230).To3D();
+                    return V2E(tower.Position, target.Position, target.ELDistance(tower.Position) + 230).To3D();
                 }
 
                 if (getCheckBoxItem(InitMenu.insecMenu, "ElLeeSin.Insec.Original.Pos"))
                 {
                     InsecLinePos = Drawing.WorldToScreen(insecPos);
-                    return V2E(insecPos, target.Position, target.LSDistance(insecPos) + 230).To3D();
+                    return V2E(insecPos, target.Position, target.ELDistance(insecPos) + 230).To3D();
                 }
                 return new Vector3();
             }
@@ -394,15 +394,15 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Q2Damage(Obj_AI_Base target, float subHP = 0, bool monster = false)
         {
-            var damage = 50 + spells[Spells.Q].Level*30 + 0.09*Player.FlatPhysicalDamageMod
-                         + (target.MaxHealth - (target.Health - subHP))*0.08;
+            var damage = 50 + spells[Spells.Q].Level * 30 + 0.09 * Player.FlatPhysicalDamageMod
+                         + (target.MaxHealth - (target.Health - subHP)) * 0.08;
 
             if (monster && damage > 400)
             {
-                return (float) Player.CalcDamage(target, DamageType.Physical, 400);
+                return (float)Player.CalcDamage(target, DamageType.Physical, 400);
             }
 
-            return (float) Player.CalcDamage(target, DamageType.Physical, damage);
+            return (float)Player.CalcDamage(target, DamageType.Physical, damage);
         }
 
         #endregion
@@ -423,7 +423,7 @@ namespace ElLeeSin
             if (getCheckBoxItem(InitMenu.waveclearMenu, "ElLeeSin.Lane.Q") && !QState && spells[Spells.Q].IsReady() &&
                 minions.HasQBuff()
                 && (LastQ + 2700 < Environment.TickCount || spells[Spells.Q].GetDamage(minions, 1) > minions.Health
-                    || minions.LSDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 50))
+                    || minions.ELDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 50))
             {
                 spells[Spells.Q].Cast();
             }
@@ -431,7 +431,7 @@ namespace ElLeeSin
             if (spells[Spells.Q].IsReady() && getCheckBoxItem(InitMenu.waveclearMenu, "ElLeeSin.Lane.Q") &&
                 LastQ + 200 < Environment.TickCount)
             {
-                if (QState && minions.LSDistance(Player) < spells[Spells.Q].Range)
+                if (QState && minions.ELDistance(Player) < spells[Spells.Q].Range)
                 {
                     spells[Spells.Q].Cast(minions);
                 }
@@ -439,7 +439,7 @@ namespace ElLeeSin
 
             if (getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.AAStacks")
                 && PassiveStacks > getSliderItem(InitMenu.comboMenu, "ElLeeSin.Combo.PassiveStacks")
-                && Orbwalking.GetRealAutoAttackRange(Player) > Player.LSDistance(minions))
+                && Orbwalking.GetRealAutoAttackRange(Player) > Player.ELDistance(minions))
             {
                 return;
             }
@@ -546,7 +546,7 @@ namespace ElLeeSin
                     spells[Spells.Q].Instance.Name.Equals("blindmonkqtwo", StringComparison.InvariantCultureIgnoreCase) &&
                     target.HasQBuff() &&
                     (castQAgain || spells[Spells.Q].GetDamage(target, 1) > target.Health + target.AttackShield) ||
-                    ReturnQBuff.LSDistance(target) < Player.LSDistance(target) &&
+                    ReturnQBuff.ELDistance(target) < Player.ELDistance(target) &&
                     !target.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(Player)))
                 {
                     spells[Spells.Q].Cast(target);
@@ -567,7 +567,7 @@ namespace ElLeeSin
 
             if (getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.AAStacks") &&
                 PassiveStacks > getSliderItem(InitMenu.comboMenu, "ElLeeSin.Combo.PassiveStacks") &&
-                Orbwalking.GetRealAutoAttackRange(Player) > Player.LSDistance(target))
+                Orbwalking.GetRealAutoAttackRange(Player) > Player.ELDistance(target))
             {
                 return;
             }
@@ -575,7 +575,7 @@ namespace ElLeeSin
             if (getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.Q2") && spells[Spells.Q].IsReady()
                 && spells[Spells.Q].Instance.Name.Equals("blindmonkqtwo", StringComparison.InvariantCultureIgnoreCase)
                 && target.HasQBuff()
-                && (castQAgain || Player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(Player)
+                && (castQAgain || Player.ELDistance(target) > Orbwalking.GetRealAutoAttackRange(Player)
                     || Q2Damage(target) > target.Health + target.AttackShield))
             {
                 CastQ(target);
@@ -585,20 +585,20 @@ namespace ElLeeSin
             if (getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.W"))
             {
                 if (getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.Mode.WW")
-                    && target.LSDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player))
+                    && target.ELDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player))
                 {
                     WardJump(target.Position, false, true);
                 }
 
                 if (!getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.Mode.WW") &&
-                    target.LSDistance(Player) > spells[Spells.Q].Range)
+                    target.ELDistance(Player) > spells[Spells.Q].Range)
                 {
                     WardJump(target.Position, false, true);
                 }
             }
 
             if (spells[Spells.E].IsReady() && getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.E") &&
-                target.LSDistance(Player) < 400
+                target.ELDistance(Player) < 400
                 && !Player.IsDashing())
             {
                 if (Environment.TickCount - LastW <= 150)
@@ -609,7 +609,7 @@ namespace ElLeeSin
                 if (EState)
                 {
                     if (GetEHits().Item1 > 0 || (PassiveStacks == 0 && Player.Mana >= 70)
-                        || target.LSDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 70)
+                        || target.ELDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 70)
                     {
                         spells[Spells.E].Cast();
                     }
@@ -619,7 +619,7 @@ namespace ElLeeSin
                     if (LastE + 1800 < Environment.TickCount)
                     {
                         if (GetEHits().Item1 > 0
-                            || target.LSDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 50)
+                            || target.ELDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 50)
                         {
                             spells[Spells.E].Cast();
                         }
@@ -707,7 +707,7 @@ namespace ElLeeSin
                 ClicksecEnabled = false;
             }
 
-            if (Player.IsDead || MenuGUI.IsChatOpen || Player.IsRecalling())
+            if (Player.IsDead || MenuGUI.IsChatOpen || Player.LSIsRecalling())
             {
                 return;
             }
@@ -810,7 +810,7 @@ namespace ElLeeSin
                 foreach (var enemy in HeroManager.Enemies)
                 {
                     var startPos = enemy.ServerPosition;
-                    var endPos = Player.ServerPosition.LSExtend(startPos, Player.LSDistance(enemy) + leeSinRKickDistance);
+                    var endPos = Player.ServerPosition.ELExtend(startPos, Player.ELDistance(enemy) + leeSinRKickDistance);
                     var rectangle = new Geometry.Polygon.Rectangle(startPos, endPos, leeSinRKickWidth);
 
                     if (HeroManager.Enemies.Count(x => rectangle.IsInside(x)) >= minREnemies)
@@ -823,14 +823,14 @@ namespace ElLeeSin
 
         private static void Game_OnWndProc(WndEventArgs args)
         {
-            if (args.Msg != (uint) WindowsMessages.WM_LBUTTONDOWN)
+            if (args.Msg != (uint)WindowsMessages.WM_LBUTTONDOWN)
             {
                 return;
             }
 
             var asec =
                 ObjectManager.Get<AIHeroClient>()
-                    .Where(a => a.IsEnemy && a.LSDistance(Game.CursorPos) < 200 && a.IsValid && !a.IsDead);
+                    .Where(a => a.IsEnemy && a.ELDistance(Game.CursorPos) < 200 && a.IsValid && !a.IsDead);
 
             if (asec.Any())
             {
@@ -844,7 +844,7 @@ namespace ElLeeSin
                 doubleClickReset = Environment.TickCount + 600;
                 return;
             }
-            if (lastClickBool && lastClickPos.LSDistance(Game.CursorPos) < 200)
+            if (lastClickBool && lastClickPos.ELDistance(Game.CursorPos) < 200)
             {
                 clickCount++;
                 lastClickBool = false;
@@ -868,7 +868,7 @@ namespace ElLeeSin
         {
             return
                 ObjectManager.Get<AIHeroClient>()
-                    .Where(hero => hero.IsAlly && !hero.IsMe && !hero.IsDead && hero.LSDistance(position) < range)
+                    .Where(hero => hero.IsAlly && !hero.IsMe && !hero.IsDead && hero.ELDistance(position) < range)
                     .ToList();
         }
 
@@ -883,7 +883,7 @@ namespace ElLeeSin
                 if (localTemp > alliesAround)
                 {
                     tempObject = hero;
-                    alliesAround = (byte) localTemp;
+                    alliesAround = (byte)localTemp;
                 }
             }
             return GetAllyHeroes(tempObject, 500 + getSliderItem(InitMenu.insecMenu, "bonusRangeA"));
@@ -895,7 +895,7 @@ namespace ElLeeSin
             {
                 var hits =
                     HeroManager.Enemies.Where(
-                        e => e.LSIsValidTarget() && e.LSDistance(Player) < 430f || e.LSDistance(Player) < 430f).ToList();
+                        e => e.LSIsValidTarget() && e.ELDistance(Player) < 430f || e.ELDistance(Player) < 430f).ToList();
 
                 return new Tuple<int, List<AIHeroClient>>(hits.Count, hits);
             }
@@ -908,7 +908,7 @@ namespace ElLeeSin
 
         private static SpellDataInst GetItemSpell(InventorySlot invSlot)
         {
-            return Player.Spellbook.Spells.FirstOrDefault(spell => (int) spell.Slot == invSlot.Slot + 4);
+            return Player.Spellbook.Spells.FirstOrDefault(spell => (int)spell.Slot == invSlot.Slot + 4);
         }
 
         private static void Harass()
@@ -923,14 +923,14 @@ namespace ElLeeSin
                 getCheckBoxItem(InitMenu.harassMenu, "ElLeeSin.Harass.Q1") && !QState
                 && spells[Spells.Q].IsReady() && target.HasQBuff()
                 && (LastQ + 2700 < Environment.TickCount || spells[Spells.Q].GetDamage(target, 1) > target.Health
-                    || target.LSDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 50))
+                    || target.ELDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 50))
             {
                 spells[Spells.Q].Cast();
             }
 
             if (getCheckBoxItem(InitMenu.comboMenu, "ElLeeSin.Combo.AAStacks")
                 && PassiveStacks > getSliderItem(InitMenu.harassMenu, "ElLeeSin.Harass.PassiveStacks")
-                && Orbwalking.GetRealAutoAttackRange(Player) > Player.LSDistance(target))
+                && Orbwalking.GetRealAutoAttackRange(Player) > Player.ELDistance(target))
             {
                 return;
             }
@@ -938,7 +938,7 @@ namespace ElLeeSin
             if (spells[Spells.Q].IsReady() && getCheckBoxItem(InitMenu.harassMenu, "ElLeeSin.Harass.Q1") &&
                 LastQ + 200 < Environment.TickCount)
             {
-                if (QState && target.LSDistance(Player) < spells[Spells.Q].Range)
+                if (QState && target.ELDistance(Player) < spells[Spells.Q].Range)
                 {
                     CastQ(target);
                 }
@@ -947,27 +947,27 @@ namespace ElLeeSin
             if (spells[Spells.E].IsReady() && getCheckBoxItem(InitMenu.harassMenu, "ElLeeSin.Harass.E1") &&
                 LastE + 200 < Environment.TickCount)
             {
-                if (EState && target.LSDistance(Player) < spells[Spells.E].Range)
+                if (EState && target.ELDistance(Player) < spells[Spells.E].Range)
                 {
                     spells[Spells.E].Cast();
                     return;
                 }
 
-                if (!EState && target.LSDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 50)
+                if (!EState && target.ELDistance(Player) > Orbwalking.GetRealAutoAttackRange(Player) + 50)
                 {
                     spells[Spells.E].Cast();
                 }
             }
 
-            if (getCheckBoxItem(InitMenu.harassMenu, "ElLeeSin.Harass.Wardjump") && Player.LSDistance(target) < 50 &&
+            if (getCheckBoxItem(InitMenu.harassMenu, "ElLeeSin.Harass.Wardjump") && Player.ELDistance(target) < 50 &&
                 !target.HasQBuff()
                 && (EState || !spells[Spells.E].IsReady() && getCheckBoxItem(InitMenu.harassMenu, "ElLeeSin.Harass.E1"))
                 && (QState || !spells[Spells.Q].IsReady() && getCheckBoxItem(InitMenu.harassMenu, "ElLeeSin.Harass.Q1")))
             {
                 var min =
                     ObjectManager.Get<Obj_AI_Minion>()
-                        .Where(a => a.IsAlly && a.LSDistance(Player) <= spells[Spells.W].Range)
-                        .OrderByDescending(a => a.LSDistance(target))
+                        .Where(a => a.IsAlly && a.ELDistance(Player) <= spells[Spells.W].Range)
+                        .OrderByDescending(a => a.ELDistance(target))
                         .FirstOrDefault();
 
                 spells[Spells.W].CastOnUnit(min);
@@ -985,17 +985,17 @@ namespace ElLeeSin
         {
             if (target != null && target.IsVisible)
             {
-                if (Player.LSDistance(GetInsecPos(target)) < 200)
+                if (Player.ELDistance(GetInsecPos(target)) < 200)
                 {
                     insecComboStep = InsecComboStepSelect.Pressr;
                 }
                 else if (insecComboStep == InsecComboStepSelect.None
-                         && GetInsecPos(target).LSDistance(Player.Position) < 600)
+                         && GetInsecPos(target).ELDistance(Player.Position) < 600)
                 {
                     insecComboStep = InsecComboStepSelect.Wgapclose;
                 }
                 else if (insecComboStep == InsecComboStepSelect.None
-                         && target.LSDistance(Player) < spells[Spells.Q].Range)
+                         && target.ELDistance(Player) < spells[Spells.Q].Range)
                 {
                     insecComboStep = InsecComboStepSelect.Qgapclose;
                 }
@@ -1028,13 +1028,13 @@ namespace ElLeeSin
 
                             var insecObjects =
                                 HeroManager.Enemies.Where(
-                                    x => x.LSIsValidTarget(spells[Spells.Q].Range) && x.LSDistance(target) < 550f)
+                                    x => x.LSIsValidTarget(spells[Spells.Q].Range) && x.ELDistance(target) < 550f)
                                     .Concat(MinionManager.GetMinions(Player.ServerPosition, spells[Spells.Q].Range))
                                     .Where(
                                         m =>
                                             m.LSIsValidTarget(spells[Spells.Q].Range)
                                             && spells[Spells.Q].GetDamage(m) < m.Health + 15 &&
-                                            m.LSDistance(target) < 400f)
+                                            m.ELDistance(target) < 400f)
                                     .ToList();
 
                             if (insecObjects.Count > 0)
@@ -1070,7 +1070,7 @@ namespace ElLeeSin
                                 if (
                                     spells[Spells.Q].Instance.Name.Equals("blindmonkqtwo",
                                         StringComparison.InvariantCultureIgnoreCase) &&
-                                    ReturnQBuff.LSDistance(target) <= 600)
+                                    ReturnQBuff.ELDistance(target) <= 600)
                                 {
                                     spells[Spells.Q].Cast();
                                 }
@@ -1080,7 +1080,7 @@ namespace ElLeeSin
 
                     case InsecComboStepSelect.Wgapclose:
 
-                        if (Player.LSDistance(target) < WardRange)
+                        if (Player.ELDistance(target) < WardRange)
                         {
                             WardJump(GetInsecPos(target), false, true, true);
 
@@ -1088,14 +1088,14 @@ namespace ElLeeSin
                                 && getCheckBoxItem(InitMenu.insecMenu, "ElLeeSin.Flash.Insec")
                                 && Player.Spellbook.CanUseSpell(flashSlot) == SpellState.Ready)
                             {
-                                if ((GetInsecPos(target).LSDistance(Player.Position) < FlashRange
+                                if ((GetInsecPos(target).ELDistance(Player.Position) < FlashRange
                                      && LastWard + 1000 < Environment.TickCount) || !spells[Spells.W].IsReady())
                                 {
                                     Player.Spellbook.CastSpell(flashSlot, GetInsecPos(target));
                                 }
                             }
                         }
-                        else if (Player.LSDistance(target) < WardFlashRange)
+                        else if (Player.ELDistance(target) < WardFlashRange)
                         {
                             WardJump(target.Position);
 
@@ -1103,7 +1103,7 @@ namespace ElLeeSin
                                 getCheckBoxItem(InitMenu.insecMenu, "ElLeeSin.Flash.Insec")
                                 && Player.Spellbook.CanUseSpell(flashSlot) == SpellState.Ready)
                             {
-                                if (Player.LSDistance(target) < FlashRange - 25)
+                                if (Player.ELDistance(target) < FlashRange - 25)
                                 {
                                     if (FindBestWardItem() == null || LastWard + 1000 < Environment.TickCount)
                                     {
@@ -1186,7 +1186,7 @@ namespace ElLeeSin
 
             if (spells[Spells.Q].IsReady() && getCheckBoxItem(InitMenu.waveclearMenu, "ElLeeSin.Jungle.Q"))
             {
-                if (QState && minion.LSDistance(Player) < spells[Spells.Q].Range && LastQ + 200 < Environment.TickCount)
+                if (QState && minion.ELDistance(Player) < spells[Spells.Q].Range && LastQ + 200 < Environment.TickCount)
                 {
                     spells[Spells.Q].Cast(minion);
                     LastSpell = Environment.TickCount;
@@ -1300,9 +1300,9 @@ namespace ElLeeSin
         {
             if (Environment.TickCount < lastPlaced + 300)
             {
-                var ward = (Obj_AI_Base) sender;
+                var ward = (Obj_AI_Base)sender;
                 if (spells[Spells.W].IsReady() && ward.Name.ToLower().Contains("ward")
-                    && ward.LSDistance(lastWardPos) < 500)
+                    && ward.ELDistance(lastWardPos) < 500)
                 {
                     spells[Spells.W].Cast(ward);
                 }
@@ -1379,7 +1379,7 @@ namespace ElLeeSin
 
         private static Vector2 V2E(Vector3 from, Vector3 direction, float distance)
         {
-            return from.LSTo2D() + distance*Vector3.Normalize(direction - from).LSTo2D();
+            return from.ELTo2D() + distance * Vector3.Normalize(direction - from).ELTo2D();
         }
 
         private static void WardCombo()
@@ -1407,8 +1407,8 @@ namespace ElLeeSin
                     spells[Spells.Q].Cast();
                 }
             }
-            if (target.LSDistance(Player) > spells[Spells.R].Range
-                && target.LSDistance(Player) < spells[Spells.R].Range + 580 && target.HasQBuff())
+            if (target.ELDistance(Player) > spells[Spells.R].Range
+                && target.ELDistance(Player) < spells[Spells.R].Range + 580 && target.HasQBuff())
             {
                 WardJump(target.Position, false);
             }
@@ -1442,22 +1442,22 @@ namespace ElLeeSin
                 return;
             }
 
-            var basePos = Player.Position.LSTo2D();
-            var newPos = pos.LSTo2D() - Player.Position.LSTo2D();
+            var basePos = Player.Position.ELTo2D();
+            var newPos = pos.ELTo2D() - Player.Position.ELTo2D();
 
             if (JumpPos == new Vector2())
             {
                 if (reqinMaxRange)
                 {
-                    JumpPos = pos.LSTo2D();
+                    JumpPos = pos.ELTo2D();
                 }
-                else if (maxRange || Player.LSDistance(pos) > 590)
+                else if (maxRange || Player.ELDistance(pos) > 590)
                 {
-                    JumpPos = basePos + newPos.Normalized()*590;
+                    JumpPos = basePos + newPos.ELNormalized() * 590;
                 }
                 else
                 {
-                    JumpPos = basePos + newPos.Normalized()*Player.LSDistance(pos);
+                    JumpPos = basePos + newPos.ELNormalized() * Player.ELDistance(pos);
                 }
             }
             if (JumpPos != new Vector2() && reCheckWard)
@@ -1479,7 +1479,7 @@ namespace ElLeeSin
                 Orbwalk(pos);
             }
             if (!spells[Spells.W].IsReady() || WStage != WCastStage.First
-                || reqinMaxRange && Player.LSDistance(pos) > spells[Spells.W].Range)
+                || reqinMaxRange && Player.ELDistance(pos) > spells[Spells.W].Range)
             {
                 return;
             }
@@ -1492,9 +1492,9 @@ namespace ElLeeSin
                         ObjectManager.Get<AIHeroClient>()
                             .Where(
                                 x =>
-                                    x.IsAlly && x.LSDistance(Player) < spells[Spells.W].Range && x.LSDistance(pos) < 200
+                                    x.IsAlly && x.ELDistance(Player) < spells[Spells.W].Range && x.ELDistance(pos) < 200
                                     && !x.IsMe)
-                            .OrderByDescending(i => i.LSDistance(Player))
+                            .OrderByDescending(i => i.ELDistance(Player))
                             .ToList()
                             .FirstOrDefault();
 
@@ -1515,9 +1515,9 @@ namespace ElLeeSin
                         ObjectManager.Get<Obj_AI_Minion>()
                             .Where(
                                 m =>
-                                    m.IsAlly && m.LSDistance(Player) < spells[Spells.W].Range && m.LSDistance(pos) < 200
+                                    m.IsAlly && m.ELDistance(Player) < spells[Spells.W].Range && m.ELDistance(pos) < 200
                                     && !m.Name.ToLower().Contains("ward"))
-                            .OrderByDescending(i => i.LSDistance(Player))
+                            .OrderByDescending(i => i.ELDistance(Player))
                             .ToList()
                             .FirstOrDefault();
 
@@ -1538,7 +1538,7 @@ namespace ElLeeSin
 
             var wardObject =
                 ObjectManager.Get<Obj_AI_Base>()
-                    .Where(o => o.IsAlly && o.Name.ToLower().Contains("ward") && o.LSDistance(JumpPos) < 200)
+                    .Where(o => o.IsAlly && o.Name.ToLower().Contains("ward") && o.ELDistance(JumpPos) < 200)
                     .ToList()
                     .FirstOrDefault();
 

@@ -109,17 +109,17 @@ namespace ElLeeSin
             {
                 if (rect != null)
                 {
-                    if (pos.LSDistance(Player.Position) < 2000)
+                    if (pos.ELDistance(Player.Position) < 2000)
                     {
                         Render.Circle.DrawCircle(
                             pos,
                             100,
-                            rect.IsOutside(pos.LSTo2D()) ? Color.White : Color.DeepSkyBlue);
+                            rect.IsOutside(pos.ELTo2D()) ? Color.White : Color.DeepSkyBlue);
                     }
                 }
                 else
                 {
-                    if (pos.LSDistance(Player.Position) < 2000)
+                    if (pos.ELDistance(Player.Position) < 2000)
                     {
                         Render.Circle.DrawCircle(pos, 100, Color.White);
                     }
@@ -140,7 +140,7 @@ namespace ElLeeSin
             {
                 foreach (var point in JunglePos)
                 {
-                    if (Player.LSDistance(point) < 100 || Program.LastQ2 + 2000 < Environment.TickCount)
+                    if (Player.ELDistance(point) < 100 || Program.LastQ2 + 2000 < Environment.TickCount)
                     {
                         InitQ = false;
                     }
@@ -148,15 +148,15 @@ namespace ElLeeSin
             }
 
             rect = new Geometry.Polygon.Rectangle(
-                Player.Position.LSTo2D(),
-                Player.Position.LSTo2D().LSExtend(Game.CursorPos.LSTo2D(), 1050),
+                Player.Position.ELTo2D(),
+                Player.Position.ELTo2D().ELExtend(Game.CursorPos.ELTo2D(), 1050),
                 100);
 
             if (Program.QState && Program.spells[Program.Spells.Q].IsReady())
             {
                 foreach (var pos in JunglePos)
                 {
-                    if (rect.IsOutside(pos.LSTo2D()))
+                    if (rect.IsOutside(pos.ELTo2D()))
                     {
                         continue;
                     }

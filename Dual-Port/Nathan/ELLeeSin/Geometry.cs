@@ -47,7 +47,7 @@ namespace ElLeeSin
         /// <param name="anotherUnit">Another unit.</param>
         /// <param name="squared">if set to <c>true</c> [squared].</param>
         /// <returns></returns>
-        public static float Distance(Obj_AI_Base anotherUnit, bool squared = false)
+        public static float ELDistance(Obj_AI_Base anotherUnit, bool squared = false)
         {
             return ObjectManager.Player.LSDistance(anotherUnit, squared);
         }
@@ -59,7 +59,7 @@ namespace ElLeeSin
         /// <param name="anotherUnit">Another unit.</param>
         /// <param name="squared">if set to <c>true</c> [squared].</param>
         /// <returns></returns>
-        public static float Distance(this Obj_AI_Base unit, Obj_AI_Base anotherUnit, bool squared = false)
+        public static float ELDistance(this Obj_AI_Base unit, Obj_AI_Base anotherUnit, bool squared = false)
         {
             return unit.ServerPosition.LSTo2D().LSDistance(anotherUnit.ServerPosition.LSTo2D(), squared);
         }
@@ -71,7 +71,7 @@ namespace ElLeeSin
         /// <param name="anotherUnit">Another unit.</param>
         /// <param name="squared">if set to <c>true</c> [squared].</param>
         /// <returns></returns>
-        public static float Distance(this Obj_AI_Base unit, AttackableUnit anotherUnit, bool squared = false)
+        public static float ELDistance(this Obj_AI_Base unit, AttackableUnit anotherUnit, bool squared = false)
         {
             return unit.ServerPosition.LSTo2D().LSDistance(anotherUnit.Position.LSTo2D(), squared);
         }
@@ -83,7 +83,7 @@ namespace ElLeeSin
         /// <param name="point">The point.</param>
         /// <param name="squared">if set to <c>true</c> [squared].</param>
         /// <returns></returns>
-        public static float Distance(this Obj_AI_Base unit, Vector3 point, bool squared = false)
+        public static float ELDistance(this Obj_AI_Base unit, Vector3 point, bool squared = false)
         {
             return unit.ServerPosition.LSTo2D().LSDistance(point.LSTo2D(), squared);
         }
@@ -95,7 +95,7 @@ namespace ElLeeSin
         /// <param name="point">The point.</param>
         /// <param name="squared">if set to <c>true</c> [squared].</param>
         /// <returns></returns>
-        public static float Distance(this Obj_AI_Base unit, Vector2 point, bool squared = false)
+        public static float ELDistance(this Obj_AI_Base unit, Vector2 point, bool squared = false)
         {
             return unit.ServerPosition.LSTo2D().LSDistance(point, squared);
         }
@@ -107,7 +107,7 @@ namespace ElLeeSin
         /// <param name="anotherUnit">Another unit.</param>
         /// <param name="squared">if set to <c>true</c> [squared].</param>
         /// <returns></returns>
-        public static float Distance3D(this Obj_AI_Base unit, Obj_AI_Base anotherUnit, bool squared = false)
+        public static float ELDistance3D(this Obj_AI_Base unit, Obj_AI_Base anotherUnit, bool squared = false)
         {
             return squared
                 ? Vector3.DistanceSquared(unit.Position, anotherUnit.Position)
@@ -121,7 +121,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The v.</param>
         /// <returns></returns>
-        public static Vector2 To2D(this Vector3 v)
+        public static Vector2 ELTo2D(this Vector3 v)
         {
             return new Vector2(v.X, v.Y);
         }
@@ -133,7 +133,7 @@ namespace ElLeeSin
         /// <param name="other">The other.</param>
         /// <param name="squared">if set to <c>true</c> [squared].</param>
         /// <returns></returns>
-        public static float Distance(this Vector3 v, Vector3 other, bool squared = false)
+        public static float ELDistance(this Vector3 v, Vector3 other, bool squared = false)
         {
             return v.LSTo2D().LSDistance(other, squared);
         }
@@ -145,7 +145,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The vector.</param>
         /// <returns></returns>
-        public static bool IsValid(this Vector2 v)
+        public static bool ELIsValid(this Vector2 v)
         {
             return v != Vector2.Zero;
         }
@@ -155,7 +155,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The vector.</param>
         /// <returns></returns>
-        public static bool IsValid(this Vector3 v)
+        public static bool ELIsValid(this Vector3 v)
         {
             return v != Vector3.Zero;
         }
@@ -165,7 +165,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The vector.</param>
         /// <returns></returns>
-        public static Vector3 To3D(this Vector2 v)
+        public static Vector3 ELTo3D(this Vector2 v)
         {
             return new Vector3(v.X, v.Y, ObjectManager.Player.ServerPosition.Z);
         }
@@ -175,7 +175,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The vector.</param>
         /// <returns></returns>
-        public static Vector3 To3D2(this Vector2 v)
+        public static Vector3 ELTo3D2(this Vector2 v)
         {
             return new Vector3(v.X, v.Y, NavMesh.GetHeightForPosition(v.X, v.Y));
         }
@@ -186,7 +186,7 @@ namespace ElLeeSin
         /// <param name="v">The v.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public static Vector3 SetZ(this Vector3 v, float? value = null)
+        public static Vector3 ELSetZ(this Vector3 v, float? value = null)
         {
             if (value == null)
             {
@@ -206,7 +206,7 @@ namespace ElLeeSin
         /// <param name="to">To.</param>
         /// <param name="squared">if set to <c>true</c> gets the distance squared.</param>
         /// <returns></returns>
-        public static float Distance(this Vector2 v, Vector2 to, bool squared = false)
+        public static float ELDistance(this Vector2 v, Vector2 to, bool squared = false)
         {
             return squared ? Vector2.DistanceSquared(v, to) : Vector2.Distance(v, to);
         }
@@ -218,7 +218,7 @@ namespace ElLeeSin
         /// <param name="to">To.</param>
         /// <param name="squared">if set to <c>true</c> gets the distance squared.</param>
         /// <returns></returns>
-        public static float Distance(this Vector2 v, Vector3 to, bool squared = false)
+        public static float ELDistance(this Vector2 v, Vector3 to, bool squared = false)
         {
             return v.LSDistance(to.LSTo2D(), squared);
         }
@@ -230,7 +230,7 @@ namespace ElLeeSin
         /// <param name="to">To.</param>
         /// <param name="squared">if set to <c>true</c> gets the distance squared.</param>
         /// <returns></returns>
-        public static float Distance(this Vector2 v, Obj_AI_Base to, bool squared = false)
+        public static float ELDistance(this Vector2 v, Obj_AI_Base to, bool squared = false)
         {
             return v.LSDistance(to.ServerPosition.LSTo2D(), squared);
         }
@@ -244,13 +244,13 @@ namespace ElLeeSin
         /// <param name="onlyIfOnSegment">if set to <c>true</c> [only if on segment].</param>
         /// <param name="squared">if set to <c>true</c> [squared].</param>
         /// <returns></returns>
-        public static float Distance(this Vector2 point,
+        public static float ELDistance(this Vector2 point,
             Vector2 segmentStart,
             Vector2 segmentEnd,
             bool onlyIfOnSegment = false,
             bool squared = false)
         {
-            var objects = point.ProjectOn(segmentStart, segmentEnd);
+            var objects = point.ELProjectOn(segmentStart, segmentEnd);
 
             if (objects.IsOnSegment || onlyIfOnSegment == false)
             {
@@ -266,7 +266,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The vector.</param>
         /// <returns></returns>
-        public static Vector2 Normalized(this Vector2 v)
+        public static Vector2 ELNormalized(this Vector2 v)
         {
             v.Normalize();
             return v;
@@ -277,7 +277,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The vector.</param>
         /// <returns></returns>
-        public static Vector3 Normalized(this Vector3 v)
+        public static Vector3 ELNormalized(this Vector3 v)
         {
             v.Normalize();
             return v;
@@ -290,9 +290,9 @@ namespace ElLeeSin
         /// <param name="to">The vector to extend to</param>
         /// <param name="distance">The distance to extend.</param>
         /// <returns></returns>
-        public static Vector2 Extend(this Vector2 v, Vector2 to, float distance)
+        public static Vector2 ELExtend(this Vector2 v, Vector2 to, float distance)
         {
-            return v + distance*(to - v).Normalized();
+            return v + distance*(to - v).ELNormalized();
         }
 
         /// <summary>
@@ -302,9 +302,9 @@ namespace ElLeeSin
         /// <param name="to">The vector to extend to.</param>
         /// <param name="distance">The distance.</param>
         /// <returns></returns>
-        public static Vector3 Extend(this Vector3 v, Vector3 to, float distance)
+        public static Vector3 ELExtend(this Vector3 v, Vector3 to, float distance)
         {
-            return v + distance*(to - v).Normalized();
+            return v + distance*(to - v).ELNormalized();
         }
 
         /// <summary>
@@ -314,9 +314,9 @@ namespace ElLeeSin
         /// <param name="to">The vector to shorten from.</param>
         /// <param name="distance">The distance.</param>
         /// <returns></returns>
-        public static Vector2 Shorten(this Vector2 v, Vector2 to, float distance)
+        public static Vector2 ELShorten(this Vector2 v, Vector2 to, float distance)
         {
-            return v - distance*(to - v).Normalized();
+            return v - distance*(to - v).ELNormalized();
         }
 
         /// <summary>
@@ -326,9 +326,9 @@ namespace ElLeeSin
         /// <param name="to">The vector to shorten from.</param>
         /// <param name="distance">The distance.</param>
         /// <returns></returns>
-        public static Vector3 Shorten(this Vector3 v, Vector3 to, float distance)
+        public static Vector3 ELShorten(this Vector3 v, Vector3 to, float distance)
         {
-            return v - distance*(to - v).Normalized();
+            return v - distance*(to - v).ELNormalized();
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The vector.</param>
         /// <returns></returns>
-        public static Vector3 SwitchYZ(this Vector3 v)
+        public static Vector3 ELSwitchYZ(this Vector3 v)
         {
             return new Vector3(v.X, v.Z, v.Y);
         }
@@ -346,7 +346,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The v.</param>
         /// <returns></returns>
-        public static Vector2 Perpendicular(this Vector2 v)
+        public static Vector2 ELPerpendicular(this Vector2 v)
         {
             return new Vector2(-v.Y, v.X);
         }
@@ -356,7 +356,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The vector.</param>
         /// <returns></returns>
-        public static Vector2 Perpendicular2(this Vector2 v)
+        public static Vector2 ELPerpendicular2(this Vector2 v)
         {
             return new Vector2(v.Y, -v.X);
         }
@@ -367,7 +367,7 @@ namespace ElLeeSin
         /// <param name="v">The vector.</param>
         /// <param name="angle">The angle.</param>
         /// <returns></returns>
-        public static Vector2 Rotated(this Vector2 v, float angle)
+        public static Vector2 ELRotated(this Vector2 v, float angle)
         {
             var c = Math.Cos(angle);
             var s = Math.Sin(angle);
@@ -381,7 +381,7 @@ namespace ElLeeSin
         /// <param name="self">The self.</param>
         /// <param name="other">The other.</param>
         /// <returns></returns>
-        public static float CrossProduct(this Vector2 self, Vector2 other)
+        public static float ELCrossProduct(this Vector2 self, Vector2 other)
         {
             return other.Y*self.X - other.X*self.Y;
         }
@@ -391,7 +391,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="angle">The angle.</param>
         /// <returns></returns>
-        public static float RadianToDegree(double angle)
+        public static float ELRadianToDegree(double angle)
         {
             return (float) (angle*(180.0/Math.PI));
         }
@@ -401,7 +401,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="angle">The angle.</param>
         /// <returns></returns>
-        public static float DegreeToRadian(double angle)
+        public static float ELDegreeToRadian(double angle)
         {
             return (float) (Math.PI*angle/180.0);
         }
@@ -411,9 +411,9 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v1">The vector.</param>
         /// <returns></returns>
-        public static float Polar(this Vector2 v1)
+        public static float ELPolar(this Vector2 v1)
         {
-            if (Close(v1.X, 0, 0))
+            if (ELClose(v1.X, 0, 0))
             {
                 if (v1.Y > 0)
                 {
@@ -422,7 +422,7 @@ namespace ElLeeSin
                 return v1.Y < 0 ? 270 : 0;
             }
 
-            var theta = RadianToDegree(Math.Atan(v1.Y/v1.X));
+            var theta = ELRadianToDegree(Math.Atan(v1.Y/v1.X));
             if (v1.X < 0)
             {
                 theta = theta + 180;
@@ -440,7 +440,7 @@ namespace ElLeeSin
         /// <param name="p1">The first point.</param>
         /// <param name="p2">The second point.</param>
         /// <returns></returns>
-        public static float AngleBetween(this Vector2 p1, Vector2 p2)
+        public static float ELAngleBetween(this Vector2 p1, Vector2 p2)
         {
             var theta = p1.Polar() - p2.Polar();
             if (theta < 0)
@@ -460,7 +460,7 @@ namespace ElLeeSin
         /// <param name="v">The v.</param>
         /// <param name="vList">The v list.</param>
         /// <returns></returns>
-        public static Vector2 Closest(this Vector2 v, List<Vector2> vList)
+        public static Vector2 ELClosest(this Vector2 v, List<Vector2> vList)
         {
             var result = new Vector2();
             var dist = float.MaxValue;
@@ -485,7 +485,7 @@ namespace ElLeeSin
         /// <param name="segmentStart">The segment start.</param>
         /// <param name="segmentEnd">The segment end.</param>
         /// <returns></returns>
-        public static ProjectionInfo ProjectOn(this Vector2 point, Vector2 segmentStart, Vector2 segmentEnd)
+        public static ProjectionInfo ELProjectOn(this Vector2 point, Vector2 segmentStart, Vector2 segmentEnd)
         {
             var cx = point.X;
             var cy = point.Y;
@@ -524,7 +524,7 @@ namespace ElLeeSin
         /// <param name="lineSegment2Start">The line segment2 start.</param>
         /// <param name="lineSegment2End">The line segment2 end.</param>
         /// <returns></returns>
-        public static IntersectionResult Intersection(this Vector2 lineSegment1Start,
+        public static IntersectionResult ELIntersection(this Vector2 lineSegment1Start,
             Vector2 lineSegment1End,
             Vector2 lineSegment2Start,
             Vector2 lineSegment2End)
@@ -586,7 +586,7 @@ namespace ElLeeSin
         /// <param name="v2">The v2.</param>
         /// <param name="delay">The delay.</param>
         /// <returns></returns>
-        public static object[] VectorMovementCollision(Vector2 startPoint1,
+        public static object[] ELVectorMovementCollision(Vector2 startPoint1,
             Vector2 endPoint1,
             float v1,
             Vector2 startPoint2,
@@ -675,12 +675,12 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        public static float PathLength(this List<Vector2> path)
+        public static float ELPathLength(this List<Vector2> path)
         {
             var distance = 0f;
             for (var i = 0; i < path.Count - 1; i++)
             {
-                distance += path[i].LSDistance(path[i + 1]);
+                distance += path[i].ELDistance(path[i + 1]);
             }
             return distance;
         }
@@ -690,7 +690,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        public static List<Vector2> To2D(this List<Vector3> path)
+        public static List<Vector2> ELTo2D(this List<Vector3> path)
         {
             return path.Select(point => point.LSTo2D()).ToList();
         }
@@ -703,7 +703,7 @@ namespace ElLeeSin
         /// <param name="radius1">The radius1.</param>
         /// <param name="radius2">The radius2.</param>
         /// <returns></returns>
-        public static Vector2[] CircleCircleIntersection(Vector2 center1, Vector2 center2, float radius1, float radius2)
+        public static Vector2[] ELCircleCircleIntersection(Vector2 center1, Vector2 center2, float radius1, float radius2)
         {
             var D = center1.LSDistance(center2);
             //The Circles dont intersect:
@@ -714,10 +714,10 @@ namespace ElLeeSin
 
             var A = (radius1*radius1 - radius2*radius2 + D*D)/(2*D);
             var H = (float) Math.Sqrt(radius1*radius1 - A*A);
-            var Direction = (center2 - center1).Normalized();
+            var Direction = (center2 - center1).ELNormalized();
             var PA = center1 + A*Direction;
-            var S1 = PA + H*Direction.Perpendicular();
-            var S2 = PA - H*Direction.Perpendicular();
+            var S1 = PA + H*Direction.ELPerpendicular();
+            var S2 = PA - H*Direction.ELPerpendicular();
             return new[] {S1, S2};
         }
 
@@ -728,7 +728,7 @@ namespace ElLeeSin
         /// <param name="b">The b.</param>
         /// <param name="eps">The epsilon.</param>
         /// <returns></returns>
-        public static bool Close(float a, float b, float eps)
+        public static bool ELClose(float a, float b, float eps)
         {
             if (Math.Abs(eps) < float.Epsilon)
             {
@@ -745,7 +745,7 @@ namespace ElLeeSin
         /// <param name="around">The around.</param>
         /// <param name="angle">The angle.</param>
         /// <returns></returns>
-        public static Vector2 RotateAroundPoint(this Vector2 rotated, Vector2 around, float angle)
+        public static Vector2 ELRotateAroundPoint(this Vector2 rotated, Vector2 around, float angle)
         {
             var sin = Math.Sin(angle);
             var cos = Math.Cos(angle);
@@ -764,11 +764,11 @@ namespace ElLeeSin
         /// <param name="around">The around.</param>
         /// <param name="angle">The angle.</param>
         /// <returns></returns>
-        public static Polygon RotatePolygon(this Polygon polygon, Vector2 around, float angle)
+        public static Polygon ELRotatePolygon(this Polygon polygon, Vector2 around, float angle)
         {
             var p = new Polygon();
 
-            foreach (var polygonePoint in polygon.Points.Select(poinit => poinit.RotateAroundPoint(around, angle)))
+            foreach (var polygonePoint in polygon.Points.Select(poinit => poinit.ELRotateAroundPoint(around, angle)))
             {
                 p.Add(polygonePoint);
             }
@@ -782,12 +782,12 @@ namespace ElLeeSin
         /// <param name="around">The around.</param>
         /// <param name="direction">The direction.</param>
         /// <returns></returns>
-        public static Polygon RotatePolygon(this Polygon polygon, Vector2 around, Vector2 direction)
+        public static Polygon ELRotatePolygon(this Polygon polygon, Vector2 around, Vector2 direction)
         {
             var deltaX = around.X - direction.X;
             var deltaY = around.Y - direction.Y;
             var angle = (float) Math.Atan2(deltaY, deltaX);
-            return RotatePolygon(polygon, around, angle - DegreeToRadian(90));
+            return ELRotatePolygon(polygon, around, angle - ELDegreeToRadian(90));
         }
 
         /// <summary>
@@ -796,7 +796,7 @@ namespace ElLeeSin
         /// <param name="polygon">The polygon.</param>
         /// <param name="moveTo">The move to.</param>
         /// <returns></returns>
-        public static Polygon MovePolygone(this Polygon polygon, Vector2 moveTo)
+        public static Polygon ELMovePolygone(this Polygon polygon, Vector2 moveTo)
         {
             var p = new Polygon();
 
@@ -822,7 +822,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="p">The polygon.</param>
         /// <returns></returns>
-        public static Vector2 CenterOfPolygone(this Polygon p)
+        public static Vector2 ELCenterOfPolygone(this Polygon p)
         {
             var cX = 0f;
             var cY = 0f;
@@ -840,9 +840,9 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="sList">The polygon list.</param>
         /// <returns></returns>
-        public static List<Polygon> JoinPolygons(this List<Polygon> sList)
+        public static List<Polygon> ELJoinPolygons(this List<Polygon> sList)
         {
-            var p = ClipPolygons(sList);
+            var p = ELClipPolygons(sList);
             var tList = new List<List<IntPoint>>();
 
             var c = new Clipper();
@@ -863,11 +863,11 @@ namespace ElLeeSin
         /// <param name="pFType1">The p f type1.</param>
         /// <param name="pFType2">The p f type2.</param>
         /// <returns></returns>
-        public static List<Polygon> JoinPolygons(this List<Polygon> sList, ClipType cType,
+        public static List<Polygon> ELJoinPolygons(this List<Polygon> sList, ClipType cType,
             PolyType pType = PolyType.ptClip, PolyFillType pFType1 = PolyFillType.pftNonZero,
             PolyFillType pFType2 = PolyFillType.pftNonZero)
         {
-            var p = ClipPolygons(sList);
+            var p = ELClipPolygons(sList);
             var tList = new List<List<IntPoint>>();
 
             var c = new Clipper();
@@ -884,7 +884,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static List<Polygon> ToPolygons(this List<List<IntPoint>> v)
         {
-            return v.Select(path => path.ToPolygon()).ToList();
+            return v.Select(path => path.ELToPolygon()).ToList();
         }
 
         /// <summary>
@@ -895,7 +895,7 @@ namespace ElLeeSin
         /// <param name="s">The speed.</param>
         /// <param name="delay">The delay.</param>
         /// <returns></returns>
-        public static Vector2 PositionAfter(this List<Vector2> self, int t, int s, int delay = 0)
+        public static Vector2 ELPositionAfter(this List<Vector2> self, int t, int s, int delay = 0)
         {
             var distance = Math.Max(0, t - delay)*s/1000;
             for (var i = 0; i <= self.Count - 2; i++)
@@ -905,7 +905,7 @@ namespace ElLeeSin
                 var d = (int) to.LSDistance(from);
                 if (d > distance)
                 {
-                    return from + distance*(to - from).Normalized();
+                    return from + distance*(to - from).ELNormalized();
                 }
                 distance -= d;
             }
@@ -917,7 +917,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="v">The int points.</param>
         /// <returns></returns>
-        public static Polygon ToPolygon(this List<IntPoint> v)
+        public static Polygon ELToPolygon(this List<IntPoint> v)
         {
             var polygon = new Polygon();
             foreach (var point in v)
@@ -932,7 +932,7 @@ namespace ElLeeSin
         /// </summary>
         /// <param name="polygons">The polygons.</param>
         /// <returns></returns>
-        public static List<List<IntPoint>> ClipPolygons(List<Polygon> polygons)
+        public static List<List<IntPoint>> ELClipPolygons(List<Polygon> polygons)
         {
             var subj = new List<List<IntPoint>>(polygons.Count);
             var clip = new List<List<IntPoint>>(polygons.Count);
@@ -1172,7 +1172,7 @@ namespace ElLeeSin
                 public Arc(Vector2 start, Vector2 direction, float angle, float radius, int quality = 20)
                 {
                     StartPos = start;
-                    EndPos = (direction - start).Normalized();
+                    EndPos = (direction - start).ELNormalized();
                     Angle = angle;
                     Radius = radius;
                     _quality = quality;
@@ -1187,10 +1187,10 @@ namespace ElLeeSin
                 {
                     Points.Clear();
                     var outRadius = (Radius + offset)/(float) Math.Cos(2*Math.PI/_quality);
-                    var side1 = EndPos.Rotated(-Angle*0.5f);
+                    var side1 = EndPos.ELRotated(-Angle*0.5f);
                     for (var i = 0; i <= _quality; i++)
                     {
-                        var cDirection = side1.Rotated(i*Angle/_quality).Normalized();
+                        var cDirection = side1.ELRotated(i*Angle/_quality).ELNormalized();
                         Points.Add(
                             new Vector2(StartPos.X + outRadius*cDirection.X, StartPos.Y + outRadius*cDirection.Y));
                     }
@@ -1248,7 +1248,7 @@ namespace ElLeeSin
                 public float Length
                 {
                     get { return LineStart.LSDistance(LineEnd); }
-                    set { LineEnd = (LineEnd - LineStart).Normalized()*value + LineStart; }
+                    set { LineEnd = (LineEnd - LineStart).ELNormalized()*value + LineStart; }
                 }
 
                 /// <summary>
@@ -1379,7 +1379,7 @@ namespace ElLeeSin
                 /// </value>
                 public Vector2 Direction
                 {
-                    get { return (End - Start).Normalized(); }
+                    get { return (End - Start).ELNormalized(); }
                 }
 
                 /// <summary>
@@ -1390,7 +1390,7 @@ namespace ElLeeSin
                 /// </value>
                 public Vector2 Perpendicular
                 {
-                    get { return Direction.Perpendicular(); }
+                    get { return Direction.ELPerpendicular(); }
                 }
 
                 /// <summary>
@@ -1546,7 +1546,7 @@ namespace ElLeeSin
                 public Sector(Vector2 center, Vector2 direction, float angle, float radius, int quality = 20)
                 {
                     Center = center;
-                    Direction = (direction - center).Normalized();
+                    Direction = (direction - center).ELNormalized();
                     Angle = angle;
                     Radius = radius;
                     _quality = quality;
@@ -1562,10 +1562,10 @@ namespace ElLeeSin
                     Points.Clear();
                     var outRadius = (Radius + offset)/(float) Math.Cos(2*Math.PI/_quality);
                     Points.Add(Center);
-                    var side1 = Direction.Rotated(-Angle*0.5f);
+                    var side1 = Direction.ELRotated(-Angle*0.5f);
                     for (var i = 0; i <= _quality; i++)
                     {
-                        var cDirection = side1.Rotated(i*Angle/_quality).Normalized();
+                        var cDirection = side1.ELRotated(i*Angle/_quality).ELNormalized();
                         Points.Add(new Vector2(Center.X + outRadius*cDirection.X, Center.Y + outRadius*cDirection.Y));
                     }
                 }
