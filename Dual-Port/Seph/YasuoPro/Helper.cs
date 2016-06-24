@@ -16,7 +16,7 @@ namespace YasuoPro
 
         internal static AIHeroClient Yasuo;
 
-        public static Obj_AI_Base ETarget;
+        internal float QRadius = 160 * 2 + 1 + 1 - 162;
 
         internal static Obj_Shop shop = ObjectManager.Get<Obj_Shop>().FirstOrDefault(x => x.IsAlly);
 
@@ -32,10 +32,18 @@ namespace YasuoPro
 
         internal float LastTornadoClearTick;
 
+        internal float LastDashTick;
+
         public static int TickCount
         {
             get { return (int)(Game.Time * 1000f); }
         }
+
+        internal bool InAir
+        {
+            get { return TickCount - LastDashTick < 250; }
+        }
+
         /* Credits to Brian for Q Skillshot values */
         internal static Dictionary<int, LeagueSharp.Common.Spell> Spells;
 
@@ -109,9 +117,69 @@ namespace YasuoPro
             }
         }
 
+        internal float QLeftPCT
+        {
+            get
+            {
+                var buff = Yasuo.GetBuff("yasuoq3w");
+                if (buff != null)
+                {
+                    var timeLeft = buff.EndTime - Game.Time;
+                    var totalDuration = buff.EndTime - buff.StartTime;
+                    var pctRemain = timeLeft / totalDuration;
+                    return pctRemain;
+
+                }
+                return 0;
+            }
+        }
+
+        internal bool ShouldNormalQ(AIHeroClient target)
+        {
+            return QLeftPCT <= 20 || !TowerCheck(target, true) || !target.IsDashable(Spells[E].Range * 3);
+        }
+
+
+        bool simulatePath(Vector2 startPoint, AIHeroClient target, int jcount = 0)
+        {
+            if (startPoint.Distance(target) <= Spells[E].Range)
+            {
+                return true;
+            }
+
+            if (jcount > 3)
+            {
+                return false;
+            }
+
+            var minion =
+              ObjectManager.Get<Obj_AI_Minion>()
+                  .Where(
+                      x =>
+                          x.IsDashableFrom(startPoint) &&
+                          GetDashPosFrom(startPoint, x).Distance(target) < Yasuo.Distance(target))
+                  .MinOrDefault(x => GetDashPosFrom(startPoint, x).Distance(target));
+
+
+
+            if (minion != null)
+            {
+                var pos1 = GetDashPos(minion);
+                jcount++;
+                simulatePath(pos1, target, jcount);
+            }
+
+            return false;
+        }
+
         internal bool UseQ(AIHeroClient target, HitChance minhc = HitChance.Medium, bool UseQ1 = true, bool UseQ2 = true)
         {
             if (target == null)
+            {
+                return false;
+            }
+
+            if (Yasuo.LSIsDashing() || InAir)
             {
                 return false;
             }
@@ -123,33 +191,37 @@ namespace YasuoPro
                 return false;
             }
 
-            if (tready)
+            if (!ShouldNormalQ(target))
             {
-                //Avoid casting Q if E in range and Tornado ready :o
-                if (Spells[E].IsReady() && target.IsDashable() && GetBool("Misc.saveQ4QE", YasuoMenu.MiscM) && GetBool("Combo.UseEQ", YasuoMenu.ComboM) &&
-                    isHealthy &&
-                    (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && GetBool("Combo.UseE", YasuoMenu.ComboM) &&
-                     ((GetBool("Combo.ETower", YasuoMenu.ComboM) && GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM)) ||
-                      !GetDashPos(target).PointUnderEnemyTurret())))
+                if (tready && GetBool("Combo.UseEQ", YasuoMenu.ComboM))
                 {
-                    return Spells[E].CastOnUnit(target);
-                }
-
-                if (Yasuo.LSIsDashing())
-                {
-                    if (GetBool("Combo.NoQ2Dash", YasuoMenu.ComboM) || !(ETarget is AIHeroClient))
+                    if (Spells[E].IsReady() && target.IsDashable(500))
                     {
-                        return false;
+                        var dashPos = GetDashPos(target);
+                        if (dashPos.To3D().CountEnemiesInRange(QRadius) >= 1)
+                        {
+                            //Cast E to trigger EQ
+                            if (GetBool("Misc.saveQ4QE", YasuoMenu.MiscM) && isHealthy && GetBool("Combo.UseE", YasuoMenu.ComboM) &&
+                                (GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) ||
+                                 !GetDashPos(target).PointUnderEnemyTurret()))
+                            {
+                                return Spells[E].CastOnUnit(target);
+                            }
+                        }
                     }
                 }
             }
 
-            LeagueSharp.Common.Spell sp = tready ? Spells[Q2] : Spells[Q];
-            PredictionOutput pred = sp.GetPrediction(target);
-
-            if (pred.Hitchance >= minhc)
+            else
             {
-                return sp.Cast(pred.CastPosition);
+
+                LeagueSharp.Common.Spell sp = tready ? Spells[Q2] : Spells[Q];
+                PredictionOutput pred = sp.GetPrediction(target);
+
+                if (pred.Hitchance >= minhc)
+                {
+                    return sp.Cast(pred.CastPosition);
+                }
             }
 
             return false;
@@ -215,6 +287,14 @@ namespace YasuoPro
         internal static Vector2 GetDashPos(Obj_AI_Base @base)
         {
             var predictedposition = Yasuo.ServerPosition.LSExtend(@base.Position, Yasuo.LSDistance(@base) + 475 - Yasuo.LSDistance(@base)).LSTo2D();
+            DashPosition = predictedposition;
+            return predictedposition;
+        }
+
+        internal static Vector2 GetDashPosFrom(Vector2 startPos, Obj_AI_Base @base)
+        {
+            var startPos3D = startPos.To3D();
+            var predictedposition = startPos3D.LSExtend(@base.Position, startPos.LSDistance(@base) + 475 - startPos.LSDistance(@base)).LSTo2D();
             DashPosition = predictedposition;
             return predictedposition;
         }
@@ -306,27 +386,6 @@ namespace YasuoPro
             return UltMode.Priority;
         }
 
-        internal EMode GetEMode()
-        {
-            switch (GetSL("Combo.EMode", YasuoMenu.ComboM))
-            {
-                case 0:
-                    return EMode.Old;
-                case 1:
-                    return EMode.New;
-            }
-            return EMode.New;
-        }
-
-
-        internal enum EMode
-        {
-            Old,
-            New
-        }
-
-
-
         internal void InitItems()
         {
             Hydra = new ItemManager.Item(3074, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
@@ -336,5 +395,25 @@ namespace YasuoPro
             Bilgewater = new ItemManager.Item(3144, 450f, ItemManager.ItemCastType.TargettedCast, 1);
             Youmu = new ItemManager.Item(3142, 185f, ItemManager.ItemCastType.SelfCast, 1, 3);
         }
+
+        internal bool TowerCheck(Obj_AI_Base unit, bool isCombo = false)
+        {
+            return (isCombo && GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) ||
+                    !GetDashPos(unit).PointUnderEnemyTurret());
+        }
+
+        internal bool ShouldDive(Obj_AI_Base unit)
+        {
+            return GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) || !Helper.GetDashPos(unit).PointUnderEnemyTurret();
+        }
+
+
+
+        internal bool targInKnockupRadius(AIHeroClient targ)
+        {
+            var dpos = GetDashPos(targ).To3D();
+            return dpos.CountEnemiesInRange(QRadius) > 0;
+        }
+
     }
 }
