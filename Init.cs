@@ -1015,8 +1015,19 @@ namespace PortAIO
                                 break;
                         }
                         break;
-                    case "kassadin": // Kassawin
-                        Kassawin.Kassadin.OnLoad();
+                    case "kassadin": // Kassawin & Preserved Kassadin
+                        switch (Loader.kassadin)
+                        {
+                            case 0:
+                                Kassawin.Kassadin.OnLoad();
+                                break;
+                            case 1:
+                                Preserved_Kassadin.Program.Load();
+                                break;
+                            default:
+                                Kassawin.Kassadin.OnLoad();
+                                break;
+                        }
                         break;
                     case "katarina": // Staberina
                         switch (Loader.katarina)
