@@ -802,6 +802,9 @@ namespace PortAIO
                             case 1:
                                 D_Elise.Program.Game_OnGameLoad();
                                 break;
+                            case 2:
+                                EliseGod.Program.OnGameLoad();
+                                break;
                             default:
                                 GFUELElise.Elise.OnGameLoad();
                                 break;
@@ -1154,6 +1157,9 @@ namespace PortAIO
                             case 4:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;;
+                            case 5:
+                                HoolaLucian.Program.OnGameLoad();
+                                break;
                             default:
                                 LCS_Lucian.Program.OnLoad();
                                 break;

@@ -253,7 +253,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[8]))
                 {
-                    Miscc.Add("lucian", new ComboBox("Use addon for Lucian : ", 0, "LCS Lucian", "ChallengerSeries", "iLucian", "Marksman II", "OKTW"));
+                    Miscc.Add("lucian", new ComboBox("Use addon for Lucian : ", 0, "LCS Lucian", "ChallengerSeries", "iLucian", "Marksman II", "OKTW", "Hoola Lucian"));
                 }
                 if (Player.ChampionName.Equals(Champion[9]))
                 {
@@ -393,7 +393,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[43]))
                 {
-                    Miscc.Add("Elise", new ComboBox("Use addon for Elise : ", 0, "GFuel Elise", "D-Elise"));
+                    Miscc.Add("Elise", new ComboBox("Use addon for Elise : ", 0, "GFuel Elise", "D-Elise", "GOD Elise"));
                 }
                 if (Player.ChampionName.Equals(Champion[44]))
                 {

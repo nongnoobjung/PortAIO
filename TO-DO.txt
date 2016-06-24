@@ -19,8 +19,7 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Shen Hand of God
 - Lee Is Back [https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Lee%20is%20Back]
 - Korean Zed [Will need to be fixed afterwards]
-- EliseGod
-- Hoola Lucian
+- xcsoft Kalista [https://github.com/xcsoftforlsharp/SDK/tree/master/Kalista] 
 - Zac Secret Flubber
 - OAnnie
 - Jinx Genesis Edition
