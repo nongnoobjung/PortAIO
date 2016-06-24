@@ -629,6 +629,8 @@
         {
             try
             {
+                if (sender == null) return;
+
                 var hero = sender as AIHeroClient;
                 if (!sender.IsAlly || hero == null ||
                     !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}") && !sender.LSIsValidTarget(E.Range, false))

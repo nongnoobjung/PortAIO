@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using ElUtilitySuite.Vendor.SFX;
 
     using LeagueSharp;
     using LeagueSharp.Common;
@@ -65,8 +66,8 @@
             var barrierMenu = rootMenu.AddSubMenu("Barrier", "Barrier");
             {
                 barrierMenu.Add("Barrier.Activated", new CheckBox("Barrier activated"));
-                barrierMenu.Add("Barrier.HP", new Slider("Barrier percentage", 20, 1));
-                barrierMenu.Add("Barrier.Damage", new Slider("Barrier on damage dealt %", 20, 1));
+                barrierMenu.Add("barrier.min-health", new Slider("Health percentage", 20, 1));
+                barrierMenu.Add("barrier.min-damage", new Slider("Heal on % incoming damage", 20, 1));
             }
 
             this.Menu = barrierMenu;
@@ -84,9 +85,11 @@
                 return;
             }
 
+            IncomingDamageManager.RemoveDelay = 500;
+            IncomingDamageManager.Skillshots = true;
             this.BarrierSpell = new Spell(barrierSlot, 550);
 
-            Game.OnUpdate += Game_OnUpdate;
+            Game.OnUpdate += OnUpdate;
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -113,20 +116,34 @@
 
         #region Methods
 
-        private void Game_OnUpdate(EventArgs args)
+        private void OnUpdate(EventArgs args)
         {
-            var barrierSlot = this.Player.GetSpellSlot("summonerbarrier");
-            if (!getCheckBoxItem(this.Menu, "Barrier.Activated"))
+            try
             {
-                return;
-            }
-            if (this.BarrierSpell.IsReady())
-            {
-                if (ObjectManager.Player.LSCountEnemiesInRange(700f) > 0 && HealthPrediction.GetHealthPrediction(ObjectManager.Player, (int)(1000 + Game.Ping / 2f)) <= ObjectManager.Player.MaxHealth / 6)
+                if (this.Player.IsDead || !this.BarrierSpell.IsReady() || this.Player.InFountain() || this.Player.LSIsRecalling() || !getCheckBoxItem(this.Menu, "Barrier.Activated"))
                 {
-                    ObjectManager.Player.Spellbook.CastSpell(barrierSlot);
                     return;
                 }
+
+                var enemies = this.Player.LSCountEnemiesInRange(750f);
+                var totalDamage = IncomingDamageManager.GetDamage(this.Player) * 1.1f;
+
+                if (this.Player.HealthPercent <= getSliderItem(this.Menu, "barrier.min-health") &&
+                    this.BarrierSpell.IsInRange(this.Player) && enemies >= 1)
+                {
+                    if ((int)(totalDamage / this.Player.Health) > getSliderItem(this.Menu, "barrier.min-damage")
+                        || this.Player.HealthPercent < getSliderItem(this.Menu, "barrier.min-health"))
+                    {
+                        this.Player.Spellbook.CastSpell(this.BarrierSpell.Slot);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("[ELUTILITYSUITE - BARRIER] Used for: {0} - health percentage: {1}%", this.Player.ChampionName, (int)this.Player.HealthPercent);
+                    }
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(@"An error occurred: '{0}'", e);
             }
         }
 
