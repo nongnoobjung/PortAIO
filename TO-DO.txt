@@ -22,7 +22,6 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - xcsoft Kalista [https://github.com/xcsoftforlsharp/SDK/tree/master/Kalista] 
 - Zac Secret Flubber
 - OAnnie
-- Jinx Genesis Edition
 - Flowers Riven
 
 Utility Ports [Only doing after Champions are completed] :

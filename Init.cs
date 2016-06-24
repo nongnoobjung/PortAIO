@@ -538,6 +538,9 @@ namespace PortAIO
                             case 1:
                                 Marksman.Program.Game_OnGameLoad();
                                 break;
+                            case 2:
+                                Jinx_Genesis.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
