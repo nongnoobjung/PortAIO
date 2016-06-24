@@ -177,7 +177,6 @@
                 foreach (var ally in HeroManager.Allies)
                 {
                     IncomingDamageManager.AddChampion(ally);
-                    Console.WriteLine(@"[ELZILEAN] loaded champions: {0}", ally.ChampionName);
                 }
 
                 IncomingDamageManager.Skillshots = true;
@@ -522,7 +521,6 @@
                 if (getCheckBoxItem(harassMenu, "ElZilean.Harass.W") && W.IsReady() && !Q.IsReady())
                 {
                     W.Cast();
-                    Console.WriteLine("Resetted W");
                 }
 
                 // Check if target has a bomb
@@ -556,7 +554,11 @@
                 {
                     if (Q.IsReady() && sender.LSIsValidTarget(Q.Range))
                     {
-                        Q.Cast(sender.ServerPosition);
+                        var prediction = Q.GetPrediction(sender);
+                        if (prediction.Hitchance >= HitChance.VeryHigh)
+                        {
+                            Q.Cast(prediction.CastPosition);
+                        }
                     }
                     LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
                 }
@@ -628,7 +630,8 @@
             try
             {
                 var hero = sender as AIHeroClient;
-                if (!sender.IsAlly || hero == null || !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}") && !sender.LSIsValidTarget(E.Range, false))
+                if (!sender.IsAlly || hero == null ||
+                    !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}") && !sender.LSIsValidTarget(E.Range, false))
                 {
                     return;
                 }
@@ -640,14 +643,13 @@
                 {
                     if (args.Start.Distance(Player.Position) <= E.Range && args.End.LSDistance(Player.Position) <= E.Range
                         && HeroManager.Enemies.Any(
-                            e =>
+                            e => e.LSIsValidTarget(E.Range, false) &&
                             !e.IsDead
                             && (e.Position.Distance(args.End) < 600f || e.Position.LSDistance(args.Start) < 800f)))
                     {
                         if (E.IsReady() && E.IsInRange(hero))
                         {
                             E.CastOnUnit(hero);
-                            Console.WriteLine($"Cast for: {hero.ChampionName} - Spell: {args.SData.Name}");
                         }
                     }
                 }
@@ -703,7 +705,6 @@
                 {
                     foreach (var slowedAlly in HeroManager.Allies.Where(x => x.HasBuffOfType(BuffType.Slow) && x.IsValidTarget(Q.Range, false)))
                     {
-                        Console.WriteLine($"Slowed: {slowedAlly.ChampionName}");
                         if (E.IsReady() && E.IsInRange(slowedAlly))
                         {
                             E.CastOnUnit(slowedAlly);
@@ -720,7 +721,6 @@
 
                     if (target != null)
                     {
-                        Console.WriteLine($"Zilean Q stun: {target.ChampionName}");
                         if (Q.IsReady() && target.LSIsValidTarget(Q.Range))
                         {
                             var prediction = Q.GetPrediction(target);
@@ -747,7 +747,6 @@
                         && !ally.IsDead
                         && enemies >= 1 && ally.IsValidTarget(R.Range, false))
                     {
-                        Console.WriteLine($"Low ally ult: {ally.ChampionName}");
                         if ((int)(totalDamage / ally.Health) > getSliderItem(ultMenu, "min-damage")
                             || ally.HealthPercent < getSliderItem(ultMenu, "min-health"))
                         {
