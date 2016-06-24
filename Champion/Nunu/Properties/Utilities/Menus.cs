@@ -66,6 +66,15 @@ namespace ExorAIO.Champions.Nunu
             }
 
             /// <summary>
+            ///     Sets the miscellaneous menu.
+            /// </summary>
+            Vars.MiscMenu = Vars.Menu.AddSubMenu("Miscellaneous");
+            {
+                Vars.MiscMenu.AddLabel("The Support mode doesn't attack or throw spells to minions if there are allies nearby.");
+                Vars.MiscMenu.Add("support", new CheckBox("Support Mode"));
+            }
+
+            /// <summary>
             ///     Sets the drawings menu.
             /// </summary>
             Vars.DrawingsMenu = Vars.Menu.AddSubMenu("Drawings");
