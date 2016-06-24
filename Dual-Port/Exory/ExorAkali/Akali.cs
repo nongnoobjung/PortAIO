@@ -92,15 +92,41 @@ namespace ExorAIO.Champions.Akali
         /// <param name="args">The args.</param>
         public static void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsMe &&
-                AutoAttack.IsAutoAttack(args.SData.Name))
+            if (sender.IsMe)
             {
                 /// <summary>
                 ///     Initializes the orbwalkingmodes.
                 /// </summary>
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
-                    Logics.Weaving(sender, args);
+                    if (AutoAttack.IsAutoAttack(args.SData.Name))
+                    {
+                        Logics.Weaving(sender, args);
+                        return;
+                    }
+                    else
+                    {
+                        switch (args.SData.Name)
+                        {
+                            case "AkaliMota":
+                                if (Vars.R.IsReady() &&
+                                    Targets.Target.IsValidTarget(Vars.R.Range) &&
+                                    !Targets.Target.IsValidTarget(Vars.AARange) &&
+                                    Vars.getCheckBoxItem(Vars.RMenu, "combo") &&
+                                    Vars.getCheckBoxItem(Vars.WhiteListMenu, Targets.Target.ChampionName.ToLower()))
+                                {
+                                    if (!Targets.Target.IsUnderEnemyTurret() ||
+                                        !Vars.getCheckBoxItem(Vars.MiscMenu, "safe"))
+                                    {
+                                        Vars.R.CastOnUnit(Targets.Target);
+                                    }
+                                }
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
                 }
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))

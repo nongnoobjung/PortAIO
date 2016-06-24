@@ -17,7 +17,7 @@ namespace ExorAIO.Champions.Akali
         /// <summary>
         ///     The main hero target.
         /// </summary>
-        public static AIHeroClient Target => TargetSelector.GetTarget(Vars.R.Range, DamageType.Magical);
+        public static AIHeroClient Target => TargetSelector.GetTarget(Vars.R.Range * 2, DamageType.Magical);
 
         /// <summary>
         ///     The minions target.
@@ -27,7 +27,7 @@ namespace ExorAIO.Champions.Akali
                 GameObjects.EnemyMinions.Where(
                     m =>
                         m.IsMinion() &&
-                        m.LSIsValidTarget(Vars.E.Range)).ToList();
+                        m.LSIsValidTarget(Vars.R.Range)).ToList();
 
         /// <summary>
         ///     The jungle minion targets.

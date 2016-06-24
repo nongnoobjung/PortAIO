@@ -34,7 +34,7 @@ namespace ExorAIO.Champions.Amumu
                 Targets.Target.LSIsValidTarget(Vars.Q.Range - 100f) &&
                 Vars.getCheckBoxItem(Vars.QMenu, "combo"))
             {
-                if (!Vars.Q.GetPrediction(Targets.Target).CollisionObjects.Any(c => Targets.Minions.Contains(c)))
+                if (!Vars.Q.GetPrediction(Targets.Target).CollisionObjects.Any())
                 {
                     Vars.Q.Cast(Vars.Q.GetPrediction(Targets.Target).UnitPosition);
                 }

@@ -70,6 +70,9 @@ namespace ExorAIO.Champions.Akali
             Vars.MiscMenu = Vars.Menu.AddSubMenu("Miscellaneous");
             {
                 Vars.MiscMenu.Add("safe", new CheckBox("Don't R into Turret", true));
+                Vars.MiscMenu.AddSeparator();
+                Vars.MiscMenu.AddLabel("4 Stacks = Disabled for the slider below.");
+                Vars.MiscMenu.Add("gapclose", new Slider("Use R to Gapclose / If R Stacks >= x", 2, 2, 4));
             }
 
             /// <summary>

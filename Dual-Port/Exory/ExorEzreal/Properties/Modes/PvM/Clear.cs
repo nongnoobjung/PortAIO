@@ -72,7 +72,7 @@ namespace ExorAIO.Champions.Ezreal
         /// <param name="args">The args.</param>
         public static void JungleClear(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (Orbwalker.LastTarget as Obj_AI_Minion == null ||
+            if (!(Orbwalker.LastTarget is Obj_AI_Minion) ||
                 !Targets.JungleMinions.Contains(Orbwalker.LastTarget as Obj_AI_Minion))
             {
                 return;

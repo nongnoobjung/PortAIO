@@ -30,7 +30,7 @@ namespace ExorAIO.Champions.Akali
                         t.LSIsValidTarget(Vars.R.Range) &&
                         !Invulnerable.Check(t, DamageType.Magical) &&
                         Vars.GetRealHealth(t) <
-                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.R)))
+                            (float)GameObjects.Player.GetSpellDamage(t, SpellSlot.R) * 2))
                 {
                     Vars.R.CastOnUnit(target);
                     return;

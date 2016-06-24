@@ -89,30 +89,32 @@ namespace ExorAIO.Champions.Caitlyn
         /// <param name="args">The args.</param>
         public static void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsMe &&
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            if (sender.IsMe)
             {
-                switch (args.SData.Name)
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
-                    case "CaitlynEntrapment":
-                    case "CaitlynEntrapmentMissile":
-                        if (Vars.W.IsReady() &&
-                            Vars.getCheckBoxItem(Vars.WMenu, "combo"))
-                        {
-                            Vars.W.Cast(Vars.W.GetPrediction(Targets.Target).CastPosition);
-                        }
-                        break;
+                    switch (args.SData.Name)
+                    {
+                        case "CaitlynEntrapment":
+                        case "CaitlynEntrapmentMissile":
+                            if (Vars.W.IsReady() &&
+                                Vars.getCheckBoxItem(Vars.WMenu, "combo"))
+                            {
+                                Vars.W.Cast(Vars.W.GetPrediction(Targets.Target).CastPosition);
+                            }
+                            break;
 
-                    case "CaitlynYordleTrap":
-                        if (Vars.Q.IsReady() &&
-                            Vars.getCheckBoxItem(Vars.QMenu, "combo"))
-                        {
-                            Vars.Q.Cast(Targets.Target.ServerPosition);
-                        }
-                        break;
+                        case "CaitlynYordleTrap":
+                            if (Vars.Q.IsReady() &&
+                                Vars.getCheckBoxItem(Vars.QMenu, "combo"))
+                            {
+                                Vars.Q.Cast(Targets.Target.ServerPosition);
+                            }
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
+                    }
                 }
             }
         }

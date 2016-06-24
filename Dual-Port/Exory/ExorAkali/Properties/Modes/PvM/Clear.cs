@@ -28,6 +28,7 @@ namespace ExorAIO.Champions.Akali
             ///     The Q JungleClear Logic.
             /// </summary>
             if (Vars.Q.IsReady() &&
+                Targets.JungleMinions.Any() &&
                 GameObjects.Player.ManaPercent > 
                     ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "jungleclear")) &&
                 Vars.getSliderItem(Vars.QMenu, "jungleclear") != 101)
@@ -39,7 +40,7 @@ namespace ExorAIO.Champions.Akali
             ///     The E LaneClear Logic.
             /// </summary>
             if (Vars.E.IsReady() &&
-                Targets.Minions.Count() >= 3 &&
+                Targets.Minions.Count(m => m.LSIsValidTarget(Vars.E.Range)) >= 3 &&
                 GameObjects.Player.ManaPercent >
                     ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.EMenu, "clear")) &&
                 Vars.getSliderItem(Vars.EMenu, "clear") != 101)

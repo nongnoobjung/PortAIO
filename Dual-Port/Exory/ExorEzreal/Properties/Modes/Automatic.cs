@@ -37,12 +37,14 @@ namespace ExorAIO.Champions.Ezreal
                 foreach (var minion in Targets.Minions.Where(
                     m =>
                         !m.LSIsValidTarget(Vars.AARange) &&
-                        Vars.GetRealHealth(m) > GameObjects.Player.GetAutoAttackDamage(m) &&
-                        Vars.GetRealHealth(m) < (float)GameObjects.Player.LSGetSpellDamage(m, SpellSlot.Q)).OrderBy(
-                            o =>
-                                o.MaxHealth))
+                        Vars.GetRealHealth(m) >
+                            GameObjects.Player.GetAutoAttackDamage(m) &&
+                        Vars.GetRealHealth(m) <
+                            (float)GameObjects.Player.LSGetSpellDamage(m, SpellSlot.Q)).OrderBy(
+                                o =>
+                                    o.MaxHealth))
                 {
-                    if (!Vars.Q.GetPrediction(minion).CollisionObjects.Any(c => Targets.Minions.Contains(c)))
+                    if (!Vars.Q.GetPrediction(minion).CollisionObjects.Any())
                     {
                         Vars.Q.Cast(Vars.Q.GetPrediction(minion).UnitPosition);
                     }
@@ -64,7 +66,7 @@ namespace ExorAIO.Champions.Ezreal
                 Vars.Q.Cast(Game.CursorPos);
             }
 
-            if (GameObjects.Player.TotalMagicalDamage > GameObjects.Player.TotalAttackDamage)
+            if (GameObjects.Player.TotalAttackDamage < GameObjects.Player.TotalMagicalDamage)
             {
                 return;
             }
@@ -76,7 +78,7 @@ namespace ExorAIO.Champions.Ezreal
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
-                if (Orbwalker.LastTarget as AIHeroClient == null)
+                if (!(Orbwalker.LastTarget is AIHeroClient))
                 {
                     return;
                 }
@@ -84,9 +86,9 @@ namespace ExorAIO.Champions.Ezreal
 
             else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
-                if (Orbwalker.LastTarget as Obj_HQ == null &&
-                    Orbwalker.LastTarget as Obj_AI_Turret == null &&
-                    Orbwalker.LastTarget as Obj_BarracksDampener == null)
+                if (!(Orbwalker.LastTarget is Obj_HQ) &&
+                    !(Orbwalker.LastTarget is Obj_AI_Turret) &&
+                    !(Orbwalker.LastTarget is Obj_BarracksDampener))
                 {
                     return;
                 }
@@ -95,10 +97,10 @@ namespace ExorAIO.Champions.Ezreal
             else
             {
                 if (!GameObjects.Jungle.Contains(Orbwalker.LastTarget) &&
-                    Orbwalker.LastTarget as Obj_HQ == null &&
-                    Orbwalker.LastTarget as AIHeroClient == null &&
-                    Orbwalker.LastTarget as Obj_AI_Turret == null &&
-                    Orbwalker.LastTarget as Obj_BarracksDampener == null)
+                    !(Orbwalker.LastTarget is Obj_HQ) &&
+                    !(Orbwalker.LastTarget is AIHeroClient) &&
+                    !(Orbwalker.LastTarget is Obj_AI_Turret) &&
+                    !(Orbwalker.LastTarget is Obj_BarracksDampener))
                 {
                     return;
                 }

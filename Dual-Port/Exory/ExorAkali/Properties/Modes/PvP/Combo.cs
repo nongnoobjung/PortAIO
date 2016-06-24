@@ -2,6 +2,7 @@ using System;
 using ExorAIO.Utilities;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using System.Linq;
 
 namespace ExorAIO.Champions.Akali
 {
@@ -34,19 +35,21 @@ namespace ExorAIO.Champions.Akali
             }
 
             /// <summary>
-            ///     The R Combo Logic.
+            ///     The R Gapclose Logic.
             /// </summary>
             if (Vars.R.IsReady() &&
-                !Vars.Q.IsReady() &&
-                Targets.Target.LSIsValidTarget(Vars.R.Range) &&
-                !Targets.Target.LSIsValidTarget(Vars.AARange) &&
-                Vars.getCheckBoxItem(Vars.RMenu, "combo") &&
-                Vars.getCheckBoxItem(Vars.WhiteListMenu, Targets.Target.ChampionName.ToLower()))
+                !Targets.Target.LSIsValidTarget(Vars.R.Range) &&
+                Targets.Target.LSIsValidTarget(Vars.R.Range * 2) &&
+                GameObjects.Player.GetBuffCount("AkaliShadowDance") >=
+                    Vars.getSliderItem(Vars.MiscMenu, "gapclose") &&
+                Vars.getSliderItem(Vars.MiscMenu, "gapclose") != 4)
             {
-                if (!Targets.Target.IsUnderEnemyTurret() ||
-                    !Vars.getCheckBoxItem(Vars.MiscMenu, "safe"))
+                foreach (var minion in Targets.Minions.Where(
+                    m =>
+                        m.LSIsValidTarget(Vars.R.Range) &&
+                        m.Distance(Targets.Target) < Vars.Q.Range))
                 {
-                    Vars.R.CastOnUnit(Targets.Target);
+                    Vars.R.CastOnUnit(minion);
                 }
             }
         }
