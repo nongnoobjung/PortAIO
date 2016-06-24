@@ -763,7 +763,7 @@ namespace Jinx_Genesis
 
             if (
                 (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) && getCheckBoxItem(harassMenu, "LaneClearHarass")) ||
-                (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit) && getCheckBoxItem(harassMenu, "LaneClearHarass")) || 
+                (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit) && getCheckBoxItem(harassMenu, "LastHitHarass")) || 
                 (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && getCheckBoxItem(harassMenu, "MixedHarass"))
                )
                 Farm = true;
