@@ -6,17 +6,18 @@
     using System.Globalization;
     using System.Linq;
 
+    using ElUtilitySuite.Vendor.SFX;
+
     using EloBuddy;
     using LeagueSharp.Common;
-    using EloBuddy.SDK;
-    using EloBuddy.SDK.Menu;
-    using EloBuddy.SDK.Menu.Values;
 
     using SharpDX;
 
     using Color = SharpDX.Color;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK;
+    using EloBuddy.SDK.Menu.Values;
     using Spell = LeagueSharp.Common.Spell;
-    using Damage = LeagueSharp.Common.Damage;
 
     // ReSharper disable once ClassNeverInstantiated.Global
     public class Smite : IPlugin
@@ -34,237 +35,17 @@
 
         public static Obj_AI_Minion Minion;
 
-        private static readonly string[] SmiteObjects =
-            {
-                "SRU_Red", "SRU_Blue", "SRU_Dragon_Water", "SRU_Dragon_Fire",
-                "SRU_Dragon_Earth", "SRU_Dragon_Air", "SRU_Dragon_Elder",
-                "SRU_Baron", "SRU_Gromp", "SRU_Murkwolf", "SRU_Razorbeak",
-                "SRU_RiftHerald", "SRU_Krug", "TT_Spiderboss", "TT_NGolem",
-                "TT_NWolf", "TT_NWraith"
-            };
-
         #endregion
 
         #region Fields
 
         /// <summary>
-        ///     Gets or sets the type.
         /// </summary>
-        /// <value>
-        ///     The spell type.
-        /// </value>
-        public SpellDataTargetType TargetType;
+        private string[] minionNames = new string[0];
 
-        #endregion
-
-        #region Constructors and Destructors
-
-        static Smite()
-        {
-            Spells = new List<Smite>
-                         {
-                             new Smite
-                                 {
-                                     ChampionName = "ChoGath", Range = 325f, Slot = SpellSlot.R, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Elise", Range = 475f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Fizz", Range = 550f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "LeeSin", Range = 1100f, Slot = SpellSlot.Q, Stage = 1,
-                                     TargetType = SpellDataTargetType.Self
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "MonkeyKing", Range = 375f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Nunu", Range = 300f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Olaf", Range = 325f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Pantheon", Range = 600f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Volibear", Range = 400f, Slot = SpellSlot.W, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "XinZhao", Range = 600f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Mundo", Range = 1050f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "KhaZix", Range = 325f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Evelynn", Range = 225f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Diana", Range = 895f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Alistar", Range = 365f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Nocturne", Range = 1200f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Maokai", Range = 600f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Twitch", Range = 950f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Self
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "JarvanIV", Range = 770f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Rengar", Range = 325f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Aatrox", Range = 650f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Amumu", Range = 1100f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Gragas", Range = 600f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Trundle", Range = 325f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Fiddlesticks", Range = 750f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Jax", Range = 700f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Ekko", Range = 1075f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Vi", Range = 325f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Self
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Shaco", Range = 625f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Warwick", Range = 400f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Sejuani", Range = 625f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Tryndamere", Range = 660f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Zac", Range = 550f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "TahmKench", Range = 880f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Quinn", Range = 1025f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Location
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Poppy", Range = 525f, Slot = SpellSlot.E, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Kayle", Range = 650f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Hecarim", Range = 350f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Renekton", Range = 350f, Slot = SpellSlot.W, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 },
-                             new Smite
-                                 {
-                                     ChampionName = "Irelia", Range = 750f, Slot = SpellSlot.Q, Stage = 0,
-                                     TargetType = SpellDataTargetType.Unit
-                                 }
-                         };
-        }
+        /// <summary>
+        /// </summary>
+        private Obj_AI_Minion targetedMinion;
 
         #endregion
 
@@ -297,36 +78,12 @@
                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
 
         /// <summary>
-        ///     Gets or sets the range.
-        /// </summary>
-        /// <value>
-        ///     The range.
-        /// </value>
-        public float Range { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the slot.
-        /// </summary>
-        /// <value>
-        ///     The slot.
-        /// </value>
-        public SpellSlot Slot { get; set; }
-
-        /// <summary>
         ///     Gets or sets the slot.
         /// </summary>
         /// <value>
         ///     The Smitespell
         /// </value>
         public Spell SmiteSpell { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the slot.
-        /// </summary>
-        /// <value>
-        ///     The stage.
-        /// </value>
-        public int Stage { get; set; }
 
         #endregion
 
@@ -359,53 +116,24 @@
             {
                 return;
             }
+
+
             var smiteMenu = rootMenu.AddSubMenu("Smite", "Smite");
             {
+                smiteMenu.AddLabel("Mobs");
+                smiteMenu.Add("SmiteBig", new CheckBox("Smite big mobs"));
                 smiteMenu.Add("ElSmite.Activated", new KeyBind("Smite Activated", true, KeyBind.BindTypes.PressToggle, 'M'));
-
-                smiteMenu.Add("Smite.Spell", new CheckBox("Use spell smite combo"));
                 smiteMenu.Add("Smite.Ammo", new CheckBox("Save 1 smite charge"));
 
-                if (Game.MapId == GameMapId.SummonersRift)
-                {
-                    smiteMenu.AddGroupLabel("Big Mobs");
-                    smiteMenu.Add("SRU_Dragon_Air", new CheckBox("Air Dragon"));
-                    smiteMenu.Add("SRU_Dragon_Earth", new CheckBox("Earth Dragon"));
-                    smiteMenu.Add("SRU_Dragon_Fire", new CheckBox("Fire Dragon"));
-                    smiteMenu.Add("SRU_Dragon_Water", new CheckBox("Water Dragon"));
-                    smiteMenu.Add("SRU_Dragon_Elder", new CheckBox("Elder Dragon"));
-                    smiteMenu.Add("SRU_Baron", new CheckBox("Baron"));
-                    smiteMenu.Add("SRU_Red", new CheckBox("Red buff"));
-                    smiteMenu.Add("SRU_Blue", new CheckBox("Blue buff"));
-                    smiteMenu.Add("SRU_RiftHerald", new CheckBox("Rift Herald"));
-                    smiteMenu.AddSeparator();
-                    smiteMenu.AddGroupLabel("Small Mobs");
-                    smiteMenu.Add("SmiteBig", new CheckBox("Smite big mobs", true));
-                    smiteMenu.Add("SRU_Gromp", new CheckBox("Gromp", false));
-                    smiteMenu.Add("SRU_Murkwolf", new CheckBox("Wolves", false));
-                    smiteMenu.Add("SRU_Krug", new CheckBox("Krug", false));
-                    smiteMenu.Add("SRU_Razorbeak", new CheckBox("Chicken camp", false));
-
-                }
-
-                if (Game.MapId == GameMapId.TwistedTreeline)
-                {
-                    smiteMenu.AddGroupLabel("Mobs");
-                    smiteMenu.Add("TT_Spiderboss", new CheckBox("Vilemaw Enabled"));
-                    smiteMenu.Add("TT_NGolem", new CheckBox("Golem Enabled"));
-                    smiteMenu.Add("TT_NWolf", new CheckBox("Wolf Enabled"));
-                    smiteMenu.Add("TT_NWraith", new CheckBox("Wraith Enabled"));
-                }
-                smiteMenu.AddSeparator();
 
                 //Champion Smite
-                smiteMenu.AddGroupLabel("Champion smite");
+                smiteMenu.AddLabel("Champion smite");
                 smiteMenu.Add("ElSmite.KS.Activated", new CheckBox("Use smite to killsteal"));
                 smiteMenu.Add("ElSmite.KS.Combo", new CheckBox("Use smite in combo"));
-                smiteMenu.AddSeparator();
+
 
                 //Drawings
-                smiteMenu.AddGroupLabel("Drawings");
+                smiteMenu.AddLabel("Drawings");
                 smiteMenu.Add("ElSmite.Draw.Range", new CheckBox("Draw smite Range"));
                 smiteMenu.Add("ElSmite.Draw.Text", new CheckBox("Draw smite text"));
                 smiteMenu.Add("ElSmite.Draw.Damage", new CheckBox("Draw smite Damage", false));
@@ -424,6 +152,14 @@
                 {
                     this.SmiteSpell = new Spell(smiteSlot.Slot, SmiteRange, DamageType.True);
 
+                    this.minionNames = new[]
+                                           {
+                                               "SRU_Baron12.1.1", "SRU_Blue1.1.1", "SRU_Red4.1.1", "SRU_Blue7.1.1",
+                                               "SRU_Red10.1.1", "SRU_Dragon_Elder6.5.1", "SRU_Dragon_Air6.1.1",
+                                               "SRU_Dragon_Fire6.2.1", "SRU_Dragon_Water6.3.1", "SRU_Dragon_Elder6.5.1",
+                                               "SRU_Dragon_Earth6.4.1", "SRU_RiftHerald17.1.1", "TT_Spiderboss8.1.1"
+                                           };
+
                     Drawing.OnDraw += this.OnDraw;
                     Game.OnUpdate += this.OnUpdate;
                 }
@@ -435,43 +171,6 @@
         }
 
         #endregion
-
-        #region Methods
-
-        private void ChampionSpellSmite(float damage, Obj_AI_Base mob)
-        {
-            try
-            {
-                foreach (var spell in
-                    Spells.Where(
-                        x =>
-                        x.ChampionName.Equals(this.Player.ChampionName, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    if (this.Player.LSGetSpellDamage(mob, spell.Slot, spell.Stage) + damage >= mob.Health)
-                    {
-                        if (mob.LSIsValidTarget(this.SmiteSpell.Range))
-                        {
-                            if (spell.TargetType == SpellDataTargetType.Unit)
-                            {
-                                this.Player.Spellbook.CastSpell(spell.Slot, mob);
-                            }
-                            else if (spell.TargetType == SpellDataTargetType.Self)
-                            {
-                                this.Player.Spellbook.CastSpell(spell.Slot);
-                            }
-                            else if (spell.TargetType == SpellDataTargetType.Location)
-                            {
-                                this.Player.Spellbook.CastSpell(spell.Slot, mob.ServerPosition);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"An error occurred: {e}");
-            }
-        }
 
         public static bool getCheckBoxItem(Menu m, string item)
         {
@@ -493,6 +192,8 @@
             return m[item].Cast<ComboBox>().CurrentValue;
         }
 
+        #region Methods
+
         private void OnDraw(EventArgs args)
         {
             try
@@ -501,6 +202,7 @@
                 {
                     return;
                 }
+
                 var smiteActive = getKeyBindItem(this.Menu, "ElSmite.Activated");
                 var drawSmite = getCheckBoxItem(this.Menu, "ElSmite.Draw.Range");
                 var drawText = getCheckBoxItem(this.Menu, "ElSmite.Draw.Text");
@@ -514,7 +216,7 @@
                         Drawing.DrawText(
                             playerPos.X - 70,
                             playerPos.Y + 40,
-                            System.Drawing.Color.GhostWhite,
+                            System.Drawing.Color.GreenYellow,
                             "Smite active");
                     }
 
@@ -527,30 +229,15 @@
                     {
                         var minions =
                             ObjectManager.Get<Obj_AI_Minion>()
-                                .Where(
-                                    m =>
-                                    m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget()
-                                    && SmiteObjects.Contains(m.CharData.BaseSkinName));
+                                .Where(m => m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget());
 
                         foreach (var minion in minions.Where(m => m.IsHPBarRendered))
                         {
                             var hpBarPosition = minion.HPBarPosition;
                             var maxHealth = minion.MaxHealth;
                             var sDamage = this.SmiteDamage();
-                            //SmiteDamage : MaxHealth = x : 100
-                            //Ratio math for this ^
                             var x = this.SmiteDamage() / maxHealth;
                             var barWidth = 0;
-
-                            /*
-                        * DON'T STEAL THE OFFSETS FOUND BY ASUNA DON'T STEAL THEM JUST GET OUT WTF MAN.
-                        * EL SMITE IS THE BEST SMITE ASSEMBLY ON LEAGUESHARP AND YOU WILL NOT FIND A BETTER ONE.
-                        * THE DRAWINGS ACTUALLY MAKE FUCKING SENSE AND THEY ARE FUCKING GOOD
-                        * GTFO HERE SERIOUSLY OR I CALL DETUKS FOR YOU GUYS
-                        * NO STEAL OR DMC FUCKING A REPORT.
-                        * HELLO COPYRIGHT BY ASUNA 2015 ALL AUSTRALIAN RIGHTS RESERVED BY UNIVERSAL GTFO SERIOUSLY THO
-                        * NO ALSO NO CREDITS JUST GET OUT DUDE GET OUTTTTTTTTTTTTTTTTTTTTTTT
-                        */
 
                             switch (minion.CharData.BaseSkinName)
                             {
@@ -729,42 +416,38 @@
         {
             try
             {
-                if (this.Player.IsDead || this.SmiteSpell == null
-                    || !this.Menu["ElSmite.Activated"].Cast<KeyBind>().CurrentValue)
+                if (this.SmiteSpell == null || !this.Menu["ElSmite.Activated"].Cast<KeyBind>().CurrentValue
+                    || this.Player.IsDead)
                 {
                     return;
                 }
 
-                foreach (var minion in
-                    MinionManager.GetMinions(950f, MinionTypes.All, MinionTeam.Neutral)
-                        .Where(
-                            buff =>
-                            buff.Name.StartsWith(buff.CharData.BaseSkinName)
-                            && SmiteObjects.Contains(buff.CharData.BaseSkinName) && !buff.Name.Contains("Mini")))
+                if (this.SmiteSpell != null && this.Menu["SmiteBig"].Cast<CheckBox>().CurrentValue)
                 {
-                    if (!getCheckBoxItem(this.Menu, Minion.CharData.BaseSkinName))
+                    if (this.targetedMinion == null)
                     {
-                        return;
+                        this.targetedMinion = ObjectManager.Player.ServerPosition.GetMinionFastByNames(
+                            SmiteRange,
+                            this.minionNames);
                     }
 
                     if (this.SmiteSpell.IsReady())
                     {
-                        if (minion.Distance(this.Player.ServerPosition)
-                            <= 570f + minion.BoundingRadius + this.Player.BoundingRadius)
+                        if (this.targetedMinion.LSIsValidTarget(SmiteRange))
                         {
-                            if (getCheckBoxItem(this.Menu, "Smite.Spell"))
+                            if (ObjectManager.Player.GetSummonerSpellDamage(
+                                this.targetedMinion,
+                                LeagueSharp.Common.Damage.SummonerSpell.Smite) > this.targetedMinion.Health)
                             {
-                                this.ChampionSpellSmite(
-                                    (float)this.Player.GetSummonerSpellDamage(minion, Damage.SummonerSpell.Smite),
-                                    minion);
-                            }
-
-                            if (this.Player.GetSummonerSpellDamage(minion, Damage.SummonerSpell.Smite) > minion.Health)
-                            {
-                                this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, minion);
+                                this.SmiteSpell.Cast(this.targetedMinion);
                             }
                         }
+                        else
+                        {
+                            this.targetedMinion = null;
+                        }
                     }
+                    return;
                 }
 
                 if (getCheckBoxItem(this.Menu, "Smite.Ammo") && this.Player.GetSpell(this.SmiteSpell.Slot).Ammo == 1)
@@ -814,7 +497,7 @@
             try
             {
                 return this.Player.Spellbook.GetSpell(this.SmiteSpell.Slot).State == SpellState.Ready
-                           ? (float)this.Player.GetSummonerSpellDamage(Minion, Damage.SummonerSpell.Smite)
+                           ? (float)this.Player.GetSummonerSpellDamage(Minion, LeagueSharp.Common.Damage.SummonerSpell.Smite)
                            : 0;
             }
             catch (Exception e)
