@@ -587,7 +587,7 @@ namespace SebbyLib.Prediction
 
                 // WALL LOGIC  ///////////////////////////////////////////////////////////////////////////////////
 
-                var points = OktwCommon.CirclePoints(15, 450, input.Unit.Position).Where(x => x.LSIsWall());
+                var points = OktwCommon.CirclePoints(15, 350, input.Unit.Position).Where(x => x.LSIsWall());
 
                 if (points.Count() > 2)
                 {
