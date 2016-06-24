@@ -16,7 +16,7 @@ namespace OneKeyToWin_AIO_Sebby
     {
         private static Menu Config = Program.Config;
 
-        private static Spell E, Q, Q1, R, R1, W, W1;
+        private static Spell E, Q, Q1, R, R1, W;
 
         private static float QMANA = 0, WMANA = 0, EMANA = 0, RMANA = 0;
         private static bool passRdy = false;

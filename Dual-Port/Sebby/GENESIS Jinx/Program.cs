@@ -23,7 +23,7 @@ namespace Jinx_Genesis
         private static AIHeroClient Player { get { return ObjectManager.Player; } }
 
         private static Spell Q, W, E, R;
-        private static float QMANA, WMANA, EMANA ,RMANA;
+        private static float WMANA, EMANA ,RMANA;
         private static bool FishBoneActive= false, Combo = false, Farm = false;
         private static AIHeroClient blitz = null;
         private static float WCastTime = Game.Time;
@@ -772,7 +772,6 @@ namespace Jinx_Genesis
 
             Q.Range = 685f + Player.BoundingRadius + 25f * Player.Spellbook.GetSpell(SpellSlot.Q).Level;
 
-            QMANA = 10f;
             WMANA = W.Instance.SData.Mana;
             EMANA = E.Instance.SData.Mana;
             RMANA = R.Instance.SData.Mana;
