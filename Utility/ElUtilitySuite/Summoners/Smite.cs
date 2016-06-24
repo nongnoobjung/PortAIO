@@ -455,9 +455,7 @@
                     return;
                 }
 
-                if (getCheckBoxItem(this.Menu, "ElSmite.KS.Combo")
-                    && this.Player.GetSpell(this.SmiteSpell.Slot).Name.ToLower() == "s5_summonersmiteduel"
-                    && this.ComboModeActive)
+                if (getCheckBoxItem(this.Menu, "ElSmite.KS.Combo") && this.Player.GetSpell(this.SmiteSpell.Slot).Name.ToLower() == "s5_summonersmiteduel" && this.ComboModeActive && this.SmiteSpell.IsReady())
                 {
                     var smiteComboEnemy =
                         HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(500f));
@@ -472,7 +470,7 @@
                     return;
                 }
 
-                if (getCheckBoxItem(this.Menu, "ElSmite.KS.Activated"))
+                if (getCheckBoxItem(this.Menu, "ElSmite.KS.Activated") && this.SmiteSpell.IsReady())
                 {
                     var kSableEnemy =
                         HeroManager.Enemies.FirstOrDefault(

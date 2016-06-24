@@ -68,6 +68,15 @@ namespace UnderratedAIO.Champions
             return savedBarrels.Select(b => b.barrel).Where(b => b.IsValid);
         }
 
+        private static void CleanserManager()
+        {
+            // List of disable buffs
+            if (W.IsReady() && ((Player.HasBuffOfType(BuffType.Charm)) || (Player.HasBuffOfType(BuffType.Flee)) || (Player.HasBuffOfType(BuffType.Polymorph)) || (Player.HasBuffOfType(BuffType.Snare)) || (Player.HasBuffOfType(BuffType.Stun)) || (Player.HasBuffOfType(BuffType.Taunt)) || (Player.HasBuff("summonerexhaust")) || (Player.HasBuffOfType(BuffType.Suppression))))
+            {
+                W.Cast();
+            }
+        }
+
         private static bool KillableBarrel(Obj_AI_Base targetB,
             bool melee = false,
             AIHeroClient sender = null,
@@ -141,6 +150,11 @@ namespace UnderratedAIO.Champions
                 {
                     Lasthit();
                 }
+            }
+
+            if (getCheckBoxItem(miscMenu, "AutoW"))
+            {
+                CleanserManager();
             }
 
             if (getCheckBoxItem(miscMenu, "AutoR") && R.IsReady())

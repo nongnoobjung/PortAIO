@@ -26,7 +26,7 @@ namespace Activators.Summoners
         {
             foreach (var hero in Smitedata.SpellList.Where(x => x.Name == Activator.Player.ChampionName))
             {
-                if (Activator.Player.LSGetSpellDamage(unit, hero.Slot, hero.Stage) + smitedmg >= unit.Health)
+                if (Activator.Player.LSGetSpellDamage(unit, hero.Slot, hero.Stage) + smitedmg >= unit.Health && Activator.Player.GetSpell(Activator.Smite).IsReady())
                 {
                     if (unit.LSDistance(Activator.Player.ServerPosition) <= hero.CastRange + 
                         unit.BoundingRadius + Activator.Player.BoundingRadius)
@@ -64,7 +64,7 @@ namespace Activators.Summoners
 
         public override void OnTick(EventArgs args)
         {
-            if (!Menu["usesmite"].Cast<KeyBind>().CurrentValue)
+            if (!Menu["usesmite"].Cast<KeyBind>().CurrentValue || !Player.GetSpell(Activator.Smite).IsReady())
                 return;
 
             foreach (var minion in MinionManager.GetMinions(900f, MinionTypes.All, MinionTeam.Neutral))
@@ -97,7 +97,7 @@ namespace Activators.Summoners
                         }
                     }
 
-                    if (Essentials.IsEpicMinion(minion) && Menu["smitesuper"].Cast<CheckBox>().CurrentValue)
+                    if (Essentials.IsEpicMinion(minion) && Menu["smitesuper"].Cast<CheckBox>().CurrentValue && Player.GetSpell(Activator.Smite).IsReady())
                     {
                         if (Menu["smiteskill"].Cast<CheckBox>().CurrentValue)
                             L33TSmite(minion, damage);
@@ -112,14 +112,14 @@ namespace Activators.Summoners
 
             // smite hero blu/red
             if (Player.GetSpell(Activator.Smite).Name.ToLower() == "s5_summonersmiteduel" ||
-                Player.GetSpell(Activator.Smite).Name.ToLower() == "s5_summonersmiteplayerganker")
+                Player.GetSpell(Activator.Smite).Name.ToLower() == "s5_summonersmiteplayerganker" && Player.GetSpell(Activator.Smite).IsReady())
             {
                 if (!Menu["savesmite"].Cast<CheckBox>().CurrentValue ||
                      Menu["savesmite"].Cast<CheckBox>().CurrentValue && Player.GetSpell(Activator.Smite).Ammo > 1)
                 {
                     // KS Smite
                     if (Menu["smitemode"].Cast<ComboBox>().CurrentValue == 0 &&
-                        Player.GetSpell(Activator.Smite).Name.ToLower() == "s5_summonersmiteplayerganker")
+                        Player.GetSpell(Activator.Smite).Name.ToLower() == "s5_summonersmiteplayerganker" && Player.GetSpell(Activator.Smite).IsReady())
                     {
                         foreach (
                             var hero in
@@ -134,7 +134,7 @@ namespace Activators.Summoners
 
                     // Combo Smite
                     if (Menu["smitemode"].Cast<ComboBox>().CurrentValue == 1 &&
-                        Player.GetSpell(Activator.Smite).Name.ToLower() == "s5_summonersmiteduel")
+                        Player.GetSpell(Activator.Smite).Name.ToLower() == "s5_summonersmiteduel" && Player.GetSpell(Activator.Smite).IsReady())
                     {
                         if (Activator.Origin["usecombo"].Cast<KeyBind>().CurrentValue)
                         {
