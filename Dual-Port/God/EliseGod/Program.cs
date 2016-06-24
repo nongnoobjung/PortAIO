@@ -769,7 +769,7 @@ namespace EliseGod
 
         private static void InitMenu()
         {
-            Menu = MainMenu.AddMenu("Ekko God", "EkkoGod");
+            Menu = MainMenu.AddMenu("Elise God", "EliseGod");
 
             comboMenu = Menu.AddSubMenu("Combo settings", "Combo");
             comboMenu.Add("qComboH", new CheckBox("Use Human Q", true));
