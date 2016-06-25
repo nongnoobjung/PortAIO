@@ -11,9 +11,6 @@ namespace WardJumper
 {
     internal class Jumper
     {
-        public static Vector2 testSpellCast;
-        public static Vector2 testSpellProj;
-
         public static AIHeroClient Player = ObjectManager.Player;
         public static LeagueSharp.Common.Spell Q;
 
