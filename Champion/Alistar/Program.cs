@@ -441,7 +441,7 @@ namespace PortAIO.Champion.Alistar
                     OnCombo();
                 }
 
-                if (getCheckBoxItem(miscellaneousMenu, "ElAlistar.Ignite"))
+                if (getCheckBoxItem(miscellaneousMenu, "ElAlistar.Ignite") && IgniteSpell.Slot != SpellSlot.Unknown && IgniteSpell != null)
                 {
                     HandleIgnite();
                 }
