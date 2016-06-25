@@ -1729,6 +1729,7 @@
     <Compile Include="Utility\VCursor\Program.cs" />
     <Compile Include="Utility\VCursor\Utility.cs" />
     <Compile Include="Utility\VCursor\VirtualCursor.cs" />
+    <Compile Include="Utility\`Champion Utility\JaxWardJumper\Jumper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
