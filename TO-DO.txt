@@ -34,6 +34,7 @@ Utility Ports [Only doing after Champions are completed] :
 - AioCaster
 - AutoSharp - Once working again
 - AutoJungle - Once working again
+- Sebby Predictioner
 
 AIOS in an AIO : 
 - Finish Up ExorAIO
