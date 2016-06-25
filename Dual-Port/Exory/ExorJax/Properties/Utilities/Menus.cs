@@ -52,6 +52,14 @@ namespace ExorAIO.Champions.Jax
             }
 
             /// <summary>
+            ///     Sets the miscellaneous menu.
+            /// </summary>
+            Vars.MiscMenu = Vars.Menu.AddSubMenu("Miscellaneous");
+            {
+                Vars.MiscMenu.Add("Ward", new KeyBind("Ward Jump", false, KeyBind.BindTypes.HoldActive, 'T'));
+            }
+
+            /// <summary>
             ///     Sets the drawings menu.
             /// </summary>
             Vars.DrawingsMenu = Vars.Menu.AddSubMenu("Drawings");

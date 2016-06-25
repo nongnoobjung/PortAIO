@@ -35,7 +35,7 @@ namespace ExorAIO.Utilities
         /// </summary>
         /// <param name="v">The v.</param>
         /// <returns></returns>
-        public static Vector2 To2D(this Vector3 v)
+        public static Vector2 EXTo2D(this Vector3 v)
         {
             return new Vector2(v.X, v.Y);
         }
@@ -361,7 +361,7 @@ namespace ExorAIO.Utilities
             /// <param name="radius">The radius.</param>
             /// <param name="quality">The quality.</param>
             public Sector(Vector3 center, Vector3 direction, float angle, float radius, int quality = 20)
-                : this(center.To2D(), direction.To2D(), angle, radius, quality) { }
+                : this(center.EXTo2D(), direction.EXTo2D(), angle, radius, quality) { }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Polygon.Sector"/> class.

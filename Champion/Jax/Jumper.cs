@@ -21,10 +21,10 @@ namespace JaxQx
 
         public static int getJumpWardId()
         {
-            int[] wardIds = {3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043};
+            int[] wardIds = {3340, 3350, 3205, 3207, 2049, 2045, 2044, 3361, 3154, 3362, 3160, 2043, (int)ItemId.Sightstone, (int)ItemId.Warding_Totem_Trinket, (int)ItemId.Vision_Ward, (int)ItemId.Sightstone, (int)ItemId.Trackers_Knife, (int)ItemId.Trackers_Knife_Enchantment_Cinderhulk, (int)ItemId.Trackers_Knife_Enchantment_Devourer, (int)ItemId.Trackers_Knife_Enchantment_Runic_Echoes, (int)ItemId.Trackers_Knife_Enchantment_Sated_Devourer, (int)ItemId.Trackers_Knife_Enchantment_Warrior};
             foreach (var id in wardIds)
             {
-                if (LeagueSharp.Common.Items.HasItem(id) && LeagueSharp.Common.Items.CanUseItem(id))
+                if (Item.HasItem(id) && Item.CanUseItem(id))
                     return id;
             }
             return -1;
@@ -41,7 +41,9 @@ namespace JaxQx
 
             if (!Q.IsReady())
                 return;
+
             var wardIs = false;
+
             if (!InDistance(pos, Player.ServerPosition.LSTo2D(), Q.Range))
             {
                 pos = Player.ServerPosition.LSTo2D() + Vector2.Normalize(pos - Player.ServerPosition.LSTo2D())*600;
@@ -49,10 +51,8 @@ namespace JaxQx
 
             if (!Q.IsReady())
                 return;
-            foreach (var ally in ObjectManager.Get<Obj_AI_Base>().Where(ally => ally.IsAlly
-                                                                                && !(ally is Obj_AI_Turret) &&
-                                                                                InDistance(pos,
-                                                                                    ally.ServerPosition.LSTo2D(), 200)))
+
+            foreach (var ally in ObjectManager.Get<Obj_AI_Base>().Where(ally => ally.IsAlly && !(ally is Obj_AI_Turret) && InDistance(pos, ally.ServerPosition.LSTo2D(), 200)))
             {
                 wardIs = true;
                 moveTo(pos);

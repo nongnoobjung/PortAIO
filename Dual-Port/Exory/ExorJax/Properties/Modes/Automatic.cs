@@ -3,6 +3,9 @@ using System.Linq;
 using ExorAIO.Utilities;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using EloBuddy;
+using SharpDX;
+using EloBuddy.SDK;
 
 namespace ExorAIO.Champions.Jax
 {
@@ -22,13 +25,19 @@ namespace ExorAIO.Champions.Jax
                 return;
             }
 
+            if (Vars.getKeyBindItem(Vars.MiscMenu, "Ward"))
+            {
+                EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                WardJumper.Jumper.wardJump(Game.CursorPos.EXTo2D());
+            }
+
             /// <summary>
             ///     The Automatic R Logic.
             /// </summary>
             if (Vars.R.IsReady() &&
                 Vars.getCheckBoxItem(Vars.RMenu, "logical"))
             {
-                if (GameObjects.Player.HealthPercent < 20 && 
+                if (GameObjects.Player.HealthPercent < 20 &&
                     GameObjects.Player.CountEnemyHeroesInRange(750f) > 0)
                 {
                     Vars.R.Cast();

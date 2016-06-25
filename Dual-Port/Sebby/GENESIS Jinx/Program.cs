@@ -268,7 +268,7 @@ namespace Jinx_Genesis
             if (getKeyBindItem(rMenu, "useR"))
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                if (t.LSIsValidTarget())
+                if (t.LSIsValidTarget() && t.IsVisible && t.IsHPBarRendered && !t.IsDead)
                 {
                     if(getBoxItem(rMenu, "semiMode") == 0)
                     {
@@ -290,7 +290,7 @@ namespace Jinx_Genesis
                 if (getCheckBoxItem(rMenu, "RoverAA") && (!Orbwalker.CanAutoAttack || Player.Spellbook.IsAutoAttacking))
                     return;
 
-                foreach (var target in Enemies.Where(target => target.LSIsValidTarget(R.Range) && ValidUlt(target) ))
+                foreach (var target in Enemies.Where(target => target.LSIsValidTarget(R.Range) && ValidUlt(target) && target.IsVisible && target.IsHPBarRendered))
                 {
                     
                     float predictedHealth = target.Health + target.HPRegenRate * 2;
@@ -327,7 +327,7 @@ namespace Jinx_Genesis
                                 cast = false;
                         }
 
-                        if (cast)
+                        if (cast && target.IsVisible && target.IsHPBarRendered && !target.IsDead)
                         {
                             if (getCheckBoxItem(rMenu, "RoverW") && target.LSIsValidTarget(W.Range) && W.GetDamage(target) > target.Health && W.Instance.Cooldown - (W.Instance.CooldownExpires - Game.Time) < 1.1)
                                 return;
