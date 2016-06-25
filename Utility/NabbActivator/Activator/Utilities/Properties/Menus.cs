@@ -67,6 +67,7 @@ namespace NabbActivator
                 Vars.TypesMenu.Add("potions", new CheckBox("Potions"));
                 Vars.TypesMenu.Add("resetters", new CheckBox("Tiamat/Hydra/Titanic"));
                 Vars.TypesMenu.Add("randomizer", new CheckBox("Humanizer"));
+                Vars.TypesMenu.Add("heal1", new CheckBox("Heal Ally?", false));
             }
         }
     }

@@ -102,7 +102,7 @@ namespace NabbActivator
                 {
                     GameObjects.Player.Spellbook.CastSpell(SpellSlots.Heal);
                 }
-                else
+                else if (Vars.TypesMenu["heal1"].Cast<CheckBox>().CurrentValue)
                 {
                     foreach (var ally in GameObjects.AllyHeroes.Where(
                         a =>
