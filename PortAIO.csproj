@@ -361,6 +361,7 @@
     <Compile Include="Dual-Port\Kaiser\Thresh The Ruler\Items.cs" />
     <Compile Include="Dual-Port\Kaiser\Thresh The Ruler\Program.cs" />
     <Compile Include="Dual-Port\Kaiser\Thresh The Ruler\Turret.cs" />
+    <Compile Include="Dual-Port\Soresu\UnderratedAIO\Underrated Olaf\Olaf.cs" />
     <Compile Include="Dual-Port\`LSStaff\AhriSharp\Ahri.cs" />
     <Compile Include="Dual-Port\`LSStaff\AhriSharp\Helper.cs" />
     <Compile Include="Dual-Port\`LSStaff\AhriSharp\Program.cs" />
