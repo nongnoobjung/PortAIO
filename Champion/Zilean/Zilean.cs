@@ -69,6 +69,7 @@
                              new InitiatorSpell { ChampionName = "Yasuo", SDataName = "yasuorknockupcombow" },
                              new InitiatorSpell { ChampionName = "Evelynn", SDataName = "evelynnw" },
                              new InitiatorSpell { ChampionName = "FiddleSticks", SDataName = "Crowstorm" },
+                             new InitiatorSpell { ChampionName = "Sivir", SDataName = "SivirR" }
                          };
         }
 
@@ -339,6 +340,17 @@
             }
         }
 
+        private static void MouseCombo()
+        {
+            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+
+            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && Q.IsReady())
+            {
+                Q.Cast(Game.CursorPos);
+                LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
+            }
+        }
+
 
         /// <summary>
         ///     Combo logic
@@ -393,16 +405,6 @@
                 }
             }
 
-            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.W") && getCheckBoxItem(comboMenu, "ElZilean.Combo.W2") && W.IsReady() && !Q.IsReady())
-            {
-                if (Q.Instance.CooldownExpires - Game.Time < 3 || HeroManager.Enemies.Any(x => x.Health > Q.GetDamage(x) && x.LSIsValidTarget(Q.Range)))
-                {
-                    return;
-                }
-
-                W.Cast();
-            }
-
             // Check if target has a bomb
             var isBombed = HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.IsValidTarget(Q.Range));
 
@@ -422,6 +424,17 @@
                 {
                     W.Cast();
                 }
+            }
+
+            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.W") && getCheckBoxItem(comboMenu, "ElZilean.Combo.W2") && W.IsReady() && !Q.IsReady())
+            {
+                if (Q.Instance.CooldownExpires - Game.Time < 3
+                    || HeroManager.Enemies.Any(x => x.Health > Q.GetDamage(x) && x.LSIsValidTarget(Q.Range)))
+                {
+                    return;
+                }
+
+                W.Cast();
             }
 
             if (getCheckBoxItem(comboMenu, "ElZilean.Ignite") && isBombed != null)
@@ -550,7 +563,8 @@
                     return;
                 }
 
-                if (sender.IsValid && args.DangerLevel == Interrupter2.DangerLevel.High && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
+                if (sender.IsValid && args.DangerLevel == Interrupter2.DangerLevel.High
+                    && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
                 {
                     if (Q.IsReady() && sender.LSIsValidTarget(Q.Range))
                     {
@@ -629,11 +643,13 @@
         {
             try
             {
-                if (sender == null) return;
-
                 var hero = sender as AIHeroClient;
-                if (!sender.IsAlly || hero == null ||
-                    !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}") && !sender.LSIsValidTarget(E.Range, false))
+                if (hero == null)
+                {
+                    return;
+                }
+
+                if (!sender.IsAlly || !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}") || !sender.IsValidTarget(E.Range, false))
                 {
                     return;
                 }
@@ -645,8 +661,8 @@
                 {
                     if (args.Start.Distance(Player.Position) <= E.Range && args.End.LSDistance(Player.Position) <= E.Range
                         && HeroManager.Enemies.Any(
-                            e => e.LSIsValidTarget(E.Range, false) &&
-                            !e.IsDead
+                            e =>
+                            e.LSIsValidTarget(E.Range, false) && !e.IsDead
                             && (e.Position.Distance(args.End) < 600f || e.Position.LSDistance(args.Start) < 800f)))
                     {
                         if (E.IsReady() && E.IsInRange(hero))
@@ -705,7 +721,10 @@
 
                 if (getCheckBoxItem(miscMenu, "ElZilean.E.Slow"))
                 {
-                    foreach (var slowedAlly in HeroManager.Allies.Where(x => x.HasBuffOfType(BuffType.Slow) && x.IsValidTarget(Q.Range, false)))
+                    foreach (
+                        var slowedAlly in
+                            HeroManager.Allies.Where(
+                                x => x.HasBuffOfType(BuffType.Slow) && x.IsValidTarget(Q.Range, false)))
                     {
                         if (E.IsReady() && E.IsInRange(slowedAlly))
                         {
@@ -718,8 +737,10 @@
                 {
                     var target =
                         HeroManager.Enemies.FirstOrDefault(
-                            h => h.LSIsValidTarget(Q.Range) && h.HasBuffOfType(BuffType.Slow)
-                            || h.HasBuffOfType(BuffType.Knockup) || h.HasBuffOfType(BuffType.Charm) || h.HasBuffOfType(BuffType.Stun));
+                            h =>
+                            h.LSIsValidTarget(Q.Range) && h.HasBuffOfType(BuffType.Slow)
+                            || h.HasBuffOfType(BuffType.Knockup) || h.HasBuffOfType(BuffType.Charm)
+                            || h.HasBuffOfType(BuffType.Stun));
 
                     if (target != null)
                     {
@@ -738,15 +759,15 @@
 
                 foreach (var ally in HeroManager.Allies.Where(a => a.LSIsValidTarget(R.Range, false)))
                 {
-                    if (!getCheckBoxItem(ultMenu, $"R{ally.ChampionName}") || ally.LSIsRecalling() || ally.IsInvulnerable || !ally.LSIsValidTarget(R.Range, false))
+                    if (!getCheckBoxItem(ultMenu, $"R{ally.ChampionName}") || ally.IsRecalling() || ally.IsInvulnerable
+                        || !ally.IsValidTarget(R.Range, false))
                     {
                         return;
                     }
 
                     var enemies = ally.LSCountEnemiesInRange(750f);
                     var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
-                    if (ally.HealthPercent <= getSliderItem(ultMenu, "min-health")
-                        && !ally.IsDead
+                    if (ally.HealthPercent <= getSliderItem(ultMenu, "min-health") && !ally.IsDead
                         && enemies >= 1 && ally.IsValidTarget(R.Range, false))
                     {
                         if ((int)(totalDamage / ally.Health) > getSliderItem(ultMenu, "min-damage")
@@ -760,17 +781,6 @@
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-            }
-        }
-
-        private static void MouseCombo()
-        {
-            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-
-            if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && Q.IsReady())
-            {
-                Q.Cast(Game.CursorPos);
-                LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
             }
         }
 
