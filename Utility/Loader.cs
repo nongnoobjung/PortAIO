@@ -649,6 +649,7 @@ namespace PortAIO.Utility
                 Orbwalker.DisableAttacking = false;
                 Orbwalker.DisableMovement = false;
                 Orbwalker.ForcedTarget = null;
+                Console.Clear();
                 Miscc["resetorb"].Cast<CheckBox>().CurrentValue = false;
             }
         }

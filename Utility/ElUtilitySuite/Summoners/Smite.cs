@@ -123,12 +123,11 @@
                     smiteMenu.Add("SRU_RiftHerald", new CheckBox("Rift Herald"));
                     smiteMenu.AddSeparator();
                     smiteMenu.AddGroupLabel("Small Mobs");
-                    smiteMenu.Add("SmiteBig", new CheckBox("Smite big mobs", true));
                     smiteMenu.Add("SRU_Gromp", new CheckBox("Gromp", false));
                     smiteMenu.Add("SRU_Murkwolf", new CheckBox("Wolves", false));
                     smiteMenu.Add("SRU_Krug", new CheckBox("Krug", false));
                     smiteMenu.Add("SRU_Razorbeak", new CheckBox("Chicken camp", false));
-
+                    smiteMenu.Add("Sru_Crab", new CheckBox("Crab", false));
                 }
 
                 if (Game.MapId == GameMapId.TwistedTreeline)
@@ -434,10 +433,13 @@
                     ObjectManager.Get<Obj_AI_Minion>()
                         .Where(
                             o =>
-                            Vector3.Distance(ObjectManager.Player.Position, o.ServerPosition) <= 950f
+                            ObjectManager.Player.Position.LSDistance(o.ServerPosition) <= 950f
                             && o.Team == GameObjectTeam.Neutral && !o.CharData.BaseSkinName.ToLower().Contains("barrel")
                             && !o.CharData.BaseSkinName.ToLower().Contains("mini")
-                            && !o.CharData.BaseSkinName.ToLower().Contains("respawn") && getCheckBoxItem(this.Menu, Minion.CharData.BaseSkinName)))
+                            && !o.CharData.BaseSkinName.ToLower().Contains("respawn") 
+                            && getCheckBoxItem(this.Menu, o.CharData.BaseSkinName)
+                            && o.IsHPBarRendered && o.IsVisible
+                            ))
                 {
                     if (this.SmiteSpell.IsReady())
                     {

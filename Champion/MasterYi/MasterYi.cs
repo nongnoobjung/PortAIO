@@ -30,9 +30,6 @@ namespace MasterSharp
 
         public static SpellSlot smite = SpellSlot.Unknown;
 
-
-        public static Obj_AI_Base selectedTarget = null;
-
         public static void setSkillShots()
         {
             setupSmite();
@@ -117,7 +114,7 @@ namespace MasterSharp
         {
             try
             {
-                if (!Q.IsReady() || target.Path.Count() == 0 || !target.IsMoving)
+                if (!Q.IsReady() || target.Path.Count() == 0)
                     return;
                 var nextEnemPath = target.Path[0].LSTo2D();
                 var dist = player.Position.LSTo2D().LSDistance(target.Position.LSTo2D());
@@ -258,12 +255,20 @@ namespace MasterSharp
                     //Console.WriteLine("Fuk uo here ");
                     return;
                 }
-                if (selectedTarget != null)
+
+                if (Orbwalker.LastTarget.IsValid<Obj_AI_Minion>())
                 {
-                    if (selectedTarget.LSDistance(player) < 600)
+                    return;
+                }
+
+                var target = Orbwalker.LastTarget as AIHeroClient;
+
+                if (Orbwalker.LastTarget != null)
+                {
+                    if (target.LSDistance(player) < 600)
                     {
                         // Console.WriteLine("Q on targ ");
-                        Q.Cast(selectedTarget, MasterSharp.getCheckBoxItem(MasterSharp.extraMenu, "packets"));
+                        Q.Cast(target, MasterSharp.getCheckBoxItem(MasterSharp.extraMenu, "packets"));
                         return;
                     }
 
@@ -273,7 +278,7 @@ namespace MasterSharp
                                 ob =>
                                     ob.IsEnemy && (ob is Obj_AI_Minion || ob is AIHeroClient) &&
                                     ob.LSDistance(player) < 600 && !ob.IsDead)
-                            .OrderBy(ob => ob.LSDistance(selectedTarget, true)).FirstOrDefault();
+                            .OrderBy(ob => ob.LSDistance(target, true)).FirstOrDefault();
                     //Console.WriteLine("do shit? " + bestOther.Name);
 
                     if (bestOther != null)
