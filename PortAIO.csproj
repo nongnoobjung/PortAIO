@@ -1535,6 +1535,7 @@
     <Compile Include="Utility\EBPredictioner\YasWallManager.cs" />
     <Compile Include="Utility\EBPredictioner\SpellData.cs" />
     <Compile Include="Utility\EBPredictioner\SPredictioner.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Summoners\Smite.cs" />
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\IncomingDamageManager.cs" />
     <Compile Include="Utility\EmoteSpammer\Program.cs" />
     <Compile Include="Utility\EzEvade\Core\Evade.cs" />
@@ -1618,7 +1619,6 @@
     <Compile Include="Utility\ElUtilitySuite\Summoners\Heal.cs" />
     <Compile Include="Utility\ElUtilitySuite\Summoners\Ignite.cs" />
     <Compile Include="Utility\ElUtilitySuite\Summoners\Mark.cs" />
-    <Compile Include="Utility\ElUtilitySuite\Summoners\Smite.cs" />
     <Compile Include="Utility\ElUtilitySuite\Trackers\CooldownTracker.cs" />
     <Compile Include="Utility\ElUtilitySuite\Trackers\JungleTracker.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\AutoLantern.cs" />

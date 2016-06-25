@@ -1,12 +1,9 @@
 ﻿namespace ElUtilitySuite.Summoners
 {
     using System;
-    using System.Collections.Generic;
     using System.Drawing;
     using System.Globalization;
     using System.Linq;
-
-    using ElUtilitySuite.Vendor.SFX;
 
     using EloBuddy;
     using LeagueSharp.Common;
@@ -18,6 +15,7 @@
     using EloBuddy.SDK;
     using EloBuddy.SDK.Menu.Values;
     using Spell = LeagueSharp.Common.Spell;
+    using Damage = LeagueSharp.Common.Damage;
 
     // ReSharper disable once ClassNeverInstantiated.Global
     public class Smite : IPlugin
@@ -35,37 +33,18 @@
 
         public static Obj_AI_Minion Minion;
 
-        #endregion
-
-        #region Fields
-
-        /// <summary>
-        /// </summary>
-        private string[] minionNames = new string[0];
-
-        /// <summary>
-        /// </summary>
-        private Obj_AI_Minion targetedMinion;
+        private static readonly string[] SmiteObjects =
+            {
+                "SRU_Red", "SRU_Blue", "SRU_Dragon_Water", "SRU_Dragon_Fire",
+                "SRU_Dragon_Earth", "SRU_Dragon_Air", "SRU_Dragon_Elder",
+                "SRU_Baron", "SRU_Gromp", "SRU_Murkwolf", "SRU_Razorbeak",
+                "SRU_RiftHerald", "SRU_Krug", "TT_Spiderboss", "TT_NGolem",
+                "TT_NWolf", "TT_NWraith"
+            };
 
         #endregion
 
         #region Public Properties
-
-        /// <summary>
-        ///     Gets or sets the spells.
-        /// </summary>
-        /// <value>
-        ///     The spells.
-        /// </value>
-        public static List<Smite> Spells { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the name.
-        /// </summary>
-        /// <value>
-        ///     The name.
-        /// </value>
-        public string ChampionName { get; set; }
 
         /// <summary>
         ///     Gets a value indicating whether the combo mode is active.
@@ -84,6 +63,14 @@
         ///     The Smitespell
         /// </value>
         public Spell SmiteSpell { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the slot.
+        /// </summary>
+        /// <value>
+        ///     The stage.
+        /// </value>
+        public int Stage { get; set; }
 
         #endregion
 
@@ -117,23 +104,49 @@
                 return;
             }
 
-
             var smiteMenu = rootMenu.AddSubMenu("Smite", "Smite");
             {
-                smiteMenu.AddLabel("Mobs");
-                smiteMenu.Add("SmiteBig", new CheckBox("Smite big mobs"));
                 smiteMenu.Add("ElSmite.Activated", new KeyBind("Smite Activated", true, KeyBind.BindTypes.PressToggle, 'M'));
                 smiteMenu.Add("Smite.Ammo", new CheckBox("Save 1 smite charge"));
 
+                if (Game.MapId == GameMapId.SummonersRift)
+                {
+                    smiteMenu.AddGroupLabel("Big Mobs");
+                    smiteMenu.Add("SRU_Dragon_Air", new CheckBox("Air Dragon"));
+                    smiteMenu.Add("SRU_Dragon_Earth", new CheckBox("Earth Dragon"));
+                    smiteMenu.Add("SRU_Dragon_Fire", new CheckBox("Fire Dragon"));
+                    smiteMenu.Add("SRU_Dragon_Water", new CheckBox("Water Dragon"));
+                    smiteMenu.Add("SRU_Dragon_Elder", new CheckBox("Elder Dragon"));
+                    smiteMenu.Add("SRU_Baron", new CheckBox("Baron"));
+                    smiteMenu.Add("SRU_Red", new CheckBox("Red buff"));
+                    smiteMenu.Add("SRU_Blue", new CheckBox("Blue buff"));
+                    smiteMenu.Add("SRU_RiftHerald", new CheckBox("Rift Herald"));
+                    smiteMenu.AddSeparator();
+                    smiteMenu.AddGroupLabel("Small Mobs");
+                    smiteMenu.Add("SmiteBig", new CheckBox("Smite big mobs", true));
+                    smiteMenu.Add("SRU_Gromp", new CheckBox("Gromp", false));
+                    smiteMenu.Add("SRU_Murkwolf", new CheckBox("Wolves", false));
+                    smiteMenu.Add("SRU_Krug", new CheckBox("Krug", false));
+                    smiteMenu.Add("SRU_Razorbeak", new CheckBox("Chicken camp", false));
+
+                }
+
+                if (Game.MapId == GameMapId.TwistedTreeline)
+                {
+                    smiteMenu.AddGroupLabel("Mobs");
+                    smiteMenu.Add("TT_Spiderboss", new CheckBox("Vilemaw Enabled"));
+                    smiteMenu.Add("TT_NGolem", new CheckBox("Golem Enabled"));
+                    smiteMenu.Add("TT_NWolf", new CheckBox("Wolf Enabled"));
+                    smiteMenu.Add("TT_NWraith", new CheckBox("Wraith Enabled"));
+                }
 
                 //Champion Smite
-                smiteMenu.AddLabel("Champion smite");
+                smiteMenu.AddGroupLabel("Champion smite");
                 smiteMenu.Add("ElSmite.KS.Activated", new CheckBox("Use smite to killsteal"));
                 smiteMenu.Add("ElSmite.KS.Combo", new CheckBox("Use smite in combo"));
 
-
                 //Drawings
-                smiteMenu.AddLabel("Drawings");
+                smiteMenu.AddGroupLabel("Drawings");
                 smiteMenu.Add("ElSmite.Draw.Range", new CheckBox("Draw smite Range"));
                 smiteMenu.Add("ElSmite.Draw.Text", new CheckBox("Draw smite text"));
                 smiteMenu.Add("ElSmite.Draw.Damage", new CheckBox("Draw smite Damage", false));
@@ -141,36 +154,6 @@
 
             this.Menu = smiteMenu;
         }
-
-        public void Load()
-        {
-            try
-            {
-                var smiteSlot = this.Player.Spellbook.Spells.FirstOrDefault(x => x.Name.ToLower().Contains("smite"));
-
-                if (smiteSlot != null)
-                {
-                    this.SmiteSpell = new Spell(smiteSlot.Slot, SmiteRange, DamageType.True);
-
-                    this.minionNames = new[]
-                                           {
-                                               "SRU_Baron12.1.1", "SRU_Blue1.1.1", "SRU_Red4.1.1", "SRU_Blue7.1.1",
-                                               "SRU_Red10.1.1", "SRU_Dragon_Elder6.5.1", "SRU_Dragon_Air6.1.1",
-                                               "SRU_Dragon_Fire6.2.1", "SRU_Dragon_Water6.3.1", "SRU_Dragon_Elder6.5.1",
-                                               "SRU_Dragon_Earth6.4.1", "SRU_RiftHerald17.1.1", "TT_Spiderboss8.1.1"
-                                           };
-
-                    Drawing.OnDraw += this.OnDraw;
-                    Game.OnUpdate += this.OnUpdate;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"An error occurred: {e}");
-            }
-        }
-
-        #endregion
 
         public static bool getCheckBoxItem(Menu m, string item)
         {
@@ -192,6 +175,28 @@
             return m[item].Cast<ComboBox>().CurrentValue;
         }
 
+        public void Load()
+        {
+            try
+            {
+                var smiteSlot = this.Player.Spellbook.Spells.FirstOrDefault(x => x.Name.ToLower().Contains("smite"));
+
+                if (smiteSlot != null)
+                {
+                    this.SmiteSpell = new Spell(smiteSlot.Slot, SmiteRange, DamageType.True);
+
+                    Drawing.OnDraw += this.OnDraw;
+                    Game.OnUpdate += this.OnUpdate;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred: {e}");
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         private void OnDraw(EventArgs args)
@@ -209,6 +214,7 @@
                 var playerPos = Drawing.WorldToScreen(this.Player.Position);
                 var drawDamage = getCheckBoxItem(this.Menu, "ElSmite.Draw.Damage");
 
+
                 if (smiteActive && this.SmiteSpell != null)
                 {
                     if (drawText && this.Player.Spellbook.CanUseSpell(this.SmiteSpell.Slot) == SpellState.Ready)
@@ -216,7 +222,7 @@
                         Drawing.DrawText(
                             playerPos.X - 70,
                             playerPos.Y + 40,
-                            System.Drawing.Color.GreenYellow,
+                            System.Drawing.Color.GhostWhite,
                             "Smite active");
                     }
 
@@ -229,7 +235,10 @@
                     {
                         var minions =
                             ObjectManager.Get<Obj_AI_Minion>()
-                                .Where(m => m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget());
+                                .Where(
+                                    m =>
+                                    m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget()
+                                    && SmiteObjects.Contains(m.CharData.BaseSkinName));
 
                         foreach (var minion in minions.Where(m => m.IsHPBarRendered))
                         {
@@ -416,37 +425,31 @@
         {
             try
             {
-                if (this.SmiteSpell == null || !this.Menu["ElSmite.Activated"].Cast<KeyBind>().CurrentValue
-                    || this.Player.IsDead)
+                if (this.Player.IsDead || this.SmiteSpell == null || !getKeyBindItem(this.Menu, "ElSmite.Activated"))
                 {
                     return;
                 }
 
-                if (this.SmiteSpell != null && this.Menu["SmiteBig"].Cast<CheckBox>().CurrentValue)
+                foreach (var minion in
+                    ObjectManager.Get<Obj_AI_Minion>()
+                        .Where(
+                            o =>
+                            Vector3.Distance(ObjectManager.Player.Position, o.ServerPosition) <= 950f
+                            && o.Team == GameObjectTeam.Neutral && !o.CharData.BaseSkinName.ToLower().Contains("barrel")
+                            && !o.CharData.BaseSkinName.ToLower().Contains("mini")
+                            && !o.CharData.BaseSkinName.ToLower().Contains("respawn") && getCheckBoxItem(this.Menu, Minion.CharData.BaseSkinName)))
                 {
-                    if (this.targetedMinion == null)
-                    {
-                        this.targetedMinion = ObjectManager.Player.ServerPosition.GetMinionFastByNames(
-                            SmiteRange,
-                            this.minionNames);
-                    }
-
                     if (this.SmiteSpell.IsReady())
                     {
-                        if (this.targetedMinion.LSIsValidTarget(SmiteRange))
+                        if (minion.LSIsValidTarget(SmiteRange))
                         {
-                            if (ObjectManager.Player.GetSummonerSpellDamage(
-                                this.targetedMinion,
-                                LeagueSharp.Common.Damage.SummonerSpell.Smite) > this.targetedMinion.Health)
+                            if (this.Player.GetSummonerSpellDamage(minion, Damage.SummonerSpell.Smite) > minion.Health)
                             {
-                                this.SmiteSpell.Cast(this.targetedMinion);
+                                this.SmiteSpell.Cast(minion);
                             }
                         }
-                        else
-                        {
-                            this.targetedMinion = null;
-                        }
                     }
+
                     return;
                 }
 
@@ -495,7 +498,7 @@
             try
             {
                 return this.Player.Spellbook.GetSpell(this.SmiteSpell.Slot).State == SpellState.Ready
-                           ? (float)this.Player.GetSummonerSpellDamage(Minion, LeagueSharp.Common.Damage.SummonerSpell.Smite)
+                           ? (float)this.Player.GetSummonerSpellDamage(Minion, Damage.SummonerSpell.Smite)
                            : 0;
             }
             catch (Exception e)
