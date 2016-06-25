@@ -110,18 +110,28 @@ namespace Preserved_Kassadin.Update
 
                 if (Player.ManaPercent <= MenuConfig.LaneMana) continue;
 
-                if (MenuConfig.LaneW)
+                if (MenuConfig.LaneW && m.Distance(Player) <= Player.AttackRange + 50)
                 {
                     if (Spells.W.IsReady())
                         Spells.W.Cast();
                 }
 
-                if (!MenuConfig.LaneR) return;
+                if (MenuConfig.LaneE && m.Distance(Player) <= Spells.E.Range)
+                {
+                    var ePred = Spells.E.GetCircularFarmLocation(minions);
+                    if (Spells.E.IsReady())
+                    {
+                        if (ePred.MinionsHit > 3)
+                        {
+                            Spells.E.Cast(ePred.Position);
+                        }
+                    }
+                }
 
-                if (Spells.R.IsReady()) continue;
-                if (m.CountEnemyHeroesInRange(Spells.R.Range) > 0) return;
+                if (!MenuConfig.LaneR || !Spells.R.IsReady() || m.CountEnemyHeroesInRange(Spells.R.Range) > 0) return;
 
                 var rPred = Spells.R.GetCircularFarmLocation(minions);
+
                 if (rPred.MinionsHit < 3) return;
 
                 Spells.R.Cast(rPred.Position);

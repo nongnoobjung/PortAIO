@@ -13,11 +13,19 @@ namespace Preserved_Kassadin.Cores
 
             if (Target.Health < Spells.W.GetDamage(Target)) Spells.W.Cast(Target);
 
-            if (Target.Health < Spells.E.GetDamage(Target)) Spells.E.Cast(Target);
+            if (Target.Health < Spells.E.GetDamage(Target))
+            {
+                if (Target.Distance(Player) <= Spells.R.Range + Spells.E.Range)
+                {
+                    Spells.R.Cast(Target.ServerPosition);
+                }
+                Spells.E.Cast(Target);
+            }
 
             if (Target.Health < Spells.R.GetDamage(Target)) Spells.R.Cast(Target);
 
-            if(Spells.Ignite.IsReady() && Target.Health < Dmg.IgniteDmg) Player.Spellbook.CastSpell(Spells.Ignite, Target);
+
+            if (Spells.Ignite.IsReady() && Target.Health < Dmg.IgniteDmg) Player.Spellbook.CastSpell(Spells.Ignite, Target);
         }
     }
 }
