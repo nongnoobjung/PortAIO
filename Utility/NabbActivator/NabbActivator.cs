@@ -1,7 +1,6 @@
 ﻿using System;
 using EloBuddy;
 using LeagueSharp.SDK;
-using LeagueSharp.SDK.Core.Utils;
 
 namespace NabbActivator
 {
@@ -99,19 +98,6 @@ namespace NabbActivator
             ///     Loads the resetter-items logics.
             /// </summary>
             Activator.Resetters(sender, args);
-        }
-
-        /// <summary>
-        ///     Called on do-cast.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The args.</param>
-        public static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (!AutoAttack.IsAutoAttack(args.SData.Name))
-            {
-                Console.WriteLine($"Name:{args.SData.Name}, Sender:{sender.CharData.BaseSkinName}, Target{args.Target}");
-            }
         }
     }
 }
