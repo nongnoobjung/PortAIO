@@ -157,32 +157,14 @@ namespace Nechrito_Gragas
             if (Player.IsDead || !MenuConfig.prediction) return;
             var heropos = Drawing.WorldToScreen(ObjectManager.Player.Position);
 
+
             var Target = TargetSelector.SelectedTarget;
 
-            if (Target.IsValidTarget() && Target != null)
+            if (Target != null)
             {
-                var pos = Spells.R.GetSPrediction(Target).CastPosition.Extend(Player.Position.LSTo2D(), 0);
-
-                if (Target.IsFacing(Player))
-                {
-                    if (Target.IsMoving)
-                    {
-                        pos = pos + 100;
-                    }
-                    pos = pos + 80;
-                }
-
-                if (!Target.IsFacing(Player))
-                {
-                    if (Target.IsMoving)
-                    {
-                        pos = pos + 120;
-                    }
-                    pos = pos + 100;
-                }
-
-                Render.Circle.DrawCircle(pos.To3D2(), 100, System.Drawing.Color.GhostWhite);
+                Render.Circle.DrawCircle(Mode.pred(Target), 100, System.Drawing.Color.GhostWhite);
             }
+
         }
         private static void Drawing_OnEndScene(EventArgs args)
         {
