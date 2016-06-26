@@ -50,6 +50,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             rMenu = Config.AddSubMenu("R Config");
             rMenu.Add("autoR", new CheckBox("Auto R", true));
+            rMenu.Add("autoRHP", new Slider("Auto R HP", 15, 1, 100));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsAlly))
                 rMenu.Add("Rally" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
             rMenu.AddSeparator();
@@ -85,12 +86,16 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!R.IsReady() || sender.IsMinion || !sender.IsEnemy || args.SData.IsAutoAttack() || !getCheckBoxItem(rMenu, "autoR")
-                 || !sender.IsValid<AIHeroClient>() || args.SData.Name.ToLower() == "tormentedsoil")
+            if (!R.IsReady() || sender.IsMinion || !sender.IsEnemy || args.SData.IsAutoAttack() || !getCheckBoxItem(rMenu, "autoR") || !sender.IsValid<AIHeroClient>() || args.SData.Name.ToLower() == "tormentedsoil")
                 return;
 
-            if (rMenu["spell" + args.SData.Name] == null || !getCheckBoxItem(rMenu, "spell" + args.SData.Name))
+            if (rMenu["spell" + args.SData.Name] == null)
                 return;
+
+            if (!getCheckBoxItem(rMenu, "spell" + args.SData.Name))
+            {
+                return;
+            }
 
             if (args.Target != null)
             {
@@ -165,6 +170,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (ally.Health - dmg < enemys * ally.Level * 20)
                     R.CastOnUnit(ally);
+            }
+
+            foreach (var heroes in EntityManager.Heroes.Allies.Where(heroes => heroes.IsAlly && heroes.HealthPercent < getSliderItem(rMenu, "autoRHP") && R.IsInRange(heroes) && !heroes.IsDead && getCheckBoxItem(rMenu, "Rally" + heroes.ChampionName)))
+            {
+                R.CastOnUnit(heroes);
             }
         }
 

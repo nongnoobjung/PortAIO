@@ -67,9 +67,7 @@ namespace SephKayle
 
             // UltimateManager Options
             ultMenu = Config.AddSubMenu("UltManager", "Ultimate Manager");
-            ultMenu.Add("onlyuincdmg", new CheckBox("Only ult if incoming damage"));
             ultMenu.Add("udamagedetection", new CheckBox("Disable damage detection", false));
-            ultMenu.Add("ucheckdmgafter", new CheckBox("Take HP after damage into consideration"));
             ultMenu.AddSeparator();
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h => h.IsAlly || h.IsMe))
             {
@@ -305,40 +303,6 @@ namespace SephKayle
                     HealUltManager(true, false, target);
                 }
             }
-
-            if (R.IsReady() && Player.LSDistance(target) <= R.Range &&
-                getCheckBoxItem(ultMenu, "ult" + target.NetworkId) &&
-                (target.HealthPercent <= setvalueult ||
-                 (getCheckBoxItem(ultMenu, "ucheckdmgafter") && afterdmg <= setvalueult)) &&
-                (senderhero != null || senderturret != null || target.HealthPercent < 5f))
-            {
-                if (getCheckBoxItem(ultMenu, "udamagedetection"))
-                {
-                    if (args.SData.Name.ToLower().Contains("minion") && target.HealthPercent > 5)
-                    {
-                        return;
-                    }
-                    if (debug())
-                    {
-                        if (afterdmg <= setvalueult)
-                        {
-                            Chat.Print("Ult target: " + target.ChampionName +
-                                       " Ult reason: Incoming spell damage will leave us below set value of " +
-                                       setvalueult + " Current value is: " + target.HealthPercent +
-                                       " and after spell health left is: " + afterdmg +
-                                       " Triggered by: Incoming spell: + " + args.SData.Name);
-                        }
-
-                        else
-                        {
-                            Chat.Print("Ult target: " + target.ChampionName +
-                                       " Ult reason: Incoming spell damage and health below set value of " + setvalueult +
-                                       " Current value is: " + target.HealthPercent + " Triggered by: Incoming spell: + " + args.SData.Name);
-                        }
-                    }
-                    HealUltManager(false, true, target);
-                }
-            }
         }
 
 
@@ -385,7 +349,7 @@ namespace SephKayle
                 }
             }
 
-            if (getCheckBoxItem(miscMenu, "Ultingon") && !getCheckBoxItem(ultMenu, "onlyuincdmg"))
+            if (getCheckBoxItem(miscMenu, "Ultingon"))
             {
                 Console.WriteLine(Player.HealthPercent);
                 var herolist = ObjectManager.Get<AIHeroClient>().Where(h => (h.IsAlly || h.IsMe) && !h.IsZombie && !h.IsDead && getCheckBoxItem(ultMenu, "ult" + h.NetworkId) && h.HealthPercent <= getSliderItem(ultMenu, "upct" + h.NetworkId) && Player.LSDistance(h) <= R.Range && Player.CountEnemiesInRange(600) > 0).OrderByDescending(i => i.IsMe).ThenBy(i => i.HealthPercent);
