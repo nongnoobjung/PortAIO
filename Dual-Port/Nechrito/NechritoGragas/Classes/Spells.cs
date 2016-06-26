@@ -7,7 +7,7 @@ namespace Nechrito_Gragas
     class Spells
     {
         private static AIHeroClient Player = ObjectManager.Player;
-        public static SpellSlot Ignite, Smite, Flash;
+        public static SpellSlot Ignite, Smite;
         public static Spell Q, W, E, R;
         public static void Initialise()
         {
