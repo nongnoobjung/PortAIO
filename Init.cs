@@ -1285,6 +1285,12 @@ namespace PortAIO
                             case 1:
                                 ThreshTherulerofthesoul.Program.Game_OnGameLoad();
                                 break;
+                            case 2:
+                                Thresh___The_Chain_Warden.Program.Game_OnGameLoad();
+                                break;
+                            case 3:
+                                Slutty_Thresh.SluttyThresh.OnLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
