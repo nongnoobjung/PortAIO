@@ -98,6 +98,7 @@ namespace EBPredictioner
 
                         if (enemy != null)
                         {
+                            args.Process = false;
                             SPredictioner.Cast(args.Slot);
                         }
                     }

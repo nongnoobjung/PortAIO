@@ -78,14 +78,6 @@ namespace EBPredictioner
 
         public EloBuddy.SDK.Enumerations.HitChance[] hitChance = { EloBuddy.SDK.Enumerations.HitChance.High, EloBuddy.SDK.Enumerations.HitChance.Medium, EloBuddy.SDK.Enumerations.HitChance.Low };
 
-        public int HitChancePercent
-        {
-            get
-            {
-                return SPredictioner.getHitChance;
-            }
-        }
-
         public bool IsInRange(Obj_AI_Base target)
         {
             switch (Type)
@@ -173,16 +165,13 @@ namespace EBPredictioner
                     var startPos = target.IsInRange(MyHero, realRange) ? target.Position : (MyHero.Position + (target.Position - MyHero.Position).Normalized() * realRange);
                     var pred = GetPrediction(target, startPos);
                     var endPos = startPos + (pred.CastPosition - startPos).Normalized() * (Range - realRange);
-                    if (pred.HitChancePercent >= HitChancePercent)
+                    if (WillHitYasuoWall(pred.CastPosition) || !PredictedPosInRange(target, pred.CastPosition))
                     {
-                        if (WillHitYasuoWall(pred.CastPosition) || !PredictedPosInRange(target, pred.CastPosition))
-                        {
-                            return;
-                        }
-                        if (Player.Instance.Spellbook.CastSpell(Slot, endPos, startPos))
-                        {
-                            LastCastSpellAttempt = Core.GameTickCount;
-                        }
+                        return;
+                    }
+                    if (Player.Instance.Spellbook.CastSpell(Slot, endPos, startPos))
+                    {
+                        LastCastSpellAttempt = Core.GameTickCount;
                     }
                 }
                 return;
@@ -199,16 +188,13 @@ namespace EBPredictioner
             if (Type == SpellType.Linear || Type == SpellType.Circular || Type == SpellType.Cone)
             {
                 var pred = GetPrediction(target);
-                if (pred.HitChancePercent >= HitChancePercent)
+                if (WillHitYasuoWall(pred.CastPosition) || !PredictedPosInRange(target, pred.CastPosition))
                 {
-                    if (WillHitYasuoWall(pred.CastPosition) || !PredictedPosInRange(target, pred.CastPosition))
-                    {
-                        return;
-                    }
-                    if (Player.Instance.Spellbook.CastSpell(Slot, pred.CastPosition))
-                    {
-                        LastCastSpellAttempt = Core.GameTickCount;
-                    }
+                    return;
+                }
+                if (Player.Instance.Spellbook.CastSpell(Slot, pred.CastPosition))
+                {
+                    LastCastSpellAttempt = Core.GameTickCount;
                 }
             }
             else if (Type == SpellType.Targeted)
@@ -225,16 +211,13 @@ namespace EBPredictioner
             else if (Type == SpellType.Self)
             {
                 var pred = GetPrediction(target);
-                if (pred.HitChancePercent >= HitChancePercent)
+                if (!PredictedPosInRange(target, pred.CastPosition))
                 {
-                    if (!PredictedPosInRange(target, pred.CastPosition))
-                    {
-                        return;
-                    }
-                    if (Player.Instance.Spellbook.CastSpell(Slot))
-                    {
-                        LastCastSpellAttempt = Core.GameTickCount;
-                    }
+                    return;
+                }
+                if (Player.Instance.Spellbook.CastSpell(Slot))
+                {
+                    LastCastSpellAttempt = Core.GameTickCount;
                 }
             }
         }
@@ -266,16 +249,13 @@ namespace EBPredictioner
                 if (Type == SpellType.Linear || Type == SpellType.Circular || Type == SpellType.Cone)
                 {
                     var pred = GetPrediction(target);
-                    if (pred.HitChancePercent >= HitChancePercent)
+                    if (WillHitYasuoWall(pred.CastPosition) || !PredictedPosInRange(target, pred.CastPosition))
                     {
-                        if (WillHitYasuoWall(pred.CastPosition) || !PredictedPosInRange(target, pred.CastPosition))
-                        {
-                            return;
-                        }
-                        if (Player.Instance.Spellbook.UpdateChargeableSpell(Slot, pred.CastPosition, true))
-                        {
-                            LastCastSpellAttempt = Core.GameTickCount;
-                        }
+                        return;
+                    }
+                    if (Player.Instance.Spellbook.UpdateChargeableSpell(Slot, pred.CastPosition, true))
+                    {
+                        LastCastSpellAttempt = Core.GameTickCount;
                     }
                 }
             }
