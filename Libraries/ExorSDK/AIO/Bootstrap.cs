@@ -21,6 +21,7 @@ using ExorAIO.Champions.Renekton;
 using ExorAIO.Champions.Ryze;
 using ExorAIO.Champions.Sivir;
 using ExorAIO.Champions.Tryndamere;
+using ExorAIO.Champions.MissFortune;
 using ExorAIO.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
@@ -110,6 +111,9 @@ namespace ExorAIO.Core
                     break;
                 case "Ezreal":
                     new Ezreal().OnLoad();
+                    break;
+                case "MissFortune":
+                    new MissFortune().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

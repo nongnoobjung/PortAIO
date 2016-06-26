@@ -1214,6 +1214,9 @@ namespace PortAIO
                             case 1:
                                 Marksman.Program.Game_OnGameLoad();
                                 break;
+                            case 2:
+                                ExorAIO.AIO.OnLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;

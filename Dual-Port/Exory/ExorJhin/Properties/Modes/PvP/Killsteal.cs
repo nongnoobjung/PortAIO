@@ -6,6 +6,7 @@ using LeagueSharp.SDK;
 using LeagueSharp.Data.Enumerations;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy;
+using SharpDX;
 
 namespace ExorAIO.Champions.Jhin
 {
@@ -30,8 +31,8 @@ namespace ExorAIO.Champions.Jhin
                 foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
                         !Invulnerable.Check(t) &&
+                        !Vars.Cone.IsOutside((Vector2)t.ServerPosition) &&
                         t.LSIsValidTarget(Vars.R.Range) &&
-                        Vars.Cone.IsInside(t) &&
                         Vars.GetRealHealth(t) <
                             (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.R, (Vars.ShotsCount == 3
                                 ? DamageStage.Empowered

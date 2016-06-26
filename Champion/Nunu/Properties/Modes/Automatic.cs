@@ -42,8 +42,8 @@ namespace ExorAIO.Champions.Nunu
                 if (GameObjects.Player.HasBuff("AbsoluteZero") &&
                     !Vars.getKeyBindItem(Vars.RMenu, "key"))
                 {
-                    Orbwalker.MoveTo(Game.CursorPos);
                     Vars.R.Cast();
+                    Orbwalker.MoveTo(Game.CursorPos);
                 }
             }
 

@@ -487,7 +487,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[66]))
                 {
-                    Miscc.Add("missfortune", new ComboBox("Use addon for MissFortune : ", 0, "OKTW", "Marksman II"));
+                    Miscc.Add("missfortune", new ComboBox("Use addon for MissFortune : ", 0, "OKTW", "Marksman II", "ExorAIO"));
                 }
                 if (Player.ChampionName.Equals(Champion[67]))
                 {

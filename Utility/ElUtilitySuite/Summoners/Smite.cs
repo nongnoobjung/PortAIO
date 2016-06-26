@@ -409,6 +409,7 @@
                         && o.Team == GameObjectTeam.Neutral && !o.CharData.BaseSkinName.ToLower().Contains("barrel")
                         && !o.CharData.BaseSkinName.ToLower().Contains("mini")
                         && !o.CharData.BaseSkinName.ToLower().Contains("respawn")
+                        && o.IsHPBarRendered && o.IsVisible
                         && SmiteObjects.Any(x => x.Equals(o.CharData.BaseSkinName)) && o.LSIsValidTarget(SmiteRange)
                         && this.Menu[o.CharData.BaseSkinName].Cast<CheckBox>().CurrentValue && this.Player.GetSummonerSpellDamage(o, LeagueSharp.Common.Damage.SummonerSpell.Smite) > o.Health);
 

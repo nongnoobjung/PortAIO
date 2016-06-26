@@ -5,6 +5,8 @@ using LeagueSharp;
 using LeagueSharp.SDK;
 using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
+using Geometry = ExorAIO.Utilities.Geometry;
+using SharpDX;
 
 namespace ExorAIO.Champions.Jhin
 {
@@ -28,19 +30,19 @@ namespace ExorAIO.Champions.Jhin
             {
                 if (GameObjects.EnemyHeroes.Any(
                     t =>
-                        Vars.Cone.IsInside(t) &&
-                        t.LSIsValidTarget(Vars.R.Range)))
+                        t.LSIsValidTarget(Vars.R.Range) &&
+                        !Vars.Cone.IsOutside((Vector2)t.ServerPosition)))
                 {
                     foreach (var target in GameObjects.EnemyHeroes.Where(
                         t =>
-                            Vars.Cone.IsInside(t) &&
-                            t.LSIsValidTarget(Vars.R.Range)))
+                            t.LSIsValidTarget(Vars.R.Range) &&
+                            !Vars.Cone.IsOutside((Vector2)t.ServerPosition)))
                     {
                         if (Vars.getCheckBoxItem(Vars.RMenu, "nearmouse"))
                         {
                             Vars.R.Cast(Vars.R.GetPrediction(GameObjects.EnemyHeroes.Where(
                                 t =>
-                                    Vars.Cone.IsInside(t) &&
+                                    !Vars.Cone.IsOutside((Vector2)t.ServerPosition) &&
                                     t.LSIsValidTarget(Vars.R.Range)).OrderBy(
                                         o =>
                                             o.Distance(Game.CursorPos)).FirstOrDefault()).UnitPosition);
