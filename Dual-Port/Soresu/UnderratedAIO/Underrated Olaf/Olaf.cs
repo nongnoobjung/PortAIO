@@ -197,8 +197,9 @@ namespace UnderratedAIO.Champions
             {
                 CastQ(target);
             }
-            if (getCheckBoxItem(comboMenu, "usee") && E.CanCast(target) && (E.GetDamage(target) > target.Health) ||
-                player.HealthPercent > 25)
+            if (getCheckBoxItem(comboMenu, "usee") && E.CanCast(target) &&
+                (((E.GetDamage(target) > target.Health) || player.HealthPercent > 25) ||
+                 IncDamages.GetAllyData(player.NetworkId).IsAboutToDie))
             {
                 E.Cast(target);
             }
@@ -251,18 +252,18 @@ namespace UnderratedAIO.Champions
 
         private static void CastQ(AIHeroClient target)
         {
-            var ext = 75;
+            var ext = 0;
+            if (player.LSDistance(target.ServerPosition) > 400)
+            {
+                ext = 100;
+            }
             var pred = Q.GetPrediction(target, true);
-            if (pred.Hitchance >= HitChance.High ||
-                (pred.Hitchance >= HitChance.Medium && player.LSDistance(target) < 500) &&
-                pred.CastPosition.LSDistance(pred.UnitPosition) < 350)
+            var pos = player.Position.LSExtend(pred.CastPosition, player.LSDistance(pred.CastPosition) + ext);
+            if (pred.CastPosition.IsValid() && target.LSDistance(pos) < player.LSDistance(target) &&
+                pred.Hitchance >= HitChance.Medium)
             {
                 //Console.WriteLine(2 + " - " + " - " + pred.Hitchance);
-                Q.Cast(player.Position.LSExtend(pred.CastPosition, player.LSDistance(pred.CastPosition) + ext));
-            }
-            else
-            {
-                //Console.WriteLine("Fail!!!!!! - " + " - " + pred.Hitchance);
+                Q.Cast(pos);
             }
         }
 
