@@ -23,7 +23,6 @@ namespace Thresh___The_Chain_Warden
 
         public static float FlashRange = 450f;
 
-        private static float CheckInterval = 50f;
         private static readonly Dictionary<int, List<Vector2>> _waypoints = new Dictionary<int, List<Vector2>>();
         private static float _lastCheck = Environment.TickCount;
         private static List<Spell> SpellList = new List<Spell>() { Q, Q2, W, E, R }; //Instead of SpellList.Add();
