@@ -1,92 +1,145 @@
 ﻿using LeagueSharp.Common;
-using LeagueSharp;
-using SharpDX;
-using System;
-using EloBuddy.SDK;
 using EloBuddy;
+using SPrediction;
+using System;
+using SharpDX;
+using EloBuddy.SDK;
 
 namespace Nechrito_Gragas
 {
     class Mode
     {
         private static AIHeroClient Player => ObjectManager.Player;
+
+        public static Vector3 pred(AIHeroClient Target)
+        {
+            var pos = Spells.R.GetVectorSPrediction(Target, 20).CastTargetPosition;
+
+            if (Target != null && !pos.LSIsWall())
+            {
+                if (Target.LSIsFacing(Player))
+                {
+                    if (Target.IsMoving)
+                    {
+                        pos = pos.LSExtend(Player.Position.LSTo2D(), -70);
+                    }
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), -70);
+                }
+
+                if (!Target.LSIsFacing(Player))
+                {
+                    if (Target.IsMoving)
+                    {
+                        pos = pos.LSExtend(Player.Position.LSTo2D(), -120);
+                    }
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), -100);
+                }
+            }
+            return pos.To3D2();
+        }
+
         public static void ComboLogic()
         {
             var Target = TargetSelector.SelectedTarget;
+
             if (Target != null && Target.LSIsValidTarget() && !Target.IsZombie && (Program.Player.LSDistance(Target.Position) <= 900) && MenuConfig.ComboR)
             {
-                if (Spells._q.IsReady() && Spells._r.IsReady() && !Target.LSIsDashing())
+                if (Target.LSIsDashing()) return;
+                if (Spells.Q.IsReady() && Spells.R.IsReady())
                 {
-                    var pos = Spells._r.GetPrediction(Target).CastPosition + 110;
+                    Spells.Q.Cast(pred(Target));
+                    Spells.R.Cast(pred(Target));
+                    LeagueSharp.Common.Utility.DelayAction.Add(200, () => Spells.Q.Cast(Target));
+                }
+            }
+
+            var target = TargetSelector.GetTarget(700f, DamageType.Magical);
+
+            if (target != null && target.LSIsValidTarget() && !target.IsZombie)
+            {
+                if (Spells.Q.IsReady())
+                {
+                    var pos = Spells.Q.GetSPrediction(target).CastPosition;
                     {
-                        Spells._q.CastIfHitchanceEquals(Target, HitChance.VeryHigh);
-                        Spells._r.Cast(pos);
+                        Spells.Q.Cast(pos);
                     }
                 }
-                var target = TargetSelector.GetTarget(700f, DamageType.Magical);
-                if (target != null && target.LSIsValidTarget() && !target.IsZombie)
+
+                // E
+                if (Spells.E.IsReady() && !Spells.R.IsReady())
                 {
-                    if (Spells._q.IsReady() && !Spells._r.IsReady())
+                    var pos = Spells.E.GetPrediction(target).CastPosition;
                     {
-                        var pos = Spells._q.GetPrediction(target).CastPosition;
-                        Spells._q.Cast(target);
+                        Spells.E.Cast(pos);
                     }
-                    else if (Spells._r.IsReady() && !MenuConfig.OnlyR)
-                    {
-                        var pos = Spells._r.GetPrediction(target).CastPosition + 100;
-                        if (Target.IsFacing(Program.Player))
-                        {
-                            Spells._r.Cast(pos + 30);
-                        }
-                        if (!Target.IsFacing(Program.Player))
-                        {
-                            Spells._r.Cast(pos + 35);
-                        }
-                    }
-                    // Smite
-                    else if (Spells.Smite != SpellSlot.Unknown && Spells._r.IsReady()
-                          && Player.Spellbook.CanUseSpell(Spells.Smite) == SpellState.Ready && !Target.IsZombie)
-                        Player.Spellbook.CastSpell(Spells.Smite, Target);
-                    // E
-                    if (Spells._e.IsReady())
-                    {
-                        Spells._e.CastIfHitchanceEquals(target, HitChance.High);
-                    }
-                    // W
-                    if (Spells._w.IsReady() && !Spells._e.IsReady())
-                        Spells._w.Cast();
+                }
+
+                // Smite
+                if (Spells.Smite != SpellSlot.Unknown && Spells.R.IsReady() && Player.Spellbook.CanUseSpell(Spells.Smite) == SpellState.Ready && !Target.IsZombie)
+                {
+                    Player.Spellbook.CastSpell(Spells.Smite, Target);
+                }
+
+                else if (Spells.W.IsReady() && !Spells.E.IsReady())
+                {
+                    Spells.W.Cast();
+
                 }
             }
         }
 
         public static void JungleLogic()
         {
-            var mobs = MinionManager.GetMinions(400 + Program.Player.AttackRange, MinionTypes.All, MinionTeam.Neutral,
-           MinionOrderTypes.MaxHealth);
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            var mobs = MinionManager.GetMinions(Player.Position, Spells.W.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
-                if (mobs.Count == 0 || mobs == null)
+                if (mobs.Count == 0 || mobs == null || Player.Spellbook.IsAutoAttacking)
                     return;
 
-                if (Spells._w.IsReady())
-                    Spells._w.Cast();
-                if (Spells._e.IsReady())
-                    Spells._e.Cast(mobs[0]);
-                if (Spells._q.IsReady())
-                    Spells._q.Cast(mobs[0]);
+                foreach (var m in mobs)
+                {
+                    if (m.LSDistance(Player) <= 400f)
+                    {
+                        if (Spells.W.IsReady())
+                        {
+                            Spells.W.Cast();
+                        }
+
+                        if (Spells.E.IsReady())
+                        {
+                            Spells.E.Cast(m);
+                        }
+
+                        if (Spells.Q.IsReady())
+                        {
+                            Spells.Q.Cast(m);
+                        }
+                    }
+                }
             }
         }
         public static void HarassLogic()
         {
-            var target = TargetSelector.GetTarget(Spells._r.Range - 50, DamageType.Magical);
+            var target = TargetSelector.GetTarget(Spells.R.Range - 50, DamageType.Magical);
             if (target != null && target.LSIsValidTarget() && !target.IsZombie)
             {
-                if (Spells._e.IsReady())
-                    Spells._e.Cast(target);
-                if (Spells._q.IsReady())
+                if (Spells.E.IsReady() && MenuConfig.harassE)
                 {
-                    var pos = Spells._q.GetPrediction(target).CastPosition;
-                    Spells._q.Cast(pos);
+                    Spells.E.Cast(target);
+                }
+
+                if (Spells.Q.IsReady() && MenuConfig.harassQ)
+                {
+                    var pos = Spells.Q.GetSPrediction(target).CastPosition;
+                    Spells.Q.Cast(pos);
+                }
+
+                if (Spells.W.IsReady())
+                {
+                    if (target.Distance(Player) <= Player.AttackRange)
+                    {
+                        Spells.W.Cast();
+                    }
                 }
             }
         }

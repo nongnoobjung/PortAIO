@@ -31,6 +31,7 @@ namespace ExorAIO.Champions.Cassiopeia
             if (Vars.E.IsReady() &&
                 Targets.Target.LSIsValidTarget(Vars.E.Range) &&
                 Targets.Target.HasBuffOfType(BuffType.Poison) &&
+                !Invulnerable.Check(Targets.Target, DamageType.Magical, false) &&
                 Vars.getCheckBoxItem(Vars.EMenu, "combo"))
             {
                 DelayAction.Add(

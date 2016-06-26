@@ -463,7 +463,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[60]))
                 {
-                    Miscc.Add("olaf", new ComboBox("Use addon for Olaf : ", 0, "ExorAIO", "Olaf is Back"));
+                    Miscc.Add("olaf", new ComboBox("Use addon for Olaf : ", 0, "ExorAIO", "Olaf is Back", "UnderratedAIO Olaf"));
                 }
                 if (Player.ChampionName.Equals(Champion[61]))
                 {
@@ -487,7 +487,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[66]))
                 {
-                    Miscc.Add("missfortune", new ComboBox("Use addon for MissFortune : ", 0, "OKTW", "Marksman II"));
+                    Miscc.Add("missfortune", new ComboBox("Use addon for MissFortune : ", 0, "OKTW", "Marksman II", "ExorAIO"));
                 }
                 if (Player.ChampionName.Equals(Champion[67]))
                 {

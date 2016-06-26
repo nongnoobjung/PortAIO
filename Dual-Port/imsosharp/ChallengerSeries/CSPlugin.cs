@@ -87,13 +87,18 @@ namespace Challenger_Series
             TriggerOnUpdate = getSliderItem(CrossAssemblySettings, "triggeronupdate");
             if (this.DelayedOnUpdate != null)
             {
-                if (this.IsPerformanceChallengerEnabled && Variables.TickCount - this._lastOnUpdateTriggerT > 1000 / this.TriggerOnUpdate)
+                if (this.IsPerformanceChallengerEnabled)
                 {
-                    this._lastOnUpdateTriggerT = Variables.TickCount;
-                    this.DelayedOnUpdate(args);
-                    return;
+                    if (Variables.TickCount - this._lastOnUpdateTriggerT > 1000 / this.TriggerOnUpdate)
+                    {
+                        this._lastOnUpdateTriggerT = Variables.TickCount;
+                        this.DelayedOnUpdate(args);
+                    }
                 }
-                this.DelayedOnUpdate(args);
+                else
+                {
+                    this.DelayedOnUpdate(args);
+                }
             }
         }
     }

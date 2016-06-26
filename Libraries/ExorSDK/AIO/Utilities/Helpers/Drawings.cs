@@ -25,7 +25,7 @@ namespace ExorAIO.Utilities
                 if (Vars.End != Vector3.Zero &&
                     Vars.R.Instance.Name.Equals("JhinRShot"))
                 {
-                    Vars.Cone.Draw(GameObjects.EnemyHeroes.Any(t => Vars.Cone.IsInside(t)) ? Color.Green : Color.Red, 1);
+                    Vars.Cone.Draw(GameObjects.EnemyHeroes.Any(t => !Vars.Cone.IsOutside((Vector2)t.ServerPosition)) ? Color.Green : Color.Red, 1);
                 }
 
                 /// <summary>

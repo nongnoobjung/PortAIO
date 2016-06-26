@@ -16,7 +16,7 @@ namespace YasuoPro
 
         internal static AIHeroClient Yasuo;
 
-        internal float QRadius = 160 * 2 + 1 + 1 - 162;
+        internal float QRadius = 170;
 
         internal static Obj_Shop shop = ObjectManager.Get<Obj_Shop>().FirstOrDefault(x => x.IsAlly);
 
@@ -39,9 +39,9 @@ namespace YasuoPro
             get { return (int)(Game.Time * 1000f); }
         }
 
-        internal bool InAir
+        internal bool InDash
         {
-            get { return TickCount - LastDashTick < 250; }
+            get { return TickCount - LastDashTick < 500; }
         }
 
         /* Credits to Brian for Q Skillshot values */
@@ -52,7 +52,7 @@ namespace YasuoPro
         {
             Spells =  new Dictionary<int, LeagueSharp.Common.Spell> {
             { 1, new LeagueSharp.Common.Spell(SpellSlot.Q, 450f) },
-            { 2, new LeagueSharp.Common.Spell(SpellSlot.Q, 1150f) },
+            { 2, new LeagueSharp.Common.Spell(SpellSlot.Q, 1100f) },
             { 3, new LeagueSharp.Common.Spell(SpellSlot.W, 450f) },
             { 4, new LeagueSharp.Common.Spell(SpellSlot.E, 475f) },
             { 5, new LeagueSharp.Common.Spell(SpellSlot.R, 1250f) },
@@ -60,6 +60,7 @@ namespace YasuoPro
             };
 
             Spells[Q].SetSkillshot(GetQ1Delay, 20f, float.MaxValue, false, SkillshotType.SkillshotLine);
+
             Spells[Q2].SetSkillshot(GetQ2Delay, 90, 1500, false, SkillshotType.SkillshotLine);
             Spells[E].SetTargetted(0.075f, 1025);
         }
@@ -134,43 +135,14 @@ namespace YasuoPro
             }
         }
 
+
+
         internal bool ShouldNormalQ(AIHeroClient target)
         {
-            return QLeftPCT <= 20 || !TowerCheck(target, true) || !target.IsDashable(Spells[E].Range * 3);
+            var pos = GetDashPos(target);
+            return QLeftPCT <= 30 || !TowerCheck(pos, true) || !target.IsDashable(Spells[E].Range * 3) || !targInKnockupRadius(pos.To3D());
         }
 
-
-        bool simulatePath(Vector2 startPoint, AIHeroClient target, int jcount = 0)
-        {
-            if (startPoint.Distance(target) <= Spells[E].Range)
-            {
-                return true;
-            }
-
-            if (jcount > 3)
-            {
-                return false;
-            }
-
-            var minion =
-              ObjectManager.Get<Obj_AI_Minion>()
-                  .Where(
-                      x =>
-                          x.IsDashableFrom(startPoint) &&
-                          GetDashPosFrom(startPoint, x).Distance(target) < Yasuo.Distance(target))
-                  .MinOrDefault(x => GetDashPosFrom(startPoint, x).Distance(target));
-
-
-
-            if (minion != null)
-            {
-                var pos1 = GetDashPos(minion);
-                jcount++;
-                simulatePath(pos1, target, jcount);
-            }
-
-            return false;
-        }
 
         internal bool UseQ(AIHeroClient target, HitChance minhc = HitChance.Medium, bool UseQ1 = true, bool UseQ2 = true)
         {
@@ -179,7 +151,7 @@ namespace YasuoPro
                 return false;
             }
 
-            if (Yasuo.LSIsDashing() || InAir)
+            if (Yasuo.LSIsDashing() || InDash)
             {
                 return false;
             }
@@ -200,7 +172,7 @@ namespace YasuoPro
                         var dashPos = GetDashPos(target);
                         if (dashPos.To3D().CountEnemiesInRange(QRadius) >= 1)
                         {
-                            //Cast E to trigger EQ
+                            //Cast E to trigger EQ 
                             if (GetBool("Misc.saveQ4QE", YasuoMenu.MiscM) && isHealthy && GetBool("Combo.UseE", YasuoMenu.ComboM) &&
                                 (GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) ||
                                  !GetDashPos(target).PointUnderEnemyTurret()))
@@ -407,11 +379,20 @@ namespace YasuoPro
             return GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) || !Helper.GetDashPos(unit).PointUnderEnemyTurret();
         }
 
-
+        internal bool TowerCheck(Vector2 pos, bool isCombo = false)
+        {
+            return (isCombo && GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) ||
+                    pos.PointUnderEnemyTurret());
+        }
 
         internal bool targInKnockupRadius(AIHeroClient targ)
         {
             var dpos = GetDashPos(targ).To3D();
+            return dpos.CountEnemiesInRange(QRadius) > 0;
+        }
+
+        internal bool targInKnockupRadius(Vector3 dpos)
+        {
             return dpos.CountEnemiesInRange(QRadius) > 0;
         }
 

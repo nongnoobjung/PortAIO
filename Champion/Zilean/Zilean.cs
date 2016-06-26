@@ -12,6 +12,8 @@
     using EloBuddy.SDK.Menu.Values;
     using EloBuddy.SDK;
     using Spell = LeagueSharp.Common.Spell;
+    using Utility = LeagueSharp.Common.Utility;
+    using Damage = LeagueSharp.Common.Damage;
 
 
     internal class Zilean
@@ -316,27 +318,20 @@
         /// </summary>
         private static void HandleIgnite()
         {
-            try
+            if (Player.GetSpellSlot("summonerdot") == SpellSlot.Unknown)
             {
-                if (Player.GetSpellSlot("summonerdot") == SpellSlot.Unknown)
-                {
-                    return;
-                }
-
-                var kSableEnemy =
-                    HeroManager.Enemies.FirstOrDefault(
-                        hero =>
-                        hero.LSIsValidTarget(550f) && !hero.HasBuff("summonerdot") && !hero.IsZombie
-                        && Player.GetSummonerSpellDamage(hero, LeagueSharp.Common.Damage.SummonerSpell.Ignite) >= hero.Health);
-
-                if (kSableEnemy != null)
-                {
-                    Player.Spellbook.CastSpell(IgniteSpell.Slot, kSableEnemy);
-                }
+                return;
             }
-            catch (Exception exception)
+
+            var kSableEnemy =
+                HeroManager.Enemies.FirstOrDefault(
+                    hero =>
+                    hero.LSIsValidTarget(550f) && !hero.HasBuff("summonerdot") && !hero.IsZombie
+                    && Player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite) >= hero.Health);
+
+            if (kSableEnemy != null)
             {
-                Console.WriteLine(exception);
+                Player.Spellbook.CastSpell(IgniteSpell.Slot, kSableEnemy);
             }
         }
 
@@ -347,10 +342,9 @@
             if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && Q.IsReady())
             {
                 Q.Cast(Game.CursorPos);
-                LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
+                Utility.DelayAction.Add(100, () => W.Cast());
             }
         }
-
 
         /// <summary>
         ///     Combo logic
@@ -405,8 +399,9 @@
                 }
             }
 
+
             // Check if target has a bomb
-            var isBombed = HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.IsValidTarget(Q.Range));
+            var isBombed = HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(Q.Range));
 
             if (!isBombed.LSIsValidTarget())
             {
@@ -460,24 +455,17 @@
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         private static void OnDraw(EventArgs args)
         {
-            try
+            if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Off"))
             {
-                if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Off"))
-                {
-                    return;
-                }
-
-                if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Q"))
-                {
-                    if (Q.Level > 0)
-                    {
-                        Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.DodgerBlue);
-                    }
-                }
+                return;
             }
-            catch (Exception exception)
+
+            if (getCheckBoxItem(drawingsMenu, "ElZilean.Draw.Q"))
             {
-                Console.WriteLine(exception);
+                if (Q.Level > 0)
+                {
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, Q.Range, Color.DodgerBlue);
+                }
             }
         }
 
@@ -486,151 +474,125 @@
         /// </summary>
         private static void OnFlee()
         {
-            try
+            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+
+            if (E.IsReady() && Player.Mana > getSliderItem(fleeMenu, "ElZilean.Flee.Mana"))
             {
-                if (E.IsReady() && Player.Mana > getSliderItem(fleeMenu, "ElZilean.Flee.Mana"))
-                {
-                    E.Cast();
-                }
-
-                if (!E.IsReady() && W.IsReady())
-                {
-                    if (HasSpeedBuff)
-                    {
-                        return;
-                    }
-
-                    W.Cast();
-                }
+                E.Cast();
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
 
-        /// <summary>
-        ///     Harass logic by Chewymoon (pls no kill)
-        /// </summary>
-        private static void OnHarass()
-        {
-            try
+            if (!E.IsReady() && W.IsReady())
             {
-                var target = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-                if (target == null)
+                if (HasSpeedBuff)
                 {
                     return;
                 }
 
-                if (getCheckBoxItem(harassMenu, "ElZilean.Harass.Q") && Q.IsReady() && target.LSIsValidTarget(Q.Range))
-                {
-                    var pred = Q.GetPrediction(target);
-                    if (pred.Hitchance >= HitChance.VeryHigh)
-                    {
-                        Q.Cast(pred.UnitPosition);
-                    }
-                }
+                W.Cast();
+            }
+        }
 
-                if (getCheckBoxItem(harassMenu, "ElZilean.Harass.W") && W.IsReady() && !Q.IsReady())
+        /// <summary>
+        ///     Harass logic
+        /// </summary>
+        private static void OnHarass()
+        {
+            var target = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
+            if (target == null)
+            {
+                return;
+            }
+
+            if (getCheckBoxItem(harassMenu, "ElZilean.Harass.Q") && Q.IsReady() && target.LSIsValidTarget(Q.Range))
+            {
+                var pred = Q.GetPrediction(target);
+                if (pred.Hitchance >= HitChance.VeryHigh)
+                {
+                    Q.Cast(pred.UnitPosition);
+                }
+            }
+
+            if (getCheckBoxItem(harassMenu, "ElZilean.Harass.W") && W.IsReady() && !Q.IsReady())
+            {
+                W.Cast();
+            }
+
+            // Check if target has a bomb
+            var isBombed =
+                HeroManager.Enemies.FirstOrDefault(x => x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(Q.Range));
+
+            if (isBombed.LSIsValidTarget())
+            {
+                if (getCheckBoxItem(harassMenu, "ElZilean.Harass.W"))
                 {
                     W.Cast();
                 }
-
-                // Check if target has a bomb
-                var isBombed =
-                    HeroManager.Enemies.FirstOrDefault(x => x.HasBuff("ZileanQEnemyBomb") && x.IsValidTarget(Q.Range));
-
-                if (isBombed.LSIsValidTarget())
-                {
-                    if (getCheckBoxItem(harassMenu, "ElZilean.Harass.Q"))
-                    {
-                        W.Cast();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
             }
         }
 
         private static void OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            try
+            if (sender == null || !sender.LSIsValidTarget(Q.Range) || !sender.IsEnemy)
             {
-                if (sender == null || !sender.IsValidTarget(Q.Range) || !sender.IsEnemy)
-                {
-                    return;
-                }
-
-                if (sender.IsValid && args.DangerLevel == Interrupter2.DangerLevel.High
-                    && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
-                {
-                    if (Q.IsReady() && sender.LSIsValidTarget(Q.Range))
-                    {
-                        var prediction = Q.GetPrediction(sender);
-                        if (prediction.Hitchance >= HitChance.VeryHigh)
-                        {
-                            Q.Cast(prediction.CastPosition);
-                        }
-                    }
-                    LeagueSharp.Common.Utility.DelayAction.Add(100, () => W.Cast());
-                }
+                return;
             }
-            catch (Exception exception)
+
+            if (sender.IsValid && args.DangerLevel == Interrupter2.DangerLevel.High
+                && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
             {
-                Console.WriteLine(exception);
+                if (Q.IsReady() && sender.LSIsValidTarget(Q.Range))
+                {
+                    var prediction = Q.GetPrediction(sender);
+                    if (prediction.Hitchance >= HitChance.VeryHigh)
+                    {
+                        Q.Cast(prediction.CastPosition);
+                    }
+                }
+                Utility.DelayAction.Add(100, () => W.Cast());
             }
         }
 
         /// <summary>
-        ///     The laneclear "logic"
+        ///     The laneclear logic
         /// </summary>
         private static void OnLaneclear()
         {
-            try
+            var minion = MinionManager.GetMinions(Player.Position, Q.Range + Q.Width);
+            if (minion == null)
             {
-                var minion = MinionManager.GetMinions(Player.Position, Q.Range + Q.Width);
-                if (minion == null)
-                {
-                    return;
-                }
-
-                if (Player.ManaPercent < getSliderItem(laneMenu, "ElZilean.laneclear.Mana"))
-                {
-                    return;
-                }
-
-                var farmLocation =
-                    MinionManager.GetBestCircularFarmLocation(
-                        MinionManager.GetMinions(Q.Range).Select(x => x.ServerPosition.LSTo2D()).ToList(),
-                        Q.Width,
-                        Q.Range);
-
-                if (farmLocation.MinionsHit == 0)
-                {
-                    return;
-                }
-
-                if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.Q") && getCheckBoxItem(laneMenu, "ElZilean.laneclear.QMouse") && Q.IsReady())
-                {
-                    Q.Cast(Game.CursorPos);
-                }
-
-                if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.Q") && Q.IsReady() && !getCheckBoxItem(laneMenu, "ElZilean.laneclear.QMouse")
-                    && farmLocation.MinionsHit >= 3)
-                {
-                    Q.Cast(farmLocation.Position.To3D());
-                }
-
-                if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.W") && W.IsReady())
-                {
-                    W.Cast();
-                }
+                return;
             }
-            catch (Exception exception)
+
+            if (Player.ManaPercent < getSliderItem(laneMenu, "ElZilean.laneclear.Mana"))
             {
-                Console.WriteLine(exception);
+                return;
+            }
+
+            var farmLocation =
+                MinionManager.GetBestCircularFarmLocation(
+                    MinionManager.GetMinions(Q.Range).Select(x => x.ServerPosition.LSTo2D()).ToList(),
+                    Q.Width,
+                    Q.Range);
+
+            if (farmLocation.MinionsHit == 0)
+            {
+                return;
+            }
+
+            if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.Q") && getCheckBoxItem(laneMenu, "ElZilean.laneclear.QMouse") && Q.IsReady())
+            {
+                Q.Cast(Game.CursorPos);
+            }
+
+            if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.Q") && Q.IsReady() && !getCheckBoxItem(laneMenu, "ElZilean.laneclear.QMouse")
+                && farmLocation.MinionsHit >= 3)
+            {
+                Q.Cast(farmLocation.Position.To3D());
+            }
+
+            if (getCheckBoxItem(laneMenu, "ElZilean.laneclear.W") && W.IsReady())
+            {
+                W.Cast();
             }
         }
 
@@ -641,40 +603,33 @@
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            try
+            var hero = sender as Obj_AI_Base;
+            if (hero == null || !(sender is AIHeroClient))
             {
-                var hero = sender as AIHeroClient;
-                if (hero == null)
-                {
-                    return;
-                }
+                return;
+            }
 
-                if (!sender.IsAlly || !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}") || !sender.IsValidTarget(E.Range, false))
-                {
-                    return;
-                }
+            if (!sender.IsAlly || !getCheckBoxItem(initiatorMenu, $"Initiator{sender.CharData.BaseSkinName}"))
+            {
+                return;
+            }
 
-                var initiatorChampionSpell =
-                    Spells.FirstOrDefault(x => x.SDataName.Equals(args.SData.Name, StringComparison.OrdinalIgnoreCase));
+            var initiatorChampionSpell =
+                Spells.FirstOrDefault(x => x.SDataName.Equals(args.SData.Name, StringComparison.OrdinalIgnoreCase));
 
-                if (initiatorChampionSpell != null)
+            if (initiatorChampionSpell != null)
+            {
+                if (args.Start.LSDistance(Player.Position) <= E.Range && args.End.LSDistance(Player.Position) <= E.Range
+                    && HeroManager.Enemies.Any(
+                        e =>
+                        e.LSIsValidTarget(E.Range, false) && !e.IsDead
+                        && (e.Position.LSDistance(args.End) < 600f || e.Position.LSDistance(args.Start) < 800f)))
                 {
-                    if (args.Start.Distance(Player.Position) <= E.Range && args.End.LSDistance(Player.Position) <= E.Range
-                        && HeroManager.Enemies.Any(
-                            e =>
-                            e.LSIsValidTarget(E.Range, false) && !e.IsDead
-                            && (e.Position.Distance(args.End) < 600f || e.Position.LSDistance(args.Start) < 800f)))
+                    if (E.IsReady() && E.IsInRange(hero))
                     {
-                        if (E.IsReady() && E.IsInRange(hero))
-                        {
-                            E.CastOnUnit(hero);
-                        }
+                        E.CastOnUnit(hero);
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("An error occurred: '{0}'", e);
             }
         }
 
@@ -724,7 +679,7 @@
                     foreach (
                         var slowedAlly in
                             HeroManager.Allies.Where(
-                                x => x.HasBuffOfType(BuffType.Slow) && x.IsValidTarget(Q.Range, false)))
+                                x => x.HasBuffOfType(BuffType.Slow) && x.LSIsValidTarget(Q.Range, false)))
                     {
                         if (E.IsReady() && E.IsInRange(slowedAlly))
                         {
@@ -760,7 +715,7 @@
                 foreach (var ally in HeroManager.Allies.Where(a => a.LSIsValidTarget(R.Range, false)))
                 {
                     if (!getCheckBoxItem(ultMenu, $"R{ally.ChampionName}") || ally.IsRecalling() || ally.IsInvulnerable
-                        || !ally.IsValidTarget(R.Range, false))
+                        || !ally.LSIsValidTarget(R.Range, false))
                     {
                         return;
                     }
@@ -768,7 +723,7 @@
                     var enemies = ally.LSCountEnemiesInRange(750f);
                     var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
                     if (ally.HealthPercent <= getSliderItem(ultMenu, "min-health") && !ally.IsDead
-                        && enemies >= 1 && ally.IsValidTarget(R.Range, false))
+                        && enemies >= 1 && ally.LSIsValidTarget(R.Range, false))
                     {
                         if ((int)(totalDamage / ally.Health) > getSliderItem(ultMenu, "min-damage")
                             || ally.HealthPercent < getSliderItem(ultMenu, "min-health"))

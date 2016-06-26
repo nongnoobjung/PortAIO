@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using LeagueSharp;
+using EloBuddy;
 using LeagueSharp.Common;
 using SharpDX;
-using EloBuddy;
+using SPrediction;
 using EloBuddy.SDK;
 
 namespace Nechrito_Gragas
@@ -13,22 +13,30 @@ namespace Nechrito_Gragas
         public static readonly int[] BlueSmite = { 3706, 1400, 1401, 1402, 1403 };
 
         public static readonly int[] RedSmite = { 3715, 1415, 1414, 1413, 1412 };
-        
+
         public static AIHeroClient Player => ObjectManager.Player;
+
         private static readonly HpBarIndicator Indicator = new HpBarIndicator();
-        
+
         public static void OnGameLoad()
         {
             if (Player.ChampionName != "Gragas") return;
+
+            Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Nechrito Gragas</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Version: 3 (Date: 26/6-16)</font></b>");
+
             MenuConfig.LoadMenu();
             Spells.Initialise();
+
             Game.OnUpdate += OnTick;
+
             Obj_AI_Base.OnSpellCast += OnDoCast;
+
             Drawing.OnDraw += Drawing_OnDraw;
             Drawing.OnEndScene += Drawing_OnEndScene;
         }
         private static void OnTick(EventArgs args)
         {
+            SmiteJungle();
             SmiteCombo();
             Killsteal();
 
@@ -37,121 +45,139 @@ namespace Nechrito_Gragas
                 Mode.ComboLogic();
             }
 
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            {
+                Mode.JungleLogic();
+            }
+
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
                 Mode.HarassLogic();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
-            {
-                Mode.JungleLogic();
-            }
         }
         private static void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
+            if (Player.Spellbook.IsAutoAttacking) return;
+
             if (args.Target is Obj_AI_Minion)
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
                 {
-                    var minions = MinionManager.GetMinions(Player.ServerPosition, 600f).FirstOrDefault();
+                    var minions = MinionManager.GetMinions(Player.ServerPosition, 600);
                     {
                         if (minions == null)
                             return;
-                        if (Spells._w.IsReady() && MenuConfig.LaneW)
-                            Spells._w.Cast();
-                        if (Spells._e.IsReady() && MenuConfig.LaneE)
-                            Spells._e.Cast(GetCenterMinion());
-                        if (Spells._q.IsReady() && MenuConfig.LaneQ)
-                            Spells._q.Cast(GetCenterMinion());
+
+                        foreach (var m in minions)
+                        {
+                            if (Spells.E.IsReady() && MenuConfig.LaneE)
+                            {
+                                if (m.Health < Spells.E.GetDamage(m))
+                                {
+                                    Spells.E.Cast(GetCenterMinion());
+                                }
+                            }
+
+                            if (Spells.Q.IsReady() && MenuConfig.LaneQ)
+                            {
+                                if (m.Health < Spells.Q.GetDamage(m))
+                                {
+                                    Spells.Q.Cast(GetCenterMinion());
+                                }
+                            }
+                        }
+
+                        if (Spells.W.IsReady() && MenuConfig.LaneW)
+                        {
+                            Spells.W.Cast();
+                        }
                     }
-                   
                 }
             }
         }
-        
+
+
         public static Obj_AI_Base GetCenterMinion()
         {
-            var minionposition = MinionManager.GetMinions(300 + Spells._q.Range).Select(x => x.Position.LSTo2D()).ToList();
-            var center = MinionManager.GetBestCircularFarmLocation(minionposition, 250, 300 + Spells._q.Range);
+            var minionposition = MinionManager.GetMinions(300 + Spells.Q.Range).Select(x => x.Position.LSTo2D()).ToList();
+            var center = MinionManager.GetBestCircularFarmLocation(minionposition, 250, 300 + Spells.Q.Range);
 
-            return center.MinionsHit >= 3
+            return center.MinionsHit >= 4
                 ? MinionManager.GetMinions(1000).OrderBy(x => x.LSDistance(center.Position)).FirstOrDefault()
                 : null;
         }
         private static void Killsteal()
         {
-            if(Spells._q.IsReady() && Spells._r.IsReady())
-            if (Spells._q.IsReady())
-                {
-                    var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._q.Range) && !x.IsZombie);
-                    foreach (var target in targets)
-                    {
-                        if (target.Health < Spells._q.GetDamage(target) + Spells._q.GetDamage(target))   
-                        {
-                            var pos = Spells._r.GetPrediction(target).CastPosition + 60;
-                          
-                            Spells._q.Cast(pos);
-                            Spells._r.Cast(pos);
-                        }
-                    }
-                }
+            if (Spells.Q.IsReady() && Spells.R.IsReady())
             {
-                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._q.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.Q.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
-                    if (target.Health < Spells._q.GetDamage(target))
+                    if (target.Health < Spells.Q.GetDamage(target) + Spells.Q.GetDamage(target))
                     {
-                        var pos = Spells._q.GetPrediction(target).CastPosition;
-                        Spells._q.Cast(pos);
+                        var pos = Spells.R.GetSPrediction(target).CastPosition + 60;
+
+                        Spells.Q.Cast(pos);
+                        Spells.R.Cast(pos);
                     }
                 }
             }
-            if (Spells._e.IsReady())
+
+            if (Spells.Q.IsReady())
             {
-                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._e.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.Q.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
-                    if (target.Health < Spells._e.GetDamage(target))
+                    if (target.Health < Spells.Q.GetDamage(target))
                     {
-                        var pos = Spells._e.GetPrediction(target).CastPosition;
-                        Spells._e.Cast(pos);
+                        var pos = Spells.Q.GetSPrediction(target).CastPosition;
+                        Spells.Q.Cast(pos);
+                        Spells.Q.Cast(pos);
                     }
                 }
             }
-            if (Spells._r.IsReady())
+
+            if (Spells.E.IsReady())
             {
-                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells._r.Range + Spells._e.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Spells.E.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
-                    if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.LSDistance(target.Position) <= Spells._e.Range) && (Player.LSDistance(target.Position) >= Spells._r.Range))
+                    if (target.Health < Spells.E.GetDamage(target))
                     {
-                        var pos = Spells._r.GetPrediction(target).CastPosition + 60;
-                        Spells._e.Cast(target);
-                        Spells._r.Cast(pos);
+                        var pos = Spells.E.GetSPrediction(target).CastPosition;
+                        Spells.E.Cast(pos);
                     }
                 }
             }
         }
+
         private static void Drawing_OnDraw(EventArgs args)
         {
-            if (Player.IsDead)
-                return;
+            if (Player.IsDead || !MenuConfig.prediction) return;
             var heropos = Drawing.WorldToScreen(ObjectManager.Player.Position);
+
+
+            var Target = TargetSelector.SelectedTarget;
+
+            if (Target != null)
+            {
+                Render.Circle.DrawCircle(Mode.pred(Target), 100, System.Drawing.Color.GhostWhite);
+            }
+
         }
         private static void Drawing_OnEndScene(EventArgs args)
         {
-            foreach (
-                var enemy in
-                    ObjectManager.Get<AIHeroClient>()
-                        .Where(ene => ene.LSIsValidTarget() && !ene.IsZombie))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.LSIsValidTarget() && !ene.IsZombie))
             {
                 if (MenuConfig.dind)
                 {
-                    var ezkill = Spells._r.IsReady() && Dmg.IsLethal(enemy)
+                    var lethal = Spells.R.IsReady() && Dmg.IsLethal(enemy)
                         ? new ColorBGRA(0, 255, 0, 120)
                         : new ColorBGRA(255, 255, 0, 120);
+
                     Indicator.unit = enemy;
-                    Indicator.drawDmg(Dmg.ComboDmg(enemy), ezkill);
+                    Indicator.drawDmg(Dmg.ComboDmg(enemy), lethal);
                 }
             }
         }
@@ -170,6 +196,26 @@ namespace Nechrito_Gragas
             }
 
             Spells.Smite = Player.GetSpellSlot("summonersmite");
+        }
+
+        protected static void SmiteJungle()
+        {
+            foreach (var minion in MinionManager.GetMinions(900f, MinionTypes.All, MinionTeam.Neutral))
+            {
+                var damage = Player.Spellbook.GetSpell(Spells.Smite).State == SpellState.Ready
+                    ? (float)Player.GetSummonerSpellDamage(minion, LeagueSharp.Common.Damage.SummonerSpell.Smite)
+                    : 0;
+                if (minion.LSDistance(Player.ServerPosition) <= 550)
+                {
+                    if ((minion.CharData.BaseSkinName.Contains("Dragon") || minion.CharData.BaseSkinName.Contains("Baron")))
+                    {
+                        if (damage >= minion.Health)
+                            Player.Spellbook.CastSpell(Spells.Smite, minion);
+                    }
+                }
+
+            }
+
         }
     }
 }

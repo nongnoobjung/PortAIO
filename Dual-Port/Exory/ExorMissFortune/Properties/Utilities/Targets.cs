@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using ExorAIO.Utilities;
-using LeagueSharp;
+using EloBuddy;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
-using EloBuddy;
 
-namespace ExorAIO.Champions.Cassiopeia
+namespace ExorAIO.Champions.MissFortune
 {
     /// <summary>
     ///     The targets class.
@@ -17,7 +16,7 @@ namespace ExorAIO.Champions.Cassiopeia
         /// <summary>
         ///     The main hero target.
         /// </summary>
-        public static AIHeroClient Target => TargetSelector.GetTarget(Vars.W.Range, DamageType.Magical);
+        public static AIHeroClient Target => TargetSelector.GetTarget(Vars.R.Range, DamageType.Physical);
 
         /// <summary>
         ///     The minions target.
@@ -27,7 +26,7 @@ namespace ExorAIO.Champions.Cassiopeia
                 GameObjects.EnemyMinions.Where(
                     m =>
                         m.IsMinion() &&
-                        m.LSIsValidTarget(Vars.W.Range)).ToList();
+                        m.LSIsValidTarget(Vars.E.Range)).ToList();
 
         /// <summary>
         ///     The jungle minion targets.
@@ -36,17 +35,7 @@ namespace ExorAIO.Champions.Cassiopeia
             =>
                 GameObjects.Jungle.Where(
                     m =>
-                        m.LSIsValidTarget(Vars.W.Range) &&
+                        m.LSIsValidTarget(Vars.E.Range) &&
                         !GameObjects.JungleSmall.Contains(m)).ToList();
-
-        /// <summary>
-        ///     The ultimate targets.
-        /// </summary>
-        public static List<AIHeroClient> RTargets
-            =>
-                GameObjects.EnemyHeroes.Where(
-                    t =>
-                        t.LSIsValidTarget(Vars.R.Range - 100f) &&
-                        t.LSIsFacing(GameObjects.Player)).ToList();
     }
 }

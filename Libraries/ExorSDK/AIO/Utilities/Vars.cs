@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using SharpDX;
@@ -88,6 +89,11 @@ namespace ExorAIO.Utilities
         }
 
         /// <summary>
+        ///     last target.
+        /// </summary>
+        public static AttackableUnit PassiveTarget = null;
+
+        /// <summary>
         ///     The args End.
         /// </summary>
         public static Vector3 End { get; set; } = Vector3.Zero;
@@ -142,7 +148,12 @@ namespace ExorAIO.Utilities
         /// <summary>
         ///     The args End.
         /// </summary>
-        public static SectorPoly Cone => new SectorPoly(GameObjects.Player.ServerPosition, Vars.End, 45, -4050, 1);
+        public static Geometry.Sector Cone =>
+            new Geometry.Sector(
+                GameObjects.Player.ServerPosition.LSExtend(Vars.End, -GameObjects.Player.BoundingRadius*3),
+                Vars.End,
+                55f * (float)Math.PI / 180f,
+                Vars.R.Range);
 
         /// <summary>
         ///     Gets or sets the Q2 Spell menu.

@@ -14,14 +14,13 @@
 using System;
 using System.Collections.Generic;
 using ClipperLib;
-using LeagueSharp;
+using EloBuddy;
 using LeagueSharp.SDK;
 using SharpDX;
 using Color = System.Drawing.Color;
 using Path = System.Collections.Generic.List<ClipperLib.IntPoint>;
 using Paths = System.Collections.Generic.List<System.Collections.Generic.List<ClipperLib.IntPoint>>;
 using GamePath = System.Collections.Generic.List<SharpDX.Vector2>;
-using EloBuddy;
 
 namespace ExorAIO.Utilities
 {
@@ -361,7 +360,8 @@ namespace ExorAIO.Utilities
             /// <param name="radius">The radius.</param>
             /// <param name="quality">The quality.</param>
             public Sector(Vector3 center, Vector3 direction, float angle, float radius, int quality = 20)
-                : this(center.EXTo2D(), direction.EXTo2D(), angle, radius, quality) { }
+                : this(center.EXTo2D(), direction.EXTo2D(), angle, radius, quality)
+            { }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Polygon.Sector"/> class.

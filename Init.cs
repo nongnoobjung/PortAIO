@@ -697,6 +697,9 @@ namespace PortAIO
                             case 1:
                                 OlafxQx.Program.Init();
                                 break;
+                            case 2:
+                                new UnderratedAIO.Champions.Olaf();
+                                break;
                             default:
                                 ExorAIO.AIO.OnLoad();
                                 break;
@@ -1210,6 +1213,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 Marksman.Program.Game_OnGameLoad();
+                                break;
+                            case 2:
+                                ExorAIO.AIO.OnLoad();
                                 break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
