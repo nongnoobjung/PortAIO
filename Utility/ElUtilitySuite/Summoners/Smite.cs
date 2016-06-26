@@ -402,15 +402,18 @@
             }
 
             var minion =
-                ObjectManager.Get<Obj_AI_Minion>()
+                EntityManager.MinionsAndMonsters.Monsters
                     .FirstOrDefault(
                         o =>
                         Vector3.Distance(ObjectManager.Player.Position, o.ServerPosition) <= 950f
-                        && o.Team == GameObjectTeam.Neutral && !o.CharData.BaseSkinName.ToLower().Contains("barrel")
+                        && o.Team == GameObjectTeam.Neutral
+                        && !o.CharData.BaseSkinName.ToLower().Contains("barrel")
                         && !o.CharData.BaseSkinName.ToLower().Contains("mini")
                         && !o.CharData.BaseSkinName.ToLower().Contains("respawn")
-                        && SmiteObjects.Any(x => x.Equals(o.CharData.BaseSkinName)) && o.LSIsValidTarget(SmiteRange)
-                        && this.Menu[o.CharData.BaseSkinName].Cast<CheckBox>().CurrentValue && this.Player.GetSummonerSpellDamage(o, LeagueSharp.Common.Damage.SummonerSpell.Smite) > o.Health);
+                        && SmiteObjects.Any(x => x.Contains(o.CharData.BaseSkinName)) 
+                        && o.LSIsValidTarget(SmiteRange)
+                        && this.Menu[o.CharData.BaseSkinName].Cast<CheckBox>().CurrentValue 
+                        && this.Player.GetSummonerSpellDamage(o, LeagueSharp.Common.Damage.SummonerSpell.Smite) > o.Health);
 
             if (minion != null)
             {
