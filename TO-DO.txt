@@ -1,4 +1,14 @@
-﻿- To-Do
+﻿-To-Do
+Check Zac
+Fix Riven pausing after using W
+Fix Fiora Orbwalk to Passive
+Fix ElUtilitySmite On Champion
+EzEvade Problem (tired of fixing up the evade addons. if something goes wrong just remove it, it doesn't work the same as L# anyways and theres to much code to look at)
+iLucian Q Orbwalker problem
+YasuoPro Evade
+Slutty Ryze Crash
+Check Nechrito Rengar Combo
+Fix Marksman II Jinx Q issue
 
 -Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
 
