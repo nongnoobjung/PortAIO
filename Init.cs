@@ -848,9 +848,6 @@ namespace PortAIO
                             case 0:
                                 UnderratedAIO.Champions.Gangplank.OnLoad();
                                 break;
-                            case 1:
-                                BadaoKingdom.BadaoChampion.BadaoGangplank.BadaoGangplank.BadaoActivate();
-                                break;
                             default:
                                 UnderratedAIO.Champions.Gangplank.OnLoad();
                                 break;
