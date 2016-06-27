@@ -254,6 +254,16 @@
     <Compile Include="Champion\Tryndamere\Tryndamere.cs" />
     <Compile Include="Champion\Zilean\IncomingDamageManager.cs" />
     <Compile Include="Champion\Zilean\Zilean.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplank.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplankAuto.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplankBarrels.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplankCombo.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplankConfig.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplankHarass.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplankHelper.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplankJungleClear.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplankLaneClear.cs" />
+    <Compile Include="Dual-Port\Badao\BadaoGP\BadaoChampion\BadaoGangplank\BadaoGangplankVariables.cs" />
     <Compile Include="Dual-Port\Danz\Thresh - The Chain Warden\Program.cs" />
     <Compile Include="Dual-Port\Exory\ExorAkali\Akali.cs" />
     <Compile Include="Dual-Port\Exory\ExorAkali\Properties\Modes\Automatic.cs" />
