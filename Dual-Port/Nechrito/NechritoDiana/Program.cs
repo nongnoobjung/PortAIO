@@ -12,9 +12,8 @@ namespace Nechrito_Diana
     {
         public static readonly AIHeroClient Player = ObjectManager.Player;
         private static readonly HpBarIndicator Indicator = new HpBarIndicator();
-        private static void Main() => CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
 
-        static void Game_OnGameLoad(EventArgs args)
+        public static void Game_OnGameLoad()
         {
             if (Player.ChampionName != "Diana") return;
 
