@@ -1,24 +1,7 @@
-﻿using ClipperLib;
-using Color = System.Drawing.Color;
-using EloBuddy.SDK.Enumerations;
-using EloBuddy.SDK.Events;
-using EloBuddy.SDK.Menu.Values;
-using EloBuddy.SDK.Menu;
-using EloBuddy.SDK;
-using EloBuddy;
-using Font = SharpDX.Direct3D9.Font;
-using LeagueSharp.Common.Data;
+﻿using EloBuddy;
 using LeagueSharp.Common;
-using SharpDX.Direct3D9;
-using SharpDX;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using System.Security.AccessControl;
-using System;
-using System.Speech.Synthesis;
+using ItemData = LeagueSharp.Common.Data.ItemData;
 
 namespace Nechrito_Diana
 {
@@ -31,16 +14,16 @@ namespace Nechrito_Diana
         public static SpellSlot Smite;
         public static void CastHydra()
         {
-            if (LeagueSharp.Common.Data.ItemData.Ravenous_Hydra_Melee_Only.GetItem().IsReady())
-                LeagueSharp.Common.Data.ItemData.Ravenous_Hydra_Melee_Only.GetItem().Cast();
-            else if (LeagueSharp.Common.Data.ItemData.Tiamat_Melee_Only.GetItem().IsReady())
-                LeagueSharp.Common.Data.ItemData.Tiamat_Melee_Only.GetItem().Cast();
+            if (ItemData.Ravenous_Hydra_Melee_Only.GetItem().IsReady())
+                ItemData.Ravenous_Hydra_Melee_Only.GetItem().Cast();
+            else if (ItemData.Tiamat_Melee_Only.GetItem().IsReady())
+                ItemData.Tiamat_Melee_Only.GetItem().Cast();
         }
         public static void CastYoumoo()
         {
-            if (LeagueSharp.Common.Data.ItemData.Youmuus_Ghostblade.GetItem().IsReady()) LeagueSharp.Common.Data.ItemData.Youmuus_Ghostblade.GetItem().Cast();
+            if (ItemData.Youmuus_Ghostblade.GetItem().IsReady()) ItemData.Youmuus_Ghostblade.GetItem().Cast();
         }
-        public static bool HasItem() => LeagueSharp.Common.Data.ItemData.Tiamat_Melee_Only.GetItem().IsReady() || LeagueSharp.Common.Data.ItemData.Ravenous_Hydra_Melee_Only.GetItem().IsReady();
+        public static bool HasItem() => ItemData.Tiamat_Melee_Only.GetItem().IsReady() || ItemData.Ravenous_Hydra_Melee_Only.GetItem().IsReady();
 
         // Thanks jQuery for letting me use this! Great guy.
         public static void SmiteCombo()
@@ -63,7 +46,7 @@ namespace Nechrito_Diana
             foreach (var minion in MinionManager.GetMinions(900f, MinionTypes.All, MinionTeam.Neutral))
             {
                 var StealDmg = Player.Spellbook.GetSpell(Smite).State == SpellState.Ready
-                    ? (float)Player.GetSummonerSpellDamage(minion, LeagueSharp.Common.Damage.SummonerSpell.Smite)
+                    ? (float)Player.GetSummonerSpellDamage(minion, Damage.SummonerSpell.Smite)
                     : 0;
                 if (minion.LSDistance(Player.ServerPosition) <= 550)
                 {
@@ -74,25 +57,25 @@ namespace Nechrito_Diana
                     }
                 }
                 else if (minion.LSDistance(Player.ServerPosition) <= 850)
+                {
+                    if ((minion.CharData.BaseSkinName.Contains("Dragon") || minion.CharData.BaseSkinName.Contains("Baron")))
                     {
-                        if ((minion.CharData.BaseSkinName.Contains("Dragon") || minion.CharData.BaseSkinName.Contains("Baron")))
-                        {
-                        var QRDmg = Spells._q.IsReady() && Spells._r.IsReady()
-                   ? Spells._q.GetDamage(minion) + Spells._r.GetDamage(minion)
+                        var QRDmg = Spells.Q.IsReady() && Spells.R.IsReady()
+                   ? Spells.Q.GetDamage(minion) + Spells.R.GetDamage(minion)
                    : 0;
-                        if(QRDmg >= minion.Health)
+                        if (QRDmg >= minion.Health)
                         {
-                            Spells._q.Cast(minion);
-                            Spells._r.Cast(minion);
+                            Spells.Q.Cast(minion);
+                            Spells.R.Cast(minion);
                         }
                         if (QRDmg + StealDmg >= minion.Health)
                         {
-                            Spells._q.Cast(minion);
-                            Spells._r.Cast(minion);
+                            Spells.Q.Cast(minion);
+                            Spells.R.Cast(minion);
                             Player.Spellbook.CastSpell(Smite, minion);
-                        }       
-                      }
-               }
+                        }
+                    }
+                }
             }
         }
     }

@@ -118,8 +118,8 @@ namespace Nechrito_Gragas
                     {
                         var pos = Spells.R.GetSPrediction(target).CastPosition + 60;
 
-                        Spells.Q.Cast(pos);
-                        Spells.R.Cast(pos);
+                        Spells.Q.Cast(Mode.pred(target));
+                        Spells.R.Cast(Mode.pred(target));
                     }
                 }
             }
@@ -132,7 +132,7 @@ namespace Nechrito_Gragas
                     if (target.Health < Spells.Q.GetDamage(target))
                     {
                         var pos = Spells.Q.GetSPrediction(target).CastPosition;
-                        Spells.Q.Cast(pos);
+                        Spells.Q.Cast(Mode.pred(target));
                         Spells.Q.Cast(pos);
                     }
                 }

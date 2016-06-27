@@ -1,13 +1,4 @@
-﻿using ClipperLib;
-using Color = System.Drawing.Color;
-using EloBuddy.SDK.Enumerations;
-using EloBuddy.SDK.Events;
-using EloBuddy.SDK.Menu.Values;
-using EloBuddy.SDK.Menu;
-using EloBuddy.SDK;
-using EloBuddy;
-using Font = SharpDX.Direct3D9.Font;
-using LeagueSharp.Common.Data;
+﻿using EloBuddy;
 using LeagueSharp.Common;
 
 namespace Nechrito_Diana
@@ -20,7 +11,7 @@ namespace Nechrito_Diana
             {
                 return 0f;
             }
-            return (float)Program.Player.GetSummonerSpellDamage(target, LeagueSharp.Common.Damage.SummonerSpell.Smite);
+            return (float)Program.Player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Smite);
         }
         public static float IgniteDamage(AIHeroClient target)
         {
@@ -28,28 +19,28 @@ namespace Nechrito_Diana
             {
                 return 0f;
             }
-            return (float)Program.Player.GetSummonerSpellDamage(target, LeagueSharp.Common.Damage.SummonerSpell.Ignite);
+            return (float)Program.Player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
         }
         public static float ComboDmg(Obj_AI_Base enemy)
         {
             if (enemy != null)
             {
                 float damage = 0;
-                
-                if (Program.Player.Masteries.Equals("thunderlordsdecree")) damage += (float)Program.Player.GetAutoAttackDamage(enemy) * (1.05f);
+
+                if (Program.Player.Masteries.Equals("thunderlordsdecree")) damage += (float)Program.Player.LSGetAutoAttackDamage(enemy) * (1.05f);
                 // dianapassivebuff or dianamoonlight, cba to actually check yet. Also showing too much dmg on dmg indicator, like 30% too much
 
                 if (Program.Player.HasBuff("dianapassivebuff"))
                 {
-                    if (Spells._r.IsReady() && Spells._q.IsReady())
-                        damage += Spells._q.GetDamage(enemy) + Spells._r.GetDamage(enemy) +
-                            Spells._r.GetDamage(enemy) + (float)Program.Player.GetAutoAttackDamage(enemy);
+                    if (Spells.R.IsReady() && Spells.Q.IsReady())
+                        damage += Spells.Q.GetDamage(enemy) + Spells.R.GetDamage(enemy) +
+                            Spells.R.GetDamage(enemy) + (float)Program.Player.LSGetAutoAttackDamage(enemy);
                 }
-                damage = damage + (float)Program.Player.GetAutoAttackDamage(enemy);
+                damage = damage + (float)Program.Player.LSGetAutoAttackDamage(enemy);
 
-                if (Spells._q.IsReady()) damage += Spells._q.GetDamage(enemy);
-                if (Spells._w.IsReady()) damage += Spells._w.GetDamage(enemy);
-                if (Spells._r.IsReady()) damage += Spells._r.GetDamage(enemy);
+                if (Spells.Q.IsReady()) damage += Spells.Q.GetDamage(enemy);
+                if (Spells.W.IsReady()) damage += Spells.W.GetDamage(enemy);
+                if (Spells.R.IsReady()) damage += Spells.R.GetDamage(enemy);
                 return damage;
             }
             return 0;

@@ -32,7 +32,7 @@ namespace Nechrito_Gragas
                     {
                         pos = pos.LSExtend(Player.Position.LSTo2D(), -120);
                     }
-                    pos = pos.LSExtend(Player.Position.LSTo2D(), -100);
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), -150);
                 }
             }
             return pos.To3D2();
