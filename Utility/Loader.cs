@@ -363,7 +363,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[35]))
                 {
-                    Miscc.Add("gangplank", new ComboBox("Use addon for GangPlank : ", 0, "UnderratedAIO"));
+                    Miscc.Add("gangplank", new ComboBox("Use addon for GangPlank : ", 0, "UnderratedAIO", "Badao GP"));
                 }
                 if (Player.ChampionName.Equals(Champion[36]))
                 {
