@@ -70,6 +70,8 @@ namespace HeavenStrikeRiven
             burstMenu.Add("UseFlash", new CheckBox("Use Flash", true));
 
             miscMenu = Menu.AddSubMenu("Misc", "Misc");
+            miscMenu.Add("pingdelay", new Slider("Ping Delay", 56, 20, 300));
+            miscMenu.Add("spelldelay", new Slider("Spell Delay", 56, 20, 300));
             miscMenu.Add("Winterrupt", new CheckBox("W Gapcloser", true));
             miscMenu.Add("Wgapcloser", new CheckBox("W Interrupt", true));
             miscMenu.Add("flee", new KeyBind("Flee", false, KeyBind.BindTypes.HoldActive, 'Z'));
@@ -92,6 +94,13 @@ namespace HeavenStrikeRiven
             Interrupter2.OnInterruptableTarget += interrupt;
             AntiGapcloser.OnEnemyGapcloser += gapcloser;
 
+            Obj_AI_Base.OnSpellCast += (sender, args) =>
+            {
+                if (args.Slot == SpellSlot.W && sender.IsMe)
+                {
+                    Orbwalker.ResetAutoAttack();
+                }
+            };
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -120,24 +129,26 @@ namespace HeavenStrikeRiven
                 return;
             if (args.Animation == "Spell1a")
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
-                    Utility.DelayAction.Add(280 - Game.Ping, () => Chat.Say("/d"));
+                if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+                    Utility.DelayAction.Add(291 - spelldelay - (Game.Ping - pingdelay), () => Chat.Say("/d"));
                 Qstate = 2;
             }
             else if (args.Animation == "Spell1b")
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
-                    Utility.DelayAction.Add(300 - Game.Ping, () => Chat.Say("/d"));
+                if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+                    Utility.DelayAction.Add(290 - spelldelay - (Game.Ping - pingdelay), () => Chat.Say("/d"));
                 Qstate = 3;
             }
             else if (args.Animation == "Spell1c")
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
-                    Utility.DelayAction.Add(380 - Game.Ping, () => Chat.Say("/d"));
+                if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+                    Utility.DelayAction.Add(343 - spelldelay - (Game.Ping - pingdelay), () => Chat.Say("/d"));
                 Qstate = 1;
             }
         }
 
+        public static int pingdelay { get { return miscMenu["pingdelay"].Cast<Slider>().CurrentValue; } }
+        public static int spelldelay { get { return miscMenu["spelldelay"].Cast<Slider>().CurrentValue; } }
         public static int Qmode { get { return spellMenu["Qmode"].Cast<ComboBox>().CurrentValue; } }
         public static bool Qstrangecancel { get { return spellMenu["QStrangeCancel"].Cast<CheckBox>().CurrentValue; } }
         public static bool Rcomboalways { get { return spellMenu["RcomboAlways"].Cast<CheckBox>().CurrentValue; } }
@@ -383,18 +394,17 @@ namespace HeavenStrikeRiven
             {
 
                 waitQ = false;
-                Orbwalker.ResetAutoAttack();
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
-                {
-                    Utility.DelayAction.Add(40, () => Reset(40));
-                }
+                //Orbwalker.ResetAutoAttack();
+                //if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+                //{
+                    //Utility.DelayAction.Add(40, () => Reset(40));
+                //}
 
                 cQ = Utils.GameTimeTickCount;
             }
             if (spell.Name.Contains("RivenMartyr"))
             {
                 Utility.DelayAction.Add(160 - Game.Ping, () => Chat.Say("/d"));
-
             }
             if (spell.Name.Contains("RivenFient"))
             {

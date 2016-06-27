@@ -329,6 +329,11 @@ namespace KurisuRiven
                     }
                 }
 
+                if (args.Slot == SpellSlot.W && sender.IsMe)
+                {
+                    Orbwalker.ResetAutoAttack();
+                }
+
                 if (sender.IsMe && args.SData.IsAutoAttack())
                 {
                     didaa = false;

@@ -55,7 +55,7 @@ namespace FioraProject
                 return;
             Combo();
             var target = GetTarget();
-            Orbwalker.ForcedTarget = Orbwalking.InAutoAttackRange(target) ? target : null;
+            //Orbwalker.ForcedTarget = Orbwalking.InAutoAttackRange(target) ? target : null;
             Orbwalker.MoveTo(LastClickPoint.IsValid() ? LastClickPoint.To3D() : Game.CursorPos);
         }
 

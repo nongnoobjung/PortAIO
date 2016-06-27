@@ -14,22 +14,32 @@ namespace NechritoRiven.Event
         {
             if (!sender.IsMe) return;
             var t = 0;
+
+            var a = 0;
+            var b = "";
+
             switch (args.Animation) // Logic from Fluxy
             {
                 case "Spell1a":
                     lastQ = Utils.GameTimeTickCount;
                     t = 291;
                     Qstack = 2;
+                    b = "Q2";
+                    a = t - MenuConfig.Qld - (Game.Ping - MenuConfig.Qd);
                     break;
                 case "Spell1b":
                     lastQ = Utils.GameTimeTickCount;
-                    t = 291;
+                    t = 290;
                     Qstack = 3;
+                    b = "Q3";
+                    a = t - MenuConfig.Qld - (Game.Ping - MenuConfig.Qd);
                     break;
                 case "Spell1c": // q3?
                     lastQ = Utils.GameTimeTickCount;
                     t = 343;
                     Qstack = 1;
+                    b = "Q1";
+                    a = t - MenuConfig.Qld - (Game.Ping - MenuConfig.Qd);
                     break;
                 case "Spell2":
                     t = 170;
@@ -50,14 +60,19 @@ namespace NechritoRiven.Event
                     break;
             }
 
-            if (t != 0 && (Orbwalker.ActiveModesFlags != Orbwalker.ActiveModes.None))
+            if (a != 0 && (Orbwalker.ActiveModesFlags != Orbwalker.ActiveModes.None))
             {
-                Orbwalker.ResetAutoAttack();
-                EloBuddy.SDK.Core.DelayAction(CancelAnimation, t - MenuConfig.Qld - (Game.Ping - MenuConfig.Qd));
+                LeagueSharp.Common.Utility.DelayAction.Add(a, () =>
+                {
+                    Console.WriteLine(b);
+                    Orbwalker.ResetAutoAttack();
+                    EloBuddy.Player.DoEmote(Emote.Dance);
+                });
             }
         }
         private static void CancelAnimation()
         {
+            Orbwalker.ResetAutoAttack();
             if (MenuConfig.QReset)
             {
                 EloBuddy.Player.DoEmote(Emote.Dance);
@@ -69,7 +84,6 @@ namespace NechritoRiven.Event
                 if (MenuConfig.AnimTaunt) EloBuddy.Player.DoEmote(Emote.Taunt);
                 if (MenuConfig.AnimTalk) EloBuddy.Player.DoEmote(Emote.Joke);
             }
-            Orbwalker.ResetAutoAttack();
         }
     }
 }

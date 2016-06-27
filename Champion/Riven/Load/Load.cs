@@ -1,6 +1,7 @@
 ﻿#region
 
 using EloBuddy;
+using EloBuddy.SDK;
 using LeagueSharp;
 using LeagueSharp.Common;
 using NechritoRiven.Core;
@@ -37,6 +38,14 @@ namespace NechritoRiven.Load
 
             Interrupter2.OnInterruptableTarget += Interrupt2.OnInterruptableTarget;
             AntiGapcloser.OnEnemyGapcloser += Gapclose.gapcloser;
+
+            Obj_AI_Base.OnSpellCast += (sender, args) =>
+            {
+                if (args.Slot == SpellSlot.W && sender.IsMe)
+                {
+                    Orbwalker.ResetAutoAttack();
+                }
+            };
 
             Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Nechrito Riven</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Version: 69</font></b>");
             Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Update</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Big Update</font></b>");

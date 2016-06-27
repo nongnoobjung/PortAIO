@@ -32,11 +32,12 @@
 
         private static readonly string[] SmiteObjects =
             {
-                "SRU_Red", "SRU_Blue", "SRU_Dragon_Water", "SRU_Dragon_Fire",
-                "SRU_Dragon_Earth", "SRU_Dragon_Air", "SRU_Dragon_Elder",
-                "SRU_Baron", "SRU_Gromp", "SRU_Murkwolf", "SRU_Razorbeak",
-                "SRU_RiftHerald", "SRU_Krug", "TT_Spiderboss", "TT_NGolem",
-                "TT_NWolf", "TT_NWraith"
+                "SRU_Red", "SRU_Blue",
+                "SRU_Dragon_Water",  "SRU_Dragon_Fire", "SRU_Dragon_Earth", "SRU_Dragon_Air", "SRU_Dragon_Elder",
+                "SRU_Baron", "SRU_Gromp", "SRU_Murkwolf",
+                "SRU_Razorbeak", "SRU_RiftHerald",
+                "SRU_Krug", "Sru_Crab", "TT_Spiderboss",
+                "TT_NGolem", "TT_NWolf", "TT_NWraith"
             };
 
         #endregion
@@ -401,9 +402,14 @@
                 return;
             }
 
-            var minion = EntityManager.MinionsAndMonsters.Monsters.FirstOrDefault(o => Vector3.Distance(ObjectManager.Player.Position, o.ServerPosition) <= 950f && o.Team == GameObjectTeam.Neutral && !o.CharData.BaseSkinName.ToLower().Contains("barrel") && !o.CharData.BaseSkinName.ToLower().Contains("mini") && !o.CharData.BaseSkinName.ToLower().Contains("respawn") && SmiteObjects.Any(x => x.Contains(o.CharData.BaseSkinName)) && o.LSIsValidTarget(SmiteRange) && this.Menu[o.CharData.BaseSkinName].Cast<CheckBox>().CurrentValue && this.Player.GetSummonerSpellDamage(o, LeagueSharp.Common.Damage.SummonerSpell.Smite) > o.Health);
+            var minion = EntityManager.MinionsAndMonsters.Monsters.FirstOrDefault(o => Vector3.Distance(ObjectManager.Player.Position, o.ServerPosition) <= 950f && o.Team == GameObjectTeam.Neutral && !o.CharData.BaseSkinName.ToLower().Contains("barrel") && !o.CharData.BaseSkinName.ToLower().Contains("mini") && !o.CharData.BaseSkinName.ToLower().Contains("respawn") && SmiteObjects.Contains(o.BaseSkinName) && o.LSIsValidTarget(SmiteRange) && this.Menu[o.CharData.BaseSkinName].Cast<CheckBox>().CurrentValue);
 
             if (minion != null)
+            {
+                Console.WriteLine(minion.BaseSkinName);
+            }
+
+            if (minion != null && this.Player.GetSummonerSpellDamage(minion, LeagueSharp.Common.Damage.SummonerSpell.Smite) > minion.Health)
             {
                 this.SmiteSpell.Cast(minion);
             }
@@ -417,7 +423,7 @@
             {
                 if (this.Menu["ElSmite.KS.Combo"].Cast<CheckBox>().CurrentValue && this.ComboModeActive)
                 {
-                    var smiteComboEnemy = EntityManager.Heroes.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(500f));
+                    var smiteComboEnemy = EntityManager.Heroes.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(500f) && hero.IsVisible && hero.IsHPBarRendered);
                     if (smiteComboEnemy != null)
                     {
                         this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, smiteComboEnemy);
@@ -432,7 +438,7 @@
 
             if (this.Menu["ElSmite.KS.Activated"].Cast<CheckBox>().CurrentValue && this.SmiteSpell.IsReady())
             {
-                var kSableEnemy = HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(SmiteRange) && this.SmiteSpell.GetDamage(hero) >= hero.Health);
+                var kSableEnemy = HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(SmiteRange) && this.SmiteSpell.GetDamage(hero) >= hero.Health && hero.IsVisible && hero.IsHPBarRendered);
                 if (kSableEnemy != null)
                 {
                     this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, kSableEnemy);
