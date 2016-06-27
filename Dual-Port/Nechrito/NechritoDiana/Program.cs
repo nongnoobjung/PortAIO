@@ -99,7 +99,7 @@ namespace Nechrito_Diana
             if (Spells.Ignite.IsReady() && MenuConfig.ignite)
             {
                 var target = TargetSelector.GetTarget(600f, DamageType.True);
-                if (target.IsValidTarget(600f) && Dmg.IgniteDamage(target) >= target.Health)
+                if (target.LSIsValidTarget(600f) && Dmg.IgniteDamage(target) >= target.Health)
                 {
                     Player.Spellbook.CastSpell(Spells.Ignite, target);
                 }
@@ -107,7 +107,7 @@ namespace Nechrito_Diana
             if (Logic.Smite.IsReady() && MenuConfig.ksSmite)
             {
                 var target = TargetSelector.GetTarget(600f, DamageType.True);
-                if (target.IsValidTarget(600f) && Dmg.SmiteDamage(target) >= target.Health)
+                if (target.LSIsValidTarget(600f) && Dmg.SmiteDamage(target) >= target.Health)
                 {
                     Player.Spellbook.CastSpell(Logic.Smite, target);
                 }
