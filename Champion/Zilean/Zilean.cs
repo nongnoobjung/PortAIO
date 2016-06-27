@@ -225,6 +225,7 @@
                 comboMenu = Menu.AddSubMenu("Combo", "Combo");
                 {
                     comboMenu.Add("ElZilean.Combo.Q", new CheckBox("Use Q", true));
+                    comboMenu.Add("ElZilean.Combo.Focus.Bomb", new CheckBox("Focus target with Q", true));
                     comboMenu.Add("ElZilean.Combo.W", new CheckBox("Use W", true));
                     comboMenu.Add("ElZilean.Combo.E", new CheckBox("Use E", true));
                     comboMenu.Add("ElZilean.Ignite", new CheckBox("Use Ignite", true));
@@ -399,7 +400,6 @@
                 }
             }
 
-
             // Check if target has a bomb
             var isBombed = HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(Q.Range));
 
@@ -537,8 +537,7 @@
                 return;
             }
 
-            if (sender.IsValid && args.DangerLevel == Interrupter2.DangerLevel.High
-                && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
+            if (sender.IsValid && args.DangerLevel == Interrupter2.DangerLevel.High && getCheckBoxItem(miscMenu, "ElZilean.Q.Interrupt"))
             {
                 if (Q.IsReady() && sender.LSIsValidTarget(Q.Range))
                 {
@@ -603,8 +602,8 @@
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            var hero = sender as Obj_AI_Base;
-            if (hero == null || !(sender is AIHeroClient))
+            var hero = sender;
+            if (hero == null || !sender.IsAlly || !(sender is AIHeroClient))
             {
                 return;
             }
@@ -646,6 +645,17 @@
                     return;
                 }
 
+
+                if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Focus.Bomb"))
+                {
+                    var passiveTarget = HeroManager.Enemies.FirstOrDefault(x => x.LSIsValidTarget() && x.HasBuff("ZileanQEnemyBomb") && x.LSIsValidTarget(Q.Range + 100));
+
+                    if (passiveTarget != null)
+                    {
+                        Orbwalker.ForcedTarget = passiveTarget;
+                    }
+                }
+
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
                     OnCombo();
@@ -676,10 +686,9 @@
 
                 if (getCheckBoxItem(miscMenu, "ElZilean.E.Slow"))
                 {
-                    foreach (
-                        var slowedAlly in
-                            HeroManager.Allies.Where(
-                                x => x.HasBuffOfType(BuffType.Slow) && x.LSIsValidTarget(Q.Range, false)))
+                    foreach (var slowedAlly in
+                        HeroManager.Allies.Where(x => x.HasBuffOfType(BuffType.Slow) && x.LSIsValidTarget(Q.Range, false))
+                        )
                     {
                         if (E.IsReady() && E.IsInRange(slowedAlly))
                         {
@@ -728,6 +737,11 @@
                         if ((int)(totalDamage / ally.Health) > getSliderItem(ultMenu, "min-damage")
                             || ally.HealthPercent < getSliderItem(ultMenu, "min-health"))
                         {
+                            if (ally.Buffs.Any(b => b.DisplayName == "judicatorintervention" || b.DisplayName == "undyingrage" || b.DisplayName == "kindredrnodeathbuff" || b.DisplayName == "zhonyasringshield" || b.DisplayName == "willrevive"))
+                            {
+                                return;
+                            }
+
                             R.Cast(ally);
                         }
                     }
