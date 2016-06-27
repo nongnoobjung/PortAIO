@@ -2,6 +2,7 @@
 using EloBuddy.SDK.Menu.Values;
 using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,11 @@ namespace Azir_Creator_of_Elo
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += Ondraw;
             //      walker = new AzirWalker(Menu.GetMenu.SubMenu("Orbwalker"));
+        }
+
+        public void Orbwalk(Vector3 pos, AIHeroClient target = null)
+        {
+           Player.IssueOrder(GameObjectOrder.MoveTo, pos);
         }
 
         private void Ondraw(EventArgs args)

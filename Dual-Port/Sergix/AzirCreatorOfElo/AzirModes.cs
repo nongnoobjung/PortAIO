@@ -24,17 +24,18 @@ namespace Azir_Creator_of_Elo
             base.Update(azir);
 
 
-
             if (Menu._jumpMenu["fleekey"].Cast<KeyBind>().CurrentValue)
             {
+                azir.Orbwalk(Game.CursorPos);
                 Jump(azir);
             }
-
-            if (Menu._jumpMenu["inseckey"].Cast<KeyBind>().CurrentValue)
-            {
-                Insec(azir);
-            }
         }
+
+        /* if (Menu._jumpMenu["inseckey"].Cast<KeyBind>().CurrentValue)
+         {
+             Insec(azir);
+         }
+     } */
         public void Insec(AzirMain azir)
         {
             var ts = TargetSelector.GetTarget(azir.Spells.Q.Range, DamageType.Magical);
