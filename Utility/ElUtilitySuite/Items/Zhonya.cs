@@ -768,7 +768,7 @@
                     return;
                 }
 
-                if (!this.ZhonyaLowHp || !zhonyaItem.IsReady())
+                if (!this.ZhonyaLowHp || !zhonyaItem.IsReady() || Player.HasBuff("ChronoShift"))
                 {
                     return;
                 }
@@ -780,10 +780,7 @@
                     if (Player.HealthPercent < this.ZhonyaBelowHp)
                     {
                         zhonyaItem.Cast();
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("[ELUTILITYSUITE - ZHOYNA] Used for: {0} - health percentage: {1}%", Player.ChampionName, (int)Player.HealthPercent);
                     }
-                    Console.ForegroundColor = ConsoleColor.White;
                 }
 
             }
@@ -800,7 +797,7 @@
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private void ObjAiBaseOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsAlly || !zhonyaItem.IsReady() || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
+            if (sender.IsAlly || !zhonyaItem.IsReady() || !getCheckBoxItem(this.Menu, "ZhonyaDangerous") || Player.HasBuff("ChronoShift"))
             {
                 return;
             }
