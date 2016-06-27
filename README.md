@@ -1,4 +1,4 @@
-www.elobuddy.net/topic/33081-ported-addons/ - Please vote on this poll.
+KOG'MAW JUNGLE IS BROKEN AS SHIT, TRY IT OUT. http://i.imgur.com/EonkoGN.png
 
 # Welcome to PortAIO's Official Github
 - https://github.com/berbb/PortAIO is the official GitHub.
