@@ -198,11 +198,6 @@
             return target.GetBuffCount("TwitchDeadlyVenom");
         }
 
-        public static bool HasPoisonBuff(this AIHeroClient target)
-        {
-            return target.HasBuff("TwitchDeadlyVenom");
-        }
-
         public static float GetRealHealth(this Obj_AI_Base target)
         {
             Console.WriteLine("Shield: " + target.AttackShield);
