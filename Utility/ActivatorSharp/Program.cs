@@ -195,7 +195,9 @@ namespace Activators
             switch (Player.Level)
             {
                 case 6:
-                    LeagueSharp.Common.Utility.DelayAction.Add(Rand.Next(250, 950) + Math.Max(30, Game.Ping),
+                case 11:
+                case 16:
+                    LeagueSharp.Common.Utility.DelayAction.Add(Rand.Next(250, 500) + Math.Max(30, Game.Ping),
                         () => { Player.Spellbook.LevelSpell(SpellSlot.R); });
                     break;
             }
