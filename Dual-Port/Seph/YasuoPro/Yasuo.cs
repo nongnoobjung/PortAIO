@@ -218,7 +218,7 @@ namespace YasuoPro
 
             if (GetBool("Combo.UseE", YasuoMenu.ComboM) && !Helper.DontDash)
             {
-                CastE(CurrentTarget);
+                CastEOld(CurrentTarget);
             }
 
             if (GetBool("Items.Enabled", YasuoMenu.ComboM))
@@ -284,9 +284,72 @@ namespace YasuoPro
             }
         }
 
+        internal void CastEOld(AIHeroClient target, bool force = false)
+        {
+            var minionsinrange = ObjectManager.Get<Obj_AI_Minion>().Any(x => x.IsDashable());
+            if (target == null || !target.IsInRange(minionsinrange ? Spells[E].Range * 2 : Spells[E].Range))
+            {
+                target = TargetSelector.GetTarget(minionsinrange ? Spells[E].Range * 2 : Spells[E].Range, DamageType.Physical);
+            }
+
+            if (target != null)
+            {
+                if (SpellSlot.E.IsReady() && isHealthy && target.Distance(Yasuo) >= 0.30 * Yasuo.AttackRange)
+                {
+                    if (TornadoReady && ((GetBool("Combo.ETower", YasuoMenu.ComboM) && GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM)) || !GetDashPos(target).PointUnderEnemyTurret()))
+                    {
+                        Spells[E].CastOnUnit(target);
+                        return;
+                    }
+
+                    if (DashCount >= 1 && GetDashPos(target).IsCloser(target) && target.IsDashable() &&
+                        (GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) || !GetDashPos(target).PointUnderEnemyTurret()))
+                    {
+                        Spells[E].CastOnUnit(target);
+                        return;
+                    }
+
+                    if (DashCount == 0)
+                    {
+                        var bestminion =
+                            ObjectManager.Get<Obj_AI_Base>()
+                                .Where(
+                                    x =>
+                                         x.IsDashable()
+                                         && GetDashPos(x).IsCloser(target) &&
+                                        (GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) || !GetDashPos(x).PointUnderEnemyTurret()))
+                                .OrderBy(x => Vector2.Distance(GetDashPos(x), target.ServerPosition.To2D()))
+                                .FirstOrDefault();
+                        if (bestminion != null)
+                        {
+                            Spells[E].CastOnUnit(bestminion);
+                        }
+
+                        else if (target.IsDashable() && GetDashPos(target).IsCloser(target) && (GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) || !GetDashPos(target).PointUnderEnemyTurret()))
+                        {
+                            Spells[E].CastOnUnit(target);
+                        }
+                    }
+
+
+                    else
+                    {
+                        var minion =
+                            ObjectManager.Get<Obj_AI_Base>()
+                                .Where(x => x.IsDashable() && GetDashPos(x).IsCloser(target) && (GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) || !GetDashPos(x).PointUnderEnemyTurret()))
+                                .OrderBy(x => GetDashPos(x).Distance(target.ServerPosition)).FirstOrDefault();
+
+                        if (minion != null && GetDashPos(minion).IsCloser(target))
+                        {
+                            Spells[E].CastOnUnit(minion);
+                        }
+                    }
+                }
+            }
+        }
 
         //minimum amount of minions
-        internal void CastE(AIHeroClient target)
+        internal void CastENew(AIHeroClient target)
         {
             if (!SpellSlot.E.IsReady() || Yasuo.LSIsDashing() || InDash)
             {

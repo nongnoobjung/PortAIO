@@ -50,7 +50,7 @@ namespace YasuoPro
 
         internal void InitSpells()
         {
-            Spells =  new Dictionary<int, LeagueSharp.Common.Spell> {
+            Spells = new Dictionary<int, LeagueSharp.Common.Spell> {
             { 1, new LeagueSharp.Common.Spell(SpellSlot.Q, 450f) },
             { 2, new LeagueSharp.Common.Spell(SpellSlot.Q, 1100f) },
             { 3, new LeagueSharp.Common.Spell(SpellSlot.W, 450f) },
@@ -67,7 +67,7 @@ namespace YasuoPro
 
         private static float GetQDelay { get { return 1 - Math.Min((Yasuo.AttackSpeedMod - 1) * 0.0058552631578947f, 0.6675f); } }
 
-        private static float GetQ1Delay { get { return 0.4f * GetQDelay; }  }
+        private static float GetQ1Delay { get { return 0.4f * GetQDelay; } }
 
         private static float GetQ2Delay { get { return 0.5f * GetQDelay; } }
 
@@ -163,6 +163,7 @@ namespace YasuoPro
                 return false;
             }
 
+            /*
             if (!ShouldNormalQ(target))
             {
                 if (tready && GetBool("Combo.UseEQ", YasuoMenu.ComboM))
@@ -183,218 +184,217 @@ namespace YasuoPro
                     }
                 }
             }
+            */
 
-            else
+
+            LeagueSharp.Common.Spell sp = tready ? Spells[Q2] : Spells[Q];
+            PredictionOutput pred = sp.GetPrediction(target);
+
+            if (pred.Hitchance >= minhc)
             {
-
-                LeagueSharp.Common.Spell sp = tready ? Spells[Q2] : Spells[Q];
-                PredictionOutput pred = sp.GetPrediction(target);
-
-                if (pred.Hitchance >= minhc)
-                {
-                    return sp.Cast(pred.CastPosition);
-                }
+                return sp.Cast(pred.CastPosition);
             }
 
             return false;
         }
 
-        internal IEnumerable<AIHeroClient> KnockedUp
+    internal IEnumerable<AIHeroClient> KnockedUp
+    {
+        get
         {
-            get
+            List<AIHeroClient> KnockedUpEnemies = new List<AIHeroClient>();
+            foreach (var hero in HeroManager.Enemies)
             {
-                List<AIHeroClient> KnockedUpEnemies = new List<AIHeroClient>();
-                foreach (var hero in HeroManager.Enemies)
+                if (hero.IsValidEnemy(Spells[R].Range))
                 {
-                    if (hero.IsValidEnemy(Spells[R].Range)) {
-                        var knockup = hero.Buffs.Find(x => (x.Type == BuffType.Knockup && (x.EndTime - Game.Time) <= (GetSliderFloat("Combo.knockupremainingpct", YasuoMenu.ComboM) / 100) * (x.EndTime - x.StartTime)) || x.Type == BuffType.Knockback);
-                        if (knockup != null)
-                        {
-                            KnockedUpEnemies.Add(hero);
-                        }
+                    var knockup = hero.Buffs.Find(x => (x.Type == BuffType.Knockup && (x.EndTime - Game.Time) <= (GetSliderFloat("Combo.knockupremainingpct", YasuoMenu.ComboM) / 100) * (x.EndTime - x.StartTime)) || x.Type == BuffType.Knockback);
+                    if (knockup != null)
+                    {
+                        KnockedUpEnemies.Add(hero);
                     }
                 }
-                return KnockedUpEnemies;
             }
+            return KnockedUpEnemies;
         }
-
-        internal static bool isHealthy
-        {
-            get { return Yasuo.IsInvulnerable || Yasuo.HasBuffOfType(BuffType.Invulnerability) || Yasuo.HasBuffOfType(BuffType.SpellShield) || Yasuo.HasBuffOfType(BuffType.SpellImmunity) || Yasuo.HealthPercent > GetSliderFloat("Misc.Healthy", YasuoMenu.MiscM) || Yasuo.HasBuff("yasuopassivemovementshield") && Yasuo.HealthPercent > 30; }
-        }
-
-        internal static bool GetBool(string name, Menu m)
-        {
-            return m[name].Cast<CheckBox>().CurrentValue;
-        }
-
-        internal static bool GetKeyBind(string name, Menu m)
-        {
-            return m[name].Cast<KeyBind>().CurrentValue;
-        }
-
-        internal static int GetSliderInt(string name, Menu m)
-        {
-            return m[name].Cast<Slider>().CurrentValue;
-        }
-
-        internal static float GetSliderFloat(string name, Menu m)
-        {
-            return m[name].Cast <Slider>().CurrentValue;
-        }
-
-
-        internal static int GetSL(string name, Menu m)
-        {
-            return m[name].Cast<ComboBox>().CurrentValue;
-        }
-
-        internal static bool GetCircle(string name, Menu m)
-        {
-            return m[name].Cast<CheckBox>().CurrentValue;
-        }
-
-        internal static Vector2 DashPosition;
-
-        internal static Vector2 GetDashPos(Obj_AI_Base @base)
-        {
-            var predictedposition = Yasuo.ServerPosition.LSExtend(@base.Position, Yasuo.LSDistance(@base) + 475 - Yasuo.LSDistance(@base)).LSTo2D();
-            DashPosition = predictedposition;
-            return predictedposition;
-        }
-
-        internal static Vector2 GetDashPosFrom(Vector2 startPos, Obj_AI_Base @base)
-        {
-            var startPos3D = startPos.To3D();
-            var predictedposition = startPos3D.LSExtend(@base.Position, startPos.LSDistance(@base) + 475 - startPos.LSDistance(@base)).LSTo2D();
-            DashPosition = predictedposition;
-            return predictedposition;
-        }
-
-        internal static double GetProperEDamage(Obj_AI_Base target)
-        {
-            double dmg = Yasuo.LSGetSpellDamage(target, SpellSlot.E);
-            float amplifier = 0;
-            if (DashCount == 0)
-            {
-                amplifier = 0;
-            }
-            else if (DashCount == 1)
-            {
-                amplifier = 0.25f;
-            }
-            else if (DashCount == 2)
-            {
-                amplifier = 0.50f;
-            }
-            dmg += dmg * amplifier;
-            return dmg;
-        }
-
-        internal static bool Debug
-        {
-            get { return GetBool("Misc.Debug", YasuoMenu.MiscM); }
-        }
-
-        internal static HitChance GetHitChance(String search)
-        {
-            switch (GetSL(search, YasuoMenu.MiscM))
-            {
-                case 0:
-                    return HitChance.Low;
-                case 1:
-                    return HitChance.Medium;
-                case 2:
-                    return HitChance.High;
-                case 3:
-                    return HitChance.VeryHigh;
-            }
-            return HitChance.Medium;
-        }
-
-
-        internal FleeType FleeMode
-        {
-            get
-            {
-                var GetFM = GetSL("Flee.Mode", YasuoMenu.MiscM);
-                if (GetFM == 0)
-                {
-                    return FleeType.ToNexus;
-                }
-                if (GetFM == 1)
-                {
-                    return FleeType.ToAllies;
-                }
-                return FleeType.ToCursor;
-            }
-        } 
-
-        internal enum FleeType
-        {
-            ToNexus,
-            ToAllies,
-            ToCursor,
-        }
-
-        internal enum UltMode
-        {
-            Health,
-            Priority, 
-            EnemiesHit
-        }
-
-        internal UltMode GetUltMode()
-        {
-            switch (GetSL("Combo.UltMode", YasuoMenu.ComboM))
-            {
-                case 0:
-                    return UltMode.Health;
-                case 1:
-                    return UltMode.Priority;
-                case 2:
-                    return UltMode.EnemiesHit;
-            }
-            return UltMode.Priority;
-        }
-
-        internal void InitItems()
-        {
-            Hydra = new ItemManager.Item(3074, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
-            Tiamat = new ItemManager.Item(3077, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
-            Titanic = new ItemManager.Item(3053, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
-            Blade = new ItemManager.Item(3153, 450f, ItemManager.ItemCastType.TargettedCast, 1);
-            Bilgewater = new ItemManager.Item(3144, 450f, ItemManager.ItemCastType.TargettedCast, 1);
-            Youmu = new ItemManager.Item(3142, 185f, ItemManager.ItemCastType.SelfCast, 1, 3);
-        }
-
-        internal bool TowerCheck(Obj_AI_Base unit, bool isCombo = false)
-        {
-            return (isCombo && GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) ||
-                    !GetDashPos(unit).PointUnderEnemyTurret());
-        }
-
-        internal bool ShouldDive(Obj_AI_Base unit)
-        {
-            return GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) || !Helper.GetDashPos(unit).PointUnderEnemyTurret();
-        }
-
-        internal bool TowerCheck(Vector2 pos, bool isCombo = false)
-        {
-            return (isCombo && GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) ||
-                    pos.PointUnderEnemyTurret());
-        }
-
-        internal bool targInKnockupRadius(AIHeroClient targ)
-        {
-            var dpos = GetDashPos(targ).To3D();
-            return dpos.CountEnemiesInRange(QRadius) > 0;
-        }
-
-        internal bool targInKnockupRadius(Vector3 dpos)
-        {
-            return dpos.CountEnemiesInRange(QRadius) > 0;
-        }
-
     }
+
+    internal static bool isHealthy
+    {
+        get { return Yasuo.IsInvulnerable || Yasuo.HasBuffOfType(BuffType.Invulnerability) || Yasuo.HasBuffOfType(BuffType.SpellShield) || Yasuo.HasBuffOfType(BuffType.SpellImmunity) || Yasuo.HealthPercent > GetSliderFloat("Misc.Healthy", YasuoMenu.MiscM) || Yasuo.HasBuff("yasuopassivemovementshield") && Yasuo.HealthPercent > 30; }
+    }
+
+    internal static bool GetBool(string name, Menu m)
+    {
+        return m[name].Cast<CheckBox>().CurrentValue;
+    }
+
+    internal static bool GetKeyBind(string name, Menu m)
+    {
+        return m[name].Cast<KeyBind>().CurrentValue;
+    }
+
+    internal static int GetSliderInt(string name, Menu m)
+    {
+        return m[name].Cast<Slider>().CurrentValue;
+    }
+
+    internal static float GetSliderFloat(string name, Menu m)
+    {
+        return m[name].Cast<Slider>().CurrentValue;
+    }
+
+
+    internal static int GetSL(string name, Menu m)
+    {
+        return m[name].Cast<ComboBox>().CurrentValue;
+    }
+
+    internal static bool GetCircle(string name, Menu m)
+    {
+        return m[name].Cast<CheckBox>().CurrentValue;
+    }
+
+    internal static Vector2 DashPosition;
+
+    internal static Vector2 GetDashPos(Obj_AI_Base @base)
+    {
+        var predictedposition = Yasuo.ServerPosition.LSExtend(@base.Position, Yasuo.LSDistance(@base) + 475 - Yasuo.LSDistance(@base)).LSTo2D();
+        DashPosition = predictedposition;
+        return predictedposition;
+    }
+
+    internal static Vector2 GetDashPosFrom(Vector2 startPos, Obj_AI_Base @base)
+    {
+        var startPos3D = startPos.To3D();
+        var predictedposition = startPos3D.LSExtend(@base.Position, startPos.LSDistance(@base) + 475 - startPos.LSDistance(@base)).LSTo2D();
+        DashPosition = predictedposition;
+        return predictedposition;
+    }
+
+    internal static double GetProperEDamage(Obj_AI_Base target)
+    {
+        double dmg = Yasuo.LSGetSpellDamage(target, SpellSlot.E);
+        float amplifier = 0;
+        if (DashCount == 0)
+        {
+            amplifier = 0;
+        }
+        else if (DashCount == 1)
+        {
+            amplifier = 0.25f;
+        }
+        else if (DashCount == 2)
+        {
+            amplifier = 0.50f;
+        }
+        dmg += dmg * amplifier;
+        return dmg;
+    }
+
+    internal static bool Debug
+    {
+        get { return GetBool("Misc.Debug", YasuoMenu.MiscM); }
+    }
+
+    internal static HitChance GetHitChance(String search)
+    {
+        switch (GetSL(search, YasuoMenu.MiscM))
+        {
+            case 0:
+                return HitChance.Low;
+            case 1:
+                return HitChance.Medium;
+            case 2:
+                return HitChance.High;
+            case 3:
+                return HitChance.VeryHigh;
+        }
+        return HitChance.Medium;
+    }
+
+
+    internal FleeType FleeMode
+    {
+        get
+        {
+            var GetFM = GetSL("Flee.Mode", YasuoMenu.MiscM);
+            if (GetFM == 0)
+            {
+                return FleeType.ToNexus;
+            }
+            if (GetFM == 1)
+            {
+                return FleeType.ToAllies;
+            }
+            return FleeType.ToCursor;
+        }
+    }
+
+    internal enum FleeType
+    {
+        ToNexus,
+        ToAllies,
+        ToCursor,
+    }
+
+    internal enum UltMode
+    {
+        Health,
+        Priority,
+        EnemiesHit
+    }
+
+    internal UltMode GetUltMode()
+    {
+        switch (GetSL("Combo.UltMode", YasuoMenu.ComboM))
+        {
+            case 0:
+                return UltMode.Health;
+            case 1:
+                return UltMode.Priority;
+            case 2:
+                return UltMode.EnemiesHit;
+        }
+        return UltMode.Priority;
+    }
+
+    internal void InitItems()
+    {
+        Hydra = new ItemManager.Item(3074, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
+        Tiamat = new ItemManager.Item(3077, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
+        Titanic = new ItemManager.Item(3053, 225f, ItemManager.ItemCastType.RangeCast, 1, 2);
+        Blade = new ItemManager.Item(3153, 450f, ItemManager.ItemCastType.TargettedCast, 1);
+        Bilgewater = new ItemManager.Item(3144, 450f, ItemManager.ItemCastType.TargettedCast, 1);
+        Youmu = new ItemManager.Item(3142, 185f, ItemManager.ItemCastType.SelfCast, 1, 3);
+    }
+
+    internal bool TowerCheck(Obj_AI_Base unit, bool isCombo = false)
+    {
+        return (isCombo && GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) ||
+                !GetDashPos(unit).PointUnderEnemyTurret());
+    }
+
+    internal bool ShouldDive(Obj_AI_Base unit)
+    {
+        return GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) || !Helper.GetDashPos(unit).PointUnderEnemyTurret();
+    }
+
+    internal bool TowerCheck(Vector2 pos, bool isCombo = false)
+    {
+        return (isCombo && GetBool("Combo.ETower", YasuoMenu.ComboM) || GetKeyBind("Misc.TowerDive", YasuoMenu.MiscM) ||
+                pos.PointUnderEnemyTurret());
+    }
+
+    internal bool targInKnockupRadius(AIHeroClient targ)
+    {
+        var dpos = GetDashPos(targ).To3D();
+        return dpos.CountEnemiesInRange(QRadius) > 0;
+    }
+
+    internal bool targInKnockupRadius(Vector3 dpos)
+    {
+        return dpos.CountEnemiesInRange(QRadius) > 0;
+    }
+
+}
 }

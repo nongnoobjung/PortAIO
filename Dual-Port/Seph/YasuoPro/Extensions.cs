@@ -126,7 +126,7 @@ namespace YasuoPro
             var midwpnum = wpc / 2;
             var midwp = wp[midwpnum];
             var plength = wp[0].LSDistance(lastwp);
-            return (point.LSDistance(target.ServerPosition) < 0.90f * Player.LSDistance(target.ServerPosition) - Helper.Yasuo.BoundingRadius) || ((plength < Player.LSDistance(target.ServerPosition) * 1.2f && point.LSDistance(lastwp.To3D()) < Player.LSDistance(lastwp.To3D()) || point.LSDistance(midwp.To3D()) < Player.LSDistance(midwp)));
+            return (point.LSDistance(target.ServerPosition) < 0.95f * Player.LSDistance(target.ServerPosition) - Helper.Yasuo.BoundingRadius) || ((plength < Player.LSDistance(target.ServerPosition) * 1.2f && point.LSDistance(lastwp.To3D()) < Player.LSDistance(lastwp.To3D()) || point.LSDistance(midwp.To3D()) < Player.LSDistance(midwp)));
         }
 
         internal static bool IsCloser(this Vector2 point, Obj_AI_Base target)
@@ -135,7 +135,7 @@ namespace YasuoPro
             {
                 return IsCloserWP(point, target);
             }
-            return (point.LSDistance(target.ServerPosition) < 0.90f * Player.LSDistance(target.ServerPosition) - Helper.Yasuo.BoundingRadius);
+            return (point.LSDistance(target.ServerPosition) < 0.95f * Player.LSDistance(target.ServerPosition) - Helper.Yasuo.BoundingRadius);
         }
 
         internal static bool IsCloser(this Obj_AI_Base @base, Obj_AI_Base target)
