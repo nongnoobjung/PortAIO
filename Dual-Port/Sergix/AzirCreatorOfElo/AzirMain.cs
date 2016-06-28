@@ -51,7 +51,7 @@ namespace Azir_Creator_of_Elo
 
         public void Orbwalk(Vector3 pos, AIHeroClient target = null)
         {
-           Player.IssueOrder(GameObjectOrder.MoveTo, pos);
+            Player.IssueOrder(GameObjectOrder.MoveTo, pos);
         }
 
         private void Ondraw(EventArgs args)
@@ -65,6 +65,7 @@ namespace Azir_Creator_of_Elo
                      Drawing.DrawCircle(pos, 50, System.Drawing.Color.Red);
              }*/
             var drawControl = Menu._drawSettingsMenu["dcr"].Cast<CheckBox>().CurrentValue;
+            var drawFleeMaxRange = Menu._drawSettingsMenu["dfr"].Cast<CheckBox>().CurrentValue;
             if (drawControl)
                 Render.Circle.DrawCircle(ObjectManager.Player.Position, 925, System.Drawing.Color.GreenYellow);
 
@@ -82,6 +83,12 @@ namespace Azir_Creator_of_Elo
                     else
                         Drawing.DrawLine(wts[0], wts[1], wtssxt[0], wtssxt[1], 5f, System.Drawing.Color.PaleVioletRed);
                 }
+            if (drawFleeMaxRange)
+            {
+                // var pos = HeroManager.Player.Position.Extend(Game.CursorPos, 450);
+                var pos2 = HeroManager.Player.Position.LSExtend(Game.CursorPos, 1150 + 350);
+                Drawing.DrawCircle(pos2, 1150 + 350, System.Drawing.Color.GreenYellow);
+            }
 
 
 
