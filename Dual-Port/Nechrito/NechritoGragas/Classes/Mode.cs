@@ -75,7 +75,7 @@ namespace Nechrito_Gragas
 
             if (Target != null && !Target.IsZombie && MenuConfig.ComboR && Target.LSDistance(Player) <= 1050f)
             {
-                if (Target.IsDashing()) return;
+                if (Target.LSIsDashing()) return;
 
                 if (Spells.Q.IsReady() && Spells.R.IsReady())
                 {
