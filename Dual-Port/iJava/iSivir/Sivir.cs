@@ -293,7 +293,7 @@ namespace iSivir
                 {
                     if (HeroManager.Enemies.Any(x => x.ChampionName == spell.ChampionName))
                     {
-                        comboMenu.Add(spell.SpellName, new CheckBox(spell.ChampionName + ": " + spell.Slot, true));
+                        comboMenu.Add(spell.SpellName, new CheckBox(spell.ChampionName + ": " + spell.SpellName + " (" + spell.Slot + ")", true));
                     }
                 }
 
