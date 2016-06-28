@@ -3425,6 +3425,7 @@ namespace EvadeSharp
                     IsDangerous = false,
                     MissileSpellName = "TaliyahQMis",
                     CollisionObjects = new[] { CollisionObjectTypes.YasuoWall, CollisionObjectTypes.Minion, CollisionObjectTypes.Champions },
+                    DisabledByDefault = true,
                 });
 
             Spells.Add(
