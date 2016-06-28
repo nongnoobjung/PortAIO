@@ -30,10 +30,7 @@ namespace MoonLux
         /// <value>
         ///     <c>true</c> if the E spell was casted; otherwise, <c>false</c>.
         /// </value>
-        private static bool ECasted
-        {
-            get { return Player.HasBuff("LuxLightStrikeKugel") || EObject != null; }
-        }
+        private static bool ECasted => Player.HasBuff("LuxLightStrikeKugel") || EObject != null;
 
         private static GameObject EObject { get; set; }
 
@@ -51,10 +48,7 @@ namespace MoonLux
         /// <value>
         ///     The player.
         /// </value>
-        private static AIHeroClient Player
-        {
-            get { return ObjectManager.Player; }
-        }
+        private static AIHeroClient Player => ObjectManager.Player;
 
         /// <summary>
         ///     Gets or sets the q.
@@ -120,8 +114,7 @@ namespace MoonLux
 
             var hero = (AIHeroClient)obj;
 
-            if (hero.IsEnemy || (!hero.IsMe && !W.IsInRange(obj))
-                || !getCheckBoxItem(shieldMenu, hero.NetworkId + ""))
+            if (hero.IsEnemy || (!hero.IsMe && !W.IsInRange(obj)) || !getCheckBoxItem(shieldMenu, hero.NetworkId + ""))
             {
                 return;
             }
@@ -130,6 +123,23 @@ namespace MoonLux
                 || (hero.HealthPercent < getSliderItem(shieldMenu, "ASHealthPercent")))
             {
                 W.Cast(hero);
+            }
+        }
+
+        /// <summary>
+        ///     Automaticly shields allies with low health.
+        /// </summary>
+        private static void AutoShield()
+        {
+            foreach (
+                var hero in
+                    HeroManager.Allies.Where(
+                        x => !x.IsEnemy && (x.IsMe || W.IsInRange(x)) && getCheckBoxItem(shieldMenu, x.NetworkId + "")))
+            {
+                if (hero.HealthPercent < getSliderItem(shieldMenu, "ASHealthPercent"))
+                {
+                    W.Cast(W.GetPrediction(hero).CastPosition);
+                }
             }
         }
 
@@ -161,9 +171,26 @@ namespace MoonLux
         ///     Casts the q.
         /// </summary>
         /// <param name="target">The target.</param>
-        private static void CastQ(AIHeroClient target)
+        private static void CastQ(Obj_AI_Base target)
         {
-            Q.Cast(target);
+            if (getCheckBoxItem(miscMenu, "QThroughMinions"))
+            {
+                var prediction = Q.GetPrediction(target);
+                var objects = Q.GetCollision(
+                    Player.ServerPosition.To2D(),
+                    new List<Vector2> { prediction.CastPosition.To2D() });
+
+                if (objects.Count == 1 || (objects.Count == 1 && objects.ElementAt(0).IsChampion())
+                    || objects.Count <= 1
+                    || (objects.Count == 2 && (objects.ElementAt(0).IsChampion() || objects.ElementAt(1).IsChampion())))
+                {
+                    Q.Cast(prediction.CastPosition);
+                }
+            }
+            else
+            {
+                Q.Cast(target);
+            }
         }
 
         /// <summary>
@@ -235,6 +262,7 @@ namespace MoonLux
 
             miscMenu = Menu.AddSubMenu("Miscellaneous Settings", "MiscSettings");
             miscMenu.Add("SpellWeaveCombo", new CheckBox("Spell Weave"));
+            miscMenu.Add("QThroughMinions", new CheckBox("Cast Q through minions"));
             miscMenu.Add("QGapcloser", new CheckBox("Use Q on a Gapcloser"));
 
             drawMenu = Menu.AddSubMenu("Drawing Settings", "DrawSettings");
@@ -477,13 +505,7 @@ namespace MoonLux
                 var aonScreen = Drawing.WorldToMinimap(a);
                 var bonScreen = Drawing.WorldToMinimap(b);
 
-                Drawing.DrawLine(
-                    aonScreen.X,
-                    aonScreen.Y,
-                    bonScreen.X,
-                    bonScreen.Y,
-                    1,
-                    Color.Aqua);
+                Drawing.DrawLine(aonScreen.X, aonScreen.Y, bonScreen.X, bonScreen.Y, 1, Color.Aqua);
             }
         }
 
@@ -525,6 +547,7 @@ namespace MoonLux
 
             KillSteal();
             JungleKillSteal();
+            AutoShield();
         }
 
         /// <summary>
@@ -592,7 +615,7 @@ namespace MoonLux
             if (stealBaron)
             {
                 var baron =
-                    ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.CharData.BaseSkinName.Equals("SRU_Baron") && x.IsHPBarRendered);
+                    ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.CharData.BaseSkinName.Equals("SRU_Baron") && x.IsHPBarRendered && x.IsVisible);
 
                 if (baron != null)
                 {
@@ -608,7 +631,7 @@ namespace MoonLux
             if (stealDragon)
             {
                 var dragon =
-                    ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.CharData.BaseSkinName.Equals("SRU_Dragon") && x.IsHPBarRendered);
+                    ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.CharData.BaseSkinName.Equals("SRU_Dragon") && x.IsHPBarRendered && x.IsVisible);
 
                 if (dragon != null)
                 {
@@ -624,15 +647,15 @@ namespace MoonLux
             if (stealBlue)
             {
                 var blueBuffs =
-                    ObjectManager.Get<Obj_AI_Minion>().Where(x => x.CharData.BaseSkinName.Equals("SRU_Blue") && x.IsHPBarRendered).ToList();
+                    ObjectManager.Get<Obj_AI_Minion>().Where(x => x.CharData.BaseSkinName.Equals("SRU_Blue") && x.IsHPBarRendered && x.IsVisible).ToList();
 
                 if (blueBuffs.Any())
                 {
                     var blueBuff =
                         blueBuffs.Where(
                             x =>
-                                R.GetDamage(x) >
-                                HealthPrediction.GetHealthPrediction(x, (int)(R.Delay * 1000) + Game.Ping / 2))
+                            R.GetDamage(x)
+                            > HealthPrediction.GetHealthPrediction(x, (int)(R.Delay * 1000) + Game.Ping / 2))
                             .FirstOrDefault(
                                 x =>
                                     (x.CountAlliesInRange(1000) == 0 && stealBuffMode == 0)
@@ -651,7 +674,7 @@ namespace MoonLux
             }
 
             var redBuffs =
-                ObjectManager.Get<Obj_AI_Minion>().Where(x => x.CharData.BaseSkinName.Equals("SRU_Red") && x.IsHPBarRendered).ToList();
+                ObjectManager.Get<Obj_AI_Minion>().Where(x => x.CharData.BaseSkinName.Equals("SRU_Red") && x.IsHPBarRendered && x.IsVisible).ToList();
 
             if (!redBuffs.Any())
             {
