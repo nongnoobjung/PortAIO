@@ -65,7 +65,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             if (args.Slot == SpellSlot.W)
             {
-                if (ObjectManager.Get<Obj_GeneralParticleEmitter>().Any(obj => obj.IsValid && obj.Position.Distance(args.EndPosition) < 300 && obj.Name.ToLower().Contains("yordleTrap_idle_green.troy".ToLower())))
+                if (ObjectManager.Get<Obj_GeneralParticleEmitter>().Any(obj => obj.IsValid && obj.Position.LSDistance(args.EndPosition) < 300 && obj.Name.ToLower().Contains("yordleTrap_idle_green.troy".ToLower())))
                     args.Process = false;
             }
             if (args.Slot == SpellSlot.E && Player.Mana > RMANA + WMANA)
