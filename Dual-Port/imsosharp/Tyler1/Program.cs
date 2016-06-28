@@ -142,16 +142,29 @@ namespace Tyler1
             var target = TargetSelector.GetTarget(E.Range, DamageType.Physical);
             try
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) Farm();
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && target != null)
+                if (target != null)
                 {
-                    Combo();
-                    RCombo();
+                    if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                    {
+                        Combo();
+                        RCombo();
+                    }
                 }
+
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+                    Farm();
+
                 CatchAxes();
                 KS();
-                if (W.IsReady() && Player.HasBuffOfType(BuffType.Slow) &&
-                    target.Distance(ObjectManager.Player) <= MyRange) W.Cast();
+
+                if (target != null)
+                {
+                    if (W.IsReady() && Player.HasBuffOfType(BuffType.Slow) && target.Distance(ObjectManager.Player) <= MyRange)
+                    {
+                        W.Cast();
+                    }
+                }
+
                 R1V1(target);
 
             }
@@ -365,12 +378,7 @@ namespace Tyler1
         private static void KS()
         {
             if (!RKS) return;
-            foreach (
-                var enemy in
-                    GameObjects.EnemyHeroes.Where(
-                        e =>
-                            e.IsHPBarRendered && e.Distance(ObjectManager.Player) < 3000 &&
-                            (e.Distance(ObjectManager.Player) > MyRange + 150 || !RKSOnlyIfCantAA)))
+            foreach (var enemy in GameObjects.EnemyHeroes.Where(e => e.IsHPBarRendered && e.Distance(ObjectManager.Player) < 3000 && (e.Distance(ObjectManager.Player) > MyRange + 150 || !RKSOnlyIfCantAA)))
             {
                 if (enemy.Health < R.GetDamage(enemy) && !ShouldntUlt(enemy))
                 {
