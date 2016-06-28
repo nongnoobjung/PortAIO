@@ -1,5 +1,3 @@
-KOG'MAW JUNGLE IS BROKEN AS SHIT, TRY IT OUT. http://i.imgur.com/EonkoGN.png
-
 # Welcome to PortAIO's Official Github
 - https://github.com/berbb/PortAIO is the official GitHub.
 - https://discord.gg/0zNgmm6ziPDoOfbZ is the official PortAIO discord channel.
