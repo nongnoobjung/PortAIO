@@ -14,7 +14,7 @@ namespace Nechrito_Gragas
 
         public static Vector3 rpred(AIHeroClient Target)
         {
-            var pos = Spells.R.GetVectorSPrediction(Target, -50).CastTargetPosition;
+            var pos = Spells.R.GetVectorSPrediction(Target, -(Player.MoveSpeed - Target.MoveSpeed)).CastTargetPosition;
 
             if (Target != null && !pos.LSIsWall())
             {
@@ -24,16 +24,12 @@ namespace Nechrito_Gragas
                     {
                         pos = pos.LSExtend(Player.Position.LSTo2D(), -90);
                     }
-                    pos = pos.LSExtend(Player.Position.LSTo2D(), -100);
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), -110);
                 }
 
                 if (!Target.LSIsFacing(Player))
                 {
-                    if (Target.IsMoving)
-                    {
-                        pos = pos.LSExtend(Player.Position.LSTo2D(), -145);
-                    }
-                    pos = pos.LSExtend(Player.Position.LSTo2D(), -130);
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), -150);
                 }
             }
             return pos.To3D2();
@@ -41,7 +37,7 @@ namespace Nechrito_Gragas
 
         public static Vector3 qpred(AIHeroClient Target)
         {
-            var pos = Spells.Q.GetVectorSPrediction(Target, 50).CastTargetPosition;
+            var pos = Spells.Q.GetVectorSPrediction(Target, -(Player.MoveSpeed - Target.MoveSpeed)).CastTargetPosition;
 
             pos = pos.LSExtend(Player.Position.LSTo2D(), +Spells.R.Range);
 
@@ -53,16 +49,12 @@ namespace Nechrito_Gragas
                     {
                         pos = pos.LSExtend(Player.Position.LSTo2D(), 90);
                     }
-                    pos = pos.LSExtend(Player.Position.LSTo2D(), 100);
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), 110);
                 }
 
                 if (!Target.LSIsFacing(Player))
                 {
-                    if (Target.IsMoving)
-                    {
-                        pos = pos.LSExtend(Player.Position.LSTo2D(), 150);
-                    }
-                    pos = pos.LSExtend(Player.Position.LSTo2D(), 140);
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), 150);
                 }
             }
 
@@ -91,7 +83,7 @@ namespace Nechrito_Gragas
 
                     if (Program.GragasQ != null && Target.LSDistance(Program.GragasQ.Position) <= 250)
                     {
-                        Spells.Q.Cast();
+                        Spells.Q.Cast(true);
 
                         var pos = Spells.E.GetVectorSPrediction(Target, Spells.E.Range).CastTargetPosition;
                         Spells.E.Cast(pos);
@@ -134,7 +126,7 @@ namespace Nechrito_Gragas
                 // E
                 else if (Spells.E.IsReady() && !Spells.W.IsReady())
                 {
-                    var pos = Spells.E.GetVectorSPrediction(Target, Spells.E.Range).CastTargetPosition;
+                    var pos = Spells.E.GetVectorSPrediction(target, Spells.E.Range).CastTargetPosition;
 
                     if (!Spells.E.CheckMinionCollision(pos))
                     {
@@ -154,7 +146,7 @@ namespace Nechrito_Gragas
 
                 foreach (var m in mobs)
                 {
-                    if (m.LSDistance(Player) <= 400f)
+                    if (m.LSDistance(Player) <= 300f)
                     {
                         if (Spells.W.IsReady())
                         {
@@ -166,9 +158,13 @@ namespace Nechrito_Gragas
                             Spells.E.Cast(m);
                         }
 
-                        if (Spells.Q.IsReady())
+                        if (Program.GragasQ == null)
                         {
-                            Spells.Q.Cast(m);
+                            Spells.Q.Cast(m, true);
+                        }
+                        if (Program.GragasQ != null && m.LSDistance(Program.GragasQ.Position) <= 250)
+                        {
+                            Spells.Q.Cast(true);
                         }
                     }
                 }
@@ -177,17 +173,20 @@ namespace Nechrito_Gragas
         public static void HarassLogic()
         {
             var target = TargetSelector.GetTarget(Spells.R.Range - 50, DamageType.Magical);
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
+            if (target != null && target.LSIsValidTarget() && !target.IsZombie)
             {
                 if (Spells.E.IsReady() && MenuConfig.harassE)
                 {
                     Spells.E.Cast(target);
                 }
 
-                if (Spells.Q.IsReady() && MenuConfig.harassQ)
+                if (Program.GragasQ == null)
                 {
-                    var pos = Spells.Q.GetSPrediction(target).CastPosition;
-                    Spells.Q.Cast(pos);
+                    Spells.Q.Cast(target, true);
+                }
+                if (Program.GragasQ != null && target.LSDistance(Program.GragasQ.Position) <= 250)
+                {
+                    Spells.Q.Cast(true);
                 }
 
                 if (Spells.W.IsReady())

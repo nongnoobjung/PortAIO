@@ -103,16 +103,22 @@ namespace Nechrito_Gragas
 
                             if (Spells.Q.IsReady() && MenuConfig.LaneQ)
                             {
-                                if (m.Health < Spells.Q.GetDamage(m))
+                                if (Program.GragasQ == null)
                                 {
-                                    Spells.Q.Cast(GetCenterMinion());
+                                    Spells.Q.Cast(GetCenterMinion(), true);
+                                }
+                                if (Program.GragasQ != null && m.LSDistance(Program.GragasQ.Position) <= 250 && m.Health < Spells.Q.GetDamage(m))
+                                {
+                                    Spells.Q.Cast(true);
                                 }
                             }
-                        }
-
-                        if (Spells.W.IsReady() && MenuConfig.LaneW)
-                        {
-                            Spells.W.Cast();
+                            if (m.LSDistance(Player) <= 250f)
+                            {
+                                if (Spells.W.IsReady() && MenuConfig.LaneW)
+                                {
+                                    Spells.W.Cast();
+                                }
+                            }
                         }
                     }
                 }
