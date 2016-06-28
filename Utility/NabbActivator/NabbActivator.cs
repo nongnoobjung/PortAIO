@@ -15,12 +15,12 @@ namespace NabbActivator
         public static void OnLoad()
         {
             /// <summary>
-            ///     Initialize the menus.
+            ///     Initializes the menus.
             /// </summary>
             Menus.Initialize();
 
             /// <summary>
-            ///     Initialize the spells.
+            ///     Initializes the spells.
             /// </summary>
             ISpells.Initialize();
 
@@ -30,14 +30,19 @@ namespace NabbActivator
             Methods.Initialize();
 
             /// <summary>
-            ///     Initializes the resetters.
+            ///     Initializes the smite logic.
             /// </summary>
-            Resetters.Initialize();
+            Activator.SmiteInit();
 
             /// <summary>
             ///     Initializes the drawings.
             /// </summary>
             Drawings.Initialize();
+
+            /// <summary>
+            ///     Initializes the resetters.
+            /// </summary>
+            Resetters.Initialize();
 
             /// <summary>
             ///     Initializes the healthbars.

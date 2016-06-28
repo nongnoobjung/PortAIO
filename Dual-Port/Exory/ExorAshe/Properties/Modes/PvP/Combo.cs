@@ -19,8 +19,8 @@ namespace ExorAIO.Champions.Ashe
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Combo(EventArgs args)
         {
-            if (Bools.HasSheenBuff() ||
-                !Targets.Target.LSIsValidTarget())
+            if (Bools.HasSheenBuff() &&
+               GameObjects.EnemyHeroes.Any(t => t.LSIsValidTarget(Vars.AARange)))
             {
                 return;
             }
@@ -28,15 +28,16 @@ namespace ExorAIO.Champions.Ashe
             /// <summary>
             ///     The Q Combo Logic.
             /// </summary>
-            if (Vars.Q.IsReady() &&
-                Targets.Target.LSIsValidTarget(Vars.AARange) &&
+            if (Vars.Q.IsReady() &&     
                 GameObjects.Player.HasBuff("asheqcastready") &&
+                GameObjects.EnemyHeroes.Any(t => t.LSIsValidTarget(Vars.AARange)) &&
                 Vars.getCheckBoxItem(Vars.QMenu, "combo"))
             {
                 Vars.Q.Cast();
             }
 
-            if (Targets.Target.LSIsValidTarget(Vars.AARange + 20))
+            if (!Targets.Target.LSIsValidTarget() ||
+                GameObjects.EnemyHeroes.Any(t => t.LSIsValidTarget(Vars.AARange + 20)))
             {
                 return;
             }

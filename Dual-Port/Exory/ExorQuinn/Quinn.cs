@@ -134,17 +134,16 @@ namespace ExorAIO.Champions.Quinn
             {
                 if (!GameObjects.EnemyHeroes.Any(
                     t =>
-                        t.IsValidTarget(Vars.AARange) &&
+                        t.LSIsValidTarget(Vars.AARange) &&
                         t.HasBuff("quinnw")))
                 {
                     Orbwalker.ForcedTarget = null;
                     return;
                 }
 
-                args.Process = false;
                 Orbwalker.ForcedTarget = GameObjects.EnemyHeroes.FirstOrDefault(
                     t =>
-                        t.IsValidTarget(Vars.AARange) &&
+                        t.LSIsValidTarget(Vars.AARange) &&
                         t.HasBuff("quinnw"));
             }
         }
