@@ -20,12 +20,6 @@ namespace ExorAIO.Champions.Jhin
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Automatic(EventArgs args)
         {
-            /// <summary>
-            ///     The R Manager.
-            /// </summary>
-            Orbwalker.DisableAttacking = Vars.R.Instance.Name.Equals("JhinRShot");
-            Orbwalker.DisableMovement = Vars.R.Instance.Name.Equals("JhinRShot");
-
             if (GameObjects.Player.LSIsRecalling())
             {
                 return;

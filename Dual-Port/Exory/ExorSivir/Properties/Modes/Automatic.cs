@@ -28,7 +28,7 @@ namespace ExorAIO.Champions.Sivir
             ///     The Automatic Q Logic.
             /// </summary>
             if (Vars.Q.IsReady() &&
-                Menus.getCheckBoxItem(Vars.QMenu, "logical"))
+                Vars.getCheckBoxItem(Vars.QMenu, "logical"))
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
@@ -43,6 +43,7 @@ namespace ExorAIO.Champions.Sivir
 
         /// <summary>
         ///     Called while processing Spellcasting operations.
+        ///     Port this berbb :^)
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
@@ -145,43 +146,37 @@ namespace ExorAIO.Champions.Sivir
                             args.SData.Name.Equals("MissFortuneScattershot") ||
                             args.SData.Name.Equals("OrianaDissonanceCommand"))
                         {
-                            break;
+                            return;
                         }
 
                         if (AutoAttack.IsAutoAttack(args.SData.Name))
                         {
-                            if (!sender.IsMelee)
-                            {
-                                if (args.SData.Name.Contains("Card"))
-                                {
-                                    Vars.E.Cast();
-                                }
-                            }
-                            else
-                            {
-                                if (args.SData.Name.Equals("PowerFistAttack") ||
-                                    sender.Buffs.Any(b => AutoAttack.IsAutoAttackReset(args.SData.Name)))
-                                {
-                                    Vars.E.Cast();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            DelayAction.Add(
-                                sender.CharData.BaseSkinName.Equals("Zed")
-                                    ? 200
-                                    : sender.CharData.BaseSkinName.Equals("Caitlyn")
-                                        ? 1000
-                                        : sender.CharData.BaseSkinName.Equals("Nocturne") &&
-                                          args.SData.Name.Equals("NocturneUnspeakableHorror")
-                                            ? 500
-                                            : Vars.getSliderItem(Vars.EMenu, "delay"),
-                            () =>
+                            if ((!sender.IsMelee && args.SData.Name.Contains("Card")) ||
+                                sender.Buffs.Any(b => AutoAttack.IsAutoAttackReset(args.SData.Name)))
                             {
                                 Vars.E.Cast();
                             }
-                            );
+
+                            return;
+                        }
+
+                        switch (sender.CharData.BaseSkinName)
+                        {
+                            case "Zed":
+                                DelayAction.Add(200, () => { Vars.E.Cast(); });
+                                break;
+
+                            case "Caitlyn":
+                                DelayAction.Add(500, () => { Vars.E.Cast(); });
+                                break;
+
+                            case "Nocturne":
+                                DelayAction.Add(750, () => { Vars.E.Cast(); });
+                                break;
+
+                            default:
+                                DelayAction.Add(Vars.getSliderItem(Vars.EMenu, "delay"), () => { Vars.E.Cast(); });
+                                break;
                         }
                         break;
 

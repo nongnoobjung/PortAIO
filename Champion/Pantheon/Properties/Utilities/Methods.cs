@@ -1,4 +1,5 @@
 using EloBuddy;
+using EloBuddy.SDK;
 using LeagueSharp;
 using LeagueSharp.SDK;
 
@@ -16,6 +17,8 @@ namespace ExorAIO.Champions.Pantheon
         {
             Game.OnUpdate += Pantheon.OnUpdate;
             Events.OnInterruptableTarget += Pantheon.OnInterruptableTarget;
+            Player.OnIssueOrder += Pantheon.Player_OnIssueOrder;
+            Orbwalker.OnPreAttack += Pantheon.Orbwalker_OnPreAttack;
         }
     }
 }

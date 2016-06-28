@@ -18,6 +18,8 @@ namespace ExorAIO.Champions.Jhin
             Obj_AI_Base.OnSpellCast += Jhin.OnDoCast;
             Events.OnGapCloser += Jhin.OnGapCloser;
             Obj_AI_Base.OnProcessSpellCast += Jhin.OnProcessSpellCast;
+
+            Player.OnIssueOrder += Jhin.Player_OnIssueOrder;
         }
     }
 }

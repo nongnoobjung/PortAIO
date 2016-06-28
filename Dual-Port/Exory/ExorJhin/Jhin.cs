@@ -37,6 +37,11 @@ namespace ExorAIO.Champions.Jhin
             ///     Initializes the drawings.
             /// </summary>
             Drawings.Initialize();
+
+            /// <summary>
+            ///     Initializes the cone drawings.
+            /// </summary>
+            ConeDrawings.Initialize();
         }
 
         /// <summary>
@@ -140,6 +145,19 @@ namespace ExorAIO.Champions.Jhin
                 {
                     Vars.ShotsCount++;
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Called on orbwalker action.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="OrbwalkingActionArgs" /> instance containing the event data.</param>
+        public static void Player_OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
+        {
+            if (Vars.R.Instance.Name.Equals("JhinRShot") && sender.IsMe)
+            {
+                args.Process = false;
             }
         }
     }

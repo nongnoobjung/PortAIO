@@ -5,6 +5,8 @@ using LeagueSharp.SDK;
 using LeagueSharp.SDK.Enumerations;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
+using System.Linq;
+using LeagueSharp.Data;
 
 namespace ExorAIO.Champions.MissFortune
 {
@@ -153,6 +155,55 @@ namespace ExorAIO.Champions.MissFortune
                 Vars.getCheckBoxItem(Vars.EMenu, "gapcloser"))
             {
                 Vars.E.Cast(args.End);
+            }
+        }
+
+        public static void Player_OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
+        {
+            /// <summary>
+            ///     Stop movement commands while channeling R.
+            /// </summary>
+            if (GameObjects.Player.HasBuff("missfortunebulletsound"))
+            {
+                args.Process = false;
+            }
+        }
+
+        public static void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
+        {
+            /// <summary>
+            ///     Stop attack commands while channeling R.
+            /// </summary>
+            if (GameObjects.Player.HasBuff("missfortunebulletsound"))
+            {
+                args.Process = false;
+            }
+
+            /// <summary>
+            ///     The Target Switching Logic (Passive Stacks).
+            /// </summary>
+            if (args.Target is AIHeroClient &&
+                args.Target.NetworkId == Vars.PassiveTarget.NetworkId &&
+                Vars.getCheckBoxItem(Vars.MiscMenu, "passive"))
+            {
+                if (Vars.GetRealHealth(args.Target as AIHeroClient) >
+                        GameObjects.Player.GetAutoAttackDamage(args.Target as AIHeroClient) * 3)
+                {
+                    if (!GameObjects.EnemyHeroes.Any(
+                        t =>
+                            t.IsValidTarget(Vars.AARange) &&
+                            t.NetworkId != Vars.PassiveTarget.NetworkId))
+                    {
+                        Orbwalker.ForcedTarget = null;
+                        return;
+                    }
+
+                    args.Process = false;
+                    Orbwalker.ForcedTarget = GameObjects.EnemyHeroes.Where(
+                        t =>
+                            t.IsValidTarget(Vars.AARange) &&
+                            t.NetworkId != Vars.PassiveTarget.NetworkId).OrderByDescending(o => TargetSelector.GetPriority(o)).First();
+                }
             }
         }
     }

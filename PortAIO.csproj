@@ -327,6 +327,7 @@
     <Compile Include="Dual-Port\Exory\ExorEzreal\Properties\Utilities\Methods.cs" />
     <Compile Include="Dual-Port\Exory\ExorEzreal\Properties\Utilities\Spells.cs" />
     <Compile Include="Dual-Port\Exory\ExorEzreal\Properties\Utilities\Targets.cs" />
+    <Compile Include="Dual-Port\Exory\ExorJhin\Properties\Utilities\Drawings.cs" />
     <Compile Include="Dual-Port\Exory\ExorMissFortune\MissFortune.cs" />
     <Compile Include="Dual-Port\Exory\ExorMissFortune\Properties\Modes\Automatic.cs" />
     <Compile Include="Dual-Port\Exory\ExorMissFortune\Properties\Modes\PvM\Clear.cs" />

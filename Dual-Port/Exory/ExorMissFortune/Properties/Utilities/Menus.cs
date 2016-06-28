@@ -93,6 +93,14 @@ namespace ExorAIO.Champions.MissFortune
             }
 
             /// <summary>
+            ///     Sets the miscellaneous menu.
+            /// </summary>
+            Vars.MiscMenu = Vars.Menu.AddSubMenu("Miscellaneous");
+            {
+                Vars.MiscMenu.Add("passive", new CheckBox("Try to change target for Passive Proc", true));
+            }
+
+            /// <summary>
             ///     Sets the drawings menu.
             /// </summary>
             Vars.DrawingsMenu = Vars.Menu.AddSubMenu("Drawings");

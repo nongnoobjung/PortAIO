@@ -1,8 +1,4 @@
 using System;
-using ExorAIO.Utilities;
-using LeagueSharp.SDK;
-using EloBuddy.SDK;
-using EloBuddy;
 
 namespace ExorAIO.Champions.Pantheon
 {
@@ -15,15 +11,6 @@ namespace ExorAIO.Champions.Pantheon
         ///     Called when the game updates itself.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public static void Automatic(EventArgs args)
-        {
-            if (GameObjects.Player.LSIsRecalling())
-            {
-                return;
-            }
-
-            Orbwalker.DisableAttacking = ObjectManager.Player.HasBuff("PantheonESound");
-            Orbwalker.DisableMovement = ObjectManager.Player.HasBuff("PantheonESound");
-        }
+        public static void Automatic(EventArgs args) { }
     }
 }

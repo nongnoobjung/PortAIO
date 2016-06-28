@@ -22,12 +22,6 @@ namespace ExorAIO.Utilities
         {
             Drawing.OnDraw += delegate
             {
-                if (Vars.End != Vector3.Zero &&
-                    Vars.R.Instance.Name.Equals("JhinRShot"))
-                {
-                    Vars.Cone.Draw(GameObjects.EnemyHeroes.Any(t => !Vars.Cone.IsOutside((Vector2)t.ServerPosition)) ? Color.Green : Color.Red, 1);
-                }
-
                 /// <summary>
                 ///     Loads the Q drawing,
                 ///     Loads the Extended Q drawing.

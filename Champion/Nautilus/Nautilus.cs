@@ -112,7 +112,7 @@ namespace ExorAIO.Champions.Nautilus
             {
                 if (Vars.getCheckBoxItem(Vars.MiscMenu, "support"))
                 {
-                    if (Orbwalker.LastTarget is Obj_AI_Minion &&
+                    if (args.Target is Obj_AI_Minion &&
                         GameObjects.AllyHeroes.Any(a => a.Distance(GameObjects.Player) < 2500))
                     {
                         args.Process = false;

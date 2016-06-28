@@ -6,6 +6,7 @@ using LeagueSharp.SDK.Enumerations;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy;
 using EloBuddy.SDK;
+using System.Linq;
 
 namespace ExorAIO.Champions.Quinn
 {
@@ -113,6 +114,38 @@ namespace ExorAIO.Champions.Quinn
                 Vars.getCheckBoxItem(Vars.EMenu, "interrupter"))
             {
                 Vars.E.CastOnUnit(args.Sender);
+            }
+        }
+
+        public static void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
+        {
+            /// <summary>
+            ///     Check for R Instance.
+            /// </summary>
+            if (Vars.R.Instance.Name.Equals("QuinnRFinale"))
+            {
+                args.Process = false;
+            }
+
+            /// <summary>
+            ///     The Target Forcing Logic.
+            /// </summary>
+            if (args.Target is AIHeroClient)
+            {
+                if (!GameObjects.EnemyHeroes.Any(
+                    t =>
+                        t.IsValidTarget(Vars.AARange) &&
+                        t.HasBuff("quinnw")))
+                {
+                    Orbwalker.ForcedTarget = null;
+                    return;
+                }
+
+                args.Process = false;
+                Orbwalker.ForcedTarget = GameObjects.EnemyHeroes.FirstOrDefault(
+                    t =>
+                        t.IsValidTarget(Vars.AARange) &&
+                        t.HasBuff("quinnw"));
             }
         }
     }

@@ -87,6 +87,7 @@ namespace ExorAIO.Champions.Jhin
                 Vars.DrawingsMenu.Add("w", new CheckBox("W Range"));
                 Vars.DrawingsMenu.Add("e", new CheckBox("E Range"));
                 Vars.DrawingsMenu.Add("r", new CheckBox("R Range"));
+                Vars.DrawingsMenu.Add("rc", new CheckBox("R Cone"));
             }
         }
     }
