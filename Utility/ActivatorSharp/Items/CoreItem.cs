@@ -211,7 +211,7 @@ namespace Activators.Items
                     }
 
                     Menu.AddGroupLabel(Name + " Buff Types");
-                    Menu.Add(Name + "cexh", new CheckBox("Exhaust"));
+                    Menu.Add(Name + "cexh", new CheckBox("Exhaust", false));
                     Menu.Add(Name + "csupp", new CheckBox("Supression"));
                     Menu.Add(Name + "cstun", new CheckBox("Stuns"));
                     Menu.Add(Name + "ccharm", new CheckBox("Charms"));

@@ -61,12 +61,13 @@ namespace Activators.Summoners
                 {
                     Activator.UseAllyMenu = true;
                     Menu.AddGroupLabel(DisplayName + " Buff Types");
-                    Menu.Add(Name + "csupp", new CheckBox("Supression"));
                     Menu.Add(Name + "cstun", new CheckBox("Stuns"));
                     Menu.Add(Name + "ccharm", new CheckBox("Charms"));
                     Menu.Add(Name + "ctaunt", new CheckBox("Taunts"));
                     Menu.Add(Name + "cflee", new CheckBox("Flee/Fear"));
                     Menu.Add(Name + "csnare", new CheckBox("Snares"));
+                    Menu.Add(Name + "cexh", new CheckBox("Exhaust", false));
+                    Menu.Add(Name + "csupp", new CheckBox("Supression", false));
                     Menu.Add(Name + "csilence", new CheckBox("Silences", false));
                     Menu.Add(Name + "cpolymorph", new CheckBox("Polymorphs", false));
                     Menu.Add(Name + "cblind", new CheckBox("Blinds", false));
