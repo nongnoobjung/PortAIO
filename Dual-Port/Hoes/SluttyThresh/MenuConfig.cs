@@ -45,6 +45,7 @@ namespace Slutty_Thresh
 
 
             lanternMenu = Config.AddSubMenu("Lantern Settings", "lantern");
+            lanternMenu.Add("ThrowLantern", new KeyBind("Manual Lantern to Ally", false, KeyBind.BindTypes.HoldActive, 'T'));
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && !x.IsMe))
             {
                 lanternMenu.Add("healop" + hero.ChampionName, new ComboBox(hero.ChampionName, 0, "Lantern", "No Lantern"));

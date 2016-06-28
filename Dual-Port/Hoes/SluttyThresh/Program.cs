@@ -78,8 +78,23 @@ namespace Slutty_Thresh
             return m[item].Cast<ComboBox>().CurrentValue;
         }
 
+        private static void ThrowLantern()
+        {
+            if (W.IsReady())
+            {
+                var NearAllies = Player.GetAlliesInRange(W.Range).Where(x => !x.IsMe).Where(x => !x.IsDead).Where(x => x.LSDistance(Player.Position) <= W.Range + 250).FirstOrDefault();
+                if (NearAllies == null) return;
+                W.Cast(NearAllies.Position);
+            }
+        }
+
         private static void Game_OnUpdate(EventArgs args)
         {
+            if (getKeyBindItem(lanternMenu, "ThrowLantern"))
+            {
+                ThrowLantern();
+            }
+
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Combo();
