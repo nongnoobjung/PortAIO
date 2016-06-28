@@ -22,10 +22,10 @@ namespace ExorAIO.Champions.Caitlyn
             Vars.E = new Spell(SpellSlot.E, 950f);
             Vars.R = new Spell(SpellSlot.R, 1500f + 500f * GameObjects.Player.Spellbook.GetSpell(SpellSlot.R).Level);
 
-            Vars.Q.SetSkillshot(0.65f, 40f, 2200f, false, SkillshotType.SkillshotLine);
+            Vars.Q.SetSkillshot(0.65f, 60f, 2200f, false, SkillshotType.SkillshotLine);
             Vars.Q2.SetSkillshot(0.65f, Vars.Q.Width * 2, 2200f, false, SkillshotType.SkillshotLine);
-            Vars.W.SetSkillshot(0.55f, 67.5f, float.MaxValue, false, SkillshotType.SkillshotCircle);
-            Vars.E.SetSkillshot(0.25f, 70f, 1600f, true, SkillshotType.SkillshotLine);
+            Vars.W.SetSkillshot(1.1f, 67.5f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            Vars.E.SetSkillshot(0.35f, 70f, 1600f, true, SkillshotType.SkillshotLine);
         }
     }
 }

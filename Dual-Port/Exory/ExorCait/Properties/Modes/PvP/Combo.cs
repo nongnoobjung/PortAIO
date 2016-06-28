@@ -20,7 +20,8 @@ namespace ExorAIO.Champions.Caitlyn
         public static void Combo(EventArgs args)
         {
             if (Bools.HasSheenBuff() ||
-                GameObjects.Player.Mana < Vars.E.Instance.SData.Mana + Vars.Q.Instance.SData.Mana)
+                GameObjects.Player.Mana <
+                Vars.E.Instance.SData.Mana + Vars.Q.Instance.SData.Mana)
             {
                 return;
             }

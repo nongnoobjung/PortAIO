@@ -59,9 +59,9 @@ namespace ExorAIO.Champions.Ezreal
                 }
             }
 
-            if (Bools.HasSheenBuff() ||
-                !Targets.Target.LSIsValidTarget() ||
-                Invulnerable.Check(Targets.Target))
+
+            if (Invulnerable.Check(Targets.Target) ||
+                Targets.Target.LSIsValidTarget(Vars.AARange))
             {
                 return;
             }
@@ -70,8 +70,7 @@ namespace ExorAIO.Champions.Ezreal
             ///     The Q Combo Logic.
             /// </summary>
             if (Vars.Q.IsReady() &&
-                Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
-                !Targets.Target.LSIsValidTarget(Vars.AARange) &&
+                Targets.Target.LSIsValidTarget(Vars.Q.Range) &&            
                 Vars.getCheckBoxItem(Vars.QMenu, "combo"))
             {
                 if (!Vars.Q.GetPrediction(Targets.Target).CollisionObjects.Any())
@@ -89,16 +88,12 @@ namespace ExorAIO.Champions.Ezreal
                 !Targets.Target.LSIsValidTarget(Vars.AARange) &&
                 Vars.getCheckBoxItem(Vars.WMenu, "combo"))
             {
-                if (Targets.Target.LSIsValidTarget(Vars.AARange) &&
-                    GameObjects.Player.CountAllyHeroesInRange(Vars.W.Range) < 2)
+                if (GameObjects.Player.CountAllyHeroesInRange(Vars.W.Range) < 2 ||
+                    GameObjects.Player.TotalAttackDamage <
+                        GameObjects.Player.TotalMagicalDamage)
                 {
                     Vars.W.Cast(Vars.W.GetPrediction(Targets.Target).UnitPosition);
                 }
-                else if (GameObjects.Player.TotalMagicalDamage > GameObjects.Player.TotalAttackDamage)
-                {
-                    Vars.W.Cast(Vars.W.GetPrediction(Targets.Target).UnitPosition);
-                }
-                return;
             }
         }
     }

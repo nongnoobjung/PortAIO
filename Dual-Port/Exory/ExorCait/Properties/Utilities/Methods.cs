@@ -15,9 +15,10 @@ namespace ExorAIO.Champions.Caitlyn
         public static void Initialize()
         {
             Game.OnUpdate += Caitlyn.OnUpdate;
-            Obj_AI_Base.OnSpellCast += Caitlyn.OnDoCast;
+            Spellbook.OnCastSpell += Caitlyn.OnCastSpell;
             Events.OnGapCloser += Caitlyn.OnGapCloser;
             Events.OnInterruptableTarget += Caitlyn.OnInterruptableTarget;
+            Obj_AI_Base.OnSpellCast += Caitlyn.OnDoCast;
         }
     }
 }

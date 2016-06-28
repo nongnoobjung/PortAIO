@@ -30,27 +30,22 @@ namespace ExorAIO.Champions.Caitlyn
             if (Vars.W.IsReady() &&
                 Vars.getCheckBoxItem(Vars.WMenu, "logical"))
             {
-                foreach (var target in ObjectManager.Get<Obj_AI_Base>().Where(
+                foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
                         Bools.IsImmobile(t) &&
                         t.LSIsValidTarget(Vars.W.Range) &&
-                        !Invulnerable.Check(t as AIHeroClient, DamageType.Magical, false)))
+                        !Invulnerable.Check(t, DamageType.Magical, false)))
                 {
-                    if (!ObjectManager.Get<Obj_AI_Minion>().Any(
-                        m =>
-                            m.Distance(target.ServerPosition) < 100f &&
-                            m.CharData.BaseSkinName.Equals("caitlyntrap")))
-                    {
-                        Vars.W.Cast(target.ServerPosition);
-                    }
+                    Vars.W.Cast(target.ServerPosition);
                 }
+                
             }
 
             /// <summary>
             ///     The Automatic Q Logic.
             /// </summary>
             if (Vars.Q.IsReady() &&
-                GameObjects.Player.CountEnemyHeroesInRange(Vars.AARange) < 2 &&
+                GameObjects.Player.CountEnemyHeroesInRange(Vars.AARange) < 3 &&
                 Vars.getCheckBoxItem(Vars.QMenu, "logical"))
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(
@@ -68,23 +63,22 @@ namespace ExorAIO.Champions.Caitlyn
             ///     The Semi-Automatic R Management.
             /// </summary>
             if (Vars.R.IsReady() &&
-                Vars.getCheckBoxItem(Vars.RMenu, "bool"))
+                Vars.getCheckBoxItem(Vars.RMenu, "bool") &&
+                Vars.getKeyBindItem(Vars.RMenu, "key"))
             {
-                if (GameObjects.EnemyHeroes.Any(
+                if (!GameObjects.EnemyHeroes.Any(
                     t =>
                     !Invulnerable.Check(t) &&
-                    t.LSIsValidTarget(Vars.R.Range)) &&
-                    Vars.getKeyBindItem(Vars.RMenu, "key"))
+                    t.LSIsValidTarget(Vars.R.Range)))
                 {
-                    Vars.R.CastOnUnit(
-                        GameObjects.EnemyHeroes
-                            .Where(
-                            t =>
-                                !Invulnerable.Check(t) &&
-                                t.LSIsValidTarget(Vars.R.Range))
-                            .OrderBy(o => o.Health)
-                            .FirstOrDefault());
+                    return;
                 }
+
+                Vars.R.CastOnUnit(
+                    GameObjects.EnemyHeroes.OrderBy(o => o.Health).FirstOrDefault(
+                        t =>
+                            !Invulnerable.Check(t) &&
+                            t.LSIsValidTarget(Vars.R.Range)));
             }
         }
     }
