@@ -306,7 +306,7 @@ namespace UnderratedAIO.Champions
             Q = new Spell(SpellSlot.Q, 950);
             Q.SetSkillshot(1.2f, 175f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
-            W = new Spell(SpellSlot.W, 650);
+            W = new Spell(SpellSlot.W, 300);
             W.SetSkillshot(0.25f, 250f, float.MaxValue, false, SkillshotType.SkillshotCone);
             E = new Spell(SpellSlot.E, 500);
             E.SetSkillshot(E.Instance.SData.SpellCastTime, E.Instance.SData.LineWidth, E.Speed, false,

@@ -884,7 +884,7 @@ namespace UnderratedAIO.Champions
                     foreach (var m in
                         minis.Where(e => Q.GetDamage(e) >= e.Health && e.Health > 3))
                     {
-                        Render.Circle.DrawCircle(m.Position, 45, Color.Yellow, 7);
+                        Render.Circle.DrawCircle(m.Position, 57, Color.Yellow, 7);
                     }
                 }
             }

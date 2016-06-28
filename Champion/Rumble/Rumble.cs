@@ -109,7 +109,7 @@ namespace UnderratedAIO.Champions
             var data = IncDamages.GetAllyData(player.NetworkId);
             if (data != null && W.IsReady() && getCheckBoxItem(menuM, "usew") &&
                 (preventSilence(W) || (!getCheckBoxItem(menuM, "blockW") && !preventSilence(W))) &&
-                (data.DamageTaken > getShield()*getSliderItem(menuM, "shieldPercent")/100 ||
+                (data.DamageTaken > getShield() * getSliderItem(menuM, "shieldPercent") / 100 ||
                  getSliderItem(menuM, "Aggro") <= data.DamageCount))
             {
                 W.Cast();
@@ -152,8 +152,8 @@ namespace UnderratedAIO.Champions
                 return 0;
             }
             var num = ActiveE ? 1 : 2;
-            var dmg = player.LSGetSpellDamage(target, SpellSlot.E)*num;
-            return (float) (Enhanced ? dmg*1.5f : dmg);
+            var dmg = player.LSGetSpellDamage(target, SpellSlot.E) * num;
+            return (float)(Enhanced ? dmg * 1.5f : dmg);
         }
 
         private static float getQdamage(AIHeroClient target)
@@ -162,19 +162,19 @@ namespace UnderratedAIO.Champions
             {
                 return 0;
             }
-            var dmg = player.LSGetSpellDamage(target, SpellSlot.Q);
-            return (float) (Enhanced ? dmg*1.5f : dmg);
+            var dmg = QDamage(target, true);
+            return (float)(Enhanced ? dmg * 1.5f : dmg);
         }
 
         private double getShield()
         {
-            return new double[] {50, 80, 110, 140, 170}[W.Level - 1] + 0.4f*player.TotalMagicalDamage;
+            return new double[] { 50, 80, 110, 140, 170 }[W.Level - 1] + 0.4f * player.TotalMagicalDamage;
         }
 
         private static float getRdamage()
         {
-            var dmg = new double[] {130, 185, 240}[R.Level - 1] + 0.3f*player.TotalMagicalDamage;
-            return (float) dmg;
+            var dmg = new double[] { 130, 185, 240 }[R.Level - 1] + 0.3f * player.TotalMagicalDamage;
+            return (float)dmg;
         }
 
         private bool Qhit(Vector3 target)
@@ -213,7 +213,7 @@ namespace UnderratedAIO.Champions
             }
             var edmg = getEdamage(target);
             var qdmg = getQdamage(target);
-            var ignitedmg = (float) player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
+            var ignitedmg = (float)player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
             var hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
             if (getCheckBoxItem(menuC, "useIgnite") &&
                 ignitedmg > HealthPrediction.GetHealthPrediction(target, 700) && hasIgnite &&
@@ -225,14 +225,14 @@ namespace UnderratedAIO.Champions
             }
             if (Q.CanCast(target) && getCheckBoxItem(menuC, "useq") && Qhit(target.Position) &&
                 (preventSilence(Q) ||
-                 (target.Health < PassiveDmg(target)*2 || qdmg > target.Health) &&
+                 (target.Health < PassiveDmg(target) * 2 || qdmg > target.Health) &&
                  target.LSDistance(player) < Orbwalking.GetRealAutoAttackRange(target)))
             {
                 Q.Cast(target.Position);
             }
             if (getCheckBoxItem(menuC, "usee") && E.CanCast(target) &&
                 (((preventSilence(E) ||
-                   (target.Health < PassiveDmg(target)*2 &&
+                   (target.Health < PassiveDmg(target) * 2 &&
                     target.LSDistance(player) < Orbwalking.GetRealAutoAttackRange(target))) &&
                   (!ActiveE ||
                    Environment.TickCount - lastE > getSliderItem(menuC, "eDelay"))) ||
@@ -250,9 +250,9 @@ namespace UnderratedAIO.Champions
                        !Silenced;
             if (R.IsReady() &&
                 ((target.Health <
-                  getRdamage()*(target.CountAlliesInRange(600) > 0 && target.HealthPercent > 15 ? 5 : 3) &&
+                  getRdamage() * (target.CountAlliesInRange(600) > 0 && target.HealthPercent > 15 ? 5 : 3) &&
                   target.LSDistance(player) > Q.Range) ||
-                 (target.LSDistance(player) < Q.Range && target.Health < getRdamage()*3 + edmg &&
+                 (target.LSDistance(player) < Q.Range && target.Health < getRdamage() * 3 + edmg &&
                   target.Health > qdmg) ||
                  player.CountEnemiesInRange(R.Range) >= getSliderItem(menuC, "Rmin")))
             {
@@ -269,9 +269,9 @@ namespace UnderratedAIO.Champions
                 {
                     var pos = targE.CastPosition;
                     if (pos.IsValid() && pos.LSDistance(player.Position) < R.Range + 1000 &&
-                        targE.Hitchance >= HitChance.VeryHigh)
+                        targE.Hitchance >= HitChance.High)
                     {
-                        R.Cast(target.Position.LSExtend(pos, -target.MoveSpeed), pos);
+                        R.Cast(target.Position.LSExtend(pos, -500), pos);
                     }
                 }
                 else
@@ -279,12 +279,12 @@ namespace UnderratedAIO.Champions
                     R.Cast(target.Position.LSExtend(player.Position, 500), target.Position);
                 }
             }
-            else if (targE.Hitchance >= HitChance.VeryHigh)
+            else if (targE.Hitchance >= HitChance.High)
             {
                 var pred = getBestRVector3(target, targE);
                 if (pred != Vector3.Zero &&
                     CombatHelper.GetCollisionCount(
-                        target, target.Position.LSExtend(pred, 1000), R.Width, new[] {CollisionableObjects.Heroes}) >=
+                        target, target.Position.LSExtend(pred, 1000), R.Width, new[] { CollisionableObjects.Heroes }) >=
                     getSliderItem(menuC, "Rmin"))
                 {
                     R.Cast(target.Position.LSExtend(pred, -target.MoveSpeed), pred);
@@ -306,7 +306,7 @@ namespace UnderratedAIO.Champions
                         hero =>
                             CombatHelper.GetCollisionCount(
                                 target, target.Position.LSExtend(hero.CastPosition, 1000), R.Width,
-                                new[] {CollisionableObjects.Heroes})).FirstOrDefault();
+                                new[] { CollisionableObjects.Heroes })).FirstOrDefault();
                 if (best != null)
                 {
                     return best.CastPosition;
@@ -324,7 +324,7 @@ namespace UnderratedAIO.Champions
         private static float ComboDamage(AIHeroClient hero)
         {
             double damage = 0;
-            if (Q.IsReady())
+            if (Q.IsReady() || player.HasBuff("RumbleFlameThrower"))
             {
                 damage += getQdamage(hero);
             }
@@ -334,7 +334,7 @@ namespace UnderratedAIO.Champions
             }
             if (R.IsReady())
             {
-                damage += getRdamage()*4;
+                damage += getRdamage() * 4;
             }
             //damage += ItemHandler.GetItemsDamage(target);
             var ignitedmg = player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite);
@@ -343,15 +343,26 @@ namespace UnderratedAIO.Champions
             {
                 damage += ignitedmg;
             }
-            return (float) damage;
+            return (float)damage;
         }
 
+        private static double QDamage(AIHeroClient target, bool bufftime = false)
+        {
+            var buff = player.GetBuff("RumbleFlameThrower");
+            var percentage = 1d;
+            if (bufftime && buff != null)
+            {
+                percentage = CombatHelper.GetBuffTime(buff) / 3f;
+            }
+            var dmg = Q.GetDamage(target);
+            return dmg * percentage;
+        }
 
         private static float PassiveDmg(Obj_AI_Base hero)
         {
             return
                 (float)
-                    (player.CalcDamage(hero, DamageType.Magical, 20 + 5*player.Level + player.TotalMagicalDamage*0.3f) +
+                    (player.CalcDamage(hero, DamageType.Magical, 20 + 5 * player.Level + player.TotalMagicalDamage * 0.3f) +
                      player.GetAutoAttackDamage(hero));
         }
 
@@ -364,7 +375,7 @@ namespace UnderratedAIO.Champions
                     var dist = player.LSDistance(args.End);
                     justE = true;
                     Utility.DelayAction.Add(
-                        (int) ((dist > E.Range ? E.Range : dist)/E.Speed*1000), () => justE = false);
+                        (int)((dist > E.Range ? E.Range : dist) / E.Speed * 1000), () => justE = false);
                     lastE = Environment.TickCount;
                 }
             }
@@ -402,9 +413,9 @@ namespace UnderratedAIO.Champions
             // Draw settings
             menuD = config.AddSubMenu("Drawings ", "dsettings");
             menuD.Add("drawqq", new CheckBox("Draw Q range"));
-                //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
+            //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
             menuD.Add("drawee", new CheckBox("Draw E range"));
-                //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
+            //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
 
             // Combo Settings 
             menuC = config.AddSubMenu("Combo ", "csettings");
