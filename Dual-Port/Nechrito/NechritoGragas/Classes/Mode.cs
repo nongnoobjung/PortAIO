@@ -1,8 +1,9 @@
 ﻿using LeagueSharp.Common;
-using EloBuddy;
+using LeagueSharp;
 using SPrediction;
 using System;
 using SharpDX;
+using EloBuddy;
 using EloBuddy.SDK;
 
 namespace Nechrito_Gragas
@@ -11,9 +12,9 @@ namespace Nechrito_Gragas
     {
         private static AIHeroClient Player => ObjectManager.Player;
 
-        public static Vector3 pred(AIHeroClient Target)
+        public static Vector3 rpred(AIHeroClient Target)
         {
-            var pos = Spells.R.GetVectorSPrediction(Target, 20).CastTargetPosition;
+            var pos = Spells.R.GetVectorSPrediction(Target, -50).CastTargetPosition;
 
             if (Target != null && !pos.LSIsWall())
             {
@@ -21,20 +22,50 @@ namespace Nechrito_Gragas
                 {
                     if (Target.IsMoving)
                     {
-                        pos = pos.LSExtend(Player.Position.LSTo2D(), -70);
+                        pos = pos.LSExtend(Player.Position.LSTo2D(), -90);
                     }
-                    pos = pos.LSExtend(Player.Position.LSTo2D(), -70);
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), -100);
                 }
 
                 if (!Target.LSIsFacing(Player))
                 {
                     if (Target.IsMoving)
                     {
-                        pos = pos.LSExtend(Player.Position.LSTo2D(), -120);
+                        pos = pos.LSExtend(Player.Position.LSTo2D(), -145);
                     }
-                    pos = pos.LSExtend(Player.Position.LSTo2D(), -150);
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), -130);
                 }
             }
+            return pos.To3D2();
+        }
+
+        public static Vector3 qpred(AIHeroClient Target)
+        {
+            var pos = Spells.Q.GetVectorSPrediction(Target, 50).CastTargetPosition;
+
+            pos = pos.LSExtend(Player.Position.LSTo2D(), +Spells.R.Range);
+
+            if (Target != null && !pos.LSIsWall())
+            {
+                if (Target.LSIsFacing(Player))
+                {
+                    if (Target.IsMoving)
+                    {
+                        pos = pos.LSExtend(Player.Position.LSTo2D(), 90);
+                    }
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), 100);
+                }
+
+                if (!Target.LSIsFacing(Player))
+                {
+                    if (Target.IsMoving)
+                    {
+                        pos = pos.LSExtend(Player.Position.LSTo2D(), 150);
+                    }
+                    pos = pos.LSExtend(Player.Position.LSTo2D(), 140);
+                }
+            }
+
             return pos.To3D2();
         }
 
@@ -42,48 +73,73 @@ namespace Nechrito_Gragas
         {
             var Target = TargetSelector.SelectedTarget;
 
-            if (Target != null && Target.LSIsValidTarget() && !Target.IsZombie && (Program.Player.LSDistance(Target.Position) <= 900) && MenuConfig.ComboR)
+            if (Target != null && !Target.IsZombie && MenuConfig.ComboR && Target.LSDistance(Player) <= 1050f)
             {
-                if (Target.LSIsDashing()) return;
+                if (Target.IsDashing()) return;
+
                 if (Spells.Q.IsReady() && Spells.R.IsReady())
                 {
-                    Spells.Q.Cast(pred(Target));
-                    Spells.R.Cast(pred(Target));
-                    LeagueSharp.Common.Utility.DelayAction.Add(200, () => Spells.Q.Cast(Target));
+                    if (Program.GragasQ == null)
+                    {
+                        Spells.Q.Cast(qpred(Target), true);
+                    }
+
+                    if (Spells.R.IsReady())
+                    {
+                        Spells.R.Cast(rpred(Target), true);
+                    }
+
+                    if (Program.GragasQ != null && Target.LSDistance(Program.GragasQ.Position) <= 250)
+                    {
+                        Spells.Q.Cast();
+
+                        var pos = Spells.E.GetVectorSPrediction(Target, Spells.E.Range).CastTargetPosition;
+                        Spells.E.Cast(pos);
+                    }
                 }
             }
 
             var target = TargetSelector.GetTarget(700f, DamageType.Magical);
 
-            if (target != null && target.LSIsValidTarget() && !target.IsZombie)
+            if (target != null && target.IsValidTarget() && !target.IsZombie)
             {
+
                 if (Spells.Q.IsReady())
                 {
-                    var pos = Spells.Q.GetSPrediction(target).CastPosition;
+                    if (!Spells.R.IsReady())
                     {
-                        Spells.Q.Cast(pos);
-                    }
-                }
 
-                // E
-                if (Spells.E.IsReady() && !Spells.R.IsReady())
-                {
-                    var pos = Spells.E.GetPrediction(target).CastPosition;
-                    {
-                        Spells.E.Cast(pos);
+                        if (Program.GragasQ == null)
+                        {
+                            Spells.Q.Cast(target, true);
+                        }
+                        if (Program.GragasQ != null && target.LSDistance(Program.GragasQ.Position) <= 250)
+                        {
+                            Spells.Q.Cast();
+                        }
                     }
                 }
 
                 // Smite
-                if (Spells.Smite != SpellSlot.Unknown && Spells.R.IsReady() && Player.Spellbook.CanUseSpell(Spells.Smite) == SpellState.Ready && !Target.IsZombie)
+                if (Spells.Smite != SpellSlot.Unknown && Spells.R.IsReady() && Player.Spellbook.CanUseSpell(Spells.Smite) == SpellState.Ready && !target.IsZombie)
                 {
                     Player.Spellbook.CastSpell(Spells.Smite, Target);
                 }
 
-                else if (Spells.W.IsReady() && !Spells.E.IsReady())
+                else if (Spells.W.IsReady() && !Spells.R.IsReady())
                 {
                     Spells.W.Cast();
+                }
 
+                // E
+                else if (Spells.E.IsReady() && !Spells.W.IsReady())
+                {
+                    var pos = Spells.E.GetVectorSPrediction(Target, Spells.E.Range).CastTargetPosition;
+
+                    if (!Spells.E.CheckMinionCollision(pos))
+                    {
+                        Spells.E.Cast(pos);
+                    }
                 }
             }
         }
@@ -91,7 +147,7 @@ namespace Nechrito_Gragas
         public static void JungleLogic()
         {
             var mobs = MinionManager.GetMinions(Player.Position, Spells.W.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 if (mobs.Count == 0 || mobs == null || Player.Spellbook.IsAutoAttacking)
                     return;
@@ -121,7 +177,7 @@ namespace Nechrito_Gragas
         public static void HarassLogic()
         {
             var target = TargetSelector.GetTarget(Spells.R.Range - 50, DamageType.Magical);
-            if (target != null && target.LSIsValidTarget() && !target.IsZombie)
+            if (target != null && target.IsValidTarget() && !target.IsZombie)
             {
                 if (Spells.E.IsReady() && MenuConfig.harassE)
                 {
@@ -136,7 +192,7 @@ namespace Nechrito_Gragas
 
                 if (Spells.W.IsReady())
                 {
-                    if (target.Distance(Player) <= Player.AttackRange)
+                    if (target.LSDistance(Player) <= Player.AttackRange)
                     {
                         Spells.W.Cast();
                     }

@@ -14,6 +14,8 @@ namespace Nechrito_Gragas
 
         public static readonly int[] RedSmite = { 3715, 1415, 1414, 1413, 1412 };
 
+        public static GameObject GragasQ;
+
         public static AIHeroClient Player => ObjectManager.Player;
 
         private static readonly HpBarIndicator Indicator = new HpBarIndicator();
@@ -31,9 +33,29 @@ namespace Nechrito_Gragas
 
             Obj_AI_Base.OnSpellCast += OnDoCast;
 
+            GameObject.OnCreate += GameObject_OnCreate;
+            GameObject.OnDelete += GameObject_OnDelete;
+
             Drawing.OnDraw += Drawing_OnDraw;
             Drawing.OnEndScene += Drawing_OnEndScene;
         }
+
+        private static void GameObject_OnDelete(GameObject sender, EventArgs args)
+        {
+            if (sender.Name == "Gragas_Base_Q_Ally.troy")
+            {
+                GragasQ = null;
+            }
+        }
+
+        private static void GameObject_OnCreate(GameObject sender, EventArgs args)
+        {
+            if (sender.Name == "Gragas_Base_Q_Ally.troy")
+            {
+                GragasQ = sender;
+            }
+        }
+
         private static void OnTick(EventArgs args)
         {
             SmiteJungle();
@@ -118,8 +140,8 @@ namespace Nechrito_Gragas
                     {
                         var pos = Spells.R.GetSPrediction(target).CastPosition + 60;
 
-                        Spells.Q.Cast(Mode.pred(target));
-                        Spells.R.Cast(Mode.pred(target));
+                        Spells.Q.Cast(Mode.rpred(target));
+                        Spells.R.Cast(Mode.rpred(target));
                     }
                 }
             }
@@ -132,7 +154,7 @@ namespace Nechrito_Gragas
                     if (target.Health < Spells.Q.GetDamage(target))
                     {
                         var pos = Spells.Q.GetSPrediction(target).CastPosition;
-                        Spells.Q.Cast(Mode.pred(target));
+                        Spells.Q.Cast(Mode.rpred(target));
                         Spells.Q.Cast(pos);
                     }
                 }
@@ -160,11 +182,11 @@ namespace Nechrito_Gragas
 
             var Target = TargetSelector.SelectedTarget;
 
-            if (Target != null)
+            if (Target != null && !Target.IsDead)
             {
-                Render.Circle.DrawCircle(Mode.pred(Target), 100, System.Drawing.Color.GhostWhite);
+                Render.Circle.DrawCircle(Mode.rpred(Target), 100, System.Drawing.Color.GhostWhite);
+                Render.Circle.DrawCircle(Mode.qpred(Target), 100, System.Drawing.Color.Blue);
             }
-
         }
         private static void Drawing_OnEndScene(EventArgs args)
         {
