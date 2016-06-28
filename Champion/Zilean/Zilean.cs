@@ -654,6 +654,10 @@
                     {
                         Orbwalker.ForcedTarget = passiveTarget;
                     }
+                    else
+                    {
+                        Orbwalker.ForcedTarget = null;
+                    }
                 }
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
