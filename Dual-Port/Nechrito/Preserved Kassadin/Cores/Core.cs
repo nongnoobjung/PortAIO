@@ -11,7 +11,7 @@ namespace Preserved_Kassadin.Cores
 
         public static bool SafeTarget(Obj_AI_Base target)
         {
-            return target != null && !target.IsDead && !target.IsInvulnerable;
+            return target != null && !target.IsDead && !target.IsInvulnerable && target.IsVisible && target.IsHPBarRendered;
         }
     }
 }

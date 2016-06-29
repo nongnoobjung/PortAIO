@@ -17,7 +17,7 @@ namespace Preserved_Kassadin
             Game.OnUpdate += Killsteal.Update;
 
             Drawing.OnDraw += DrawSpells.OnDraw;
-            Drawing.OnEndScene += DrawDmg.Draw;
+            //Drawing.OnEndScene += DrawDmg.Draw;
 
 
             Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#00e5e5\">Preserved Kassadin</font></b><b><font color=\"#FFFFFF\">]</font></b><b><font color=\"#FFFFFF\"> Loaded</font></b>");
